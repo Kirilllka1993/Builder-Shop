@@ -4,7 +4,7 @@ import com.vironit.kazimirov.entity.Subsection;
 
 import java.util.List;
 
-public interface PurposeDao {
+public interface PurposeDaoInterface {
 
     void addPurpose(int id, String title);
 

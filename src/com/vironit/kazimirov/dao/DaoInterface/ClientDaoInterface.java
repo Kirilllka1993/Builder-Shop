@@ -2,7 +2,7 @@ package com.vironit.kazimirov.dao.DaoInterface;
 
 import com.vironit.kazimirov.entity.Review;
 
-public interface ClientDao {
+public interface ClientDaoInterface {
     void addReview(Review review);
 
     void removeReiew(Review review);

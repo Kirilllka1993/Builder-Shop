@@ -24,29 +24,78 @@ public class GoodDao implements GoodDaoInterface {
                 .withName(name)
                 .build();
         goods.add(good);
-        for(Good good1:goods){
+        for (Good good1 : goods) {
             System.out.println(good1.toString());
         }
     }
 
     @Override
     public Good findByNameGood(String name) {
-        return null;
+        Good goodName = null;
+        goods.add(new Good(2, 2.0, null, "м3", 5, null, null, "Утеплитель"));
+        goods.add(new Good(3, 2.0, null, "м3", 5, null, null, "Сухие смеси"));
+        goods.add(new Good(4, 2.0, null, "м3", 5, null, null, "Электрика"));
+        goods.add(new Good(5, 2.0, null, "м3", 5, null, null, "Краска"));
+
+        for (Good good : goods) {
+            if (good.getName().equals(name)) {
+                goodName = good;
+            }
+        }
+        System.out.println(goodName.toString());
+        return goodName;
     }
 
     @Override
     public List<Good> showAllGoods() {
-        return null;
+        goods.add(new Good(2, 2.0, null, "м3", 5, null, null, "Утеплитель"));
+        goods.add(new Good(3, 2.0, null, "м3", 5, null, null, "Сухие смеси"));
+        goods.add(new Good(4, 2.0, null, "м3", 5, null, null, "Электрика"));
+        goods.add(new Good(5, 2.0, null, "м3", 5, null, null, "Краска"));
+        System.out.println(goods.toString() + "/n");
+        return goods;
     }
 
     @Override
     public List<Good> findBySubsection(Subsection subsection) {
-        return null;
+        List<Good> goodSubsections=new ArrayList<>();
+        Subsection subsection1=new Subsection(1,"Утеплитель");
+        Subsection subsection2=new Subsection(2,"Сухие смеси");
+        Subsection subsection3=new Subsection(3,"Лакокрасочные покрытия");
+        Subsection subsection4=new Subsection(4,"Железобетонные изделия");
+        goods.add(new Good(2, 2.0, subsection1, "м3", 5, null, null, "Пенополистирол"));
+        goods.add(new Good(3, 2.0, subsection2, "м3", 5, null, null, "Сухие смеси"));
+        goods.add(new Good(4, 2.0, subsection1, "м3", 5, null, null, "Электрика"));
+        goods.add(new Good(5, 2.0, subsection4, "м3", 5, null, null, "Краска"));
+
+        for (Good good : goods) {
+            if (good.getSubsection().getTitle().equals(subsection.getTitle())) {
+                goodSubsections.add(good);
+            }
+        }
+        System.out.print(goodSubsections.toString());
+        return goodSubsections;
     }
 
     @Override
     public List<Good> findByPurpose(Purpose purpose) {
-        return null;
+        List<Good> goodPurposes=new ArrayList<>();
+        Purpose purpose1=new Purpose(1,"Фундамент");
+        Purpose purpose2=new Purpose(2,"Внутренние работы");
+        Purpose purpose3=new Purpose(3,"Наружные работы");
+        Purpose purpose4=new Purpose(4,"Кровля");
+        goods.add(new Good(2, 2.0, null, "м3", 5, null, purpose1, "Пенополистирол"));
+        goods.add(new Good(3, 2.0, null, "м3", 5, null, purpose3, "Сухие смеси"));
+        goods.add(new Good(4, 2.0, null, "м3", 5, null, purpose2, "Сухие смеси"));
+        goods.add(new Good(5, 2.0, null, "м3", 5, null, purpose2, "Краска"));
+
+        for (Good good : goods) {
+            if (good.getPurpose().getPurpose().equals(purpose.getPurpose())) {
+                goodPurposes.add(good);
+            }
+        }
+        System.out.print(goodPurposes.toString());
+        return goodPurposes;
     }
 
     @Override
@@ -67,15 +116,5 @@ public class GoodDao implements GoodDaoInterface {
     @Override
     public void removeFromCart() {
 
-    }
-
-
-    public void showSub() {
-
-      /*  goods.add(new Good(1, "dsfdsf"));
-        good.add(new Good(1,"Гидроизоляция"));
-        for (Good subsection : goods) {
-            System.out.println(good);
-        }*/
     }
 }

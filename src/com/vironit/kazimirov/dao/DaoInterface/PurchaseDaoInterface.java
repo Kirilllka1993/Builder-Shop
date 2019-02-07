@@ -4,7 +4,7 @@ import com.vironit.kazimirov.entity.Purchase;
 
 import java.util.List;
 
-public interface PurchaseDao {
+public interface PurchaseDaoInterface {
     List<Purchase> showPurchases();
 
     void makePurchase();

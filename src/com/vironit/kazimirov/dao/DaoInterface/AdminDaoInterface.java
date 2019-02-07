@@ -7,7 +7,7 @@ import com.vironit.kazimirov.entity.Purchase;
 
 import java.util.List;
 
-public interface AdminDao {
+public interface AdminDaoInterface {
     void addClient(Client client);
 
     void deleteClient(Client client);
