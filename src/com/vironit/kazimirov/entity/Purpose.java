@@ -36,7 +36,7 @@ public class Purpose {
         if (o == null || getClass() != o.getClass()) return false;
         Purpose purpose1 = (Purpose) o;
         return id == purpose1.id &&
-                purpose.equals(purpose1.purpose);
+                Objects.equals(purpose, purpose1.purpose);
     }
 
     @Override

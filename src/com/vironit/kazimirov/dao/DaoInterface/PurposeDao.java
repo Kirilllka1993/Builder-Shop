@@ -4,9 +4,9 @@ import com.vironit.kazimirov.entity.Subsection;
 
 import java.util.List;
 
-public interface PurposeDaoInterface {
+public interface PurposeDao {
 
-    void addPurpose(int id, String title);
+    void addPurpose(String title);
 
     List<Subsection> showPurposes();
 

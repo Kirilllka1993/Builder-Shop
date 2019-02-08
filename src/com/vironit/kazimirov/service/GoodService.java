@@ -8,7 +8,7 @@ import com.vironit.kazimirov.entity.Subsection;
 import java.util.List;
 
 public interface GoodService {
-    void addGood (double cost, Subsection subsection, String unit, int quantity, Discount discount, Purpose purpose, String name);
+    void addGood (double price, Subsection subsection, String unit, int quantity, Discount discount, Purpose purpose, String name, int amount);
 
     Good findByNameGood(String name);
 
@@ -17,5 +17,8 @@ public interface GoodService {
     List<Good> findBySubsection(Subsection subsection);
 
     List<Good> findByPurpose(Purpose purpose);
+    void deleteGood(int id);//Как удалять товар, по параметрам или нет
+
+    void updateGood(int id, Good good);//могут ли все параметры быть равны нулю
 
 }

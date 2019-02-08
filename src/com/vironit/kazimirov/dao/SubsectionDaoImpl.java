@@ -1,5 +1,6 @@
 package com.vironit.kazimirov.dao;
 
+import com.vironit.kazimirov.dao.DaoInterface.SubsectionDao;
 import com.vironit.kazimirov.entity.Subsection;
 
 import com.vironit.kazimirov.entity.builder.Subsection.SubsectionBuilder;
@@ -8,7 +9,7 @@ import com.vironit.kazimirov.entity.builder.Subsection.SubsectionBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubsectionDao {
+public class SubsectionDaoImpl implements SubsectionDao {
     private List<Subsection> subsections = new ArrayList<>();
 
     public void addSubsection(int id, String title) {
@@ -21,7 +22,7 @@ public class SubsectionDao {
     }
 
 
-    public void showSubsections() {
+    public List<Subsection> showSubsections() {
 
         List<Subsection> subsections = new ArrayList<>();
         subsections.add(new Subsection(1, "Утеплитель"));//Выполняется только с работающей базой данной
@@ -31,6 +32,7 @@ public class SubsectionDao {
         for (Subsection subsection : subsections) {
             System.out.println(subsection.toString());
         }
+        return subsections;
     }
 
 }

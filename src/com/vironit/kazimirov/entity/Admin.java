@@ -79,6 +79,12 @@ public class Admin {
 
     @Override
     public String toString() {
-        return super.toString();
+        return "Admin{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

@@ -7,16 +7,18 @@ import com.vironit.kazimirov.entity.Purchase;
 
 import java.util.List;
 
-public interface AdminDaoInterface {
-    void addClient(Client client);
+public interface AdminDao {
+    void addClient(String name, String surname, String login, String password, String adress, String phoneNumber);
 
-    void deleteClient(Client client);
+    void deleteClient(int id);
 
-    void addGood(Good good);
-
-    void deleteGood(Good good);
+    Client searchClientByLogin(String login);
 
     void makeADiscount(Discount discount);
 
     List<Purchase> showAllPurchases();
+
+    List<Client> showAllClient();
+
+    Purchase searchPurchasebyId(int id);
 }

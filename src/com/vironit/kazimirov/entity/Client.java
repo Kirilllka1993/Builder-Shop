@@ -8,13 +8,17 @@ public class Client {
     private String surname;
     private String login;
     private String password;
+    private String address;
+    private String phoneNumber;
 
-    public Client(int id, String name, String surname, String login, String password) {
+    public Client(int id, String name, String surname, String login, String password, String adress, String phoneNumber) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.login = login;
         this.password = password;
+        this.address = adress;
+        this.phoneNumber = phoneNumber;
     }
 
     public Client() {
@@ -60,6 +64,22 @@ public class Client {
         this.password = password;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,12 +89,14 @@ public class Client {
                 Objects.equals(name, client.name) &&
                 Objects.equals(surname, client.surname) &&
                 Objects.equals(login, client.login) &&
-                Objects.equals(password, client.password);
+                Objects.equals(password, client.password) &&
+                Objects.equals(address, client.address) &&
+                Objects.equals(phoneNumber, client.phoneNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, surname, login, password);
+        return Objects.hash(id, name, surname, login, password, address, phoneNumber);
     }
 
     @Override
@@ -85,6 +107,8 @@ public class Client {
                 ", surname='" + surname + '\'' +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
+                ", address='" + address + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
     }
 }

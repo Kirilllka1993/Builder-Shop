@@ -1,11 +1,11 @@
-package com.vironit.kazimirov.service.impl;
+package com.vironit.kazimirov.dao;
 
+import com.vironit.kazimirov.dao.DaoInterface.ClientDao;
 import com.vironit.kazimirov.entity.Client;
-import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Review;
-import com.vironit.kazimirov.service.ClientService;
 
-public class ClientServiceImpl implements ClientService {
+public class ClientDaoImpl implements ClientDao {
+
     @Override
     public void addReview(Review review) {
 
@@ -20,7 +20,6 @@ public class ClientServiceImpl implements ClientService {
     public void logIn(String login, String password) {
 
     }
-
 
     @Override
     public void logOut() {

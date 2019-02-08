@@ -1,11 +1,9 @@
-package com.vironit.kazimirov.service;
+package com.vironit.kazimirov.dao.DaoInterface;
 
 import com.vironit.kazimirov.entity.Client;
-import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Review;
 
-public interface ClientService {
-
+public interface ClientDao {
     void addReview(Review review);
 
     void removeReview(Review review);
@@ -19,6 +17,4 @@ public interface ClientService {
     void changeLogin(String login);
 
     void changePassword(String password);
-
-
 }

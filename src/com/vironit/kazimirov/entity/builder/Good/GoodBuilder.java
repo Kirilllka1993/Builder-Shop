@@ -13,8 +13,8 @@ public class GoodBuilder {
         good = new Good();
     }
 
-    public GoodBuilder withCost(double cost) {
-        good.setCost(cost);
+    public GoodBuilder withCost(double price) {
+        good.setPrice(price);
         return this;
     }
 
@@ -46,6 +46,10 @@ public class GoodBuilder {
 
     public GoodBuilder withName(String name) {
         good.setName(name);
+        return this;
+    }
+    public GoodBuilder withAmount(int amount) {
+        good.setAmount(amount);
         return this;
     }
 

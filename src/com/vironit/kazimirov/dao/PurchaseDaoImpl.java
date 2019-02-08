@@ -1,16 +1,12 @@
-package com.vironit.kazimirov.service.impl;
+package com.vironit.kazimirov.dao;
 
+import com.vironit.kazimirov.dao.DaoInterface.PurchaseDao;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purchase;
-import com.vironit.kazimirov.service.PurchaseService;
 
 import java.util.List;
 
-public class PurchaseServiceImpl implements PurchaseService {
-    @Override
-    public List<Purchase> showPurchases() {
-        return null;
-    }
+public class PurchaseDaoImpl implements PurchaseDao {
 
     @Override
     public void chekout() {
@@ -31,6 +27,4 @@ public class PurchaseServiceImpl implements PurchaseService {
     public void deleteFromPurchase(Good good) {
 
     }
-
-    
 }

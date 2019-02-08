@@ -7,9 +7,9 @@ import com.vironit.kazimirov.entity.Subsection;
 
 import java.util.List;
 
-public interface GoodDaoInterface {
+public interface GoodDao {
 
-    void addGood(double cost, Subsection subsection, String unit, int quantity, Discount discount, Purpose purpose, String name);
+    void addGood(double cost, Subsection subsection, String unit, int quantity, Discount discount, Purpose purpose, String name,int amount);
 
     Good findByNameGood(String name);
 
@@ -19,13 +19,11 @@ public interface GoodDaoInterface {
 
     List<Good> findByPurpose(Purpose purpose);
 
-    void deleteGood(Good good);//Как удалять товар, по параметрам или нет
+    void deleteGood(int id);//Как удалять товар, по параметрам или нет
 
-    void updateGood();//могут ли все параметры быть равны нулю
+    void updateGood(int id, Good good);//могут ли все параметры быть равны нулю
 
-    void addToCart(Good good);
 
-    void removeFromCart();
 
 
 }
