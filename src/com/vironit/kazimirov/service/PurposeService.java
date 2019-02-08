@@ -1,7 +1,6 @@
 package com.vironit.kazimirov.service;
 
 import com.vironit.kazimirov.entity.Purpose;
-import com.vironit.kazimirov.entity.Subsection;
 
 import java.util.List;
 

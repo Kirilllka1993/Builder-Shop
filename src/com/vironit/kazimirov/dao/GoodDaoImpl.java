@@ -8,7 +8,6 @@ import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.entity.builder.Good.GoodBuilder;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class GoodDaoImpl implements GoodDao {

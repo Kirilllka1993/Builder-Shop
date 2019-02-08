@@ -6,7 +6,7 @@ import com.vironit.kazimirov.service.SubsectionService;
 
 import java.util.List;
 
-public class SubsectionImpl implements SubsectionService {
+public class SubsectionServiceImpl implements SubsectionService {
 
     @Override
     public void addSubsection(int id, String title) {

@@ -4,7 +4,6 @@ import com.vironit.kazimirov.entity.Discount;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
-import com.vironit.kazimirov.entity.builder.Subsection.SubsectionBuilder;
 
 public class GoodBuilder {
     private Good good;

@@ -1,13 +1,9 @@
 package com.vironit.kazimirov.service.impl;
 
-import com.vironit.kazimirov.dao.AdminDaoImpl;
-import com.vironit.kazimirov.dao.DaoInterface.AdminDao;
-import com.vironit.kazimirov.entity.Good;
-import com.vironit.kazimirov.entity.Purpose;
-
 public class Main {
 
     public static void main(String [] args){
+        //GooDao
         GoodServiceImpl goodServiceImpl1=new GoodServiceImpl();
         //goodServiceImpl1.addGood(2,null, "м3",5,null,null,"Гидроизоляция");
         //goodServiceImpl1.findByNameGood("Утеплитель");
@@ -24,12 +20,15 @@ public class Main {
         //adminServiceImpl.showAllPurchases();
         //adminServiceImpl.showAllClient();
         //adminServiceImpl.searchClientByLogin("kirill12");
-        adminServiceImpl.searchPurchasebyId(2);
+        //adminServiceImpl.searchPurchasebyId(2);
 
-
-
-        //SubsectionDaoImpl subsectionDao=new SubsectionDaoImpl();
+        //SubsectionDao
+        SubsectionServiceImpl subsectionDao=new SubsectionServiceImpl();
         //subsectionDao.showSubsections();
+
+        //PurposeDao
+        PurposeServiceImpl purposeServiceImpl=new PurposeServiceImpl();
+        purposeServiceImpl.addPurpose("Земляные работы");
 
 
 

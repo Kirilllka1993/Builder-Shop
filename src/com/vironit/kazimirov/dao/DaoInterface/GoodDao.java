@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface GoodDao {
 
-    void addGood(double cost, Subsection subsection, String unit, int quantity, Discount discount, Purpose purpose, String name,int amount);
+    void addGood(double cost, Subsection subsection, String unit, int quantity, Discount discount, Purpose purpose, String name, int amount);
 
     Good findByNameGood(String name);
 
