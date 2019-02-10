@@ -1,6 +1,5 @@
 package com.vironit.kazimirov.service;
 
-import com.vironit.kazimirov.entity.Discount;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
@@ -8,7 +7,7 @@ import com.vironit.kazimirov.entity.Subsection;
 import java.util.List;
 
 public interface GoodService {
-    void addGood (double price, Subsection subsection, String unit, int quantity, Discount discount, Purpose purpose, String name, int amount);
+    void addGood (double price, Subsection subsection, String unit, int quantity, double discount, Purpose purpose, String name, int amount);
 
     Good findByNameGood(String name);
 

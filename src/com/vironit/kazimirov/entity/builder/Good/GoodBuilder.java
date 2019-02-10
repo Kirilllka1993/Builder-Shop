@@ -1,6 +1,6 @@
 package com.vironit.kazimirov.entity.builder.Good;
 
-import com.vironit.kazimirov.entity.Discount;
+
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
@@ -33,7 +33,7 @@ public class GoodBuilder {
         return this;
     }
 
-    public GoodBuilder withDiscount(Discount discount) {
+    public GoodBuilder withDiscount(double discount) {
         good.setDiscount(discount);
         return this;
     }

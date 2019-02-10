@@ -12,9 +12,9 @@ public interface PurchaseService {
 
     void makeAPurchase();
 
-    void addIntoPurchase(Good good);
+    List<Good> addIntoPurchase(int id, int amount);
 
-    void deleteFromPurchase(Good good);
+    void deleteFromPurchase(int id);
 
 
 }

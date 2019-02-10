@@ -1,7 +1,6 @@
 package com.vironit.kazimirov.dao.DaoInterface;
 
 import com.vironit.kazimirov.entity.Client;
-import com.vironit.kazimirov.entity.Discount;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purchase;
 
@@ -14,7 +13,7 @@ public interface AdminDao {
 
     Client searchClientByLogin(String login);
 
-    void makeADiscount(Discount discount);
+    void changeDiscount(int id, double discount);
 
     List<Purchase> showAllPurchases();
 

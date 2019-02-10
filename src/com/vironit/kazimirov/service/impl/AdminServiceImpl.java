@@ -2,7 +2,6 @@ package com.vironit.kazimirov.service.impl;
 
 import com.vironit.kazimirov.dao.AdminDaoImpl;
 import com.vironit.kazimirov.entity.Client;
-import com.vironit.kazimirov.entity.Discount;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.service.AdminService;
@@ -36,9 +35,9 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void makeADiscount(Discount discount) {
+    public void changeDiscount(int id, double discount) {
         AdminDaoImpl adminDao=new AdminDaoImpl();
-        adminDao.makeADiscount(discount);
+        adminDao.changeDiscount(id, discount);
 
     }
 

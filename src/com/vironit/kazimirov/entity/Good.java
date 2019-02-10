@@ -8,12 +8,12 @@ private double price;
 private Subsection subsection;
 private String unit;
 private int quantity;
-private Discount discount;
+private double discount;
 private Purpose purpose;
 private String name;
 private int amount;
 
-    public Good(int id, double price, Subsection subsection, String unit, int quantity, Discount discount, Purpose purpose, String name, int amount) {
+    public Good(int id, double price, Subsection subsection, String unit, int quantity, double discount, Purpose purpose, String name, int amount) {
         this.id = id;
         this.price = price;
         this.subsection = subsection;
@@ -68,11 +68,11 @@ private int amount;
         this.quantity = quantity;
     }
 
-    public Discount getDiscount() {
+    public double getDiscount() {
         return discount;
     }
 
-    public void setDiscount(Discount discount) {
+    public void setDiscount(double discount) {
         this.discount = discount;
     }
 

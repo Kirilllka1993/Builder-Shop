@@ -1,6 +1,5 @@
 package com.vironit.kazimirov.dao.DaoInterface;
 
-import com.vironit.kazimirov.entity.Discount;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
@@ -9,7 +8,7 @@ import java.util.List;
 
 public interface GoodDao {
 
-    void addGood(double cost, Subsection subsection, String unit, int quantity, Discount discount, Purpose purpose, String name, int amount);
+    void addGood(double cost, Subsection subsection, String unit, int quantity, double discount, Purpose purpose, String name, int amount);
 
     Good findByNameGood(String name);
 

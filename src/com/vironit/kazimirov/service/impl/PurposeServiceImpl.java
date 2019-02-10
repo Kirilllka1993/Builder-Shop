@@ -16,7 +16,8 @@ public class PurposeServiceImpl implements PurposeService {
 
     @Override
     public List<Purpose> showPurposes() {
-        return null;
+        PurposeDaoImpl purposeDaoImpl=new PurposeDaoImpl();
+        return purposeDaoImpl.showPurposes();
 
     }
 }

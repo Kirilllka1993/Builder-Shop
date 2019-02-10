@@ -3,18 +3,20 @@ package com.vironit.kazimirov.dao.DaoInterface;
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Review;
 
-public interface ClientDao {
-    void addReview(Review review);
+import java.util.List;
 
-    void removeReview(Review review);
+public interface ClientDao {
+    void addReview(int mark, String text);
+
+    void removeReview(int id);
 
     void logIn(String login, String password);
 
     void logOut();
 
-    void signIn(Client client);
+    void signIn(String name, String surname, String login, String password, String adress, String phoneNumber);
 
-    void changeLogin(String login);
+    void changeLogin(int id, String login);
 
-    void changePassword(String password);
+    void changePassword(int id, String password);
 }

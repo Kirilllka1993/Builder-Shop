@@ -11,6 +11,22 @@ import java.util.List;
 
 public class SubsectionDaoImpl implements SubsectionDao {
     private List<Subsection> subsections = new ArrayList<>();
+    public SubsectionDaoImpl() {
+
+
+
+
+        Subsection subsection1 = new Subsection(1, "Утеплитель");
+        Subsection subsection2 = new Subsection(2, "Сухие смеси");
+        Subsection subsection3 = new Subsection(3, "Лакокрасочные покрытия");
+        Subsection subsection4 = new Subsection(4, "Гидроизоляционные материалы");
+        subsections.add(subsection1);
+        subsections.add(subsection2);
+        subsections.add(subsection3);
+        subsections.add(subsection4);
+
+
+    }
 
     public void addSubsection(int id, String title) {
         SubsectionBuilder subsectionBuilder = new SubsectionBuilder();
@@ -19,16 +35,13 @@ public class SubsectionDaoImpl implements SubsectionDao {
                 .build();
         subsections.add(subsection);
         System.out.println(subsection.getId() + " " + subsection.getTitle());
+        for (Subsection subsection1 : subsections) {
+            System.out.println(subsection1.toString());
+        }
     }
 
 
     public List<Subsection> showSubsections() {
-
-        List<Subsection> subsections = new ArrayList<>();
-        subsections.add(new Subsection(1, "Утеплитель"));//Выполняется только с работающей базой данной
-        subsections.add(new Subsection(2, "Гидроизоляция"));
-        subsections.add(new Subsection(3, "Сухие смеси"));
-        subsections.add(new Subsection(4, "Минеральная вата"));
         for (Subsection subsection : subsections) {
             System.out.println(subsection.toString());
         }

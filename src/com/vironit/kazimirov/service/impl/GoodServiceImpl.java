@@ -1,7 +1,6 @@
 package com.vironit.kazimirov.service.impl;
 
 import com.vironit.kazimirov.dao.GoodDaoImpl;
-import com.vironit.kazimirov.entity.Discount;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
@@ -13,7 +12,7 @@ public class GoodServiceImpl implements GoodService {
 
 
     @Override
-    public void addGood(double price, Subsection subsection, String unit, int quantity, Discount discount, Purpose purpose, String name, int amount) {
+    public void addGood(double price, Subsection subsection, String unit, int quantity, double discount, Purpose purpose, String name, int amount) {
         GoodDaoImpl goodDao = new GoodDaoImpl();
         goodDao.addGood(price, subsection, unit, quantity, discount, purpose, name,amount);
     }

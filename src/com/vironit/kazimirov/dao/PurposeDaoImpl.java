@@ -30,13 +30,17 @@ public class PurposeDaoImpl implements PurposeDao {
                 .build();
         purposes.add(purpose);
         for (Purpose purpose1 : purposes) {
-            System.out.println(purpose + "\n");
+            System.out.println(purpose1 + "\n");
         }
     }
 
 
     @Override
-    public List<Subsection> showPurposes() {
-        return null;
+    public List<Purpose> showPurposes() {
+
+        for (Purpose purpose : purposes) {
+            System.out.println(purpose.toString());
+        }
+        return purposes;
     }
 }

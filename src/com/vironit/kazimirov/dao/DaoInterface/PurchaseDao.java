@@ -6,12 +6,14 @@ import com.vironit.kazimirov.entity.Purchase;
 import java.util.List;
 
 public interface PurchaseDao {
+    List<Purchase> showPurchases();
+
     void chekout();//оформить заказ
 
     void makeAPurchase();
 
-    void addIntoPurchase(Good good);
+    List<Good> addIntoPurchase(int id, int amount);
 
-    void deleteFromPurchase(Good good);
+    void deleteFromPurchase(int id);
 
 }
