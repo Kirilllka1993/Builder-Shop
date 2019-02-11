@@ -8,6 +8,7 @@ import com.vironit.kazimirov.entity.builder.Good.GoodBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GoodDaoImpl implements GoodDao {
     private List<Good> goods = new ArrayList<>();
@@ -25,8 +26,8 @@ public class GoodDaoImpl implements GoodDao {
         Subsection subsection4 = new Subsection(4, "Гидроизоляционные материалы");
 
         goods.add(new Good(2, 2.0, subsection1, "м3", 5, 2, purpose1, "Пеноплекс", 54));
-        goods.add(new Good(3, 2.0, subsection2, "м3", 5, 6, purpose2, "Шпатлевка", 13));
-        goods.add(new Good(4, 2.0, subsection3, "м3", 5, 0, purpose3, "Краска для дерева", 15));
+        goods.add(new Good(3, 2.0, subsection2, "м3", 5, 6, purpose3, "Шпатлевка", 13));
+        goods.add(new Good(4, 2.0, subsection2, "м3", 5, 0, purpose3, "Краска для дерева", 15));
         goods.add(new Good(5, 2.0, subsection4, "м3", 5, 0, purpose4, "Техноэласт", 18));
     }
 
@@ -44,69 +45,72 @@ public class GoodDaoImpl implements GoodDao {
         int lastIndex = goods.size();
         good.setId(lastIndex + 1);
         goods.add(good);
-        for (Good good1 : goods) {
-            System.out.println(good1.toString());
-        }
+        goods.stream().forEach(System.out::println);
+
     }
 
     @Override
     public Good findByNameGood(String name) {
-        Good goodName = null;
-
-
-        for (Good good : goods) {
+        Good goodName = goods.stream().filter(s -> s.getName().equals(name)).findFirst().get();
+       /* for (Good good : goods) {
             if (good.getName().equals(name)) {
                 goodName = good;
             }
-        }
+        }*/
         System.out.println(goodName.toString());
         return goodName;
     }
 
     @Override
     public List<Good> showAllGoods() {
-        for (Good good : goods) {
+        goods.stream().forEach(System.out::println);
+        /*for (Good good : goods) {
             System.out.println(good + "\n");
-        }
+        }*/
         return goods;
     }
 
     @Override
     public List<Good> findBySubsection(Subsection subsection) {
-        List<Good> goodSubsections = new ArrayList<>();
-
-        for (Good good : goods) {
+        List<Good> goodSubsections;
+        goodSubsections = goods.stream().filter(s -> s.getSubsection().equals(subsection)).collect(Collectors.toList());
+        System.out.println(goodSubsections.toString());
+        /*for (Good good : goods) {
             if (good.getSubsection().getTitle().equals(subsection.getTitle())) {
                 goodSubsections.add(good);
             }
         }
-        System.out.print(goodSubsections.toString());
+        System.out.print(goodSubsections.toString());*/
         return goodSubsections;
     }
 
     @Override
     public List<Good> findByPurpose(Purpose purpose) {
-        List<Good> goodPurposes = new ArrayList<>();
-        for (Good good : goods) {
+        List<Good> goodPurposes = goods.stream().filter(s -> s.getPurpose().equals(purpose)).collect(Collectors.toList());
+        System.out.println(goodPurposes.toString());
+        /*for (Good good : goods) {
             if (good.getPurpose().getPurpose().equals(purpose.getPurpose())) {
                 goodPurposes.add(good);
             }
         }
-        System.out.print(goodPurposes.toString());
+        System.out.print(goodPurposes.toString());*/
         return goodPurposes;
     }
 
     @Override
     public void deleteGood(int id) {
+        Good good = goods.stream().filter(s -> s.getId() == id).findFirst().get();
+        goods.remove(good);
+        goods.stream().forEach(System.out::println);
 
-        for (int i = 0; i <= goods.size() - 1; i++) {
+       /*for (int i = 0; i <= goods.size() - 1; i++) {
             Good good = goods.get(i);
             if (good.getId() == id)
                 goods.remove(goods.get(i));
         }
         for (Good good : goods) {
             System.out.println(good + "\n");
-        }
+        }*/
     }
 
     @Override

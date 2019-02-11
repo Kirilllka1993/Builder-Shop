@@ -45,29 +45,37 @@ public class ClientDaoImpl implements ClientDao {
         int lastIndex = reviews.size();
         review.setId(lastIndex + 1);
         reviews.add(review);
-        for (Review review1 : reviews) {
+        reviews.stream().forEach(System.out::println);
+       /* for (Review review1 : reviews) {
             System.out.println(review1 + "\n");
-        }
+        }*/
     }
 
 
     @Override
     public void removeReview(int id) {
-        for (int i = 0; i <= reviews.size() - 1; i++) {
+        Review review = reviews.stream().filter(s -> s.getId() == id).findFirst().get();
+        reviews.remove(review);
+        /*for (int i = 0; i <= reviews.size() - 1; i++) {
             Review good = reviews.get(i);
             if (good.getId() == id)
                 reviews.remove(reviews.get(i));
         }
         for (Review good : reviews) {
             System.out.println(good + "\n");
-        }
+        }*/
+        reviews.stream().forEach(System.out::println);
     }
 
     @Override
     public void logIn(String login, String password) {
-        boolean flag = false;
         try {
-            for (Client client : clients) {
+            if (clients.stream().anyMatch(s -> s.getLogin().equals(login) && s.getPassword().equals(password)) == false){
+                throw new Exception();
+            }
+            System.out.println("Hello"+" "+login);
+
+            /*for (Client client : clients) {
                 if (login.equals(client.getLogin()) && (password.equals(client.getPassword()))) {
                     flag = true;
                 }
@@ -75,8 +83,8 @@ public class ClientDaoImpl implements ClientDao {
             }
             if (flag == false) {
                 throw new Exception();
-            }
-            System.out.println("Hello" + " " + login);
+            }*/
+
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Неверно введены логин или пароль");
@@ -100,11 +108,14 @@ public class ClientDaoImpl implements ClientDao {
                 .build();
         int lastIndex = clients.size();
         try {
-            for (Client client1 : clients) {
+            if (clients.stream().anyMatch(s->s.getLogin().equals(login))==true){
+                throw new Exception();
+            }
+            /*for (Client client1 : clients) {
                 if (client.getLogin().equals(client1.getLogin())) {
                     throw new Exception();
                 }
-            }
+            }*/
             clients.add(client);
             client.setId(lastIndex + 1);
         } catch (Exception e) {
@@ -120,11 +131,14 @@ public class ClientDaoImpl implements ClientDao {
     @Override
     public void changeLogin(int id, String login) {
         try {
-            for (Client client : clients) {
+            if (clients.stream().anyMatch(s->s.getLogin().equals(login))==true){
+                throw new Exception();
+            }
+           /* for (Client client : clients) {
                 if (login.equals(client.getLogin())) {
                     throw new Exception();
                 }
-            }
+            }*/
             clients.get(id - 1).setLogin(login);
         } catch (Exception e) {
             e.printStackTrace();
@@ -139,8 +153,9 @@ public class ClientDaoImpl implements ClientDao {
     @Override
     public void changePassword(int id, String password) {
         clients.get(id - 1).setPassword(password);
-        for (Client client2 : clients) {
+        clients.stream().forEach(System.out::println);
+       /* for (Client client2 : clients) {
             System.out.println(client2 + "\n");
-        }
+        }*/
     }
 }

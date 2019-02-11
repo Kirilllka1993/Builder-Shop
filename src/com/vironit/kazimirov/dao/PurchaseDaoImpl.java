@@ -10,7 +10,7 @@ public class PurchaseDaoImpl implements PurchaseDao {
     private List<Purchase> purchases = new ArrayList<>();
     private List<Good> goods = new ArrayList<>();
     private List<Client> clients = new ArrayList<>();
-    private  List<Good> purchasesCart = new ArrayList<>();
+    private List<Good> purchasesCart = new ArrayList<>();
 
 
     public PurchaseDaoImpl() {
@@ -58,15 +58,16 @@ public class PurchaseDaoImpl implements PurchaseDao {
         purchases.add(purchase4);
 
         purchasesCart.add(good1);
-        purchasesCart.add(good2);
+        purchasesCart.add(good3);
 
     }
 
     @Override
     public List<Purchase> showPurchases() {
-        for (Purchase purchase : purchases) {
+        purchases.stream().forEach(System.out::println);
+        /*for (Purchase purchase : purchases) {
             System.out.println(purchase + "\n");
-        }
+        }*/
         return purchases;
     }
 
@@ -82,50 +83,56 @@ public class PurchaseDaoImpl implements PurchaseDao {
 
     @Override
     public List<Good> addIntoPurchase(int id, int amount) {
-
-        System.out.println(amount);
         try {
+            //Good goodFromList = goods.stream().filter(x->x.getId()==id).filter(x->x.getAmount()>=amount).findAny().orElseThrow(Exception::new);
             if (goods.get(id - 1).getAmount() < amount) {
                 throw new Exception();
             }
             int oldAmount = goods.get(id - 1).getAmount();
             Good good = new Good();
-            good = goods.get(id - 1);
+            good.setId(id);
+            good.setUnit(goods.get(id - 1).getUnit());
+            good.setDiscount(goods.get(id - 1).getDiscount());
+            good.setPrice(goods.get(id - 1).getPrice());
+            good.setSubsection(goods.get(id - 1).getSubsection());
+            good.setQuantity(goods.get(id - 1).getQuantity());
+            good.setPurpose(goods.get(id - 1).getPurpose());
+            good.setAmount(amount);
+            good.setName(goods.get(id - 1).getName());
             good.setAmount(amount);
             purchasesCart.add(good);
-            int newAmount=oldAmount-amount;
-            //System.out.println(newAmount); не получается создать новый объект
-            //goods.get(id-1).setAmount(newAmount);
-
+            int newAmount = oldAmount - amount;
+            goods.get(id - 1).setAmount(newAmount);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Товар в количестве указанный Вами отсутствует на складе. На складе в остатке осталось" + " " + goods.get(id - 1).getAmount());
         } finally {
+            System.out.println("Оставшиеся товары");
+            goods.stream().forEach(System.out::println);
+        }
+        System.out.println("Cart");
+        purchasesCart.stream().forEach(System.out::println);
 
-        }
-        for (Good good1 : purchasesCart) {
-            System.out.println(good1 + "\n");
-        }
-        for (Good good1 : goods) {
-            System.out.println(good1 + "\n");
-
-        }
         return purchasesCart;
     }
 
-        @Override
-        public void deleteFromPurchase (int id){
-            for (Good good : purchasesCart) {
-                System.out.println(good + "\n");
-            }
-            for (int i = 0; i <= purchasesCart.size() - 1; i++) {
-                Good good = purchasesCart.get(i);
-                if (good.getId() == id)
-                   purchasesCart.remove(purchasesCart.get(i));
-            }
-            for (Good good : purchasesCart) {
-                System.out.println(good + "\n");
-            }
+    @Override
+    public void deleteFromPurchase(int id) {
+        purchasesCart.stream().forEach(System.out::println);
+        /*for (Good good : purchasesCart) {
+            System.out.println(good + "\n");
+        }*/
+        Good good = purchasesCart.stream().filter(s -> s.getId() == id).findFirst().get();
+        purchasesCart.remove(good);
+        /*for (int i = 0; i <= purchasesCart.size() - 1; i++) {
+            Good good = purchasesCart.get(i);
+            if (good.getId() == id)
+                purchasesCart.remove(purchasesCart.get(i));
+        }*/
+        purchasesCart.stream().forEach(System.out::println);
+        /*for (Good good : purchasesCart) {
+            System.out.println(good + "\n");
+        }*/
 
-        }
     }
+}

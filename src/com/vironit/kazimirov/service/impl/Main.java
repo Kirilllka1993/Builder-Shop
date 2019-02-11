@@ -3,6 +3,8 @@ package com.vironit.kazimirov.service.impl;
 import com.vironit.kazimirov.dao.DaoInterface.ClientDao;
 import com.vironit.kazimirov.dao.PurchaseDaoImpl;
 import com.vironit.kazimirov.entity.Good;
+import com.vironit.kazimirov.entity.Purpose;
+import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.service.ClientService;
 
 public class Main {
@@ -13,12 +15,12 @@ public class Main {
 
         //GooDao
         GoodServiceImpl goodServiceImpl1=new GoodServiceImpl();
-        //goodServiceImpl1.addGood(2.0,null, "м3",5,null,null,"Гидроизоляция",16);
-        //goodServiceImpl1.findByNameGood("Утеплитель");
+        //goodServiceImpl1.addGood(2.0,null, "м3",5,5,null,"Гидроизоляция",16);
+        //goodServiceImpl1.findByNameGood("Пеноплекс");
         //goodServiceImpl1.showAllGoods();
-        //goodServiceImpl1.findBySubsection(new Subsection(6,"Утеплитель"));
-        //goodServiceImpl1.findByPurpose(new Purpose(1,"Наружные работы"));
-        //goodServiceImpl1.deleteGood(5);
+        //goodServiceImpl1.findBySubsection(new Subsection(2,"Сухие смеси"));
+        //goodServiceImpl1.findByPurpose(new Purpose(3,"Наружные работы"));
+        //goodServiceImpl1.deleteGood(2);
         //goodServiceImpl1.updateGood(2, new Good(2, 2.0, null, "м3", 5, null, null, "Пеноплекс", 54));
 
         //Admindao
@@ -45,7 +47,7 @@ public class Main {
         ClientService clientServiceImpl=new ClientServiceImpl();
         //clientServiceImpl.addReview(3,"Есть товары и получше");
         //clientServiceImpl.removeReview(3);
-        //clientServiceImpl.signIn("Sergei", "fedorov", "sergei15", "sergei15", "Lenina street", "896564321");
+        //clientServiceImpl.signIn("Sergei", "fedorov", "andrei15", "sergei15", "Lenina street", "896564321");
         //clientServiceImpl.changeLogin(1,"avid15");
         //clientServiceImpl.changePassword(2,"166dsfs");
         //clientServiceImpl.logIn("andrei15","andrei15");
@@ -53,8 +55,8 @@ public class Main {
         //PurchaseDao
         PurchaseServiceImpl purchaseServiceImpl=new PurchaseServiceImpl();
         //purchaseServiceImpl.showPurchases();
-        //purchaseServiceImpl.addIntoPurchase(2,10);
-        purchaseServiceImpl.deleteFromPurchase(1);
+        purchaseServiceImpl.addIntoPurchase(2,35);
+        //purchaseServiceImpl.deleteFromPurchase(2);
 
 
 

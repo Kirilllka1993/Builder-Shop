@@ -42,9 +42,10 @@ public class SubsectionDaoImpl implements SubsectionDao {
 
 
     public List<Subsection> showSubsections() {
-        for (Subsection subsection : subsections) {
+        subsections.stream().forEach(System.out::println);
+        /*for (Subsection subsection : subsections) {
             System.out.println(subsection.toString());
-        }
+        }*/
         return subsections;
     }
 

@@ -37,10 +37,11 @@ public class PurposeDaoImpl implements PurposeDao {
 
     @Override
     public List<Purpose> showPurposes() {
+        purposes.stream().forEach(System.out::println);
 
-        for (Purpose purpose : purposes) {
+        /*for (Purpose purpose : purposes) {
             System.out.println(purpose.toString());
-        }
+        }*/
         return purposes;
     }
 }

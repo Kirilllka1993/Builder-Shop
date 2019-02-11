@@ -8,6 +8,7 @@ import com.vironit.kazimirov.entity.builder.Client.ClientBuilder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class AdminDaoImpl implements AdminDao {
     private List<Client> clients = new ArrayList<>();
@@ -44,8 +45,6 @@ public class AdminDaoImpl implements AdminDao {
         Purchase purchase4 = new Purchase(4, 16.9, goods, client4, null, null, "complited");
 
 
-
-
         clients.add(client1);
         clients.add(client2);
         clients.add(client3);
@@ -75,87 +74,90 @@ public class AdminDaoImpl implements AdminDao {
                 .build();
         int lastIndex = clients.size();
         try {
-            for (Client client1 : clients) {
+            if( clients.stream().anyMatch(s->s.getLogin().equals(login))==true){
+                throw new Exception();
+            }
+            /*for (Client client1 : clients) {
                 if (client.getLogin().equals(client1.getLogin())) {
                     throw new Exception();
                 }
-            }
+            }*/
             clients.add(client);
             client.setId(lastIndex + 1);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Пользователь с таким логином уже существует");
         } finally {
-            for (Client client2 : clients) {
+            clients.stream().forEach(System.out::println);
+            /*for (Client client2 : clients) {
                 System.out.println(client2 + "\n");
-            }
+            }*/
         }
     }
 
 
     @Override
     public void deleteClient(int id) {
-        for (int i = 0; i <= clients.size() - 1; i++) {
+        Client client=clients.stream().filter(s->s.getId()==id).findFirst().get();
+        clients.remove(client);
+        /*for (int i = 0; i <= clients.size() - 1; i++) {
             Client client = clients.get(i);
             if (client.getId() == id)
                 clients.remove(clients.get(i));
         }
         for (Client client : clients) {
             System.out.println(client + "\n");
-        }
+        }*/
+        clients.stream().forEach(System.out::println);
     }
 
     @Override
-    public Client searchClientByLogin(String login) {
-        Client clientName = null;
+    public Client searchClientByLogin(String login) {//искать по id
 
-        for (Client client : clients) {
+        Client clientName = clients.stream().filter(s->s.getLogin()==login).findFirst().get();
+
+       /* for (Client client : clients) {
             if (client.getLogin().equals(login)) {
                 clientName = client;
             }
-        }
+        }*/
         System.out.println(clientName);
         return clientName;
     }
 
     @Override
     public void changeDiscount(int id, double discount) {
-        goods.get(id-1).setDiscount(discount);
-        for (Good good : goods) {
-            System.out.println(good + "\n");
-        }
-
-
+        goods.get(id - 1).setDiscount(discount);
+        goods.stream().forEach(System.out::println);
     }
 
     @Override
     public List<Purchase> showAllPurchases() {
-        for (Purchase purchase : purchases) {
-            System.out.println(purchase + "\n");
-        }
+        purchases.stream().forEach(System.out::println);
         return purchases;
     }
 
     @Override
     public List<Client> showAllClient() {
-        for (Client client : clients) {
+        clients.stream().forEach(System.out::println);
+        /*for (Client client : clients) {
             System.out.println(client + "\n");
-        }
+        }*/
         return clients;
     }
 
     @Override
     public Purchase searchPurchasebyId(int id) {
-        Purchase purchaseName = null;
 
-
-        for (Purchase purchase : purchases) {
+        Purchase purchase = purchases.stream().filter(s -> s.getId() == id).findFirst().get();
+        System.out.println(purchase);
+       /* for (Purchase purchase : purchases) {
             if (purchase.getId() == (id)) {
                 purchaseName = purchase;
             }
         }
-        System.out.println(purchaseName);
-        return purchaseName;
+        System.out.println(purchaseName);*/
+        return purchase;
 
     }
 }
