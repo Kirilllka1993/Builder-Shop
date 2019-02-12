@@ -1,16 +1,13 @@
 package com.vironit.kazimirov.dao.DaoInterface;
 
-import com.vironit.kazimirov.entity.Client;
-import com.vironit.kazimirov.entity.Review;
-
-import java.util.List;
+import com.vironit.kazimirov.exception.RepeatitionException;
 
 public interface ClientDao {
     void addReview(int mark, String text);
 
     void removeReview(int id);
 
-    void logIn(String login, String password);
+    void logIn(String login, String password) throws RepeatitionException;
 
     void logOut();
 

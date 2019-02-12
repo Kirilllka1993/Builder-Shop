@@ -5,6 +5,7 @@ import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Review;
 import com.vironit.kazimirov.entity.builder.Client.ClientBuilder;
 import com.vironit.kazimirov.entity.builder.Review.ReviewBuilder;
+import com.vironit.kazimirov.exception.RepeatitionException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,9 +47,6 @@ public class ClientDaoImpl implements ClientDao {
         review.setId(lastIndex + 1);
         reviews.add(review);
         reviews.stream().forEach(System.out::println);
-       /* for (Review review1 : reviews) {
-            System.out.println(review1 + "\n");
-        }*/
     }
 
 
@@ -56,39 +54,15 @@ public class ClientDaoImpl implements ClientDao {
     public void removeReview(int id) {
         Review review = reviews.stream().filter(s -> s.getId() == id).findFirst().get();
         reviews.remove(review);
-        /*for (int i = 0; i <= reviews.size() - 1; i++) {
-            Review good = reviews.get(i);
-            if (good.getId() == id)
-                reviews.remove(reviews.get(i));
-        }
-        for (Review good : reviews) {
-            System.out.println(good + "\n");
-        }*/
         reviews.stream().forEach(System.out::println);
     }
 
     @Override
-    public void logIn(String login, String password) {
-        try {
+    public void logIn(String login, String password) throws RepeatitionException {
             if (clients.stream().anyMatch(s -> s.getLogin().equals(login) && s.getPassword().equals(password)) == false){
-                throw new Exception();
+                throw new RepeatitionException("It is doesnt't correct entered login or password");
             }
             System.out.println("Hello"+" "+login);
-
-            /*for (Client client : clients) {
-                if (login.equals(client.getLogin()) && (password.equals(client.getPassword()))) {
-                    flag = true;
-                }
-                break;
-            }
-            if (flag == false) {
-                throw new Exception();
-            }*/
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Неверно введены логин или пароль");
-        }
     }
 
     @Override
@@ -109,18 +83,12 @@ public class ClientDaoImpl implements ClientDao {
         int lastIndex = clients.size();
         try {
             if (clients.stream().anyMatch(s->s.getLogin().equals(login))==true){
-                throw new Exception();
+                throw new RepeatitionException();
             }
-            /*for (Client client1 : clients) {
-                if (client.getLogin().equals(client1.getLogin())) {
-                    throw new Exception();
-                }
-            }*/
             clients.add(client);
             client.setId(lastIndex + 1);
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Пользователь с таким логином уже существует");
+            System.err.println("Such login is using");
         } finally {
             for (Client client2 : clients) {
                 System.out.println(client2 + "\n");
@@ -132,17 +100,11 @@ public class ClientDaoImpl implements ClientDao {
     public void changeLogin(int id, String login) {
         try {
             if (clients.stream().anyMatch(s->s.getLogin().equals(login))==true){
-                throw new Exception();
+                throw new RepeatitionException();
             }
-           /* for (Client client : clients) {
-                if (login.equals(client.getLogin())) {
-                    throw new Exception();
-                }
-            }*/
             clients.get(id - 1).setLogin(login);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Пользователь с таким логином уже существует");
+        } catch (RepeatitionException e) {
+            System.err.println("Such login is using");
         } finally {
             for (Client client2 : clients) {
                 System.out.println(client2 + "\n");
@@ -154,8 +116,5 @@ public class ClientDaoImpl implements ClientDao {
     public void changePassword(int id, String password) {
         clients.get(id - 1).setPassword(password);
         clients.stream().forEach(System.out::println);
-       /* for (Client client2 : clients) {
-            System.out.println(client2 + "\n");
-        }*/
     }
 }

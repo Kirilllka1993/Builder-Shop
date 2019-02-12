@@ -3,12 +3,14 @@ package com.vironit.kazimirov.dao;
 import com.vironit.kazimirov.dao.DaoInterface.AdminDao;
 import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.entity.builder.Client.ClientBuilder;
+import com.vironit.kazimirov.exception.ClientNotFoundException;
+import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 public class AdminDaoImpl implements AdminDao {
     private List<Client> clients = new ArrayList<>();
@@ -63,7 +65,7 @@ public class AdminDaoImpl implements AdminDao {
 
 
     @Override
-    public void addClient(String name, String surname, String login, String password, String adress, String phoneNumber) {
+    public void addClient(String name, String surname, String login, String password, String adress, String phoneNumber) throws RepeatitionException {
         ClientBuilder clientBuilder = new ClientBuilder();
         Client client = clientBuilder.withName(name)
                 .withSurname(surname)
@@ -73,54 +75,32 @@ public class AdminDaoImpl implements AdminDao {
                 .withPhoneNumber(phoneNumber)
                 .build();
         int lastIndex = clients.size();
-        try {
-            if( clients.stream().anyMatch(s->s.getLogin().equals(login))==true){
-                throw new Exception();
-            }
-            /*for (Client client1 : clients) {
-                if (client.getLogin().equals(client1.getLogin())) {
-                    throw new Exception();
-                }
-            }*/
-            clients.add(client);
-            client.setId(lastIndex + 1);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Пользователь с таким логином уже существует");
-        } finally {
-            clients.stream().forEach(System.out::println);
-            /*for (Client client2 : clients) {
-                System.out.println(client2 + "\n");
-            }*/
+        if (clients.stream().anyMatch(s -> s.getLogin().equals(login))) {
+            throw new RepeatitionException();
         }
+        clients.add(client);
+        client.setId(lastIndex + 1);
+
     }
 
 
     @Override
     public void deleteClient(int id) {
-        Client client=clients.stream().filter(s->s.getId()==id).findFirst().get();
+        Client client = clients.stream().filter(s -> s.getId() == id).findFirst().get();
         clients.remove(client);
-        /*for (int i = 0; i <= clients.size() - 1; i++) {
-            Client client = clients.get(i);
-            if (client.getId() == id)
-                clients.remove(clients.get(i));
-        }
-        for (Client client : clients) {
-            System.out.println(client + "\n");
-        }*/
         clients.stream().forEach(System.out::println);
     }
 
     @Override
-    public Client searchClientByLogin(String login) {//искать по id
+    public Client searchClientByLogin(String login) throws ClientNotFoundException {//искать по id
+        Client clientName = clients.stream().filter(s -> s.getLogin() == login).findFirst().orElseThrow(() -> new ClientNotFoundException("Such login is absent"));
+        System.out.println(clientName);
+        return clientName;
+    }
 
-        Client clientName = clients.stream().filter(s->s.getLogin()==login).findFirst().get();
-
-       /* for (Client client : clients) {
-            if (client.getLogin().equals(login)) {
-                clientName = client;
-            }
-        }*/
+    @Override
+    public Client searchClientById(int id) throws ClientNotFoundException {
+        Client clientName = clients.stream().filter(s -> s.getId() == id).findFirst().orElseThrow(() -> new ClientNotFoundException("Such id is absent"));
         System.out.println(clientName);
         return clientName;
     }
@@ -140,23 +120,22 @@ public class AdminDaoImpl implements AdminDao {
     @Override
     public List<Client> showAllClient() {
         clients.stream().forEach(System.out::println);
-        /*for (Client client : clients) {
-            System.out.println(client + "\n");
-        }*/
         return clients;
     }
 
     @Override
-    public Purchase searchPurchasebyId(int id) {
+    public Purchase searchPurchasebyId(int id) throws PurchaseNotFoundException {
 
-        Purchase purchase = purchases.stream().filter(s -> s.getId() == id).findFirst().get();
+        Purchase purchase = null;
+        try {
+            purchase = purchases.stream().filter(s -> s.getId() == id).findFirst().get();
+            System.out.println(purchase);
+        } catch (NoSuchElementException e) {
+            throw new PurchaseNotFoundException("This purchase is absent in base", e.getCause());
+        }/* catch (PurchaseNotFoundException ex) {//Не работает
+            System.err.println(ex.getCause().getMessage());
+        }*/
         System.out.println(purchase);
-       /* for (Purchase purchase : purchases) {
-            if (purchase.getId() == (id)) {
-                purchaseName = purchase;
-            }
-        }
-        System.out.println(purchaseName);*/
         return purchase;
 
     }

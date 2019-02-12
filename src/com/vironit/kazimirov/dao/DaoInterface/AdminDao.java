@@ -1,17 +1,21 @@
 package com.vironit.kazimirov.dao.DaoInterface;
 
 import com.vironit.kazimirov.entity.Client;
-import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purchase;
+import com.vironit.kazimirov.exception.ClientNotFoundException;
+import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 
 import java.util.List;
 
 public interface AdminDao {
-    void addClient(String name, String surname, String login, String password, String adress, String phoneNumber);
+    void addClient(String name, String surname, String login, String password, String adress, String phoneNumber) throws RepeatitionException;
 
     void deleteClient(int id);
 
-    Client searchClientByLogin(String login);
+    Client searchClientByLogin(String login) throws ClientNotFoundException;
+
+    Client searchClientById(int id) throws ClientNotFoundException;
 
     void changeDiscount(int id, double discount);
 
@@ -19,5 +23,5 @@ public interface AdminDao {
 
     List<Client> showAllClient();
 
-    Purchase searchPurchasebyId(int id);
+    Purchase searchPurchasebyId(int id) throws PurchaseNotFoundException;
 }

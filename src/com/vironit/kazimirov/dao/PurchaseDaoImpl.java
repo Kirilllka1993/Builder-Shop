@@ -2,9 +2,14 @@ package com.vironit.kazimirov.dao;
 
 import com.vironit.kazimirov.dao.DaoInterface.PurchaseDao;
 import com.vironit.kazimirov.entity.*;
+import com.vironit.kazimirov.entity.builder.Purchase.PurchaseBuilder;
+import com.vironit.kazimirov.exception.PurchaseNotFoundException;
+import com.vironit.kazimirov.exception.RepeatitionException;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PurchaseDaoImpl implements PurchaseDao {
     private List<Purchase> purchases = new ArrayList<>();
@@ -25,6 +30,8 @@ public class PurchaseDaoImpl implements PurchaseDao {
         Subsection subsection3 = new Subsection(3, "Лакокрасочные покрытия");
         Subsection subsection4 = new Subsection(4, "Гидроизоляционные материалы");
 
+        LocalDateTime localDateTime1 = LocalDateTime.parse("15/11/1999");
+
         Client client1 = new Client(1, "Andrei", "Stelmach", "andrei15", "andrei15", "Majkovski street", "1225689");
         Client client2 = new Client(2, "Kirill", "Kazimirov", "kirill12", "kirill12", "Suharevska street", "56689635");
         Client client3 = new Client(3, "Dem'an", "Gurski", "gurski93", "gurski93", "Odoevskogo street", "2568974");
@@ -35,7 +42,7 @@ public class PurchaseDaoImpl implements PurchaseDao {
         Good good3 = new Good(3, 2.0, subsection3, "м3", 5, 6, purpose3, "Краска для дерева", 15);
         Good good4 = new Good(4, 2.0, subsection4, "м3", 5, 0, purpose4, "Техноэласт", 18);
 
-        Purchase purchase1 = new Purchase(1, 16.6, goods, client1, null, null, "complited");
+        Purchase purchase1 = new Purchase(1, 16.6, goods, client1, localDateTime1, null, "complited");
         Purchase purchase2 = new Purchase(2, 18.0, goods, client2, null, null, "complited");
         Purchase purchase3 = new Purchase(3, 20.0, goods, client3, null, null, "complited");
         Purchase purchase4 = new Purchase(4, 16.9, goods, client4, null, null, "complited");
@@ -65,9 +72,6 @@ public class PurchaseDaoImpl implements PurchaseDao {
     @Override
     public List<Purchase> showPurchases() {
         purchases.stream().forEach(System.out::println);
-        /*for (Purchase purchase : purchases) {
-            System.out.println(purchase + "\n");
-        }*/
         return purchases;
     }
 
@@ -76,9 +80,21 @@ public class PurchaseDaoImpl implements PurchaseDao {
 
     }
 
-    @Override
-    public void makeAPurchase() {
 
+    @Override
+    public Purchase makeAPurchase(List<Good> goods, Client client, LocalDateTime registration, LocalDateTime purchase1, String status) {
+        double sum = goods.stream().mapToDouble(s -> s.getPrice() * s.getAmount()).sum();
+        System.out.println(sum);
+        PurchaseBuilder purchaseBuilder = new PurchaseBuilder();
+        Purchase purchase = purchaseBuilder.withGoods(goods)
+                .withClient(client)
+                .withRegistration(registration)
+                .withPurchase(purchase1)
+                .withCost(sum)
+                .withStatus(status)
+                .build();
+        System.out.println(purchase);
+        return purchase;
     }
 
     @Override
@@ -86,7 +102,7 @@ public class PurchaseDaoImpl implements PurchaseDao {
         try {
             //Good goodFromList = goods.stream().filter(x->x.getId()==id).filter(x->x.getAmount()>=amount).findAny().orElseThrow(Exception::new);
             if (goods.get(id - 1).getAmount() < amount) {
-                throw new Exception();
+                throw new RepeatitionException();
             }
             int oldAmount = goods.get(id - 1).getAmount();
             Good good = new Good();
@@ -103,9 +119,10 @@ public class PurchaseDaoImpl implements PurchaseDao {
             purchasesCart.add(good);
             int newAmount = oldAmount - amount;
             goods.get(id - 1).setAmount(newAmount);
-        } catch (Exception e) {
+
+        } catch (RepeatitionException e) {
             e.printStackTrace();
-            System.out.println("Товар в количестве указанный Вами отсутствует на складе. На складе в остатке осталось" + " " + goods.get(id - 1).getAmount());
+            System.err.println("The amount of this good in the store is" + " " + goods.get(id - 1).getAmount());
         } finally {
             System.out.println("Оставшиеся товары");
             goods.stream().forEach(System.out::println);
@@ -119,20 +136,20 @@ public class PurchaseDaoImpl implements PurchaseDao {
     @Override
     public void deleteFromPurchase(int id) {
         purchasesCart.stream().forEach(System.out::println);
-        /*for (Good good : purchasesCart) {
-            System.out.println(good + "\n");
-        }*/
         Good good = purchasesCart.stream().filter(s -> s.getId() == id).findFirst().get();
         purchasesCart.remove(good);
-        /*for (int i = 0; i <= purchasesCart.size() - 1; i++) {
-            Good good = purchasesCart.get(i);
-            if (good.getId() == id)
-                purchasesCart.remove(purchasesCart.get(i));
-        }*/
         purchasesCart.stream().forEach(System.out::println);
-        /*for (Good good : purchasesCart) {
-            System.out.println(good + "\n");
-        }*/
+    }
 
+    @Override
+    public List<Purchase> searchPurchasesByDate(LocalDateTime localDateTime) throws PurchaseNotFoundException {//нужно проверить, не могу ввести даты
+        List<Purchase> purchasesByDate;
+        if (purchases.stream().anyMatch(s -> (s.getPurchase().equals(localDateTime))) == false) {
+            throw new PurchaseNotFoundException();
+        } else {
+            purchasesByDate = purchases.stream().filter(s -> (s.getPurchase().equals(localDateTime))).collect(Collectors.toList());
+        }
+        purchasesByDate.stream().forEach(System.out::println);
+        return purchasesByDate;
     }
 }

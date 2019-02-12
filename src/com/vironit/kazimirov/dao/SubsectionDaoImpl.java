@@ -4,6 +4,7 @@ import com.vironit.kazimirov.dao.DaoInterface.SubsectionDao;
 import com.vironit.kazimirov.entity.Subsection;
 
 import com.vironit.kazimirov.entity.builder.Subsection.SubsectionBuilder;
+import com.vironit.kazimirov.exception.RepeatitionException;
 
 
 import java.util.ArrayList;
@@ -33,11 +34,20 @@ public class SubsectionDaoImpl implements SubsectionDao {
         Subsection subsection = subsectionBuilder.withId(id)
                 .withTitle(title)
                 .build();
-        subsections.add(subsection);
-        System.out.println(subsection.getId() + " " + subsection.getTitle());
-        for (Subsection subsection1 : subsections) {
-            System.out.println(subsection1.toString());
+        try {
+            if( subsections.stream().anyMatch(s->s.getTitle().equals(title)&& s.getId()==id)==true){
+                throw new RepeatitionException();
+            }
+            subsections.add(subsection);
+            System.out.println(subsection.getId() + " " + subsection.getTitle());
+            }catch (RepeatitionException e) {
+                System.err.println("Such subsection is exist");
+            } finally {
+            for (Subsection subsection1 : subsections) {
+                System.out.println(subsection1.toString());
+            }
         }
+
     }
 
 

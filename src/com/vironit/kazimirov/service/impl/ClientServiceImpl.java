@@ -2,12 +2,8 @@ package com.vironit.kazimirov.service.impl;
 
 import com.vironit.kazimirov.dao.ClientDaoImpl;
 import com.vironit.kazimirov.dao.DaoInterface.ClientDao;
-import com.vironit.kazimirov.entity.Client;
-import com.vironit.kazimirov.entity.Good;
-import com.vironit.kazimirov.entity.Review;
+import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.ClientService;
-
-import java.util.List;
 
 public class ClientServiceImpl implements ClientService {
     @Override
@@ -25,7 +21,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void logIn(String login, String password) {
+    public void logIn(String login, String password) throws RepeatitionException {
         ClientDao clientDao = new ClientDaoImpl();
         clientDao.logIn(login,password);
 

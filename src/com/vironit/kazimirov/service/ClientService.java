@@ -1,10 +1,6 @@
 package com.vironit.kazimirov.service;
 
-import com.vironit.kazimirov.entity.Client;
-import com.vironit.kazimirov.entity.Good;
-import com.vironit.kazimirov.entity.Review;
-
-import java.util.List;
+import com.vironit.kazimirov.exception.RepeatitionException;
 
 public interface ClientService {
 
@@ -12,7 +8,7 @@ public interface ClientService {
 
     void removeReview(int id);
 
-    void logIn(String login, String password);
+    void logIn(String login, String password) throws RepeatitionException;
 
     void logOut();
 
