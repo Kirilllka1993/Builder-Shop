@@ -1,4 +1,5 @@
 import com.vironit.kazimirov.entity.*;
+import com.vironit.kazimirov.entity.builder.Client.ClientBuilder;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
@@ -6,6 +7,7 @@ import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.impl.AdminServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -17,8 +19,8 @@ public class AdminTest {
 
 
     AdminService adminServiceImpl = new AdminServiceImpl();
-    List<Client> clients = new ArrayList<>();
     private List<Good> goods = new ArrayList<>();
+
 
     Client client1 = new Client(1, "Andrei", "Stelmach", "andrei15", "andrei15", "Majkovski street", "1225689");
     Client client2 = new Client(2, "Kirill", "Kazimirov", "kirill12", "kirill12", "Suharevska street", "56689635");
@@ -46,49 +48,86 @@ public class AdminTest {
     Purchase purchase3 = new Purchase(3, 20.0, goods, client3, null, null, "complited");
     Purchase purchase4 = new Purchase(4, 16.9, goods, client4, null, null, "complited");
 
+    Client clientBeforeForExceptionTest = null;
+    List<Client> clientsBeforeTest = null;
+    Client clientBeforeTest = null;
+
+
+    @Before
+    public void createClientForException() {
+        ClientBuilder clientBuilder = new ClientBuilder();
+        clientBeforeForExceptionTest = clientBuilder.withName("Andrei")
+                .withSurname("Stelmach")
+                .withLogin("andrei15")
+                .withPassword("andrei15")
+                .withAdress("Majkovski street")
+                .withPhoneNumber("1225689")
+                .build();
+
+        ClientBuilder clientBuilder1 = new ClientBuilder();
+        clientBeforeTest = clientBuilder1.withName("Artem")
+                .withSurname("Pupkin")
+                .withLogin("artem15")
+                .withPassword("artem15")
+                .withAdress("Nezavisimosti street")
+                .withPhoneNumber("5632398")
+                .build();
+
+        clientsBeforeTest = new ArrayList<>();
+        clientsBeforeTest.add(client1);
+        clientsBeforeTest.add(client2);
+        clientsBeforeTest.add(client3);
+        clientsBeforeTest.add(client4);
+
+    }
+
 
     @Test
-    public void searchClientByIdTest() throws ClientNotFoundException {
-        Client client = adminServiceImpl.searchClientById(1);
+    public void findClientByIdTest() throws ClientNotFoundException {
+        Client client = adminServiceImpl.findClientById(1);
         Client expClient = new Client(1, "Andrei", "Stelmach", "andrei15", "andrei15", "Majkovski street", "1225689");
         assertEquals(expClient, client);
     }
 
     @Test(expected = ClientNotFoundException.class)
-    public void searchClientByIdExceptionTest() throws ClientNotFoundException {
-        adminServiceImpl.searchClientById(9);
+    public void findClientByIdExceptionTest() throws ClientNotFoundException {
+        adminServiceImpl.findClientById(9);
+    }
+
+    @Test
+    public void addClient() throws RepeatitionException {
+        List<Client> actualClients = adminServiceImpl.addClient(clientBeforeTest);
+        clientsBeforeTest.add(clientBeforeTest);
+        assertEquals(clientsBeforeTest, actualClients);
+
     }
 
     @Test(expected = RepeatitionException.class)
     public void addClientException() throws RepeatitionException {
-        adminServiceImpl.addClient("Sergei", "fedorov", "andrei15", "sergei15", "Lenina street", "896564321");
+        adminServiceImpl.addClient(clientBeforeForExceptionTest);
     }
 
     @Test
     public void deleteClientTest() {
-
-        List<Client> clients1 = new ArrayList<>();
-        clients1.add(client2);
-        clients1.add(client3);
-        clients1.add(client4);
-        clients = adminServiceImpl.deleteClient(1);
-        assertEquals(clients1, clients);
+        clientsBeforeTest.remove(client1);
+        List <Client> clients = adminServiceImpl.deleteClient(1);
+        assertEquals(clientsBeforeTest, clients);
     }
 
     @Test
-    public void searchClientByLoginTest() throws ClientNotFoundException {
-        Client client = adminServiceImpl.searchClientByLogin("andrei15");
+    public void findClientByLoginTest() throws ClientNotFoundException {
+        Client client = adminServiceImpl.findClientByLogin("andrei15");
         assertEquals(client1, client);
     }
 
     @Test(expected = ClientNotFoundException.class)
-    public void searchClientByLoginExceptionTest() throws ClientNotFoundException {
-        adminServiceImpl.searchClientByLogin("andrei18");
+    public void findClientByLoginExceptionTest() throws ClientNotFoundException {
+        adminServiceImpl.findClientByLogin("andrei18");
     }
 
     @Test
-    public void searchPurchaseByIdTest() throws PurchaseNotFoundException {
-        Purchase purchase = adminServiceImpl.searchPurchasebyId(1);
+    public void findPurchaseByIdTest() throws PurchaseNotFoundException {
+        Purchase purchase = adminServiceImpl.findPurchasebyId(1);
         goods.add(good1);
         goods.add(good2);
         goods.add(good3);
@@ -98,8 +137,8 @@ public class AdminTest {
     }
 
     @Test(expected = PurchaseNotFoundException.class)
-    public void searchPurchaseByIdExceptionTest() throws PurchaseNotFoundException {
-        adminServiceImpl.searchPurchasebyId(6);
+    public void findPurchaseByIdExceptionTest() throws PurchaseNotFoundException {
+        adminServiceImpl.findPurchasebyId(6);
     }
 
 }

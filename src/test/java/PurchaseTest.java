@@ -81,7 +81,7 @@ public class PurchaseTest {
     }
 
     @Test
-    public void searchPurchasesByDateTest() throws PurchaseNotFoundException {
+    public void findPurchasesByDateTest() throws PurchaseNotFoundException {
         List<Purchase> purchases = new ArrayList<>();
         List<Purchase> expPurchases = new ArrayList<>();
         List<Good> goods = new ArrayList<>();
@@ -90,13 +90,13 @@ public class PurchaseTest {
         goods.add(good3);
         goods.add(good4);
         Purchase purchase1 = new Purchase(1, 16.6, goods, client1, localDateTime1, localDateTime1, "complited");
-        purchaseService.searchPurchasesByDate(localDateTime1);
+        purchaseService.findPurchasesByDate(localDateTime1);
         assertEquals(expPurchases, purchases);
     }
 
     @Test(expected = PurchaseNotFoundException.class)
-    public void searchPurchasesByDateExceptionTest() throws PurchaseNotFoundException {
+    public void findPurchasesByDateExceptionTest() throws PurchaseNotFoundException {
         LocalDateTime localDateTime5 = LocalDateTime.of(2010, Month.JULY, 16, 12, 8);
-        purchaseService.searchPurchasesByDate(localDateTime5);
+        purchaseService.findPurchasesByDate(localDateTime5);
     }
 }
