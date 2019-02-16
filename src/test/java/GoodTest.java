@@ -39,7 +39,8 @@ public class GoodTest {
 
     Good goodBeforeTest = null;
     Good goodBeforeExceptionTest = null;
-    List<Good> goodsBeforeTest = new ArrayList<>();
+    List<Good> goods=new ArrayList<>();
+
 
     @Before
     public void createGood() {
@@ -53,7 +54,11 @@ public class GoodTest {
                 .withName("Пеноплекс")
                 .withAmount(15)
                 .build();
+    }
 
+    @Before
+    public void createGoodException() {
+        GoodBuilder GoodBuilder = new GoodBuilder();
         goodBeforeExceptionTest = GoodBuilder.withCost(6)
                 .withSubsection(subsection1)
                 .withUnit("м3")
@@ -63,21 +68,13 @@ public class GoodTest {
                 .withName("Пеноплекс")
                 .withAmount(15)
                 .build();
-
-        goodsBeforeTest.add(good1);
-        goodsBeforeTest.add(good2);
-        goodsBeforeTest.add(good3);
-        goodsBeforeTest.add(good4);
-
-
     }
 
     @Test
     public void addGoodTest() throws GoodException {
-        //goodsBeforeTest.add(goodBeforeTest);
+
         goodService.addGood(goodBeforeTest);
         List<Good> missingGoods = goodService.findAllGoods();
-        //assertEquals(goodsBeforeTest, missingGoods);
         List<Good> findGoodsById;
         findGoodsById = missingGoods.stream().filter(good -> good.getId() != goodBeforeTest.getId()).collect(Collectors.toList());
         missingGoods.removeAll(findGoodsById);
@@ -87,13 +84,22 @@ public class GoodTest {
 
     @Test(expected = GoodException.class)
     public void addGoodExceptionTest() throws GoodException {
-        goodService.addGood(goodBeforeTest);
+        goodService.addGood(goodBeforeExceptionTest);
+    }
+
+    @Test
+    public void findAllGoodsTest(){
+        goods.add(good1);
+        goods.add(good2);
+        goods.add(good3);
+        goods.add(good4);
+        List<Good> actualGoods=goodService.findAllGoods();
+        assertEquals(goods,actualGoods);
     }
 
     @Test
     public void findByNameTest() throws GoodException {
-        //Good expGood = goodService.findByNameGood("Пеноплекс");
-        //assertEquals(expGood, good1);
+
         Good findGoodByName = goodService.findByNameGood("Пеноплекс");
         Assert.assertTrue(findGoodByName.getName().equals("Пеноплекс"));
         List<Good> missingGoods = goodService.findAllGoods();
@@ -162,16 +168,16 @@ public class GoodTest {
     public void updateTest() {
         goodService.updateGood(2, goodBeforeTest);
         List<Good> allGoods = goodService.findAllGoods();
-        Good actualGood=allGoods.get(1);
+        Good actualGood = allGoods.get(1);
         assertEquals(goodBeforeTest, actualGood);
     }
 
     @Test
-    public void findGoodByPriceTest(){
-        List<Good> allGoods=goodService.findAllGoods();
-        List<Good> goodsByPrize=goodService.findGoodsByPrice(0,2);
-        List<Good> missingGoods=allGoods.stream().filter(s ->s.getPrice()<=2&&s.getPrice()>=0).collect(Collectors.toList());
-        assertEquals(goodsByPrize,missingGoods);
+    public void findGoodByPriceTest() {
+        List<Good> allGoods = goodService.findAllGoods();
+        List<Good> goodsByPrize = goodService.findGoodsByPrice(0, 2);
+        List<Good> missingGoods = allGoods.stream().filter(s -> s.getPrice() <= 2 && s.getPrice() >= 0).collect(Collectors.toList());
+        assertEquals(goodsByPrize, missingGoods);
     }
 
 }

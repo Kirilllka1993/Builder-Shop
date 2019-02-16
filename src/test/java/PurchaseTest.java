@@ -1,16 +1,20 @@
 import com.vironit.kazimirov.dao.DaoInterface.PurchaseDao;
 import com.vironit.kazimirov.entity.*;
+import com.vironit.kazimirov.entity.builder.Purchase.PurchaseBuilder;
 import com.vironit.kazimirov.exception.PurchaseException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.PurchaseService;
 import com.vironit.kazimirov.service.impl.PurchaseServiceImpl;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -27,32 +31,57 @@ public class PurchaseTest {
     Subsection subsection3 = new Subsection(3, "Лакокрасочные покрытия");
     Subsection subsection4 = new Subsection(4, "Гидроизоляционные материалы");
 
-    Good good1 = new Good(1, 2.0, subsection1, "м3", 5, 0, purpose1, "Пеноплекс", 54);
-    Good good2 = new Good(2, 2.0, subsection2, "м3", 5, 1, purpose2, "Шпатлевка", 36);
-    Good good3 = new Good(3, 2.0, subsection3, "м3", 5, 1, purpose3, "Краска для дерева", 15);
-    Good good4 = new Good(4, 2.0, subsection4, "м3", 5, 0, purpose4, "Техноэласт", 18);
-
     LocalDateTime localDateTime1 = LocalDateTime.of(2019, Month.FEBRUARY, 14, 12, 56);
     LocalDateTime localDateTime2 = LocalDateTime.of(2019, Month.AUGUST, 20, 20, 55);
     LocalDateTime localDateTime3 = LocalDateTime.of(2018, Month.JANUARY, 15, 02, 56);
     LocalDateTime localDateTime4 = LocalDateTime.of(2017, Month.JULY, 14, 12, 8);
+
 
     Client client1 = new Client(1, "Andrei", "Stelmach", "andrei15", "andrei15", "Majkovski street", "1225689");
     Client client2 = new Client(2, "Kirill", "Kazimirov", "kirill12", "kirill12", "Suharevska street", "56689635");
     Client client3 = new Client(3, "Dem'an", "Gurski", "gurski93", "gurski93", "Odoevskogo street", "2568974");
     Client client4 = new Client(4, "David", "Bekcham", "david15", "david15", "Angarskaja street", "111222333");
 
+    Good good1 = new Good(1, 2.0, subsection1, "м3", 5, 0, purpose1, "Пеноплекс", 54);
+    Good good2 = new Good(2, 2.0, subsection2, "м3", 5, 1, purpose2, "Шпатлевка", 36);
+    Good good3 = new Good(3, 2.0, subsection3, "м3", 5, 1, purpose3, "Краска для дерева", 15);
+    Good good4 = new Good(4, 2.0, subsection4, "м3", 5, 0, purpose4, "Техноэласт", 18);
 
-    @Test
-    public void makeAPurchaseTest() throws PurchaseException {
-        List<Good> goods = new ArrayList<>();
+    List<Good> goods = new ArrayList<>();
+    Purchase purchaseBeforeTest = null;
+
+    @Before
+    public void createPurchase() {
+
+        /*List<Good> goodsOfPurchase=new ArrayList<>();
+        goodsOfPurchase=purchase.getGoods();*/
+
+
         goods.add(good1);
         goods.add(good2);
         goods.add(good3);
         goods.add(good4);
-        Purchase purchase = purchaseService.makeAPurchase(goods, client1, localDateTime1, localDateTime1, "Оформлен");
-        Purchase purchase1 = new Purchase(6, 195, goods, client1, localDateTime1, localDateTime1, "Оформлен");
-        assertEquals(purchase, purchase1);
+        double sum = goods.stream().mapToDouble(s -> (s.getPrice() * s.getAmount() - s.getDiscount() * s.getAmount())).sum();
+
+        PurchaseBuilder purchaseBuilder = new PurchaseBuilder();
+        purchaseBeforeTest = purchaseBuilder.withGoods(goods)
+                .withClient(client1)
+                .withRegistration(localDateTime1)
+                .withPurchase(localDateTime1)
+                .withCost(sum)
+                .withStatus("Оформлен")
+                .build();
+    }
+
+
+    @Test
+    public void makeAPurchaseTest() throws PurchaseException {
+        purchaseService.makeAPurchase(purchaseBeforeTest);
+        List<Purchase> missingPurchases = purchaseService.findPurchases();
+        List<Purchase> findPurchaseById;
+        findPurchaseById = missingPurchases.stream().filter(purchase -> purchase.getId() != purchaseBeforeTest.getId()).collect(Collectors.toList());
+        missingPurchases.removeAll(findPurchaseById);
+        Assert.assertTrue(missingPurchases.stream().allMatch(purchase -> purchase.getId() == purchaseBeforeTest.getId()));
     }
 
     @Test
@@ -72,26 +101,18 @@ public class PurchaseTest {
 
     @Test(expected = PurchaseException.class)
     public void deleteFromPurchaseTest() throws PurchaseException {
-        List<Good> goods = new ArrayList<>();
-        goods.add(good1);
-        goods.add(good2);
-        goods.add(good3);
-        goods.add(good4);
         purchaseService.deleteFromPurchase(6);
+
     }
 
     @Test
     public void findPurchasesByDateTest() throws PurchaseNotFoundException {
-        List<Purchase> purchases = new ArrayList<>();
-        List<Purchase> expPurchases = new ArrayList<>();
-        List<Good> goods = new ArrayList<>();
-        goods.add(good1);
-        goods.add(good2);
-        goods.add(good3);
-        goods.add(good4);
-        Purchase purchase1 = new Purchase(1, 16.6, goods, client1, localDateTime1, localDateTime1, "complited");
-        purchaseService.findPurchasesByDate(localDateTime1);
-        assertEquals(expPurchases, purchases);
+        List<Purchase> purchasesByDate = purchaseService.findPurchasesByDate(localDateTime1);
+        List<Purchase> missingPurchases = purchaseService.findPurchases();
+        List<Purchase> findPurchaseByDate = missingPurchases.stream().filter(purchase -> purchase.getPurchase().equals(localDateTime1)).collect(Collectors.toList());
+        missingPurchases.removeAll(findPurchaseByDate);
+        Assert.assertTrue(missingPurchases.stream().noneMatch(purchase -> purchase.getPurchase().equals(localDateTime1)));
+        assertEquals(purchasesByDate, findPurchaseByDate);
     }
 
     @Test(expected = PurchaseNotFoundException.class)
