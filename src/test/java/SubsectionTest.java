@@ -1,5 +1,4 @@
-import com.vironit.kazimirov.dao.DaoInterface.SubsectionDao;
-import com.vironit.kazimirov.dao.SubsectionDaoImpl;
+
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.entity.builder.Subsection.SubsectionBuilder;
 import com.vironit.kazimirov.exception.RepeatitionException;
@@ -9,7 +8,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
