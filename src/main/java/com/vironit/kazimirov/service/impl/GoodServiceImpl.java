@@ -1,0 +1,67 @@
+package com.vironit.kazimirov.service.impl;
+
+import com.vironit.kazimirov.dao.DaoInterface.GoodDao;
+import com.vironit.kazimirov.dao.GoodDaoImpl;
+import com.vironit.kazimirov.entity.Good;
+import com.vironit.kazimirov.entity.Purpose;
+import com.vironit.kazimirov.entity.Subsection;
+import com.vironit.kazimirov.exception.GoodException;
+import com.vironit.kazimirov.service.GoodService;
+
+import java.util.List;
+
+public class GoodServiceImpl implements GoodService,Runnable {
+    private GoodDao goodDao;
+
+    public GoodServiceImpl() {
+        goodDao = new GoodDaoImpl();
+    }
+
+
+    @Override
+    public void addGood(Good good) throws GoodException {//Good good
+        goodDao.addGood(good);
+    }
+
+    @Override
+    public Good findByNameGood(String name) throws GoodException {
+        return goodDao.findByNameGood(name);
+    }
+
+    @Override
+    public List<Good> findAllGoods() {
+        return goodDao.findAllGoods();
+    }
+
+    @Override
+    public List<Good> findBySubsection(Subsection subsection) throws GoodException {
+        return goodDao.findBySubsection(subsection);
+    }
+
+    @Override
+    public List<Good> findByPurpose(Purpose purpose) throws GoodException {
+        return goodDao.findByPurpose(purpose);
+    }
+
+    @Override
+    public void deleteGood(int id) throws GoodException {
+        goodDao.deleteGood(id);
+    }
+
+    @Override
+    public Good updateGood(int id, Good good) {
+        return goodDao.updateGood(id, good);
+
+    }
+
+    @Override
+    public List<Good> findGoodsByPrice(double minPrice, double maxPrice)  {
+        return goodDao.findGoodsByPrice(minPrice, maxPrice);
+    }
+
+    @Override
+    public void run() {
+        System.out.println(Thread.currentThread().getName());
+        goodDao.findAllGoods();
+    }
+}

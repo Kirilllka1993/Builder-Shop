@@ -1,0 +1,82 @@
+package com.vironit.kazimirov.service.impl;
+
+import com.vironit.kazimirov.dao.ClientDaoImpl;
+import com.vironit.kazimirov.dao.DaoInterface.ClientDao;
+import com.vironit.kazimirov.entity.Client;
+import com.vironit.kazimirov.entity.Review;
+import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.service.ClientService;
+
+import java.util.List;
+
+public class ClientServiceImpl implements ClientService {
+
+    private ClientDao clientDao;
+
+    public ClientServiceImpl() {
+        clientDao = new ClientDaoImpl();
+    }
+
+    @Override
+    public void addReview(Review review) {
+        clientDao.addReview(review);
+
+    }
+
+    @Override
+    public void removeReview(int id, Client client) {
+        clientDao.removeReview(id,client);
+
+    }
+
+    @Override
+    public void logIn(String login, String password) throws RepeatitionException {
+        clientDao.logIn(login, password);
+
+    }
+
+
+    @Override
+    public void logOut() {// это не в дао
+
+    }
+
+    @Override
+    public void signIn(Client client) throws RepeatitionException {
+        clientDao.signIn(client);
+
+    }
+
+    @Override
+    public void changeLogin(int id, String login) throws RepeatitionException {
+        clientDao.changeLogin(id, login);
+
+    }
+
+    @Override
+    public void changePassword(int id, String password) {
+        clientDao.changePassword(id, password);
+
+    }
+
+    @Override
+    public void changePhoneNumber(int id, String phoneNumber) {
+        clientDao.changePhoneNumber(id, phoneNumber);
+    }
+
+    @Override
+    public void changeAdress(int id, String adress) {
+        clientDao.changeAdress(id, adress);
+
+    }
+
+    @Override
+    public List<Client> findAllClients() {
+        return clientDao.findAllClients();
+    }
+
+    @Override
+    public List<Review> findAllReviews(Client client) {
+        return clientDao.findAllReviews(client);
+    }
+}
