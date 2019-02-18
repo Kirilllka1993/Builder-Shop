@@ -53,4 +53,9 @@ public class PurchaseServiceImpl implements PurchaseService {
     public List<Purchase> findPurchasesByDate(LocalDateTime localDateTime) throws PurchaseNotFoundException {
         return purchaseDao.findPurchasesByDate(localDateTime);
     }
+
+    @Override
+    public List<Good> findGoods() {
+        return purchaseDao.findGoods();
+    }
 }

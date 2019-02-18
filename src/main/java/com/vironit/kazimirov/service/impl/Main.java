@@ -19,6 +19,9 @@ import java.util.List;
 import com.vironit.kazimirov.service.GoodService;
 import com.vironit.kazimirov.service.PurposeService;
 import com.vironit.kazimirov.service.SubsectionService;
+import com.vironit.kazimirov.threads.GoodThread;
+import com.vironit.kazimirov.threads.PurposeThread;
+import com.vironit.kazimirov.threads.SubsectionThread;
 import org.apache.log4j.Logger;
 
 public class Main extends Thread {
@@ -76,24 +79,24 @@ public class Main extends Thread {
         purchases.add(purchase4);
 
 
-        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+       /* BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         String command = bf.readLine();
         System.out.println(Thread.currentThread().getName());
         switch (command) {
             case "Show Subsections":
-                SubsectionServiceImpl subsectionServiceImpl = new SubsectionServiceImpl();
-                subsectionServiceImpl.start();
+                SubsectionThread subsectionThread = new SubsectionThread();
+                subsectionThread.start();
                 break;
             case "Show Purposes":
-                PurposeServiceImpl purposeServiceImpl = new PurposeServiceImpl();
-                purposeServiceImpl.start();
+                PurposeThread purposeThread = new PurposeThread();
+                purposeThread.start();
                 break;
             default:
-                GoodServiceImpl goodServiceImpl = new GoodServiceImpl();
-                Thread goodService = new Thread(goodServiceImpl);
+                GoodThread goodThread = new GoodThread();
+                Thread goodService = new Thread(goodThread);
                 goodService.start();
                 break;
-        }
+        }*/
 
 
         //GooDao
@@ -106,7 +109,7 @@ public class Main extends Thread {
             //goodServiceImpl1.findBySubsection(new Subsection(2,"Сухие смеси"));
             //goodServiceImpl1.findByPurpose(new Purpose(3, "Наружные работы"));
             //goodServiceImpl1.deleteGood(10);
-            //goodServiceImpl1.updateGood(2, new Good(2, 5.0, null, "м3", 5, 1, null, "Шпатлевка", 36));
+            //goodServiceImpl1.updateGood(2, new Good(3, 5.0, null, "м3", 5, 1, null, "Шпатлевка", 36));
             //goodServiceImpl1.findGoodsByPrice(0, 2);
         } catch (Exception ex) {
             LOGGER.error(ex);
@@ -160,7 +163,7 @@ public class Main extends Thread {
             //clientServiceImpl.changeAdress(1, "Puschkina street");
             //clientServiceImpl.changePhoneNumber(1,"5698532");
             //clientServiceImpl.removeReview(1,client1);
-            //clientServiceImpl.findAllReviews(client3);
+            clientServiceImpl.findAllReviews(client1);
         } catch (Exception ex) {
             LOGGER.error(ex);
         }

@@ -81,6 +81,9 @@ public class PurchaseDaoImpl implements PurchaseDao {
         purchases.stream().forEach(System.out::println);
         return purchases;
     }
+    public List<Good> findGoods(){
+        return goods;
+    }
 
     @Override
     public void chekout() {
@@ -90,16 +93,17 @@ public class PurchaseDaoImpl implements PurchaseDao {
 
     @Override
     public Purchase makeAPurchase(Purchase purchase) throws PurchaseException {//List<Good> goods, Client client, LocalDateTime registration, LocalDateTime purchase1, String status
-        List<Good> goodsOfPurchase = new ArrayList<>();
-        goodsOfPurchase = purchase.getGoods();
+        List<Good> goodsOfPurchase = purchase.getGoods();
         double sum = goodsOfPurchase.stream().mapToDouble(s -> (s.getPrice() * s.getAmount() - s.getDiscount() * s.getAmount())).sum();
         if (sum < 0) {
             throw new PurchaseException("Our company don't work in minus");
         }
         //System.out.println(sum);
+        purchases.add(purchase);
 
-        purchase.setId(purchases.size() + 1);
+        purchase.setId(purchases.size());
         //System.out.println(purchase);
+
         return purchase;
     }
 

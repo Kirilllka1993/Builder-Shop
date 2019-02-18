@@ -24,4 +24,6 @@ public interface PurchaseDao {
 
     List<Purchase> findPurchasesByDate(LocalDateTime localDateTime)throws PurchaseNotFoundException;
 
+    List<Good> findGoods();
+
 }

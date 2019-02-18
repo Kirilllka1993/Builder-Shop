@@ -8,7 +8,7 @@ import com.vironit.kazimirov.service.PurposeService;
 
 import java.util.List;
 
-public class PurposeServiceImpl extends  Thread implements PurposeService {
+public class PurposeServiceImpl implements PurposeService {
     private PurposeDao purposeDao;
 
     public PurposeServiceImpl(){
@@ -25,12 +25,5 @@ public class PurposeServiceImpl extends  Thread implements PurposeService {
     public List<Purpose> findPurposes() {
         return purposeDao.findPurposes();
     }
-
-    @Override
-    public void run() {
-        System.out.println(Thread.currentThread().getName());
-        purposeDao.findPurposes();
-    }
-
 
 }

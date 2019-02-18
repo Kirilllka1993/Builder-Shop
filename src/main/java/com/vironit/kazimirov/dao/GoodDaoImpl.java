@@ -5,6 +5,7 @@ import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.exception.GoodException;
+import com.vironit.kazimirov.exception.GoodNotFountException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,15 +50,22 @@ public class GoodDaoImpl implements GoodDao {
     }
 
     @Override
-    public Good findByNameGood(String name) throws GoodException {
+    public Good findGoodById(int id)  {
+        Good goodName = goods.stream().filter(good -> good.getId() == id).findFirst().get();
+        //System.out.println(goodName);
+        return goodName;
+    }
+
+    @Override
+    public Good findByNameGood(String name){
         Good goodName;
         boolean flag;
-        flag = goods.stream().noneMatch(s -> (s.getName().equals(name)));
-        if (flag == true) {
+        //flag = goods.stream().noneMatch(s -> (s.getName().equals(name)));
+        /*if (flag == true) {
             throw new GoodException("This good is absent");
-        } else {
+        } else {*/
             goodName = goods.stream().filter(s -> s.getName().equals(name)).findFirst().get();
-        }
+       // }
         System.out.println(goodName.toString());
         return goodName;
     }
@@ -69,36 +77,24 @@ public class GoodDaoImpl implements GoodDao {
     }
 
     @Override
-    public List<Good> findBySubsection(Subsection subsection) throws GoodException {
+    public List<Good> findBySubsection(Subsection subsection) {
         List<Good> goodSubsections;
-        boolean flag;
-        flag = goods.stream().noneMatch(s -> (s.getSubsection().equals(subsection)));
-        if (flag == true) {
-            throw new GoodException();
-        } else {
-            goodSubsections = goods.stream().filter(s -> s.getSubsection().equals(subsection)).collect(Collectors.toList());
-        }
+        goodSubsections = goods.stream().filter(s -> s.getSubsection().equals(subsection)).collect(Collectors.toList());
         System.out.println(goodSubsections.toString());
         return goodSubsections;
     }
 
     @Override
-    public List<Good> findByPurpose(Purpose purpose) throws GoodException {
+    public List<Good> findByPurpose(Purpose purpose) {
         List<Good> goodPurposes;
-        boolean flag;
-        flag = goods.stream().noneMatch(s -> (s.getPurpose().equals(purpose)));
-        if (flag == true) {
-            throw new GoodException();
-        } else {
-            goodPurposes = goods.stream().filter(s -> s.getPurpose().equals(purpose)).collect(Collectors.toList());
-        }
+        goodPurposes = goods.stream().filter(s -> s.getPurpose().equals(purpose)).collect(Collectors.toList());
         System.out.println(goodPurposes.toString());
         return goodPurposes;
     }
 
     @Override
     public void deleteGood(int id) throws GoodException {
-        if (goods.stream().noneMatch(good -> (good.getId() == id ))) {
+        if (goods.stream().noneMatch(good -> (good.getId() == id))) {
             throw new GoodException("There is no such good");
         }
         Good good = goods.stream().filter(s -> s.getId() == id).findFirst().get();
@@ -107,8 +103,11 @@ public class GoodDaoImpl implements GoodDao {
     }
 
     @Override
-    public Good updateGood(int id, Good good) {
-        for (int i = 0; i <= goods.size() -1; i++) {
+    public Good updateGood(int id, Good good) throws GoodNotFountException {
+        if (goods.stream().noneMatch(good1 -> good1.getId() == id)) {
+            throw new GoodNotFountException("The is no such id in list");
+        }
+        for (int i = 0; i <= goods.size() - 1; i++) {
             Good good1 = goods.get(i);
             if (good1.getId() == id) {
                 good.setId(id);
@@ -125,15 +124,15 @@ public class GoodDaoImpl implements GoodDao {
         for (Good good2 : goods) {
             System.out.println(good2 + "\n");
         }
-        //System.out.println(goods.get(id - 1));
-        return goods.get(id-1);
+        System.out.println(goods.get(id - 1));
+        return goods.get(id - 1);
     }
 
     @Override
-    public List<Good> findGoodsByPrice(double minPrice, double maxprice)  {
-        List<Good>goodsByPrice;
-        goodsByPrice=goods.stream().filter(s ->s.getPrice()<=maxprice&&s.getPrice()>=minPrice).collect(Collectors.toList());
-        System.out.println(goodsByPrice+"\n");
+    public List<Good> findGoodsByPrice(double minPrice, double maxprice) {
+        List<Good> goodsByPrice;
+        goodsByPrice = goods.stream().filter(s -> s.getPrice() <= maxprice && s.getPrice() >= minPrice).collect(Collectors.toList());
+        System.out.println(goodsByPrice + "\n");
         return goodsByPrice;
     }
 }

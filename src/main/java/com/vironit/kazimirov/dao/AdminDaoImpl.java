@@ -81,21 +81,21 @@ public class AdminDaoImpl implements AdminDao {
 
         Client client = clients.stream().filter(s -> s.getId() == id).findFirst().get();
         clients.remove(client);
-        clients.stream().forEach(System.out::println);
+        //clients.stream().forEach(System.out::println);
         return clients;
     }
 
     @Override
     public Client findClientByLogin(String login) throws ClientNotFoundException {//искать по id
         Client clientName = clients.stream().filter(s -> s.getLogin() == login).findFirst().orElseThrow(() -> new ClientNotFoundException("Such login is absent"));
-        System.out.println(clientName);
+        //System.out.println(clientName);
         return clientName;
     }
 
     @Override
     public Client findClientById(int id) throws ClientNotFoundException {
         Client clientName = clients.stream().filter(s -> s.getId() == id).findFirst().orElseThrow(() -> new ClientNotFoundException("Such id is absent"));
-        System.out.println(clientName);
+        //System.out.println(clientName);
         return clientName;
     }
 
@@ -135,7 +135,7 @@ public class AdminDaoImpl implements AdminDao {
 
     @Override
     public List<Good> findAllGoods() {
-        goods.stream().forEach(System.out::println);
+        //goods.stream().forEach(System.out::println);
         return goods;
     }
 }

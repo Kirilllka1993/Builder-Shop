@@ -8,7 +8,7 @@ import com.vironit.kazimirov.service.SubsectionService;
 
 import java.util.List;
 
-public class SubsectionServiceImpl extends Thread implements SubsectionService {
+public class SubsectionServiceImpl implements SubsectionService {
 
     private SubsectionDao subsectionDao;
 
@@ -27,18 +27,7 @@ public class SubsectionServiceImpl extends Thread implements SubsectionService {
         return subsectionDao.findSubsections();
     }
 
-    @Override
-    public void run() {
-        System.out.println(Thread.currentThread().getName());
-        subsectionDao.findSubsections();
-        Subsection subsection=new Subsection();
-        try {
-            subsectionDao.addSubsection(subsection);
-        } catch (RepeatitionException e) {
-            e.printStackTrace();
-        }
 
-    }
 }
 
 

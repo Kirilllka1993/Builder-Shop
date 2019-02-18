@@ -6,11 +6,12 @@ import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.exception.GoodException;
+import com.vironit.kazimirov.exception.GoodNotFountException;
 import com.vironit.kazimirov.service.GoodService;
 
 import java.util.List;
 
-public class GoodServiceImpl implements GoodService,Runnable {
+public class GoodServiceImpl implements GoodService {
     private GoodDao goodDao;
 
     public GoodServiceImpl() {
@@ -24,7 +25,7 @@ public class GoodServiceImpl implements GoodService,Runnable {
     }
 
     @Override
-    public Good findByNameGood(String name) throws GoodException {
+    public Good findByNameGood(String name)  {
         return goodDao.findByNameGood(name);
     }
 
@@ -34,12 +35,12 @@ public class GoodServiceImpl implements GoodService,Runnable {
     }
 
     @Override
-    public List<Good> findBySubsection(Subsection subsection) throws GoodException {
+    public List<Good> findBySubsection(Subsection subsection){
         return goodDao.findBySubsection(subsection);
     }
 
     @Override
-    public List<Good> findByPurpose(Purpose purpose) throws GoodException {
+    public List<Good> findByPurpose(Purpose purpose){
         return goodDao.findByPurpose(purpose);
     }
 
@@ -49,7 +50,7 @@ public class GoodServiceImpl implements GoodService,Runnable {
     }
 
     @Override
-    public Good updateGood(int id, Good good) {
+    public Good updateGood(int id, Good good) throws GoodNotFountException {
         return goodDao.updateGood(id, good);
 
     }
@@ -60,8 +61,7 @@ public class GoodServiceImpl implements GoodService,Runnable {
     }
 
     @Override
-    public void run() {
-        System.out.println(Thread.currentThread().getName());
-        goodDao.findAllGoods();
+    public Good findGoodById(int id){
+        return goodDao.findGoodById(id);
     }
 }

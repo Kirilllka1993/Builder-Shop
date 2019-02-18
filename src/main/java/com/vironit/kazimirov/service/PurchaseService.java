@@ -24,5 +24,7 @@ public interface PurchaseService {
 
     List<Purchase> findPurchasesByDate(LocalDateTime localDateTime) throws PurchaseNotFoundException;
 
+    List<Good> findGoods();
+
 
 }
