@@ -7,6 +7,7 @@ import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import org.apache.log4j.Logger;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
@@ -14,7 +15,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PurchaseDaoImpl implements PurchaseDao {
-    private static final Logger LOGGER = Logger.getLogger(PurposeDaoImpl.class.getName());
     private List<Purchase> purchases = new ArrayList<>();
     private List<Good> goods = new ArrayList<>();
     private List<Client> clients = new ArrayList<>();
@@ -49,11 +49,11 @@ public class PurchaseDaoImpl implements PurchaseDao {
         Good good3 = new Good(3, 2.0, subsection3, "м3", 5, 1, purpose3, "Краска для дерева", 15);
         Good good4 = new Good(4, 2.0, subsection4, "м3", 5, 0, purpose4, "Техноэласт", 18);
 
-        Purchase purchase1 = new Purchase(1, 16.6, goods, client1, localDateTime1, localDateTime1, "complited");
-        Purchase purchase2 = new Purchase(2, 18.0, goods, client2, null, localDateTime2, "complited");
-        Purchase purchase3 = new Purchase(3, 20.0, goods, client3, null, localDateTime3, "complited");
-        Purchase purchase4 = new Purchase(4, 16.9, goods, client4, null, localDateTime4, "complited");
-        Purchase purchase5 = new Purchase(5, 16.6, goods, client1, null, localDateTime1, "complited");
+        Purchase purchase1 = new Purchase(1, 16.6, goods, client1, localDateTime1, localDateTime1, Status.NEW);
+        Purchase purchase2 = new Purchase(2, 18.0, goods, client2, null, localDateTime2, Status.NEW);
+        Purchase purchase3 = new Purchase(3, 20.0, goods, client3, null, localDateTime3, Status.NEW);
+        Purchase purchase4 = new Purchase(4, 16.9, goods, client4, null, localDateTime4, Status.REGISTRATE);
+        Purchase purchase5 = new Purchase(5, 16.6, goods, client1, null, localDateTime1, Status.INPROCESS);
 
         clients.add(client1);
         clients.add(client2);
@@ -81,37 +81,60 @@ public class PurchaseDaoImpl implements PurchaseDao {
         purchases.stream().forEach(System.out::println);
         return purchases;
     }
+
+    @Override
+    public Purchase createNewPurchase(Client client) {
+        LocalDateTime registration = LocalDateTime.now();
+        Purchase purchase=new Purchase();
+        purchase.setClient(client);
+        purchase.setStatus(Status.NEW);
+        purchase.setRegistration(registration);
+        System.out.println(purchase);
+        return purchase;
+    }
+
     public List<Good> findGoods(){
         return goods;
     }
 
     @Override
-    public void chekout() {
-
-    }
-
-
-    @Override
-    public Purchase makeAPurchase(Purchase purchase) throws PurchaseException {//List<Good> goods, Client client, LocalDateTime registration, LocalDateTime purchase1, String status
-        List<Good> goodsOfPurchase = purchase.getGoods();
-        double sum = goodsOfPurchase.stream().mapToDouble(s -> (s.getPrice() * s.getAmount() - s.getDiscount() * s.getAmount())).sum();
-        if (sum < 0) {
+    public Purchase makeAPurchase(Purchase purchase) throws PurchaseException {
+        double cost = purchase.getGoods().stream().mapToDouble(s -> (s.getPrice() * s.getAmount() - s.getDiscount() * s.getAmount())).sum();
+        if (cost < 0) {
             throw new PurchaseException("Our company don't work in minus");
         }
+        LocalDateTime localDateTime=LocalDateTime.now();
+        purchase.setPurchase(localDateTime);
+        purchase.setStatus(Status.INPROCESS);
+        purchase.setCost(cost);
         //System.out.println(sum);
         purchases.add(purchase);
 
-        purchase.setId(purchases.size());
-        //System.out.println(purchase);
 
+        purchase.setId(purchases.size());
+        System.out.println(purchase);
+        return purchase;
+    }
+
+    public void removePurchase(int id) throws PurchaseException {
+        if (purchases.stream().noneMatch(good -> (good.getId() == id))) {
+            throw new PurchaseException("There is no such purchase");
+        }
+        Purchase purchase = purchases.stream().filter(s -> s.getId() == id).findFirst().get();
+        purchases.remove(purchase);
+        purchases.stream().forEach(System.out::println);
+    }
+
+    @Override
+    public Purchase changeStatus(Purchase purchase, Status status) {
+        purchase.setStatus(status);
+        System.out.println(purchase);
         return purchase;
     }
 
     @Override
-    public List<Good> addIntoPurchase(int id, int amount) throws RepeatitionException {
+    public Purchase addIntoPurchase(int id, int amount,Purchase purchase) throws RepeatitionException {//id Purchase
 
-
-        //Good goodFromList = goods.stream().filter(x->x.getId()==id).filter(x->x.getAmount()>=amount).findAny().orElseThrow(Exception::new);
         if (goods.get(id - 1).getAmount() < amount) {
             throw new RepeatitionException("The amount of this good in the store is" + " " + goods.get(id - 1).getAmount());
         }
@@ -130,13 +153,20 @@ public class PurchaseDaoImpl implements PurchaseDao {
         purchasesCart.add(good);
         int newAmount = oldAmount - amount;
         goods.get(id - 1).setAmount(newAmount);
-        return purchasesCart;
+        purchase.setGoods(purchasesCart);
+        double cost=purchase.getGoods().stream().mapToDouble(s ->(s.getPrice() * s.getAmount() - s.getDiscount() * s.getAmount())).sum();
+        purchase.setCost(cost);
+        System.out.println("Cost of Purchase="+" "+cost);
+        System.out.println(purchase);
+        return purchase;
     }
+
+
 
     @Override
     public void deleteFromPurchase(int id) throws PurchaseException {
         if (purchasesCart.stream().anyMatch(s -> s.getId() == id) == false) {
-            throw new PurchaseException("This purchase is absent in base. Yuo can't delete it");
+            throw new PurchaseException("This purchase is absent in base. You can't delete it");
         }
         Good good = purchasesCart.stream().filter(s -> s.getId() == id).findFirst().get();
         purchasesCart.remove(good);
@@ -153,4 +183,6 @@ public class PurchaseDaoImpl implements PurchaseDao {
         }
         return purchasesByDate;
     }
+
+
 }

@@ -40,10 +40,10 @@ public class AdminDaoImpl implements AdminDao {
         Good good3 = new Good(3, 2.0, subsection3, "м3", 5, 6, purpose3, "Краска для дерева", 15);
         Good good4 = new Good(4, 2.0, subsection4, "м3", 5, 0, purpose4, "Техноэласт", 18);
 
-        Purchase purchase1 = new Purchase(1, 16.6, goods, client1, null, null, "complited");
-        Purchase purchase2 = new Purchase(2, 18.0, goods, client2, null, null, "complited");
-        Purchase purchase3 = new Purchase(3, 20.0, goods, client3, null, null, "complited");
-        Purchase purchase4 = new Purchase(4, 16.9, goods, client4, null, null, "complited");
+        Purchase purchase1 = new Purchase(1, 16.6, goods, client1, null, null, Status.NEW);
+        Purchase purchase2 = new Purchase(2, 18.0, goods, client2, null, null, Status.NEW);
+        Purchase purchase3 = new Purchase(3, 20.0, goods, client3, null, null, Status.NEW);
+        Purchase purchase4 = new Purchase(4, 16.9, goods, client4, null, null, Status.NEW);
 
 
         clients.add(client1);
@@ -72,30 +72,25 @@ public class AdminDaoImpl implements AdminDao {
         clients.add(client);
         client.setId(lastIndex + 1);
         return clients;
-
     }
-
 
     @Override
     public List<Client> deleteClient(int id) {
 
         Client client = clients.stream().filter(s -> s.getId() == id).findFirst().get();
         clients.remove(client);
-        //clients.stream().forEach(System.out::println);
         return clients;
     }
 
     @Override
     public Client findClientByLogin(String login) throws ClientNotFoundException {//искать по id
         Client clientName = clients.stream().filter(s -> s.getLogin() == login).findFirst().orElseThrow(() -> new ClientNotFoundException("Such login is absent"));
-        //System.out.println(clientName);
         return clientName;
     }
 
     @Override
     public Client findClientById(int id) throws ClientNotFoundException {
         Client clientName = clients.stream().filter(s -> s.getId() == id).findFirst().orElseThrow(() -> new ClientNotFoundException("Such id is absent"));
-        //System.out.println(clientName);
         return clientName;
     }
 
@@ -120,7 +115,6 @@ public class AdminDaoImpl implements AdminDao {
 
     @Override
     public Purchase findPurchasebyId(int id) throws PurchaseNotFoundException {
-
         Purchase purchase = null;
         try {
             purchase = purchases.stream().filter(s -> s.getId() == id).findFirst().get();
@@ -135,7 +129,12 @@ public class AdminDaoImpl implements AdminDao {
 
     @Override
     public List<Good> findAllGoods() {
-        //goods.stream().forEach(System.out::println);
         return goods;
+    }
+
+    @Override
+    public Purchase updateStatus(Status status, Purchase purchase) {
+        purchase.setStatus(status);
+        return purchase;
     }
 }

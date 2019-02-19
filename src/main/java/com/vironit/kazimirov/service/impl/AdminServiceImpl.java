@@ -5,6 +5,7 @@ import com.vironit.kazimirov.dao.DaoInterface.AdminDao;
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purchase;
+import com.vironit.kazimirov.entity.Status;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
@@ -68,5 +69,10 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<Good> findAllGoods() {
         return adminDao.findAllGoods();
+    }
+
+    @Override
+    public Purchase updateStatus(Status status, Purchase purchase) {
+        return adminDao.updateStatus(status,purchase);
     }
 }

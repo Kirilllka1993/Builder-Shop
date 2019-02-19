@@ -59,10 +59,10 @@ public class Main extends Thread {
         Good good5 = new Good(5, 6.0, subsection4, "м3", 5, 0, purpose4, "Техноэласт", 18);
         Good good6 = new Good(5, 25.0, subsection4, "м3", 5, 0, purpose4, "Техноэласт", 18);
 
-        Purchase purchase1 = new Purchase(1, 16.6, goods, client1, null, null, "complited");
-        Purchase purchase2 = new Purchase(2, 18.0, goods, client2, null, null, "complited");
-        Purchase purchase3 = new Purchase(3, 20.0, goods, client3, null, null, "complited");
-        Purchase purchase4 = new Purchase(4, 16.9, goods, client4, null, null, "complited");
+        Purchase purchase1 = new Purchase(1, 16.6, goods, client1, null, null, Status.INPROCESS);
+        Purchase purchase2 = new Purchase(2, 18.0, goods, client2, null, null, Status.NEW);
+        Purchase purchase3 = new Purchase(3, 20.0, goods, client3, null, null, Status.REGISTRATE);
+        Purchase purchase4 = new Purchase(4, 16.9, goods, client4, null, null, Status.CANCELED);
 
         clients.add(client1);
         clients.add(client2);
@@ -152,6 +152,7 @@ public class Main extends Thread {
         ClientService clientServiceImpl = new ClientServiceImpl();
         int id = 1;
         String login = "andrei15";
+
         try {
             Review review = new Review(5, "Мне этот товар не понравился", 5, client3, good2);
             //clientServiceImpl.addReview(review);
@@ -163,7 +164,7 @@ public class Main extends Thread {
             //clientServiceImpl.changeAdress(1, "Puschkina street");
             //clientServiceImpl.changePhoneNumber(1,"5698532");
             //clientServiceImpl.removeReview(1,client1);
-            clientServiceImpl.findAllReviews(client1);
+            //clientServiceImpl.findAllReviews(client1);
         } catch (Exception ex) {
             LOGGER.error(ex);
         }
@@ -179,6 +180,13 @@ public class Main extends Thread {
             //purchaseServiceImpl.searchPurchasesByDate(localDateTime1);
             //purchaseServiceImpl.showPurchases();
             //purchaseServiceImpl.makeAPurchase(goods, client1, localDateTime2, localDateTime2, "Оформлен");
+            //purchaseServiceImpl.removePurchase(1);
+            //System.out.println(purchase1.getStatus());
+            //Purchase purchase=purchaseServiceImpl.createNewPurchase(client1);
+            //purchaseServiceImpl.addIntoPurchase(2,10,purchase);
+            //purchaseServiceImpl.addIntoPurchase(1,5,purchase);
+            //purchaseServiceImpl.changeStatus(purchase,Status.CANCELED);
+            //purchaseServiceImpl.makeAPurchase(purchase);
         } catch (Exception ex) {
             LOGGER.error(ex);
         }

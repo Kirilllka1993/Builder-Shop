@@ -31,13 +31,7 @@ public class SubsectionDaoImpl implements SubsectionDao {
         int lastIndex = subsections.size();
         subsection.setId(lastIndex + 1);
         subsections.add(subsection);
-        System.out.println(subsection.getId() + " " + subsection.getTitle());
-
-        for (Subsection subsection1 : subsections) {
-            System.out.println(subsection1.toString());
-        }
     }
-
 
     public List<Subsection> findSubsections() {
         subsections.stream().forEach(System.out::println);

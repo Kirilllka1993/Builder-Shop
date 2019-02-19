@@ -117,27 +117,17 @@ public class GoodTest {
     }
 
     @Test
-    public void deleteTest() throws GoodException {
-        goodService.deleteGood(1);
+    public void deleteGoodTest() throws GoodException {
+        int deleteId = goodService.findAllGoods().get(0).getId();
+        goodService.deleteGood(deleteId);
         List<Good> allGoods = goodService.findAllGoods();
-        Assert.assertTrue(allGoods.stream().noneMatch(good -> good.getId() == 1));
+        Assert.assertTrue(allGoods.stream().noneMatch(client -> client.getId() == deleteId));
     }
 
     @Test(expected = GoodException.class)
     public void deleteExceptionTest() throws GoodException {
-        int id = 1;
-        int i = 0;
-        List<Good> goodList = goodService.findAllGoods();
-        while (i < goodList.size()) {
-            if (id != goodList.get(i).getId()) {
-                break;
-            } else {
-                ++id;
-            }
-            ++i;
-        }
-        ++id;
-        goodService.deleteGood(id);
+        int sumGoodId = goodService.findAllGoods().stream().mapToInt(Good::getId).sum();
+        goodService.deleteGood(sumGoodId);
     }
 
     @Test
@@ -155,28 +145,9 @@ public class GoodTest {
 
     @Test(expected = GoodNotFountException.class)
     public void updateExceptionTest() throws GoodNotFountException {
-        List<Good> goodList = goodService.findAllGoods();
-        Good good=new Good();
-        int id = 1;
-        int i = 0;
-
-        while (i < goodList.size()) {
-            if (id != goodList.get(i).getId()) {
-                break;
-            } else {
-                ++id;
-            }
-            ++i;
-        }
-       /* for (int i = 0; i <goodList.size(); i++) {
-            if (id != goodList.get(i).getId()) {
-                break;
-            } else {
-                ++id;
-            }
-        }*/
-        ++id;
-        goodService.updateGood(id,good);
+        int sumGoodId = goodService.findAllGoods().stream().mapToInt(Good::getId).sum();
+        Good good = new Good();
+        goodService.updateGood(sumGoodId, good);
     }
 
     @Test

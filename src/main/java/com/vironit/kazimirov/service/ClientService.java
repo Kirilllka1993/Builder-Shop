@@ -24,7 +24,7 @@ public interface ClientService {
 
     void changePhoneNumber (int id, String phoneNumber);
 
-    void changeAdress(int id, String adress);
+    void changeAddress(int id, String adress);
 
     List<Client> findAllClients();
 

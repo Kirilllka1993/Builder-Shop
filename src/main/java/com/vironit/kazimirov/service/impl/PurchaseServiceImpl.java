@@ -5,6 +5,7 @@ import com.vironit.kazimirov.dao.PurchaseDaoImpl;
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purchase;
+import com.vironit.kazimirov.entity.Status;
 import com.vironit.kazimirov.exception.PurchaseException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
@@ -12,6 +13,8 @@ import com.vironit.kazimirov.service.PurchaseService;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.vironit.kazimirov.entity.Status.CANCELED;
 
 public class PurchaseServiceImpl implements PurchaseService {
 
@@ -27,20 +30,24 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public void chekout() {
-        purchaseDao.chekout();
-
+    public Purchase createNewPurchase(Client client) {
+        return purchaseDao.createNewPurchase(client);
     }
+
 
     @Override
     public Purchase makeAPurchase(Purchase purchase) throws PurchaseException {
+        System.out.println(purchase.getStatus());
+        if (purchase.getStatus()==CANCELED){
+            throw new PurchaseException("The purchase is canceled");
+        }
         return purchaseDao.makeAPurchase(purchase);
 
     }
 
     @Override
-    public List<Good> addIntoPurchase(int id, int amount) throws RepeatitionException {
-        return purchaseDao.addIntoPurchase(id, amount);
+    public Purchase addIntoPurchase(int id, int amount, Purchase purchase) throws RepeatitionException {
+        return purchaseDao.addIntoPurchase(id, amount, purchase);
 
     }
 
@@ -57,5 +64,15 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Override
     public List<Good> findGoods() {
         return purchaseDao.findGoods();
+    }
+
+    @Override
+    public Purchase changeStatus(Purchase purchase, Status status) {
+        return purchaseDao.changeStatus(purchase,status);
+    }
+
+    @Override
+    public void removePurchase(int id) throws PurchaseException {
+        purchaseDao.removePurchase(id);
     }
 }

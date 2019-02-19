@@ -38,21 +38,17 @@ public class GoodDaoImpl implements GoodDao {
     }
 
     public void addGood(Good good) throws GoodException {
-
         if (good.getPrice() < good.getDiscount()) {
             throw new GoodException("The discount can't be more then price");
         }
         int lastIndex = goods.size();
         good.setId(lastIndex + 1);
         goods.add(good);
-        //goods.stream().forEach(System.out::println);
-
     }
 
     @Override
     public Good findGoodById(int id)  {
         Good goodName = goods.stream().filter(good -> good.getId() == id).findFirst().get();
-        //System.out.println(goodName);
         return goodName;
     }
 
@@ -80,7 +76,6 @@ public class GoodDaoImpl implements GoodDao {
     public List<Good> findBySubsection(Subsection subsection) {
         List<Good> goodSubsections;
         goodSubsections = goods.stream().filter(s -> s.getSubsection().equals(subsection)).collect(Collectors.toList());
-        System.out.println(goodSubsections.toString());
         return goodSubsections;
     }
 
@@ -88,7 +83,6 @@ public class GoodDaoImpl implements GoodDao {
     public List<Good> findByPurpose(Purpose purpose) {
         List<Good> goodPurposes;
         goodPurposes = goods.stream().filter(s -> s.getPurpose().equals(purpose)).collect(Collectors.toList());
-        System.out.println(goodPurposes.toString());
         return goodPurposes;
     }
 
@@ -108,8 +102,8 @@ public class GoodDaoImpl implements GoodDao {
             throw new GoodNotFountException("The is no such id in list");
         }
         for (int i = 0; i <= goods.size() - 1; i++) {
-            Good good1 = goods.get(i);
-            if (good1.getId() == id) {
+            Good updateGood = goods.get(i);
+            if (updateGood.getId() == id) {
                 good.setId(id);
                 goods.get(i).setAmount(good.getAmount());
                 goods.get(i).setName(good.getName());
@@ -121,18 +115,13 @@ public class GoodDaoImpl implements GoodDao {
                 goods.get(i).setUnit(good.getUnit());
             }
         }
-        for (Good good2 : goods) {
-            System.out.println(good2 + "\n");
-        }
-        System.out.println(goods.get(id - 1));
         return goods.get(id - 1);
     }
 
     @Override
-    public List<Good> findGoodsByPrice(double minPrice, double maxprice) {
+    public List<Good> findGoodsByPrice(double minPrice, double maxPrice) {
         List<Good> goodsByPrice;
-        goodsByPrice = goods.stream().filter(s -> s.getPrice() <= maxprice && s.getPrice() >= minPrice).collect(Collectors.toList());
-        System.out.println(goodsByPrice + "\n");
+        goodsByPrice = goods.stream().filter(s -> s.getPrice() <= maxPrice && s.getPrice() >= minPrice).collect(Collectors.toList());
         return goodsByPrice;
     }
 }

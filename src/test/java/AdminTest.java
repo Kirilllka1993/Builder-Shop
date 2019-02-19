@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,21 +67,22 @@ public class AdminTest {
 
     @Test
     public void deleteClientTest() {
-        adminService.deleteClient(2);
+        int deleteId=adminService.findAllClient().get(0).getId();
+        adminService.deleteClient(deleteId);
         List<Client> allClients = adminService.findAllClient();
-        Assert.assertTrue(allClients.stream().noneMatch(client -> client.getId() == 2));
+        Assert.assertTrue(allClients.stream().noneMatch(client -> client.getId() == deleteId));
     }
 
     @Test
     public void findClientByLoginTest() throws RepeatitionException, ClientNotFoundException {
 
         adminService.addClient(clientBeforeTest);
-        Client findClientByLogin = adminService.findClientByLogin(clientBeforeTest.getLogin());
-        Assert.assertTrue(findClientByLogin.getLogin().equals(clientBeforeTest.getLogin()));
+        Client clientByLogin = adminService.findClientByLogin(clientBeforeTest.getLogin());
+        Assert.assertTrue(clientByLogin.getLogin().equals(clientBeforeTest.getLogin()));
         List<Client> missingClients = adminService.findAllClient();
-        List<Client> findClientsByLogin = missingClients.stream().filter(client -> !client.getLogin().equals(findClientByLogin.getLogin())).collect(Collectors.toList());
-        missingClients.removeAll(findClientsByLogin);
-        Assert.assertTrue(missingClients.stream().allMatch((client -> client.getLogin().equals(findClientByLogin.getLogin()))));
+        List<Client> allClientsByLogin = missingClients.stream().filter(client -> !client.getLogin().equals(clientByLogin.getLogin())).collect(Collectors.toList());
+        missingClients.removeAll(allClientsByLogin);
+        Assert.assertTrue(missingClients.stream().allMatch((client -> client.getLogin().equals(clientByLogin.getLogin()))));
     }
 
     @Test(expected = ClientNotFoundException.class)
@@ -93,9 +95,9 @@ public class AdminTest {
         if (adminService.findAllClient().size() == 0) {
             throw new Exception("The list of clients is empty");
         }
-        Client findClientByID = adminService.findAllClient().get(0);
+        Client clientByID = adminService.findAllClient().get(0);
         List<Client> missingClients = adminService.findAllClient();
-        List<Client> findClientsById = missingClients.stream().filter(client -> client.getId() != findClientByID.getId()).collect(Collectors.toList());
+        List<Client> findClientsById = missingClients.stream().filter(client -> client.getId() != clientByID.getId()).collect(Collectors.toList());
         missingClients.removeAll(findClientsById);
         int size = missingClients.size();
         assertEquals(size, 1);
@@ -103,26 +105,8 @@ public class AdminTest {
 
     @Test(expected = ClientNotFoundException.class)
     public void findClientByIdExceptionTest() throws ClientNotFoundException {
-        int id = 1;
-        int i = 0;
-        List<Client> clientList = adminService.findAllClient();
-        while (i < clientList.size()) {
-            if (id != clientList.get(i).getId()) {
-                break;
-            } else {
-                ++id;
-            }
-            ++i;
-        }
-        ++id;
-       /* for (int i = 0; i < clientList.size(); i++) {
-            if (id != clientList.get(i).getId()) {
-                break;
-            } else {
-                ++id;
-            }
-        }*/
-        adminService.findClientById(id);
+        int sumClientId=adminService.findAllClient().stream().mapToInt(Client::getId).sum();
+        adminService.findClientById(sumClientId);
     }
 
     @Test
@@ -133,11 +117,11 @@ public class AdminTest {
             throw new PurchaseNotFoundException("This list of purchase is empty");
         }
         int id = purchases.get(0).getId();
-        Purchase findPurchaseById = adminService.findPurchasebyId(id);
-        Assert.assertTrue(findPurchaseById.getId() == id);
+        Purchase purchaseById = adminService.findPurchasebyId(id);
+        Assert.assertTrue(purchaseById.getId() == id);
         List<Purchase> missingPurchases = adminService.findAllPurchases();
-        List<Purchase> findPurchasesById = missingPurchases.stream().filter(purchase -> purchase.getId() != id).collect(Collectors.toList());
-        missingPurchases.removeAll(findPurchasesById);
+        List<Purchase> purchasesById = missingPurchases.stream().filter(purchase -> purchase.getId() != id).collect(Collectors.toList());
+        missingPurchases.removeAll(purchasesById);
         int size = missingPurchases.size();
         assertEquals(size, 1);
 
@@ -146,19 +130,8 @@ public class AdminTest {
 
     @Test(expected = PurchaseNotFoundException.class)
     public void findPurchaseByIdExceptionTest() throws PurchaseNotFoundException {
-        int id = 1;
-        int i = 0;
-        List<Purchase> purchaseList = adminService.findAllPurchases();
-        while (i < purchaseList.size()) {
-            if (id != purchaseList.get(i).getId()) {
-                break;
-            } else {
-                ++id;
-            }
-            ++i;
-        }
-        ++id;
-        adminService.findPurchasebyId(id);
+        int sumPurchaseId=adminService.findAllPurchases().stream().mapToInt(Purchase::getId).sum();
+        adminService.findPurchasebyId(sumPurchaseId);
     }
 
     @Test

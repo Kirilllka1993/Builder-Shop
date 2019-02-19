@@ -12,9 +12,9 @@ public class Purchase {
     private Client client;
     private LocalDateTime registration;
     private LocalDateTime purchase;
-    private String status;
+    private Status status;
 
-    public Purchase(int id, double cost, List<Good> goods, Client client, LocalDateTime registration, LocalDateTime purchase, String status) {
+    public Purchase(int id, double cost, List<Good> goods, Client client, LocalDateTime registration, LocalDateTime purchase, Status status) {
         this.id = id;
         this.cost = cost;
         this.goods = goods;
@@ -23,6 +23,16 @@ public class Purchase {
         this.purchase = purchase;
         this.status = status;
     }
+
+    /*public Purchase(int id, double cost, List<Good> goods, Client client, LocalDateTime registration, LocalDateTime purchase, String status) {
+        this.id = id;
+        this.cost = cost;
+        this.goods = goods;
+        this.client = client;
+        this.registration = registration;
+        this.purchase = purchase;
+        this.status = status;
+    }*/
 
     public Purchase() {
     }
@@ -75,11 +85,11 @@ public class Purchase {
         this.purchase = purchase;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -94,7 +104,7 @@ public class Purchase {
                 Objects.equals(client, purchase1.client) &&
                 Objects.equals(registration, purchase1.registration) &&
                 Objects.equals(purchase, purchase1.purchase) &&
-                Objects.equals(status, purchase1.status);
+                status == purchase1.status;
     }
 
     @Override
@@ -111,7 +121,7 @@ public class Purchase {
                 ", client=" + client +
                 ", registration=" + registration +
                 ", purchase=" + purchase +
-                ", status='" + status + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

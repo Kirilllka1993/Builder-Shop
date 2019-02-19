@@ -1,4 +1,3 @@
-import com.vironit.kazimirov.dao.DaoInterface.PurchaseDao;
 import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.entity.builder.Purchase.PurchaseBuilder;
 import com.vironit.kazimirov.exception.PurchaseException;
@@ -54,10 +53,9 @@ public class PurchaseTest {
                 .withRegistration(localDateTime1)
                 .withPurchase(localDateTime1)
                 .withCost(sum)
-                .withStatus("Оформлен")
+                .withStatus(Status.NEW)
                 .build();
     }
-
 
     @Test
     public void makeAPurchaseTest() throws PurchaseException {
@@ -74,29 +72,23 @@ public class PurchaseTest {
     public void addIntoPurchaseTest() throws RepeatitionException {
         Good good = purchaseService.findGoods().get(0);
         Good good1 = purchaseService.findGoods().get(purchaseService.findPurchases().size() - 2);
-        purchaseService.addIntoPurchase(good.getId(), good.getAmount());
-        List<Good> purchaseCart = purchaseService.addIntoPurchase(good1.getId(), good1.getAmount());
-        List<Good> missingGoods = purchaseService.findGoods();
-        //List<Good> deleteGoods=missingGoods.stream().filter(good->good.eq)
+        purchaseService.addIntoPurchase(good.getId(), good.getAmount(),purchaseBeforeTest);
+        Purchase purchase = purchaseService.addIntoPurchase(good1.getId(), good1.getAmount(),purchaseBeforeTest);
+        List<Good>purchaseCart=purchase.getGoods();
         int size = purchaseCart.size();
         assertEquals(size, 2);
-
-       /* List<Purchase> findPurchaseById = missingGoods.stream().filter(purchase -> purchase.getId() != purchase1.getId()).collect(Collectors.toList());
-        missingPurchases.removeAll(findPurchaseById);
-        Assert.assertTrue(missingPurchases.stream().allMatch(purchase -> purchase.getId() == purchase1.getId()));
-        List<Good> m = new ArrayList<>();
-        expPurchaseCart.add(good);
-        assertEquals(expPurchaseCart, purchaseCart);*/
     }
 
     @Test(expected = RepeatitionException.class)
     public void addIntoPurchaseExceptionTest() throws RepeatitionException {
-        purchaseService.addIntoPurchase(1, 86);
+        int sumAmount=purchaseService.findGoods().stream().mapToInt(Good::getAmount).sum();
+        purchaseService.addIntoPurchase(1, sumAmount,purchaseBeforeTest);
     }
 
     @Test(expected = PurchaseException.class)
     public void deleteFromPurchaseTest() throws PurchaseException {
-        purchaseService.deleteFromPurchase(6);
+        int sumId=purchaseService.findGoods().stream().mapToInt(Good::getId).sum();
+        purchaseService.deleteFromPurchase(sumId);
 
     }
 
@@ -105,15 +97,29 @@ public class PurchaseTest {
         LocalDateTime localDateTime = purchaseService.findPurchases().get(0).getPurchase();
         List<Purchase> purchasesByDate = purchaseService.findPurchasesByDate(localDateTime);
         List<Purchase> missingPurchases = purchaseService.findPurchases();
-        List<Purchase> findPurchaseByDate = missingPurchases.stream().filter(purchase -> purchase.getPurchase().equals(localDateTime)).collect(Collectors.toList());
-        missingPurchases.removeAll(findPurchaseByDate);
+        List<Purchase> filtredPurchasesByDate = missingPurchases.stream().filter(purchase -> purchase.getPurchase().equals(localDateTime)).collect(Collectors.toList());
+        missingPurchases.removeAll(filtredPurchasesByDate);
         Assert.assertTrue(missingPurchases.stream().noneMatch(purchase -> purchase.getPurchase().equals(localDateTime)));
-        assertEquals(purchasesByDate, findPurchaseByDate);
+        assertEquals(purchasesByDate, filtredPurchasesByDate);
     }
 
     @Test(expected = PurchaseNotFoundException.class)
     public void findPurchasesByDateExceptionTest() throws PurchaseNotFoundException {
-        LocalDateTime localDateTime5 = LocalDateTime.of(2010, Month.JULY, 16, 12, 8);
+        LocalDateTime localDateTime5 = LocalDateTime.of(1970, Month.JULY, 16, 12, 8);
         purchaseService.findPurchasesByDate(localDateTime5);
+    }
+
+    @Test
+    public void removePurchaseTest() throws PurchaseException {
+        int deleteId=purchaseService.findPurchases().get(0).getId();
+        purchaseService.removePurchase(deleteId);
+        List<Purchase> allPurchases = purchaseService.findPurchases();
+        Assert.assertTrue(allPurchases.stream().noneMatch(client -> client.getId() == deleteId));
+    }
+
+    @Test(expected = PurchaseException.class)
+    public void deleteExceptionTest() throws PurchaseException {
+        int sumPurchaseId = purchaseService.findPurchases().stream().mapToInt(Purchase::getId).sum();
+        purchaseService.removePurchase(sumPurchaseId);
     }
 }

@@ -56,7 +56,6 @@ public class ClientDaoImpl implements ClientDao {
         int lastIndex = reviews.size();
         review.setId(lastIndex + 1);
         reviews.add(review);
-        //reviews.stream().forEach(System.out::println);
     }
 
 
@@ -123,19 +122,16 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public void changeAdress(int id, String adress) {
+    public void changeAddress(int id, String adress) {
 
         clients.get(id - 1).setAddress(adress);
         for (Client client2 : clients) {
             System.out.println(client2 + "\n");
         }
-
-
     }
 
     @Override
     public List<Client> findAllClients() {
-        //clients.stream().forEach(System.out::println);
         return clients;
     }
 
@@ -143,12 +139,6 @@ public class ClientDaoImpl implements ClientDao {
     public List<Review> findAllReviews(Client client) {
         List<Review> reviewsByClient=new ArrayList<>();
         reviewsByClient=reviews.stream().filter(review -> review.getClient().equals(client)).collect(Collectors.toList());
-        //reviews.stream().forEach(System.out::println);
         return reviewsByClient;
-    }
-
-    public List<Client> findAllClient() {
-        clients.stream().forEach(System.out::println);
-        return clients;
     }
 }

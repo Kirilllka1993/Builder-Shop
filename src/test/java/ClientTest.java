@@ -1,4 +1,3 @@
-import com.vironit.kazimirov.dao.ClientDaoImpl;
 import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.entity.builder.Client.ClientBuilder;
 import com.vironit.kazimirov.entity.builder.Review.ReviewBuilder;
@@ -128,7 +127,6 @@ public class ClientTest {
         Assert.assertTrue(missingReviews.stream().anyMatch(review -> review.getId() == reviewBeforeTest.getId() && review.getClient().equals(clientForTest)));
     }
 
-
     @Test
     public void removeReviewTest() {
         Client client1 = new Client(1, "Andrei", "Stelmach", "andrei15", "andrei15", "Majkovski street", "1225689");
@@ -154,10 +152,10 @@ public class ClientTest {
     }
 
     @Test
-    public void changeAdressTest() {
+    public void changeAddressTest() {
         int idOfLastGood = clientService.findAllClients().get(clientService.findAllClients().size() - 1).getId();
-        String newAdress = clientBeforeTest.getAddress();
-        clientService.changePassword(idOfLastGood, newAdress);
+        String newAddress = clientBeforeTest.getAddress();
+        clientService.changeAddress(idOfLastGood, newAddress);
         Client updateClient = clientService.findAllClients().get(idOfLastGood - 1);
         List<Client> missingClients = clientService.findAllClients();
         List<Client> findClients = missingClients.stream().filter(client -> client.getId() != updateClient.getId()).collect(Collectors.toList());
@@ -172,7 +170,7 @@ public class ClientTest {
     public void changePhoneNumberTest() {
         int idOfLastGood = clientService.findAllClients().get(clientService.findAllClients().size() - 1).getId();
         String newPhone = clientBeforeTest.getPhoneNumber();
-        clientService.changePassword(idOfLastGood, newPhone);
+        clientService.changePhoneNumber(idOfLastGood, newPhone);
         Client updateClient = clientService.findAllClients().get(idOfLastGood - 1);
         List<Client> missingClients = clientService.findAllClients();
         List<Client> findClients = missingClients.stream().filter(client -> client.getId() != updateClient.getId()).collect(Collectors.toList());

@@ -35,7 +35,7 @@ public class ClientBuilder {
     }
 
     public ClientBuilder withPhoneNumber(String phoneNumber) {
-        client.setAddress(phoneNumber);
+        client.setPhoneNumber(phoneNumber);
         return this;
     }
 

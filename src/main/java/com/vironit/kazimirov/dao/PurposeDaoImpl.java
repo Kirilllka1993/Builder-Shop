@@ -30,9 +30,6 @@ public class PurposeDaoImpl implements PurposeDao {
         int lastIndex = purposes.size();
         purpose.setId(lastIndex + 1);
         purposes.add(purpose);
-        for (Purpose purpose2 : purposes) {
-            System.out.println(purpose2 + "\n");
-        }
     }
 
     @Override

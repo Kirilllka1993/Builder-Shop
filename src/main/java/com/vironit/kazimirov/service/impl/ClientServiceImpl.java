@@ -65,8 +65,8 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void changeAdress(int id, String adress) {
-        clientDao.changeAdress(id, adress);
+    public void changeAddress(int id, String adress) {
+        clientDao.changeAddress(id, adress);
 
     }
 
