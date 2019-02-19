@@ -6,6 +6,7 @@ import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.entity.Status;
+import com.vironit.kazimirov.exception.GoodNotFountException;
 import com.vironit.kazimirov.exception.PurchaseException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
@@ -37,7 +38,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public Purchase makeAPurchase(Purchase purchase) throws PurchaseException {
-        System.out.println(purchase.getStatus());
+        //System.out.println(purchase.getStatus());
         if (purchase.getStatus()==CANCELED){
             throw new PurchaseException("The purchase is canceled");
         }
@@ -46,7 +47,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public Purchase addIntoPurchase(int id, int amount, Purchase purchase) throws RepeatitionException {
+    public Purchase addIntoPurchase(int id, int amount, Purchase purchase) throws RepeatitionException, GoodNotFountException {
         return purchaseDao.addIntoPurchase(id, amount, purchase);
 
     }

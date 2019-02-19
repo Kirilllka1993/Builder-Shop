@@ -1,5 +1,6 @@
 import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.entity.builder.Purchase.PurchaseBuilder;
+import com.vironit.kazimirov.exception.GoodNotFountException;
 import com.vironit.kazimirov.exception.PurchaseException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
@@ -69,7 +70,7 @@ public class PurchaseTest {
     }
 
     @Test
-    public void addIntoPurchaseTest() throws RepeatitionException {
+    public void addIntoPurchaseTest() throws RepeatitionException, GoodNotFountException {
         Good good = purchaseService.findGoods().get(0);
         Good good1 = purchaseService.findGoods().get(purchaseService.findPurchases().size() - 2);
         purchaseService.addIntoPurchase(good.getId(), good.getAmount(),purchaseBeforeTest);
@@ -80,7 +81,7 @@ public class PurchaseTest {
     }
 
     @Test(expected = RepeatitionException.class)
-    public void addIntoPurchaseExceptionTest() throws RepeatitionException {
+    public void addIntoPurchaseExceptionTest() throws RepeatitionException, GoodNotFountException {
         int sumAmount=purchaseService.findGoods().stream().mapToInt(Good::getAmount).sum();
         purchaseService.addIntoPurchase(1, sumAmount,purchaseBeforeTest);
     }

@@ -1,27 +1,16 @@
 package com.vironit.kazimirov.service.impl;
 
 
-import com.vironit.kazimirov.dao.PurposeDaoImpl;
 import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.exception.*;
 import com.vironit.kazimirov.service.ClientService;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.vironit.kazimirov.service.GoodService;
-import com.vironit.kazimirov.service.PurposeService;
-import com.vironit.kazimirov.service.SubsectionService;
-import com.vironit.kazimirov.threads.GoodThread;
-import com.vironit.kazimirov.threads.PurposeThread;
-import com.vironit.kazimirov.threads.SubsectionThread;
 import org.apache.log4j.Logger;
 
 public class Main extends Thread {
@@ -59,7 +48,7 @@ public class Main extends Thread {
         Good good5 = new Good(5, 6.0, subsection4, "м3", 5, 0, purpose4, "Техноэласт", 18);
         Good good6 = new Good(5, 25.0, subsection4, "м3", 5, 0, purpose4, "Техноэласт", 18);
 
-        Purchase purchase1 = new Purchase(1, 16.6, goods, client1, null, null, Status.INPROCESS);
+        Purchase purchase1 = new Purchase(1, 16.6, goods, client1, null, null, Status.IN_PROCESS);
         Purchase purchase2 = new Purchase(2, 18.0, goods, client2, null, null, Status.NEW);
         Purchase purchase3 = new Purchase(3, 20.0, goods, client3, null, null, Status.REGISTRATE);
         Purchase purchase4 = new Purchase(4, 16.9, goods, client4, null, null, Status.CANCELED);
@@ -182,11 +171,12 @@ public class Main extends Thread {
             //purchaseServiceImpl.makeAPurchase(goods, client1, localDateTime2, localDateTime2, "Оформлен");
             //purchaseServiceImpl.removePurchase(1);
             //System.out.println(purchase1.getStatus());
-            //Purchase purchase=purchaseServiceImpl.createNewPurchase(client1);
-            //purchaseServiceImpl.addIntoPurchase(2,10,purchase);
-            //purchaseServiceImpl.addIntoPurchase(1,5,purchase);
+            Purchase purchase=purchaseServiceImpl.createNewPurchase(client1);
+            purchaseServiceImpl.addIntoPurchase(2,10,purchase);
+            purchaseServiceImpl.addIntoPurchase(1,5,purchase);
             //purchaseServiceImpl.changeStatus(purchase,Status.CANCELED);
-            //purchaseServiceImpl.makeAPurchase(purchase);
+             purchaseServiceImpl.makeAPurchase(purchase);
+             goodServiceImpl1.findAllGoods();
         } catch (Exception ex) {
             LOGGER.error(ex);
         }

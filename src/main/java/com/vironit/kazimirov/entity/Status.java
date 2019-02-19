@@ -2,7 +2,7 @@ package com.vironit.kazimirov.entity;
 
 public enum Status {
     NEW,
-    INPROCESS,
+    IN_PROCESS,
     REGISTRATE,
     CANCELED;
 

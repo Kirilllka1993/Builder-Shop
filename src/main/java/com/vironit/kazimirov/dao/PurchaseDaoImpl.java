@@ -1,13 +1,13 @@
 package com.vironit.kazimirov.dao;
 
+import com.vironit.kazimirov.dao.DaoInterface.GoodDao;
 import com.vironit.kazimirov.dao.DaoInterface.PurchaseDao;
 import com.vironit.kazimirov.entity.*;
+import com.vironit.kazimirov.exception.GoodNotFountException;
 import com.vironit.kazimirov.exception.PurchaseException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
-import org.apache.log4j.Logger;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class PurchaseDaoImpl implements PurchaseDao {
         Purchase purchase2 = new Purchase(2, 18.0, goods, client2, null, localDateTime2, Status.NEW);
         Purchase purchase3 = new Purchase(3, 20.0, goods, client3, null, localDateTime3, Status.NEW);
         Purchase purchase4 = new Purchase(4, 16.9, goods, client4, null, localDateTime4, Status.REGISTRATE);
-        Purchase purchase5 = new Purchase(5, 16.6, goods, client1, null, localDateTime1, Status.INPROCESS);
+        Purchase purchase5 = new Purchase(5, 16.6, goods, client1, null, localDateTime1, Status.IN_PROCESS);
 
         clients.add(client1);
         clients.add(client2);
@@ -82,18 +82,7 @@ public class PurchaseDaoImpl implements PurchaseDao {
         return purchases;
     }
 
-    @Override
-    public Purchase createNewPurchase(Client client) {
-        LocalDateTime registration = LocalDateTime.now();
-        Purchase purchase=new Purchase();
-        purchase.setClient(client);
-        purchase.setStatus(Status.NEW);
-        purchase.setRegistration(registration);
-        System.out.println(purchase);
-        return purchase;
-    }
-
-    public List<Good> findGoods(){
+    public List<Good> findGoods() {
         return goods;
     }
 
@@ -103,9 +92,9 @@ public class PurchaseDaoImpl implements PurchaseDao {
         if (cost < 0) {
             throw new PurchaseException("Our company don't work in minus");
         }
-        LocalDateTime localDateTime=LocalDateTime.now();
+        LocalDateTime localDateTime = LocalDateTime.now();
         purchase.setPurchase(localDateTime);
-        purchase.setStatus(Status.INPROCESS);
+        purchase.setStatus(Status.IN_PROCESS);
         purchase.setCost(cost);
         //System.out.println(sum);
         purchases.add(purchase);
@@ -126,6 +115,17 @@ public class PurchaseDaoImpl implements PurchaseDao {
     }
 
     @Override
+    public Purchase createNewPurchase(Client client) {
+        LocalDateTime registration = LocalDateTime.now();
+        Purchase purchase = new Purchase();
+        purchase.setClient(client);
+        purchase.setStatus(Status.NEW);
+        purchase.setRegistration(registration);
+        System.out.println(purchase);
+        return purchase;
+    }
+
+    @Override
     public Purchase changeStatus(Purchase purchase, Status status) {
         purchase.setStatus(status);
         System.out.println(purchase);
@@ -133,34 +133,35 @@ public class PurchaseDaoImpl implements PurchaseDao {
     }
 
     @Override
-    public Purchase addIntoPurchase(int id, int amount,Purchase purchase) throws RepeatitionException {//id Purchase
-
-        if (goods.get(id - 1).getAmount() < amount) {
-            throw new RepeatitionException("The amount of this good in the store is" + " " + goods.get(id - 1).getAmount());
+    public Purchase addIntoPurchase(int goodId, int amount, Purchase purchase) throws RepeatitionException, GoodNotFountException {
+        GoodDao dao = new GoodDaoImpl();
+        Good good = dao.findGoodById(goodId);
+        if (good.getAmount() < amount) {
+            throw new RepeatitionException("The amount of this good in the store is" + " " + good.getAmount());
         }
-        int oldAmount = goods.get(id - 1).getAmount();
-        Good good = new Good();
-        good.setId(id);
-        good.setUnit(goods.get(id - 1).getUnit());
-        good.setDiscount(goods.get(id - 1).getDiscount());
-        good.setPrice(goods.get(id - 1).getPrice());
-        good.setSubsection(goods.get(id - 1).getSubsection());
-        good.setQuantity(goods.get(id - 1).getQuantity());
-        good.setPurpose(goods.get(id - 1).getPurpose());
-        good.setAmount(amount);
-        good.setName(goods.get(id - 1).getName());
-        good.setAmount(amount);
-        purchasesCart.add(good);
-        int newAmount = oldAmount - amount;
-        goods.get(id - 1).setAmount(newAmount);
+        Good newPurchaseGood=new Good();
+        newPurchaseGood.setUnit(good.getUnit());
+        newPurchaseGood.setId(good.getId());
+        newPurchaseGood.setName(good.getName());
+        newPurchaseGood.setQuantity(good.getQuantity());
+        newPurchaseGood.setPurpose(good.getPurpose());
+        newPurchaseGood.setSubsection(good.getSubsection());
+        newPurchaseGood.setDiscount(good.getDiscount());
+        newPurchaseGood.setAmount(amount);
+        newPurchaseGood.setPrice(good.getPrice());
+        good.setAmount(good.getAmount() - amount);
+        dao.updateGood(goodId, good);
+        //good.setAmount(amount);
+        purchasesCart.add(newPurchaseGood);
+        //goods.get(goodId - 1).setAmount(newAmount);
         purchase.setGoods(purchasesCart);
-        double cost=purchase.getGoods().stream().mapToDouble(s ->(s.getPrice() * s.getAmount() - s.getDiscount() * s.getAmount())).sum();
+        double cost = purchase.getGoods().stream().mapToDouble(s -> (s.getPrice() * s.getAmount() - s.getDiscount() * s.getAmount())).sum();
         purchase.setCost(cost);
-        System.out.println("Cost of Purchase="+" "+cost);
+        //System.out.println("Cost of Purchase="+" "+cost);
         System.out.println(purchase);
+        //dao.findAllGoods();
         return purchase;
     }
-
 
 
     @Override
