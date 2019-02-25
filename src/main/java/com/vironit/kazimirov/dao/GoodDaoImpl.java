@@ -55,13 +55,7 @@ public class GoodDaoImpl implements GoodDao {
     @Override
     public Good findByNameGood(String name){
         Good goodName;
-        boolean flag;
-        //flag = goods.stream().noneMatch(s -> (s.getName().equals(name)));
-        /*if (flag == true) {
-            throw new GoodException("This good is absent");
-        } else {*/
             goodName = goods.stream().filter(s -> s.getName().equals(name)).findFirst().get();
-       // }
         System.out.println(goodName.toString());
         return goodName;
     }

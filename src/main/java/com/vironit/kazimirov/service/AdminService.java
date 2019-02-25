@@ -10,7 +10,7 @@ import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 
 import java.util.List;
 
-public interface AdminService {
+public interface AdminService  {
 
     List<Client> addClient(Client client) throws RepeatitionException;
 
