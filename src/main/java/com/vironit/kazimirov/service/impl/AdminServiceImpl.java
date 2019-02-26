@@ -34,10 +34,10 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Client findClientByLogin(String login) throws ClientNotFoundException {
+    public Client findClientByLogin(String login)  throws ClientNotFoundException{
         return adminDao.findClientByLogin(login);
-
     }
+
 
     @Override
     public Client findClientById(int id) throws ClientNotFoundException {

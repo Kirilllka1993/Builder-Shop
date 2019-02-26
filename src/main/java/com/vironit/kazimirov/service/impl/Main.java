@@ -154,6 +154,7 @@ public class Main extends Thread {
             //clientServiceImpl.changePhoneNumber(1,"5698532");
             //clientServiceImpl.removeReview(1,client1);
             //clientServiceImpl.findAllReviews(client1);
+            clientServiceImpl.findAllClients();
         } catch (Exception ex) {
             LOGGER.error(ex);
         }
@@ -171,12 +172,12 @@ public class Main extends Thread {
             //purchaseServiceImpl.makeAPurchase(goods, client1, localDateTime2, localDateTime2, "Оформлен");
             //purchaseServiceImpl.removePurchase(1);
             //System.out.println(purchase1.getStatus());
-            Purchase purchase=purchaseServiceImpl.createNewPurchase(client1);
-            purchaseServiceImpl.addIntoPurchase(2,10,purchase);
-            purchaseServiceImpl.addIntoPurchase(1,5,purchase);
+            //Purchase purchase=purchaseServiceImpl.createNewPurchase(client1);
+            //purchaseServiceImpl.addIntoPurchase(2,10,purchase);
+            //purchaseServiceImpl.addIntoPurchase(1,5,purchase);
             //purchaseServiceImpl.changeStatus(purchase,Status.CANCELED);
-             purchaseServiceImpl.makeAPurchase(purchase);
-             goodServiceImpl1.findAllGoods();
+             //purchaseServiceImpl.makeAPurchase(purchase);
+             //goodServiceImpl1.findAllGoods();
         } catch (Exception ex) {
             LOGGER.error(ex);
         }

@@ -132,6 +132,7 @@ public class ClientDaoImpl implements ClientDao {
 
     @Override
     public List<Client> findAllClients() {
+        clients.stream().forEach(System.out::println);
         return clients;
     }
 

@@ -83,8 +83,8 @@ public class AdminDaoImpl implements AdminDao {
     }
 
     @Override
-    public Client findClientByLogin(String login) throws ClientNotFoundException {//искать по id
-        Client clientName = clients.stream().filter(s -> s.getLogin() == login).findFirst().orElseThrow(() -> new ClientNotFoundException("Such login is absent"));
+    public Client findClientByLogin(String login) throws ClientNotFoundException {
+        Client clientName = clients.stream().filter(s -> s.getLogin().equals( login)).findFirst().orElseThrow(() -> new ClientNotFoundException("Such login is absent"));
         return clientName;
     }
 
