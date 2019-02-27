@@ -55,12 +55,12 @@ public class ClientController extends HttpServlet {
                 "</center>"+
                 "</body>"+
                 "</html>");
-//        printWriter.write("<html>" +
-//                "<title>Client</title>" +
-//                "<body>Hello " + "<br>" +
-//                clientService.findAllClients() +
-//                "</body>" +
-//                "</html>");
+        printWriter.write("<html>" +
+                "<title>Client</title>" +
+                "<body>Hello " + "<br>" +
+                clientService.findAllClients() +
+                "</body>" +
+                "</html>");
     }
 
     @Override
