@@ -36,7 +36,8 @@ public class AdminController extends HttpServlet {
              Client client = new Client(0, name, surname, login, password, adress, phoneNumber);
             List<Client> clients = null;
             try {
-                clients=adminService.addClient(client);
+                adminService.addClient(client);
+                clients=adminService.findAllClient();
                 request.setAttribute("clients",clients);
                 getServletContext().getRequestDispatcher("/WEB-INF/jsp/adminJsp.jsp").forward(request, response);
             } catch (RepeatitionException e) {

@@ -107,7 +107,8 @@ public class Main extends Thread {
         //Admindao
         AdminServiceImpl adminServiceImpl = new AdminServiceImpl();
         try {
-            //adminServiceImpl.addClient("Sergei", "fedorov", "andrei15", "sergei15", "Lenina street", "896564321");
+            Client client=new Client(0, "Andreiq", "Stelmach", "andrei1q", "andrei15", "Majkovski street", "1225689");
+            //adminServiceImpl.addClient(client);
             //adminServiceImpl.deleteClient(4);
             //adminServiceImpl.showAllPurchases();
             //adminServiceImpl.showAllClient();

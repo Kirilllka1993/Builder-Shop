@@ -8,6 +8,11 @@ public class ClientBuilder {
         client = new Client();
     }
 
+    public ClientBuilder withId(int id) {
+        client.setId(id);
+        return this;
+    }
+
     public ClientBuilder withName(String name) {
         client.setName(name);
         return this;

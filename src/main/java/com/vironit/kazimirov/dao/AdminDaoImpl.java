@@ -64,22 +64,20 @@ public class AdminDaoImpl implements AdminDao {
 
 
     @Override
-    public List<Client> addClient(Client client) throws RepeatitionException {
+    public void addClient(Client client) throws RepeatitionException {
         int lastIndex = clients.size();
         if (clients.stream().anyMatch(s -> s.getLogin().equals(client.getLogin()))) {
             throw new RepeatitionException("Such login is using");
         }
         clients.add(client);
         client.setId(lastIndex + 1);
-        return clients;
     }
 
     @Override
-    public List<Client> deleteClient(int id) {
+    public void deleteClient(int id) {
 
         Client client = clients.stream().filter(s -> s.getId() == id).findFirst().get();
         clients.remove(client);
-        return clients;
     }
 
     @Override

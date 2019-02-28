@@ -12,7 +12,6 @@
     <title>Purchase</title>
 </head>
 <body>
-<%--<p><c:out value="${purchases}"/></p>--%>
 <ul>
     <c:forEach var="purchase" items="${purchases}">
     <li><c:out value="${purchase}" /></li>

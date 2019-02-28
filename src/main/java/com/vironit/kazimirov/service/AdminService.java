@@ -12,9 +12,9 @@ import java.util.List;
 
 public interface AdminService  {
 
-    List<Client> addClient(Client client) throws RepeatitionException;
+    void addClient(Client client) throws RepeatitionException;
 
-    List<Client> deleteClient(int id);
+    void deleteClient(int id);
 
     Client findClientByLogin(String login) throws ClientNotFoundException;
 

@@ -22,14 +22,14 @@ public class AdminServiceImpl implements AdminService {
 
 
     @Override
-    public List<Client> addClient(Client client) throws RepeatitionException {
-        return adminDao.addClient(client);
+    public void addClient(Client client) throws RepeatitionException {
+        adminDao.addClient(client);
 
     }
 
     @Override
-    public List<Client> deleteClient(int id) {
-        return adminDao.deleteClient(id);
+    public void deleteClient(int id) {
+        adminDao.deleteClient(id);
 
     }
 

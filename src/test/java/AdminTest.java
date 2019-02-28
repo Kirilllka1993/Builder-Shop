@@ -25,7 +25,8 @@ public class AdminTest {
     public void createClient() {
 
         ClientBuilder clientBuilder1 = new ClientBuilder();
-        clientBeforeTest = clientBuilder1.withName("Artem")
+        clientBeforeTest = clientBuilder1.withId(0)
+                .withName("Artem")
                 .withSurname("Pupkin")
                 .withLogin("artem15")
                 .withPassword("artem15")
