@@ -1,11 +1,14 @@
 package com.vironit.kazimirov.service.impl;
 
 
+import com.vironit.kazimirov.daoJdbc.AdminDaoImplJdbs;
 import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.exception.*;
 import com.vironit.kazimirov.service.ClientService;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
@@ -19,7 +22,7 @@ public class Main extends Thread {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
 
-    public static void main(String[] args) throws RepeatitionException, ClientNotFoundException, PurchaseNotFoundException, PurchaseException, GoodException, IOException {
+    public static void main(String[] args) throws RepeatitionException, ClientNotFoundException, PurchaseNotFoundException, PurchaseException, GoodException, IOException, SQLException {
         LOGGER.info("method is started");
         List<Good> goods = new ArrayList<>();
         List<Client> clients = new ArrayList<>();
@@ -183,6 +186,12 @@ public class Main extends Thread {
             LOGGER.error(ex);
         }
         LOGGER.info("The programm end work");
+
+        //Jdbc
+        Client client=new Client(0, "Andreiq", "Stelmach", "andrei1q", "andrei15", "Majkovski street", "1225689");
+        AdminDaoImplJdbs adminDaoImplJdbs=new AdminDaoImplJdbs();
+        adminDaoImplJdbs.addClient(client);
+
     }
 }
 

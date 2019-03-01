@@ -1,7 +1,7 @@
 package com.vironit.kazimirov.service.impl;
 
-import com.vironit.kazimirov.dao.ClientDaoImpl;
-import com.vironit.kazimirov.dao.DaoInterface.ClientDao;
+import com.vironit.kazimirov.fakedao.ClientDaoImpl;
+import com.vironit.kazimirov.fakedao.DaoInterface.ClientDao;
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Review;
 import com.vironit.kazimirov.exception.RepeatitionException;

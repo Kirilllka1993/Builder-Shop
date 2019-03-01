@@ -1,7 +1,7 @@
 package com.vironit.kazimirov.threads;
 
-import com.vironit.kazimirov.dao.DaoInterface.GoodDao;
-import com.vironit.kazimirov.dao.GoodDaoImpl;
+import com.vironit.kazimirov.fakedao.DaoInterface.GoodDao;
+import com.vironit.kazimirov.fakedao.GoodDaoImpl;
 
 public class GoodThread implements Runnable {
     private GoodDao goodDao;

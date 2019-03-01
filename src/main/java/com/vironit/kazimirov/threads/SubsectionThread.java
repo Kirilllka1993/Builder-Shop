@@ -1,7 +1,7 @@
 package com.vironit.kazimirov.threads;
 
-import com.vironit.kazimirov.dao.DaoInterface.SubsectionDao;
-import com.vironit.kazimirov.dao.SubsectionDaoImpl;
+import com.vironit.kazimirov.fakedao.DaoInterface.SubsectionDao;
+import com.vironit.kazimirov.fakedao.SubsectionDaoImpl;
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.exception.RepeatitionException;
 

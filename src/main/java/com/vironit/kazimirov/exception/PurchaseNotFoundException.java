@@ -1,9 +1,5 @@
 package com.vironit.kazimirov.exception;
 
-import com.vironit.kazimirov.dao.PurposeDaoImpl;
-import com.vironit.kazimirov.service.impl.Main;
-import org.apache.log4j.Logger;
-
 public class PurchaseNotFoundException extends Exception {
 
     public PurchaseNotFoundException() {

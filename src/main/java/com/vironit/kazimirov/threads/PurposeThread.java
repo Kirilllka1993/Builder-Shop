@@ -1,8 +1,7 @@
 package com.vironit.kazimirov.threads;
 
-import com.vironit.kazimirov.dao.DaoInterface.PurposeDao;
-import com.vironit.kazimirov.dao.PurposeDaoImpl;
-import com.vironit.kazimirov.service.PurposeService;
+import com.vironit.kazimirov.fakedao.DaoInterface.PurposeDao;
+import com.vironit.kazimirov.fakedao.PurposeDaoImpl;
 
 public class PurposeThread extends Thread {
     private PurposeDao purposeDao;

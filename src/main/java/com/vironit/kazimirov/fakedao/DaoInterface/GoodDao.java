@@ -1,4 +1,4 @@
-package com.vironit.kazimirov.dao.DaoInterface;
+package com.vironit.kazimirov.fakedao.DaoInterface;
 
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purpose;

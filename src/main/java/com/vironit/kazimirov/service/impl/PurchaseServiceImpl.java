@@ -1,7 +1,7 @@
 package com.vironit.kazimirov.service.impl;
 
-import com.vironit.kazimirov.dao.DaoInterface.PurchaseDao;
-import com.vironit.kazimirov.dao.PurchaseDaoImpl;
+import com.vironit.kazimirov.fakedao.DaoInterface.PurchaseDao;
+import com.vironit.kazimirov.fakedao.PurchaseDaoImpl;
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purchase;

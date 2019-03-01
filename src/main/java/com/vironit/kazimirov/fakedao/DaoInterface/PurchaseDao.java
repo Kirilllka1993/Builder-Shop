@@ -1,4 +1,4 @@
-package com.vironit.kazimirov.dao.DaoInterface;
+package com.vironit.kazimirov.fakedao.DaoInterface;
 
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Good;
@@ -11,7 +11,6 @@ import com.vironit.kazimirov.exception.RepeatitionException;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.regex.PatternSyntaxException;
 
 public interface PurchaseDao {
     List<Purchase> findPurchases();

@@ -1,6 +1,6 @@
-package com.vironit.kazimirov.dao;
+package com.vironit.kazimirov.fakedao;
 
-import com.vironit.kazimirov.dao.DaoInterface.PurposeDao;
+import com.vironit.kazimirov.fakedao.DaoInterface.PurposeDao;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.exception.RepeatitionException;
 

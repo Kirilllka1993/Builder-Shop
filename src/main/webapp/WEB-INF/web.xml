@@ -11,4 +11,5 @@
         <servlet-name>admin</servlet-name>
         <url-pattern>/adminJsp</url-pattern>
     </servlet-mapping>
+<request-character-encoding>UTF-8</request-character-encoding>
 </web-app>

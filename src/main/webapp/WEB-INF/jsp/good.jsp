@@ -21,7 +21,10 @@
         <input type=submit value=Back>
     </form>
 </ul>
-<%@include file="adminJsp.jsp"%>
+<%--<%@include file="adminJsp.jsp"%>--%>
+<form method=post action=goodController>
+    <input type=submit value=show all goods>
+</form>
 <%--<jsp:forward page="client.jsp"></jsp:forward>--%>
 </body>
 </html>

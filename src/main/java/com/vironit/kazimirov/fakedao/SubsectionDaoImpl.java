@@ -1,6 +1,6 @@
-package com.vironit.kazimirov.dao;
+package com.vironit.kazimirov.fakedao;
 
-import com.vironit.kazimirov.dao.DaoInterface.SubsectionDao;
+import com.vironit.kazimirov.fakedao.DaoInterface.SubsectionDao;
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.exception.RepeatitionException;
 

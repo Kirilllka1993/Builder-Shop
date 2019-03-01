@@ -46,6 +46,9 @@
 <form method=get action=backServlet>
     <input type=submit value=Back>
 </form>
+<form method=post action=adminController>
+    <input type=submit value=delete>
+</form>
 
 </body>
 </html>

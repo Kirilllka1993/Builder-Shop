@@ -23,7 +23,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <!--<webXml>web.xml</webXml>-->
+                    <!--<webXml>src/main/webapp/WEB-INF/web.xml</webXml>-->
                 </configuration>
             </plugin>
         </plugins>
@@ -72,6 +72,11 @@
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.15</version>
         </dependency>
     </dependencies>
 

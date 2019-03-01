@@ -1,7 +1,7 @@
 package com.vironit.kazimirov.service.impl;
 
-import com.vironit.kazimirov.dao.AdminDaoImpl;
-import com.vironit.kazimirov.dao.DaoInterface.AdminDao;
+import com.vironit.kazimirov.fakedao.AdminDaoImpl;
+import com.vironit.kazimirov.fakedao.DaoInterface.AdminDao;
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purchase;

@@ -1,6 +1,6 @@
-package com.vironit.kazimirov.dao;
+package com.vironit.kazimirov.fakedao;
 
-import com.vironit.kazimirov.dao.DaoInterface.GoodDao;
+import com.vironit.kazimirov.fakedao.DaoInterface.GoodDao;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;

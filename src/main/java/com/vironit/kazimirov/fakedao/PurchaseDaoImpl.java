@@ -1,7 +1,7 @@
-package com.vironit.kazimirov.dao;
+package com.vironit.kazimirov.fakedao;
 
-import com.vironit.kazimirov.dao.DaoInterface.GoodDao;
-import com.vironit.kazimirov.dao.DaoInterface.PurchaseDao;
+import com.vironit.kazimirov.fakedao.DaoInterface.GoodDao;
+import com.vironit.kazimirov.fakedao.DaoInterface.PurchaseDao;
 import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.exception.GoodNotFountException;
 import com.vironit.kazimirov.exception.PurchaseException;
@@ -159,7 +159,7 @@ public class PurchaseDaoImpl implements PurchaseDao {
         purchase.setCost(cost);
         //System.out.println("Cost of Purchase="+" "+cost);
         System.out.println(purchase);
-        //dao.findAllGoods();
+        //fakedao.findAllGoods();
         return purchase;
     }
 

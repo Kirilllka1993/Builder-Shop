@@ -1,7 +1,7 @@
 package com.vironit.kazimirov.service.impl;
 
-import com.vironit.kazimirov.dao.DaoInterface.GoodDao;
-import com.vironit.kazimirov.dao.GoodDaoImpl;
+import com.vironit.kazimirov.fakedao.DaoInterface.GoodDao;
+import com.vironit.kazimirov.fakedao.GoodDaoImpl;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
