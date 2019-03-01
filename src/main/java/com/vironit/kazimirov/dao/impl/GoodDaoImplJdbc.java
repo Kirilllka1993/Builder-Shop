@@ -1,6 +1,5 @@
-package com.vironit.kazimirov.daoJdbc;
+package com.vironit.kazimirov.dao.impl;
 
-import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Subsection;
 
 import java.sql.Connection;

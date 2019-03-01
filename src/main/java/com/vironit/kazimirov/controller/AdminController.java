@@ -1,8 +1,7 @@
 package com.vironit.kazimirov.controller;
 
-import com.vironit.kazimirov.daoJdbc.AdminDaoImplJdbs;
+import com.vironit.kazimirov.dao.impl.AdminDaoImplJdbs;
 import com.vironit.kazimirov.entity.Client;
-import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.impl.AdminServiceImpl;
 

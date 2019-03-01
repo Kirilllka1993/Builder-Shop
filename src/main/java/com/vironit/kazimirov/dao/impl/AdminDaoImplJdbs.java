@@ -1,4 +1,4 @@
-package com.vironit.kazimirov.daoJdbc;
+package com.vironit.kazimirov.dao.impl;
 
 import com.vironit.kazimirov.entity.Client;
 

@@ -1,13 +1,12 @@
 package com.vironit.kazimirov.service.impl;
 
 
-import com.vironit.kazimirov.daoJdbc.AdminDaoImplJdbs;
+import com.vironit.kazimirov.dao.impl.AdminDaoImplJdbs;
 import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.exception.*;
 import com.vironit.kazimirov.service.ClientService;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.Month;
