@@ -7,10 +7,12 @@ import com.vironit.kazimirov.entity.Status;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 public interface AdminDao {
+
     void addClient(Client client) throws RepeatitionException;
 
     void deleteClient(int id);

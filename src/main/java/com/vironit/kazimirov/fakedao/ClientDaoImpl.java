@@ -3,11 +3,12 @@ package com.vironit.kazimirov.fakedao;
 import com.vironit.kazimirov.fakedao.DaoInterface.ClientDao;
 import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.exception.RepeatitionException;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Component
 public class ClientDaoImpl implements ClientDao {
     private List<Review> reviews = new ArrayList<>();
     private List<Client> clients = new ArrayList<>();

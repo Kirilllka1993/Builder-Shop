@@ -8,12 +8,14 @@ import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.exception.GoodException;
 import com.vironit.kazimirov.exception.GoodNotFountException;
 import com.vironit.kazimirov.service.GoodService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-
+@Component
 public class GoodServiceImpl implements GoodService {
     private GoodDao goodDao;
-
+    @Autowired
     public GoodServiceImpl() {
         goodDao = new GoodDaoImpl();
     }

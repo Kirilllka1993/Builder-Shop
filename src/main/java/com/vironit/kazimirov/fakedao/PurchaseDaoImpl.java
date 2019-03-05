@@ -7,13 +7,14 @@ import com.vironit.kazimirov.exception.GoodNotFountException;
 import com.vironit.kazimirov.exception.PurchaseException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Component
 public class PurchaseDaoImpl implements PurchaseDao {
     private List<Purchase> purchases = new ArrayList<>();
     private List<Good> goods = new ArrayList<>();

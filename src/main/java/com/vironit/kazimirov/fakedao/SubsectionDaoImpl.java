@@ -3,11 +3,12 @@ package com.vironit.kazimirov.fakedao;
 import com.vironit.kazimirov.fakedao.DaoInterface.SubsectionDao;
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.exception.RepeatitionException;
+import org.springframework.stereotype.Component;
 
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Component
 public class SubsectionDaoImpl implements SubsectionDao {
     private List<Subsection> subsections = new ArrayList<>();
 

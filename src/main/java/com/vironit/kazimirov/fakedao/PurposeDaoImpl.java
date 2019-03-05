@@ -3,10 +3,11 @@ package com.vironit.kazimirov.fakedao;
 import com.vironit.kazimirov.fakedao.DaoInterface.PurposeDao;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.exception.RepeatitionException;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Component
 public class PurposeDaoImpl implements PurposeDao {
     private List<Purpose> purposes = new ArrayList<>();
 

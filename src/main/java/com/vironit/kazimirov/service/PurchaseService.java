@@ -9,6 +9,7 @@ import com.vironit.kazimirov.exception.PurchaseException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface PurchaseService {
     List<Purchase> findPurchases();
 
 
-    Purchase createNewPurchase(Client client);//не используется нигде
+    Purchase createNewPurchase(Client client);
 
     Purchase makeAPurchase(Purchase purchase) throws PurchaseException;
 
@@ -29,7 +30,7 @@ public interface PurchaseService {
 
     List<Good> findGoods();
 
-    Purchase changeStatus (Purchase purchase,Status status);
+    Purchase changeStatus(Purchase purchase, Status status);
 
     void removePurchase(int id) throws PurchaseException;
 

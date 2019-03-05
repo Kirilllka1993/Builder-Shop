@@ -6,11 +6,12 @@ import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.exception.GoodException;
 import com.vironit.kazimirov.exception.GoodNotFountException;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Component
 public class GoodDaoImpl implements GoodDao {
     private List<Good> goods = new ArrayList<>();
 

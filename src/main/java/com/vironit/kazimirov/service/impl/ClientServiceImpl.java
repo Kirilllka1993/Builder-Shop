@@ -6,13 +6,15 @@ import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Review;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.ClientService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-
+@Component
 public class ClientServiceImpl implements ClientService {
 
     private ClientDao clientDao;
-
+    @Autowired
     public ClientServiceImpl() {
         clientDao = new ClientDaoImpl();
     }

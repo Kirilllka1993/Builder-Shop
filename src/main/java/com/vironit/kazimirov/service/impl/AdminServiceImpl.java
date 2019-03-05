@@ -10,12 +10,16 @@ import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 import com.vironit.kazimirov.service.AdminService;
+import org.springframework.beans.factory.annotation.Autowired;
+
 
 import java.util.List;
 
 public class AdminServiceImpl implements AdminService {
+
     private AdminDao adminDao;
 
+    @Autowired
     public AdminServiceImpl() {
         adminDao = new AdminDaoImpl();
     }
