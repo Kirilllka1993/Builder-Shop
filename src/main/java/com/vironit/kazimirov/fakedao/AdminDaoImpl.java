@@ -96,18 +96,15 @@ public class AdminDaoImpl implements AdminDao {
     @Override
     public void changeDiscount(int id, double discount) {
         goods.get(id - 1).setDiscount(discount);
-        goods.stream().forEach(System.out::println);
     }
 
     @Override
     public List<Purchase> findAllPurchases() {
-        purchases.stream().forEach(System.out::println);
         return purchases;
     }
 
     @Override
     public List<Client> findAllClient() {
-        clients.stream().forEach(System.out::println);
         return clients;
     }
 
@@ -121,7 +118,6 @@ public class AdminDaoImpl implements AdminDao {
         } catch (NoSuchElementException e) {
             throw new PurchaseNotFoundException("This purchase is absent in base", e.getCause());
         }
-        System.out.println(purchase);
         return purchase;
 
     }

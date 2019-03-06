@@ -35,7 +35,6 @@ public class PurposeDaoImpl implements PurposeDao {
 
     @Override
     public List<Purpose> findPurposes() {
-        purposes.stream().forEach(System.out::println);
         return purposes;
     }
 }

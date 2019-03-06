@@ -57,13 +57,11 @@ public class GoodDaoImpl implements GoodDao {
     public Good findByNameGood(String name){
         Good goodName;
             goodName = goods.stream().filter(s -> s.getName().equals(name)).findFirst().get();
-        System.out.println(goodName.toString());
         return goodName;
     }
 
     @Override
     public List<Good> findAllGoods() {
-        goods.stream().forEach(System.out::println);
         return goods;
     }
 
@@ -88,7 +86,6 @@ public class GoodDaoImpl implements GoodDao {
         }
         Good good = goods.stream().filter(s -> s.getId() == id).findFirst().get();
         goods.remove(good);
-        goods.stream().forEach(System.out::println);
     }
 
     @Override

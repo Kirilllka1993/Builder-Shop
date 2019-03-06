@@ -64,7 +64,6 @@ public class ClientDaoImpl implements ClientDao {
     public void removeReview(int id, Client client) {
         Review review = reviews.stream().filter(review1 -> review1.getId() == id && review1.getClient().equals(client)).findFirst().get();
         reviews.remove(review);
-        reviews.stream().forEach(System.out::println);
     }
 
     @Override
@@ -72,7 +71,6 @@ public class ClientDaoImpl implements ClientDao {
         if (clients.stream().anyMatch(s -> s.getLogin().equals(login) && s.getPassword().equals(password)) == false) {
             throw new RepeatitionException("It is doesnt't correct entered login or password");
         }
-        System.out.println("Hello" + " " + login);
     }
 
     @Override
@@ -89,10 +87,6 @@ public class ClientDaoImpl implements ClientDao {
         }
         clients.add(client);
         client.setId(lastIndex + 1);
-
-        for (Client client2 : clients) {
-            System.out.println(client2 + "\n");
-        }
     }
 
 
@@ -103,37 +97,26 @@ public class ClientDaoImpl implements ClientDao {
             throw new RepeatitionException("Such login is using");
         }
         clients.get(id - 1).setLogin(login);
-        for (Client client2 : clients) {
-            System.out.println(client2 + "\n");
-        }
     }
 
     @Override
     public void changePassword(int id, String password) {
         clients.get(id - 1).setPassword(password);
-        clients.stream().forEach(System.out::println);
     }
 
     @Override
     public void changePhoneNumber(int id, String phoneNumber) {
         clients.get(id - 1).setPhoneNumber(phoneNumber);
-        for (Client client2 : clients) {
-            System.out.println(client2 + "\n");
-        }
     }
 
     @Override
     public void changeAddress(int id, String adress) {
 
         clients.get(id - 1).setAddress(adress);
-        for (Client client2 : clients) {
-            System.out.println(client2 + "\n");
-        }
     }
 
     @Override
     public List<Client> findAllClients() {
-        clients.stream().forEach(System.out::println);
         return clients;
     }
 

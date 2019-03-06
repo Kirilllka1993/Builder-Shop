@@ -35,7 +35,6 @@ public class SubsectionDaoImpl implements SubsectionDao {
     }
 
     public List<Subsection> findSubsections() {
-        subsections.stream().forEach(System.out::println);
         return subsections;
     }
 }

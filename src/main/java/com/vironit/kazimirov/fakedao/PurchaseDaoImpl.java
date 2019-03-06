@@ -79,7 +79,6 @@ public class PurchaseDaoImpl implements PurchaseDao {
 
     @Override
     public List<Purchase> findPurchases() {
-        purchases.stream().forEach(System.out::println);
         return purchases;
     }
 
@@ -97,12 +96,8 @@ public class PurchaseDaoImpl implements PurchaseDao {
         purchase.setPurchase(localDateTime);
         purchase.setStatus(Status.IN_PROCESS);
         purchase.setCost(cost);
-        //System.out.println(sum);
         purchases.add(purchase);
-
-
         purchase.setId(purchases.size());
-        System.out.println(purchase);
         return purchase;
     }
 
@@ -112,7 +107,6 @@ public class PurchaseDaoImpl implements PurchaseDao {
         }
         Purchase purchase = purchases.stream().filter(s -> s.getId() == id).findFirst().get();
         purchases.remove(purchase);
-        purchases.stream().forEach(System.out::println);
     }
 
     @Override
@@ -122,14 +116,12 @@ public class PurchaseDaoImpl implements PurchaseDao {
         purchase.setClient(client);
         purchase.setStatus(Status.NEW);
         purchase.setRegistration(registration);
-        System.out.println(purchase);
         return purchase;
     }
 
     @Override
     public Purchase changeStatus(Purchase purchase, Status status) {
         purchase.setStatus(status);
-        System.out.println(purchase);
         return purchase;
     }
 
@@ -152,15 +144,10 @@ public class PurchaseDaoImpl implements PurchaseDao {
         newPurchaseGood.setPrice(good.getPrice());
         good.setAmount(good.getAmount() - amount);
         dao.updateGood(goodId, good);
-        //good.setAmount(amount);
         purchasesCart.add(newPurchaseGood);
-        //goods.get(goodId - 1).setAmount(newAmount);
         purchase.setGoods(purchasesCart);
         double cost = purchase.getGoods().stream().mapToDouble(s -> (s.getPrice() * s.getAmount() - s.getDiscount() * s.getAmount())).sum();
         purchase.setCost(cost);
-        //System.out.println("Cost of Purchase="+" "+cost);
-        System.out.println(purchase);
-        //fakedao.findAllGoods();
         return purchase;
     }
 
