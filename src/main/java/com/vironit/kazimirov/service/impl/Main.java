@@ -1,23 +1,17 @@
 package com.vironit.kazimirov.service.impl;
 
 
-import com.vironit.kazimirov.config.ServiceComponentConfig;
-import com.vironit.kazimirov.config.ServiceConfig;
-import com.vironit.kazimirov.dao.impl.AdminDaoImplJdbs;
+import com.vironit.kazimirov.config.ApplicationConfig;
 import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.exception.*;
-import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.ClientService;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.vironit.kazimirov.service.GoodService;
-import com.vironit.kazimirov.service.PurchaseService;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -199,10 +193,7 @@ public class Main extends Thread {
 //        adminDaoImplJdbs.addClient(client);
 
         //Spring
-//        ApplicationContext ctx=new AnnotationConfigApplicationContext(ServiceConfig.class);
-//        AdminService adminService=ctx.getBean(AdminService.class);
-//        adminService.findAllClient();
-        ApplicationContext ctx1=new AnnotationConfigApplicationContext(ServiceComponentConfig.class);
+        ApplicationContext ctx1=new AnnotationConfigApplicationContext(ApplicationConfig.class);
         GoodService goodService=ctx1.getBean(GoodServiceImpl.class);
         goodService.findAllGoods();
         System.out.println(goodService.findGoodById(2));

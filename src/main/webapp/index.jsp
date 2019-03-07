@@ -16,7 +16,8 @@
   <a href="adminController">Page for admin</a><br>
   <a href="clientController">Page for client</a><br>
   <a href="goodController">Page for good</a><br>
-  <a href="purchaseController">Page for purchase</a>
+  <a href="purchaseController">Page for purchase</a><br>
+  <a href="main">spring</a>
 
   </body>
 </html>

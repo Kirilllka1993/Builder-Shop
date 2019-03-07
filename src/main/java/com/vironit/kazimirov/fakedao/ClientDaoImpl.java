@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Component
 public class ClientDaoImpl implements ClientDao {
     private List<Review> reviews = new ArrayList<>();
@@ -122,8 +123,8 @@ public class ClientDaoImpl implements ClientDao {
 
     @Override
     public List<Review> findAllReviews(Client client) {
-        List<Review> reviewsByClient=new ArrayList<>();
-        reviewsByClient=reviews.stream().filter(review -> review.getClient().equals(client)).collect(Collectors.toList());
+        List<Review> reviewsByClient = new ArrayList<>();
+        reviewsByClient = reviews.stream().filter(review -> review.getClient().equals(client)).collect(Collectors.toList());
         return reviewsByClient;
     }
 }
