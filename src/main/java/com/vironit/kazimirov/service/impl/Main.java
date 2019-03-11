@@ -71,26 +71,6 @@ public class Main extends Thread {
         purchases.add(purchase4);
 
 
-       /* BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-        String command = bf.readLine();
-        System.out.println(Thread.currentThread().getName());
-        switch (command) {
-            case "Show Subsections":
-                SubsectionThread subsectionThread = new SubsectionThread();
-                subsectionThread.start();
-                break;
-            case "Show Purposes":
-                PurposeThread purposeThread = new PurposeThread();
-                purposeThread.start();
-                break;
-            default:
-                GoodThread goodThread = new GoodThread();
-                Thread goodService = new Thread(goodThread);
-                goodService.start();
-                break;
-        }*/
-
-
         //GooDao
         GoodServiceImpl goodServiceImpl1 = new GoodServiceImpl();
         try {
