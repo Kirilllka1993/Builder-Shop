@@ -9,13 +9,14 @@ import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface AdminDao {
 
-    void addClient(Client client) throws RepeatitionException;
+    void addClient(Client client) throws RepeatitionException, SQLException;
 
-    void deleteClient(int id);
+    void deleteClient(int id) throws SQLException;
 
     Client findClientByLogin(String login) throws ClientNotFoundException;
 
@@ -25,7 +26,7 @@ public interface AdminDao {
 
     List<Purchase> findAllPurchases();
 
-    List<Client> findAllClient();
+    List<Client> findAllClient() throws SQLException;
 
     Purchase findPurchasebyId(int id) throws PurchaseNotFoundException;
 

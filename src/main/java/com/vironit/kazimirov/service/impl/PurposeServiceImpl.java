@@ -6,10 +6,10 @@ import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.PurposeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-@Component
+@Service
 public class PurposeServiceImpl implements PurposeService {
     private PurposeDao purposeDao;
 

@@ -25,7 +25,7 @@ import java.util.List;
 public class HomeController {
     private AdminService adminService;
 
-    @RequestMapping(value = "/main", method = RequestMethod.GET)
+    @RequestMapping("/showSubsection") // method = RequestMethod.GET
     public String showForm(ModelMap map) {
         map.addAttribute("mess", "Hi! Here work Spring");
         //map.addAttribute("clients",adminService.findAllClient());
@@ -54,7 +54,7 @@ public class HomeController {
             e.printStackTrace();
         }
 
-        return "main";
+        return "";
     }
 
 }

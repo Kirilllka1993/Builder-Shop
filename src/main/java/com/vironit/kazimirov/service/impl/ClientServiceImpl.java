@@ -7,10 +7,10 @@ import com.vironit.kazimirov.entity.Review;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-@Component
+@Service
 public class ClientServiceImpl implements ClientService {
 
     private ClientDao clientDao;

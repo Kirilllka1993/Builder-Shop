@@ -8,13 +8,14 @@ import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface AdminService  {
 
-    void addClient(Client client) throws RepeatitionException;
+    void addClient(Client client) throws RepeatitionException, SQLException;
 
-    void deleteClient(int id);
+    void deleteClient(int idClient) throws SQLException;
 
     Client findClientByLogin(String login) throws ClientNotFoundException;
 
@@ -24,7 +25,7 @@ public interface AdminService  {
 
     List<Purchase> findAllPurchases();
 
-    List<Client> findAllClient();
+    List<Client> findAllClient() throws SQLException;
 
     Purchase findPurchasebyId(int id) throws PurchaseNotFoundException;
 

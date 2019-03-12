@@ -13,7 +13,7 @@
 </head>
 <body>
 <h2>Admin Page</h2> <br>
-<form method=post action=adminController>
+<form method=post action=addClient>
     <p>Add client</p>
     <table>
         <tr>
@@ -42,12 +42,17 @@
         </tr>
     </table>
 </form>
-<p><c:out value="${clients}"/></p>
-<form method=get action=backServlet>
+<form method=get action=back>
     <input type=submit value=Back>
 </form>
-<form method=post action=adminController>
+<form method=post action=deleteClient>
+    <input type="text" name="number">
     <input type=submit value=delete>
+</form>
+<form method=get action=showClient>
+    <p><c:out value="${clients}"/><br></p>
+    <input type=submit value="show clients">
+
 </form>
 
 </body>

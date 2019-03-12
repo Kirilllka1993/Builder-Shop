@@ -1,81 +1,68 @@
 package com.vironit.kazimirov.controller;
 
-import com.vironit.kazimirov.dao.impl.AdminDaoImplJdbs;
 import com.vironit.kazimirov.entity.Client;
+import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.AdminService;
-import com.vironit.kazimirov.service.impl.AdminServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/adminController")
-public class AdminController extends HttpServlet {
-    private AdminService adminService = new AdminServiceImpl();
-    //private AdminDaoImplJdbs adminDaoImplJdbs=new AdminDaoImplJdbs();
-   
+@Controller
+public class AdminController {
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Client> clients = adminService.findAllClient();
-        request.setAttribute("clients", clients);
-        getServletContext().getRequestDispatcher("/WEB-INF/jsp/adminJsp.jsp").forward(request, response);
-        // response.sendRedirect();
+    @Autowired
+    private AdminService adminService;
+
+
+
+    @RequestMapping(value = "/adminPage", method = RequestMethod.GET)
+    public void redirectExample(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/jsp/adminJsp.jsp").forward(request, response);
     }
 
+    @GetMapping(value = "/back")
+    public void back(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/index.jsp").forward(request, response);
+    }
 
+    @RequestMapping("/showClient")
+    public String showForm(ModelMap map) throws SQLException {
+        List<Client> clients = adminService.findAllClient();
+        map.addAttribute("clients", clients);
+        return "adminJsp";
+    }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        final String URL = "jdbc:mysql://localhost:3306/shop?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-        final String USERNAME = "root";
-        final String PASSWORD = "1111";
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        Connection connection = null;
-        try {
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        } catch (SQLException e) {
-            System.out.println("SqlException ");
-        }
-        AdminDaoImplJdbs adminDaoImplJdbs=new AdminDaoImplJdbs(connection);
-        Client client=null;
-        String name = request.getParameter("name");
-        String surname = request.getParameter("surname");
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
-        String adress = request.getParameter("adress");
-        String phoneNumber = request.getParameter("phoneNumber");
+    @RequestMapping(value = "/addClient", method = RequestMethod.POST)
+    @ResponseBody
+    public String addClient(@RequestParam("name") String name,
+                            @RequestParam("surname") String surname,
+                            @RequestParam("login") String login,
+                            @RequestParam("password") String password,
+                            @RequestParam("adress") String adress,
+                            @RequestParam("phoneNumber") String phoneNumber) throws RepeatitionException, SQLException {
+        Client client = new Client();
+        client.setName(name);
+        client.setSurname(surname);
+        client.setLogin(login);
+        client.setPassword(password);
+        client.setAddress(adress);
+        client.setPhoneNumber(phoneNumber);
+        adminService.addClient(client);
+        return "Congratulate! You Add!";
+    }
 
+    @PostMapping ("/deleteClient")
+    public String deleteClient (@RequestParam("number") int id) throws SQLException {
 
-            client=new Client(0, name, surname, login, password, adress, phoneNumber);
-        try {
-            adminDaoImplJdbs.addClient(client);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            adminDaoImplJdbs.deleteClient("2");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-//            try {
-//                adminService.addClient(client);
-//                clients=adminService.findAllClient();
-//                request.setAttribute("clients",clients);
-//                getServletContext().getRequestDispatcher("/WEB-INF/jsp/adminJsp.jsp").forward(request, response);
-//            } catch (RepeatitionException e) {
-//                e.printStackTrace();
-//            }
+        adminService.deleteClient(id);
+        return "adminJsp";
     }
 }

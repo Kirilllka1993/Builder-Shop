@@ -6,10 +6,10 @@ import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.SubsectionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-@Component
+@Service
 public class SubsectionServiceImpl implements SubsectionService {
 
     private SubsectionDao subsectionDao;

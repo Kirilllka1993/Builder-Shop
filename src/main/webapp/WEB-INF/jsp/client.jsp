@@ -12,9 +12,10 @@
 <form method=post action=clientController>
     <p>Add client</p>
 
-<p>Name</p><input type=text name=name>
+
+    <input type=text name=name><p>Name</p>
     <br>
-    <input type=text name=surname>
+    <input type=text name=surname><p>Surname</p>
     <br>
     <input type=text name=login>
     <br>

@@ -1,7 +1,6 @@
 package com.vironit.kazimirov.service.impl;
 
 
-import com.vironit.kazimirov.config.ApplicationConfig;
 import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.exception.*;
 import com.vironit.kazimirov.service.ClientService;
@@ -11,10 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.vironit.kazimirov.service.GoodService;
 import org.apache.log4j.Logger;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Main extends Thread {
 
@@ -173,10 +169,10 @@ public class Main extends Thread {
 //        adminDaoImplJdbs.addClient(client);
 
         //Spring
-        ApplicationContext ctx1=new AnnotationConfigApplicationContext(ApplicationConfig.class);
-        GoodService goodService=ctx1.getBean(GoodServiceImpl.class);
-        goodService.findAllGoods();
-        System.out.println(goodService.findGoodById(2));
+//        ApplicationContext ctx1=new AnnotationConfigApplicationContext(ApplicationConfig.class);
+//        GoodService goodService=ctx1.getBean(GoodServiceImpl.class);
+//        goodService.findAllGoods();
+//        System.out.println(goodService.findGoodById(2));
 //        ApplicationContext ctx1=new AnnotationConfigApplicationContext(ServiceComponentConfig.class);
 //        PurchaseService purchaseService=ctx1.getBean(PurchaseServiceImpl.class);
 //        purchaseService.findPurchases();

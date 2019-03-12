@@ -12,13 +12,13 @@ import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.vironit.kazimirov.entity.Status.CANCELED;
-@Component
+@Service
 public class PurchaseServiceImpl implements PurchaseService {
     @Autowired
     private PurchaseDao purchaseDao;

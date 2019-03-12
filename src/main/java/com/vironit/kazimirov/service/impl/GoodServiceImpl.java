@@ -9,10 +9,10 @@ import com.vironit.kazimirov.exception.GoodException;
 import com.vironit.kazimirov.exception.GoodNotFountException;
 import com.vironit.kazimirov.service.GoodService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-@Component
+@Service
 public class GoodServiceImpl implements GoodService {
     private GoodDao goodDao;
     @Autowired

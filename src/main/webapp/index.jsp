@@ -13,11 +13,12 @@
   <body>
   Hello<br>
   Please choose the command<br>
-  <a href="adminController">Page for admin</a><br>
+  <a href="adminPage">Page for admin Spring</a><br>
   <a href="clientController">Page for client</a><br>
   <a href="goodController">Page for good</a><br>
   <a href="purchaseController">Page for purchase</a><br>
-  <a href="main">spring</a>
+  <%--<a href="showSubsection">spring</a>--%>
+  <a href="showClient">Spring</a><br>
 
   </body>
 </html>

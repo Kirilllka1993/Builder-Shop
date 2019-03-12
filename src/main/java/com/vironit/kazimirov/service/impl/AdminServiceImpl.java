@@ -11,29 +11,31 @@ import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 import com.vironit.kazimirov.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 
+import java.sql.SQLException;
 import java.util.List;
-
+@Service
 public class AdminServiceImpl implements AdminService {
 
     private AdminDao adminDao;
 
     @Autowired
-    public AdminServiceImpl() {
-        adminDao = new AdminDaoImpl();
+    public AdminServiceImpl(@Qualifier("adminDaoImplJdbs") final AdminDao adminDao) {
+        this.adminDao = adminDao;
     }
 
 
     @Override
-    public void addClient(Client client) throws RepeatitionException {
-        adminDao.addClient(client);
-
+    public void addClient(Client client) throws RepeatitionException, SQLException {
+            adminDao.addClient(client);
     }
 
     @Override
-    public void deleteClient(int id) {
-        adminDao.deleteClient(id);
+    public void deleteClient(int idClient) throws SQLException {
+        adminDao.deleteClient(idClient);
 
     }
 
@@ -61,7 +63,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<Client> findAllClient() {
+    public List<Client> findAllClient() throws SQLException {
         return adminDao.findAllClient();
     }
 

@@ -15,5 +15,6 @@
 Spring hello
 <p>${mess}</p>
 <p>${subsections}</p>
+<p>${clientList}</p>
 </body>
 </html>
