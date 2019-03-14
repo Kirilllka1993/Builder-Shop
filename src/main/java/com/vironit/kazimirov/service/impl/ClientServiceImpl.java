@@ -1,6 +1,6 @@
 package com.vironit.kazimirov.service.impl;
 
-import com.vironit.kazimirov.fakedao.ClientDaoImpl;
+import com.vironit.kazimirov.fakedao.ClientDaoImplFake;
 import com.vironit.kazimirov.fakedao.DaoInterface.ClientDao;
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Review;
@@ -16,7 +16,7 @@ public class ClientServiceImpl implements ClientService {
     private ClientDao clientDao;
     @Autowired
     public ClientServiceImpl() {
-        clientDao = new ClientDaoImpl();
+        clientDao = new ClientDaoImplFake();
     }
 
     @Override

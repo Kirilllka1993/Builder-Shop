@@ -7,22 +7,21 @@ import com.vironit.kazimirov.exception.GoodNotFountException;
 import com.vironit.kazimirov.exception.PurchaseException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-@Component
-public class PurchaseDaoImpl implements PurchaseDao {
+
+public class PurchaseDaoImplFake implements PurchaseDao {
     private List<Purchase> purchases = new ArrayList<>();
     private List<Good> goods = new ArrayList<>();
     private List<Client> clients = new ArrayList<>();
     private List<Good> purchasesCart = new ArrayList<>();
 
 
-    public PurchaseDaoImpl() {
+    public PurchaseDaoImplFake() {
 
         Purpose purpose1 = new Purpose(1, "Фундамент");
         Purpose purpose2 = new Purpose(2, "Внутренние работы");
@@ -127,7 +126,7 @@ public class PurchaseDaoImpl implements PurchaseDao {
 
     @Override
     public Purchase addIntoPurchase(int goodId, int amount, Purchase purchase) throws RepeatitionException, GoodNotFountException {
-        GoodDao dao = new GoodDaoImpl();
+        GoodDao dao = new GoodDaoImplFake();
         Good good = dao.findGoodById(goodId);
         if (good.getAmount() < amount) {
             throw new RepeatitionException("The amount of this good in the store is" + " " + good.getAmount());

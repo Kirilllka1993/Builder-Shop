@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-@Component
-public class PurposeDaoImpl implements PurposeDao {
+
+public class PurposeDaoImplFake implements PurposeDao {
     private List<Purpose> purposes = new ArrayList<>();
 
-    public PurposeDaoImpl() {
+    public PurposeDaoImplFake() {
         Purpose purpose1 = new Purpose(1, "Фундамент");
         Purpose purpose2 = new Purpose(2, "Внутренние работы");
         Purpose purpose3 = new Purpose(3, "Наружные работы");

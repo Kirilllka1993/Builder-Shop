@@ -1,18 +1,11 @@
 package com.vironit.kazimirov.controller;
 
-import com.vironit.kazimirov.dao.impl.GoodDaoImplJdbc;
-import com.vironit.kazimirov.entity.Client;
+import com.vironit.kazimirov.dao.impl.GoodDaoImpl;
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.service.AdminService;
-import com.vironit.kazimirov.service.impl.AdminServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.context.annotation.RequestScope;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -44,10 +37,10 @@ public class HomeController {
         } catch (SQLException e) {
             System.out.println("SqlException ");
         }
-        GoodDaoImplJdbc goodDaoImplJdbc = new GoodDaoImplJdbc(connection);
+        GoodDaoImpl goodDaoImpl = new GoodDaoImpl(connection);
         List<Subsection> subsections = new ArrayList<>();
         try {
-            subsections = goodDaoImplJdbc.showGoods();
+            subsections = goodDaoImpl.showGoods();
             map.addAttribute("subsections", subsections);
             System.out.println(subsections);
         } catch (SQLException e) {

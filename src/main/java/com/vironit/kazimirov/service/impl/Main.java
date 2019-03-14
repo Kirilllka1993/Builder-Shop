@@ -157,7 +157,7 @@ public class Main extends Thread {
             //purchaseServiceImpl.addIntoPurchase(1,5,purchase);
             //purchaseServiceImpl.changeStatus(purchase,Status.CANCELED);
              //purchaseServiceImpl.makeAPurchase(purchase);
-             //goodServiceImpl1.findAllGoods();
+             goodServiceImpl1.findAllGoods();
         } catch (Exception ex) {
             LOGGER.error(ex);
         }

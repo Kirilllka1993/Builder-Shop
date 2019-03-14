@@ -9,10 +9,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GoodDaoImplJdbc {
+public class GoodDaoImpl {
     private Connection connection;
 
-    public GoodDaoImplJdbc(Connection connection) {
+    public GoodDaoImpl(Connection connection) {
         this.connection = connection;
     }
 

@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-@Component
-public class GoodDaoImpl implements GoodDao {
+
+public class GoodDaoImplFake implements GoodDao {
     private List<Good> goods = new ArrayList<>();
 
-    public GoodDaoImpl() {
+    public GoodDaoImplFake() {
 
         Purpose purpose1 = new Purpose(1, "Фундамент");
         Purpose purpose2 = new Purpose(2, "Внутренние работы");

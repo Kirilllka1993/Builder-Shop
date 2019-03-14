@@ -3,13 +3,14 @@ import com.vironit.kazimirov.entity.builder.Client.ClientBuilder;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.fakedao.AdminDaoImplFake;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.impl.AdminServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +18,7 @@ import static junit.framework.TestCase.assertEquals;
 
 public class AdminTest {
 
-    AdminService adminService = new AdminServiceImpl();
+    AdminService adminService = new AdminServiceImpl(new AdminDaoImplFake());
     Client clientBeforeForExceptionTest = null;
     Client clientBeforeTest = null;
 
@@ -48,7 +49,7 @@ public class AdminTest {
     }
 
     @Test
-    public void addClientTest() throws RepeatitionException {
+    public void addClientTest() throws RepeatitionException, SQLException {
         adminService.addClient(clientBeforeTest);
         List<Client> missingClients = adminService.findAllClient();
         List<Client> findClientsById;
@@ -60,14 +61,14 @@ public class AdminTest {
     }
 
     @Test(expected = RepeatitionException.class)
-    public void addClientExceptionTest() throws RepeatitionException {
+    public void addClientExceptionTest() throws RepeatitionException, SQLException {
         adminService.addClient(clientBeforeForExceptionTest);
 
     }
 
 
     @Test
-    public void deleteClientTest() {
+    public void deleteClientTest() throws SQLException {
         int deleteId=adminService.findAllClient().get(0).getId();
         adminService.deleteClient(deleteId);
         List<Client> allClients = adminService.findAllClient();
@@ -75,7 +76,7 @@ public class AdminTest {
     }
 
     @Test
-    public void findClientByLoginTest() throws RepeatitionException, ClientNotFoundException {
+    public void findClientByLoginTest() throws RepeatitionException, ClientNotFoundException, SQLException {
 
         adminService.addClient(clientBeforeTest);
         Client clientByLogin = adminService.findClientByLogin(clientBeforeTest.getLogin());
@@ -105,7 +106,7 @@ public class AdminTest {
     }
 
     @Test(expected = ClientNotFoundException.class)
-    public void findClientByIdExceptionTest() throws ClientNotFoundException {
+    public void findClientByIdExceptionTest() throws ClientNotFoundException, SQLException {
         int sumClientId=adminService.findAllClient().stream().mapToInt(Client::getId).sum();
         adminService.findClientById(sumClientId);
     }

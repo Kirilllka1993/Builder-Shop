@@ -1,6 +1,5 @@
 package com.vironit.kazimirov.service.impl;
 
-import com.vironit.kazimirov.fakedao.AdminDaoImpl;
 import com.vironit.kazimirov.fakedao.DaoInterface.AdminDao;
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Good;
@@ -20,13 +19,12 @@ import java.util.List;
 @Service
 public class AdminServiceImpl implements AdminService {
 
-    private AdminDao adminDao;
+    private final AdminDao adminDao;
 
     @Autowired
-    public AdminServiceImpl(@Qualifier("adminDaoImplJdbs") final AdminDao adminDao) {
+    public AdminServiceImpl(AdminDao adminDao) {
         this.adminDao = adminDao;
     }
-
 
     @Override
     public void addClient(Client client) throws RepeatitionException, SQLException {

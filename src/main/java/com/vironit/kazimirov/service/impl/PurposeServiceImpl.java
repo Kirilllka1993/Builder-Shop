@@ -1,7 +1,7 @@
 package com.vironit.kazimirov.service.impl;
 
 import com.vironit.kazimirov.fakedao.DaoInterface.PurposeDao;
-import com.vironit.kazimirov.fakedao.PurposeDaoImpl;
+import com.vironit.kazimirov.fakedao.PurposeDaoImplFake;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.PurposeService;
@@ -15,7 +15,7 @@ public class PurposeServiceImpl implements PurposeService {
 
     @Autowired
     public PurposeServiceImpl(){
-        purposeDao=new PurposeDaoImpl();
+        purposeDao=new PurposeDaoImplFake();
     }
 
     @Override

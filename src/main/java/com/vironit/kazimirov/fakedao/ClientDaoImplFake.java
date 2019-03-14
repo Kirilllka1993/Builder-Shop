@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
-public class ClientDaoImpl implements ClientDao {
+
+public class ClientDaoImplFake implements ClientDao {
     private List<Review> reviews = new ArrayList<>();
     private List<Client> clients = new ArrayList<>();
 
-    public ClientDaoImpl() {
+    public ClientDaoImplFake() {
 
         Purpose purpose1 = new Purpose(1, "Фундамент");
         Purpose purpose2 = new Purpose(2, "Внутренние работы");

@@ -1,7 +1,8 @@
 package com.vironit.kazimirov.service.impl;
 
+import com.vironit.kazimirov.dao.impl.PurchaseDaoImpl;
 import com.vironit.kazimirov.fakedao.DaoInterface.PurchaseDao;
-import com.vironit.kazimirov.fakedao.PurchaseDaoImpl;
+import com.vironit.kazimirov.fakedao.PurchaseDaoImplFake;
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purchase;
@@ -24,8 +25,8 @@ public class PurchaseServiceImpl implements PurchaseService {
     private PurchaseDao purchaseDao;
 
 
-    public PurchaseServiceImpl() {
-        purchaseDao = new PurchaseDaoImpl();
+    public PurchaseServiceImpl(PurchaseDao purchaseDao) {
+        this.purchaseDao = purchaseDao;
     }
 
     @Override

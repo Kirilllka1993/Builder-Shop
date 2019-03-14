@@ -14,12 +14,12 @@ import java.util.List;
 
 @WebServlet("/purchaseController")
 public class PurchaseController extends HttpServlet {
-    private PurchaseService purchaseService=new PurchaseServiceImpl();
+    //private PurchaseService purchaseService=new PurchaseServiceImpl();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Purchase> purchases=purchaseService.findPurchases();
-        request.setAttribute("purchases",purchases);
-        getServletContext().getRequestDispatcher("/WEB-INF/jsp/purchase.jsp").forward(request,response);
+//        List<Purchase> purchases=purchaseService.findPurchases();
+//        request.setAttribute("purchases",purchases);
+//        getServletContext().getRequestDispatcher("/WEB-INF/jsp/purchase.jsp").forward(request,response);
     }
 
     @Override

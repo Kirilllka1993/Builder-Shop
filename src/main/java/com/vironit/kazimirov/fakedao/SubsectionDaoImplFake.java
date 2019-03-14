@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-@Component
-public class SubsectionDaoImpl implements SubsectionDao {
+
+public class SubsectionDaoImplFake implements SubsectionDao {
     private List<Subsection> subsections = new ArrayList<>();
 
-    public SubsectionDaoImpl() {
+    public SubsectionDaoImplFake() {
 
         Subsection subsection1 = new Subsection(1, "Утеплитель");
         Subsection subsection2 = new Subsection(2, "Сухие смеси");

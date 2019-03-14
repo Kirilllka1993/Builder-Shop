@@ -1,18 +1,17 @@
 package com.vironit.kazimirov.fakedao.DaoInterface;
 
-import com.vironit.kazimirov.entity.Client;
-import com.vironit.kazimirov.entity.Good;
-import com.vironit.kazimirov.entity.Purchase;
-import com.vironit.kazimirov.entity.Status;
+import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public interface AdminDao {
+public interface AdminDao{
 
     void addClient(Client client) throws RepeatitionException, SQLException;
 

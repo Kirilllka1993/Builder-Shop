@@ -1,14 +1,25 @@
 package com.vironit.kazimirov.entity;
 
+import javax.persistence.*;
 import java.util.Objects;
-
+@Entity
+@Table(name= "client")
 public class Client {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "name")
     private String name;
+    @Column (name = "surname")
     private String surname;
+    @Column (name = "login")
     private String login;
+    @Column(name = "password")
     private String password;
+    @Column (name = "address")
     private String address;
+    @Column (name ="phoneNumber" )
     private String phoneNumber;
 
     public Client(int id, String name, String surname, String login, String password, String adress, String phoneNumber) {

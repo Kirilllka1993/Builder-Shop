@@ -54,6 +54,16 @@
     <input type=submit value="show clients">
 
 </form>
+<form method=get action=login>
+    <input type="text" name="login">
+    <input type=submit value="search client">
+    <p><c:out value="${client}"/><br></p>
+</form>
+<form method=get action=findById>
+    <input type="text" name="idClient">
+    <input type=submit value="search client by id">
+    <p><c:out value="${client1}"/><br></p>
+</form>
 
 </body>
 </html>

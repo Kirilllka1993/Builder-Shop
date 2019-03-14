@@ -1,7 +1,10 @@
 package com.vironit.kazimirov.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Objects;
-
+//@Entity
+//@Table (name="admin")
 public class Admin {
     private int id;
     private String name;

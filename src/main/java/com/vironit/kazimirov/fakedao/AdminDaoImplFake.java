@@ -5,21 +5,21 @@ import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
-import org.springframework.stereotype.Component;
+
 
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-@Component
-public class AdminDaoImpl implements AdminDao {
+
+public class AdminDaoImplFake implements AdminDao {
     private List<Client> clients = new ArrayList<>();
     private List<Purchase> purchases = new ArrayList<>();
     private List<Good> goods = new ArrayList<>();
 
 
-    public AdminDaoImpl() {
+    public AdminDaoImplFake() {
 
 
         Purpose purpose1 = new Purpose(1, "Фундамент");

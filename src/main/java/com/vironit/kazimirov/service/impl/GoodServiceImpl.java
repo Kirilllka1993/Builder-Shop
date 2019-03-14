@@ -1,7 +1,7 @@
 package com.vironit.kazimirov.service.impl;
 
 import com.vironit.kazimirov.fakedao.DaoInterface.GoodDao;
-import com.vironit.kazimirov.fakedao.GoodDaoImpl;
+import com.vironit.kazimirov.fakedao.GoodDaoImplFake;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
@@ -17,7 +17,7 @@ public class GoodServiceImpl implements GoodService {
     private GoodDao goodDao;
     @Autowired
     public GoodServiceImpl() {
-        goodDao = new GoodDaoImpl();
+        goodDao = new GoodDaoImplFake();
     }
 
 

@@ -1,7 +1,7 @@
 package com.vironit.kazimirov.service.impl;
 
 import com.vironit.kazimirov.fakedao.DaoInterface.SubsectionDao;
-import com.vironit.kazimirov.fakedao.SubsectionDaoImpl;
+import com.vironit.kazimirov.fakedao.SubsectionDaoImplFake;
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.SubsectionService;
@@ -16,7 +16,7 @@ public class SubsectionServiceImpl implements SubsectionService {
 
     @Autowired
     public SubsectionServiceImpl() {
-        subsectionDao = new SubsectionDaoImpl();
+        subsectionDao = new SubsectionDaoImplFake();
     }
 
     @Override

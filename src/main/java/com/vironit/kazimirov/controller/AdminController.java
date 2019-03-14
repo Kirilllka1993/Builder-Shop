@@ -1,6 +1,7 @@
 package com.vironit.kazimirov.controller;
 
 import com.vironit.kazimirov.entity.Client;
+import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,22 @@ public class AdminController {
     public String deleteClient (@RequestParam("number") int id) throws SQLException {
 
         adminService.deleteClient(id);
+        return "adminJsp";
+    }
+
+    @RequestMapping("/login")
+    public String findClientByLogin (@RequestParam("login") String login, ModelMap map) throws SQLException, ClientNotFoundException {
+        Client client=null;
+
+        client = adminService.findClientByLogin(login);
+        map.addAttribute("client", client);
+        return "adminJsp";
+    }
+
+    @RequestMapping("/findById")
+    public String findClientById (@RequestParam("idClient") int idClient, ModelMap map) throws SQLException, ClientNotFoundException {
+        Client client1 = adminService.findClientById(idClient);
+        map.addAttribute("client1", client1);
         return "adminJsp";
     }
 }

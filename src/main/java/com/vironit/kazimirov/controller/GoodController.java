@@ -1,6 +1,6 @@
 package com.vironit.kazimirov.controller;
 
-import com.vironit.kazimirov.dao.impl.GoodDaoImplJdbc;
+import com.vironit.kazimirov.dao.impl.GoodDaoImpl;
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.service.GoodService;
 import com.vironit.kazimirov.service.impl.GoodServiceImpl;
@@ -46,13 +46,13 @@ public class GoodController extends HttpServlet {
         } catch (SQLException e) {
             System.out.println("SqlException ");
         }
-        GoodDaoImplJdbc goodDaoImplJdbc = new GoodDaoImplJdbc(connection);
+        GoodDaoImpl goodDaoImpl = new GoodDaoImpl(connection);
         List<Subsection> subsections=new ArrayList<>();
 
         try {
             //req.setCharacterEncoding("UTF-8");
             //resp.setCharacterEncoding("UTF-8");
-            subsections=goodDaoImplJdbc.showGoods();
+            subsections= goodDaoImpl.showGoods();
             //PrintWriter printWriter=resp.getWriter();
             req.setAttribute("subsections",subsections);
             System.out.println(subsections);
