@@ -2,6 +2,7 @@ import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.entity.builder.Client.ClientBuilder;
 import com.vironit.kazimirov.entity.builder.Review.ReviewBuilder;
 import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.fakedao.ClientDaoImplFake;
 import com.vironit.kazimirov.service.ClientService;
 import com.vironit.kazimirov.service.impl.ClientServiceImpl;
 import org.junit.Assert;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 import static junit.framework.TestCase.assertEquals;
 
 public class ClientTest {
-    ClientService clientService = new ClientServiceImpl();
+    ClientService clientService = new ClientServiceImpl(new ClientDaoImplFake());
     Client clientBeforeTest = null;
     Client clientBeforeExceptionTest = null;
     Review reviewBeforeTest = null;

@@ -1,6 +1,7 @@
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.builder.Purpose.PurposeBuilder;
 import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.fakedao.PurposeDaoImplFake;
 import com.vironit.kazimirov.service.PurposeService;
 import com.vironit.kazimirov.service.impl.PurposeServiceImpl;
 import org.junit.Assert;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PurposeTest  {
-    PurposeService purposeService=new PurposeServiceImpl();
+    PurposeService purposeService=new PurposeServiceImpl(new PurposeDaoImplFake());
 
     Purpose purposeBeforeTest=null;
     Purpose purposeForException=null;

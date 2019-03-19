@@ -37,4 +37,9 @@ public class SubsectionDaoImplFake implements SubsectionDao {
     public List<Subsection> findSubsections() {
         return subsections;
     }
+
+    @Override
+    public Subsection findSubsectionByName(String name) {
+        return null;
+    }
 }

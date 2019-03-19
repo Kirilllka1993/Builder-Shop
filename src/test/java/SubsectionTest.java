@@ -2,6 +2,7 @@
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.entity.builder.Subsection.SubsectionBuilder;
 import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.fakedao.SubsectionDaoImplFake;
 import com.vironit.kazimirov.service.SubsectionService;
 import com.vironit.kazimirov.service.impl.SubsectionServiceImpl;
 import org.junit.Assert;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class SubsectionTest {
 
-    SubsectionService subsectionService = new SubsectionServiceImpl();
+    SubsectionService subsectionService = new SubsectionServiceImpl(new SubsectionDaoImplFake());
     Subsection subsectionBeforeTest = null;
     Subsection subsectionForExceptionTest = null;
 

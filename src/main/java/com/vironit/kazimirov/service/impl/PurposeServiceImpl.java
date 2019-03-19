@@ -11,11 +11,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
 public class PurposeServiceImpl implements PurposeService {
-    private PurposeDao purposeDao;
+    @Autowired
+    private final PurposeDao purposeDao;
 
     @Autowired
-    public PurposeServiceImpl(){
-        purposeDao=new PurposeDaoImplFake();
+    public PurposeServiceImpl(PurposeDao purposeDao){
+
+        this.purposeDao=purposeDao;
     }
 
     @Override
@@ -27,6 +29,11 @@ public class PurposeServiceImpl implements PurposeService {
     @Override
     public List<Purpose> findPurposes() {
         return purposeDao.findPurposes();
+    }
+
+    @Override
+    public Purpose findPurposeByName(String purposeName) {
+        return purposeDao.findPurposeByName(purposeName);
     }
 
 }

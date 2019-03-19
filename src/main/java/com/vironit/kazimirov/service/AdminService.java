@@ -13,9 +13,9 @@ import java.util.List;
 
 public interface AdminService  {
 
-    void addClient(Client client) throws RepeatitionException, SQLException;
+    void addClient(Client client) throws RepeatitionException;
 
-    void deleteClient(int idClient) throws SQLException;
+    void deleteClient(int idClient);
 
     Client findClientByLogin(String login) throws ClientNotFoundException;
 
@@ -25,7 +25,7 @@ public interface AdminService  {
 
     List<Purchase> findAllPurchases();
 
-    List<Client> findAllClient() throws SQLException;
+    List<Client> findAllClient();
 
     Purchase findPurchasebyId(int id) throws PurchaseNotFoundException;
 

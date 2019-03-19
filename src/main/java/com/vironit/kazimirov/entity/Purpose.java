@@ -1,9 +1,15 @@
 package com.vironit.kazimirov.entity;
 
+import javax.persistence.*;
 import java.util.Objects;
-
+@Entity
+@Table(name = "purpose")
 public class Purpose {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name ="purpose")
     private String purpose;
 
     public Purpose(int id, String purpose) {

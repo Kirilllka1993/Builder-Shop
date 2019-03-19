@@ -15,10 +15,10 @@
   Please choose the command<br>
   <a href="adminPage">Page for admin Spring</a><br>
   <a href="clientController">Page for client</a><br>
-  <a href="goodController">Page for good</a><br>
+  <a href="goodPage">Page for good</a><br>
   <a href="purchaseController">Page for purchase</a><br>
-  <%--<a href="showSubsection">spring</a>--%>
-  <a href="showClient">Spring</a><br>
+  <a href="purposePage">Purpose</a><br>
+  <a href="subsectionPage">Subsection</a><br>
 
   </body>
 </html>

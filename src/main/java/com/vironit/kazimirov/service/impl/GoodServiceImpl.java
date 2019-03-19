@@ -12,12 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class GoodServiceImpl implements GoodService {
-    private GoodDao goodDao;
+
+    private final GoodDao goodDao;
+
     @Autowired
-    public GoodServiceImpl() {
-        goodDao = new GoodDaoImplFake();
+    public GoodServiceImpl(GoodDao goodDao) {
+        this.goodDao = goodDao;
     }
 
 
@@ -27,7 +30,7 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public Good findByNameGood(String name)  {
+    public Good findByNameGood(String name) {
         return goodDao.findByNameGood(name);
     }
 
@@ -37,12 +40,12 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public List<Good> findBySubsection(Subsection subsection){
+    public List<Good> findBySubsection(Subsection subsection) {
         return goodDao.findBySubsection(subsection);
     }
 
     @Override
-    public List<Good> findByPurpose(Purpose purpose){
+    public List<Good> findByPurpose(Purpose purpose) {
         return goodDao.findByPurpose(purpose);
     }
 
@@ -58,12 +61,12 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public List<Good> findGoodsByPrice(double minPrice, double maxPrice)  {
+    public List<Good> findGoodsByPrice(double minPrice, double maxPrice) {
         return goodDao.findGoodsByPrice(minPrice, maxPrice);
     }
 
     @Override
-    public Good findGoodById(int id){
+    public Good findGoodById(int id) {
         return goodDao.findGoodById(id);
     }
 }

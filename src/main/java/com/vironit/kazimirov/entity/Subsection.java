@@ -1,9 +1,15 @@
 package com.vironit.kazimirov.entity;
 
+import javax.persistence.*;
 import java.util.Objects;
-
+@Entity
+@Table(name = "subsection")
 public class Subsection {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name ="title" )
     private String title;
 
     public int getId() {

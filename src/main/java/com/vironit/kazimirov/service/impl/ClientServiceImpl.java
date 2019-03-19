@@ -13,10 +13,10 @@ import java.util.List;
 @Service
 public class ClientServiceImpl implements ClientService {
 
-    private ClientDao clientDao;
+    private final ClientDao clientDao;
     @Autowired
-    public ClientServiceImpl() {
-        clientDao = new ClientDaoImplFake();
+    public ClientServiceImpl(ClientDao clientDao) {
+        this.clientDao = clientDao;
     }
 
     @Override

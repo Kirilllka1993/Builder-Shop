@@ -1,17 +1,33 @@
 package com.vironit.kazimirov.entity;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name = "good")
 public class Good {
-private int id;
-private double price;
-private Subsection subsection;
-private String unit;
-private int quantity;
-private double discount;
-private Purpose purpose;
-private String name;
-private int amount;
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @Column(name = "price")
+    private double price;
+    @ManyToOne
+    @JoinColumn(name = "Subsection_id")
+    private Subsection subsection;
+    @Column(name = "unit")
+    private String unit;
+    @Column(name = "quantity")
+    private int quantity;
+    @Column(name = "discount")
+    private double discount;
+    @ManyToOne
+    @JoinColumn(name = "Purpose_id")
+    private Purpose purpose;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "amount")
+    private int amount;
 
     public Good(int id, double price, Subsection subsection, String unit, int quantity, double discount, Purpose purpose, String name, int amount) {
         this.id = id;

@@ -10,7 +10,6 @@ import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 import com.vironit.kazimirov.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 
@@ -27,12 +26,12 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void addClient(Client client) throws RepeatitionException, SQLException {
+    public void addClient(Client client) throws RepeatitionException{
             adminDao.addClient(client);
     }
 
     @Override
-    public void deleteClient(int idClient) throws SQLException {
+    public void deleteClient(int idClient) {
         adminDao.deleteClient(idClient);
 
     }
@@ -61,7 +60,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<Client> findAllClient() throws SQLException {
+    public List<Client> findAllClient() {
         return adminDao.findAllClient();
     }
 

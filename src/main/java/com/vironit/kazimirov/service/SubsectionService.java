@@ -10,4 +10,6 @@ public interface SubsectionService {
     void addSubsection(Subsection subsection) throws RepeatitionException;
 
     List<Subsection> findSubsections();
+
+    Subsection findSubsectionByName(String title);
 }

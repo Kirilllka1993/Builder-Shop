@@ -4,6 +4,7 @@ import com.vironit.kazimirov.exception.GoodNotFountException;
 import com.vironit.kazimirov.exception.PurchaseException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.fakedao.PurchaseDaoImplFake;
 import com.vironit.kazimirov.service.PurchaseService;
 import com.vironit.kazimirov.service.impl.PurchaseServiceImpl;
 import org.junit.Assert;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 import static junit.framework.TestCase.assertEquals;
 
 public class PurchaseTest {
-    PurchaseService purchaseService = new PurchaseServiceImpl();
+    PurchaseService purchaseService = new PurchaseServiceImpl(new PurchaseDaoImplFake());
 
     //Good good1 = new Good(1, 2.0, subsection1, "м3", 5, 0, purpose1, "Пеноплекс", 54);
 

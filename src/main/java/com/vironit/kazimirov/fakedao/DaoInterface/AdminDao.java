@@ -13,9 +13,9 @@ import java.util.List;
 
 public interface AdminDao{
 
-    void addClient(Client client) throws RepeatitionException, SQLException;
+    void addClient(Client client) throws RepeatitionException;
 
-    void deleteClient(int id) throws SQLException;
+    void deleteClient(int id);
 
     Client findClientByLogin(String login) throws ClientNotFoundException;
 
@@ -25,7 +25,7 @@ public interface AdminDao{
 
     List<Purchase> findAllPurchases();
 
-    List<Client> findAllClient() throws SQLException;
+    List<Client> findAllClient();
 
     Purchase findPurchasebyId(int id) throws PurchaseNotFoundException;
 

@@ -10,4 +10,7 @@ public interface PurposeService {
     void addPurpose(Purpose purpose) throws RepeatitionException;
 
     List<Purpose> findPurposes();
+
+    Purpose findPurposeByName(String purposeName);
+
 }

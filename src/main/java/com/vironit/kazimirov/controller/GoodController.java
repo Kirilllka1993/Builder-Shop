@@ -1,72 +1,97 @@
 package com.vironit.kazimirov.controller;
 
-import com.vironit.kazimirov.dao.impl.GoodDaoImpl;
+import com.vironit.kazimirov.dto.GoodDto;
+import com.vironit.kazimirov.entity.Good;
+import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
+import com.vironit.kazimirov.exception.GoodException;
 import com.vironit.kazimirov.service.GoodService;
-import com.vironit.kazimirov.service.impl.GoodServiceImpl;
+import com.vironit.kazimirov.service.PurposeService;
+import com.vironit.kazimirov.service.SubsectionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/goodController")
+@Controller
 public class GoodController extends HttpServlet {
-    private GoodService goodService = new GoodServiceImpl();
+    @Autowired
+    private GoodService goodService;
+    @Autowired
+    private PurposeService purposeService;
+    @Autowired
+    private SubsectionService subsectionService;
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        List<Good> goods=goodService.findAllGoods();
-//        request.setAttribute("goods",goods);
-       getServletContext().getRequestDispatcher("/WEB-INF/jsp/good.jsp").forward(request, response);
-
-
+    @RequestMapping(value = "/goodPage", method = RequestMethod.GET)
+    public ModelAndView moveToGoodPage(ModelMap map) {
+        List<Purpose> purposes = purposeService.findPurposes();
+        map.addAttribute("purposes", purposes);
+        List<Subsection> subsections = subsectionService.findSubsections();
+        map.addAttribute("subsections", subsections);
+        ModelAndView modelAndView = new ModelAndView();
+        map.addAttribute("command", new GoodDto());
+        modelAndView.addAllObjects(map);
+        modelAndView.setViewName("good");
+        return modelAndView;
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        final String URL = "jdbc:mysql://localhost:3306/shop?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-        final String USERNAME = "root";
-        final String PASSWORD = "1111";
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        Connection connection = null;
-        try {
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        } catch (SQLException e) {
-            System.out.println("SqlException ");
-        }
-        GoodDaoImpl goodDaoImpl = new GoodDaoImpl(connection);
-        List<Subsection> subsections=new ArrayList<>();
+    @RequestMapping(value = "/addGood", method = RequestMethod.POST)
+    public ModelAndView addGood(@ModelAttribute GoodDto goodDto, BindingResult result, ModelMap map) throws GoodException {
+        Good good = new Good();
+        Subsection subsection = subsectionService.findSubsectionByName(goodDto.getSubsection().getTitle());
+        Purpose purpose = purposeService.findPurposeByName(goodDto.getPurpose().getPurpose());
+        map.addAttribute("command", goodDto);
+        good.setName(goodDto.getName());
+        good.setUnit(goodDto.getUnit());
+        good.setQuantity(goodDto.getQuantity());
+        good.setDiscount(goodDto.getDiscount());
+        good.setPrice(goodDto.getPrice());
+        good.setAmount(goodDto.getAmount());
+        good.setPurpose(purpose);
+        good.setSubsection(subsection);
+        goodService.addGood(good);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("good");
 
-        try {
-            //req.setCharacterEncoding("UTF-8");
-            //resp.setCharacterEncoding("UTF-8");
-            subsections= goodDaoImpl.showGoods();
-            //PrintWriter printWriter=resp.getWriter();
-            req.setAttribute("subsections",subsections);
-            System.out.println(subsections);
-            getServletContext().getRequestDispatcher("/WEB-INF/jsp/subsection.jsp").forward(req, resp);
-            //resp.setCharacterEncoding("UTF-8");
-//            resp.setContentType("text/html;charset=UTF-8");
-//            printWriter.println("<body>");
-//            printWriter.println(subsections);
-//            printWriter.println("</body");
-////            printWriter.write("<html>" +
-////                    "<body>"+subsections+"</body>"+"</html>");
+//    public String addGood(@RequestParam("price") double price,
+//                          @RequestParam("subsection") String title,
+//                          @RequestParam("unit") String unit,
+//                          @RequestParam("quantity") int quantity,
+//                          @RequestParam("discount") double discount,
+//                          @RequestParam("purpose") String purposeName,
+//                          @RequestParam("name") String name,
+//                          @RequestParam("amount") int amount) throws GoodException {
+//
+//        Subsection subsection=subsectionService.findSubsectionByName(title);
+//        Purpose purpose=purposeService.findPurposeByName(purposeName);
+//        Good good = new Good();
+//        good.setSubsection(subsection);
+//        good.setPurpose(purpose);
+//        good.setPrice(price);
+//        good.setName(name);
+//        good.setDiscount(discount);
+//        good.setQuantity(quantity);
+//        good.setAmount(amount);
+//        good.setUnit(unit);
+//        goodService.addGood(good);
+        return modelAndView;
+    }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    @RequestMapping(value = "/showGoods", method = RequestMethod.GET)
+    public ModelAndView showGoods(ModelMap map) throws SQLException {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("good");
+        List<Good> goods = goodService.findAllGoods();
+        map.addAttribute("goods", goods);
+        map.addAttribute("command", new GoodDto());
+        List<Purpose> purposes = purposeService.findPurposes();
+        map.addAttribute("purposes", purposes);
+        return modelAndView;
     }
 }

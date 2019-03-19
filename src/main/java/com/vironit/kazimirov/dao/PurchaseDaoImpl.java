@@ -1,4 +1,4 @@
-package com.vironit.kazimirov.dao.impl;
+package com.vironit.kazimirov.dao;
 
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Good;
@@ -9,12 +9,18 @@ import com.vironit.kazimirov.exception.PurchaseException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.fakedao.DaoInterface.PurchaseDao;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 @Repository
 public class PurchaseDaoImpl implements PurchaseDao {
+    @Autowired
+    private SessionFactory sessionFactory;
+
     @Override
     public List<Purchase> findPurchases() {
         return null;

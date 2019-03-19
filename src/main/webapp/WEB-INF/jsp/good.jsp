@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   Created by IntelliJ IDEA.
   User: User
@@ -12,19 +13,78 @@
     <title>Good</title>
 </head>
 <body>
-<p><c:out value="${goods}"/></p>
-<ul>
-    <c:forEach var="good" items="${goods}">
-        <li><c:out value="${good}" /></li>
+
+<p><c:out value="${purposes}"/><br></p>
+<%--<form method=post action=addGood>--%>
+    <%--<p>Add good</p>--%>
+    <%--<table>--%>
+        <%--<tr>--%>
+            <%--<td>price</td>--%>
+            <%--<td><input type=text name=price></td>--%>
+            <%--<br>--%>
+            <%--<td>subsection</td>--%>
+            <%--<td><select name="subsection">--%>
+                <%--<c:forEach items="${subsections}" var="subsection">--%>
+                    <%--<option value="${subsection.title}">${subsection.title}</option>--%>
+                <%--</c:forEach>--%>
+            <%--</select></td>--%>
+            <%--<br>--%>
+            <%--<td>unit</td>--%>
+            <%--<td><input type=text name=unit></td>--%>
+            <%--<br>--%>
+            <%--<td>quantity</td>--%>
+            <%--<td><input type=text name=quantity></td>--%>
+            <%--<br>--%>
+            <%--<td>discount</td>--%>
+            <%--<td><input type=text name=discount></td>--%>
+            <%--<br>--%>
+            <%--<td>purpose</td>--%>
+            <%--<td>--%>
+                <%--<select name="purpose">--%>
+                    <%--<c:forEach items="${purposes}" var="purpose">--%>
+                        <%--<option value="${purpose.purpose}">${purpose.purpose}</option>--%>
+                    <%--</c:forEach>--%>
+                <%--</select>--%>
+
+            <%--</td>--%>
+            <%--<td>name</td>--%>
+            <%--<td><input type=text name=name></td>--%>
+            <%--<td>amount</td>--%>
+            <%--<td><input type=text name=amount></td>--%>
+            <%--<br>--%>
+        <%--</tr>--%>
+        <%--<tr>--%>
+            <%--<td><input type=reset value=reset></td>--%>
+            <%--<td><input type=submit value="add good"></td>--%>
+        <%--</tr>--%>
+    <%--</table>--%>
+<%--</form>--%>
+
+
+<form:form action="addGood" method="post">
+    <p>Add good</p>
+    <p>price</p><form:input type="text" path="price"/>
+    <p>subsection</p><form:select name="subsection" path="subsection.title">
+    <c:forEach items="${subsections}" var="subsection">
+        <option value="${subsection.title}">${subsection.title}</option>
     </c:forEach>
-    <form method=get action=backServlet>
-        <input type=submit value=Back>
-    </form>
-</ul>
-<%--<%@include file="adminJsp.jsp"%>--%>
-<form method=post action=goodController>
-    <input type=submit value=show all goods>
+</form:select>
+    <p>unit</p><form:input type="text" path="unit"/>
+    <p>quantity</p><form:input type="text" path="quantity"/>
+    <p>discount</p><form:input type="text" path="discount"/>
+    <p>purpose</p> <form:select name="purpose" path="purpose.purpose">
+    <c:forEach items="${purposes}" var="purpose">
+        <option value="${purpose.purpose}">${purpose.purpose}</option>
+    </c:forEach>
+</form:select>
+    <p>name</p><form:input type="text" path="name"/>
+    <p>amount</p><form:input type="text" path="amount"/>
+    <input type=reset value=reset>
+    <input type=submit value="add good">
+</form:form>
+<form method=get action=showGoods>
+    <p><c:out value="${goods}"/><br></p>
+    <input type=submit value="show goods">
 </form>
-<%--<jsp:forward page="client.jsp"></jsp:forward>--%>
 </body>
 </html>

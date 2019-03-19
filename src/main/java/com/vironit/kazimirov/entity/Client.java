@@ -2,8 +2,9 @@ package com.vironit.kazimirov.entity;
 
 import javax.persistence.*;
 import java.util.Objects;
+//shop.client
 @Entity
-@Table(name= "client")
+@Table(name= "client", schema = "shop")
 public class Client {
     @Id
     @Column(name = "id")

@@ -37,4 +37,9 @@ public class PurposeDaoImplFake implements PurposeDao {
     public List<Purpose> findPurposes() {
         return purposes;
     }
+
+    @Override
+    public Purpose findPurposeByName(String purposeName) {
+        return null;
+    }
 }

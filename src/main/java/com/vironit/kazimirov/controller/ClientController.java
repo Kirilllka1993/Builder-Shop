@@ -5,6 +5,8 @@ import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.ClientService;
 import com.vironit.kazimirov.service.impl.ClientServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,10 +16,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-
-@WebServlet("/clientController")
+@Controller
+//@WebServlet("/clientController")
 public class ClientController extends HttpServlet {
-    private ClientService clientService = new ClientServiceImpl();
+    @Autowired
+    private ClientService clientService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

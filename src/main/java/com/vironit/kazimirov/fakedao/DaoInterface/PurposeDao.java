@@ -11,4 +11,6 @@ public interface PurposeDao {
 
     List<Purpose> findPurposes();
 
+    Purpose findPurposeByName(String purposeName);
+
 }

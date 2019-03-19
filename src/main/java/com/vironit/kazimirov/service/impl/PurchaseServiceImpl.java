@@ -1,8 +1,6 @@
 package com.vironit.kazimirov.service.impl;
 
-import com.vironit.kazimirov.dao.impl.PurchaseDaoImpl;
 import com.vironit.kazimirov.fakedao.DaoInterface.PurchaseDao;
-import com.vironit.kazimirov.fakedao.PurchaseDaoImplFake;
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purchase;
@@ -22,7 +20,7 @@ import static com.vironit.kazimirov.entity.Status.CANCELED;
 @Service
 public class PurchaseServiceImpl implements PurchaseService {
     @Autowired
-    private PurchaseDao purchaseDao;
+    private final PurchaseDao purchaseDao;
 
 
     public PurchaseServiceImpl(PurchaseDao purchaseDao) {

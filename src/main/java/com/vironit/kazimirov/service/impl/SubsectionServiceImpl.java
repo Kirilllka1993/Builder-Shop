@@ -12,11 +12,12 @@ import java.util.List;
 @Service
 public class SubsectionServiceImpl implements SubsectionService {
 
-    private SubsectionDao subsectionDao;
+    @Autowired
+    private final SubsectionDao subsectionDao;
 
     @Autowired
-    public SubsectionServiceImpl() {
-        subsectionDao = new SubsectionDaoImplFake();
+    public SubsectionServiceImpl(SubsectionDao subsectionDao) {
+        this.subsectionDao = subsectionDao;
     }
 
     @Override
@@ -29,7 +30,10 @@ public class SubsectionServiceImpl implements SubsectionService {
         return subsectionDao.findSubsections();
     }
 
-
+    @Override
+    public Subsection findSubsectionByName(String title) {
+        return subsectionDao.findSubsectionByName(title);
+    }
 }
 
 

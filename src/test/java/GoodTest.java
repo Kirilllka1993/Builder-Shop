@@ -4,6 +4,7 @@ import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.entity.builder.Good.GoodBuilder;
 import com.vironit.kazimirov.exception.GoodException;
 import com.vironit.kazimirov.exception.GoodNotFountException;
+import com.vironit.kazimirov.fakedao.GoodDaoImplFake;
 import com.vironit.kazimirov.service.GoodService;
 import com.vironit.kazimirov.service.impl.GoodServiceImpl;
 import org.junit.Assert;
@@ -19,7 +20,7 @@ import static junit.framework.TestCase.assertEquals;
 
 public class GoodTest {
 
-    GoodService goodService = new GoodServiceImpl();
+    GoodService goodService = new GoodServiceImpl(new GoodDaoImplFake());
     Good goodBeforeTest = null;
     Good goodBeforeExceptionTest = null;
 

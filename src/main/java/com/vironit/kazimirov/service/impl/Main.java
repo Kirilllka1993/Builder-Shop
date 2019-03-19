@@ -68,7 +68,7 @@ public class Main extends Thread {
 
 
         //GooDao
-        GoodServiceImpl goodServiceImpl1 = new GoodServiceImpl();
+        //GoodServiceImpl goodServiceImpl1 = new GoodServiceImpl();
         try {
             //goodServiceImpl1.addGood(good5);
             //goodServiceImpl1.addGood(good6);
@@ -100,7 +100,7 @@ public class Main extends Thread {
         }
 
         //SubsectionDao
-        SubsectionServiceImpl subsectionDao = new SubsectionServiceImpl();
+        //SubsectionServiceImpl subsectionDao = new SubsectionServiceImpl();
         try {
             //subsectionDao.addSubsection(1,"Утеплитель");
             //subsectionDao.showSubsections();
@@ -118,7 +118,7 @@ public class Main extends Thread {
         }
 
         //ClientDao
-        ClientService clientServiceImpl = new ClientServiceImpl();
+        //ClientService clientServiceImpl = new ClientServiceImpl();
         int id = 1;
         String login = "andrei15";
 
@@ -157,7 +157,7 @@ public class Main extends Thread {
             //purchaseServiceImpl.addIntoPurchase(1,5,purchase);
             //purchaseServiceImpl.changeStatus(purchase,Status.CANCELED);
              //purchaseServiceImpl.makeAPurchase(purchase);
-             goodServiceImpl1.findAllGoods();
+             //goodServiceImpl1.findAllGoods();
         } catch (Exception ex) {
             LOGGER.error(ex);
         }

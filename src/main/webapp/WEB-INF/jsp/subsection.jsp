@@ -12,6 +12,20 @@
     <title>Subsections</title>
 </head>
 <body>
-<p><c:out value="${subsections}"/></p>
+<form method=post action=addSubsection>
+    <p>Add subsection</p>
+    <input type=text name=title><p>Name</p>
+    <td><input type=submit value="add subsection"></td>
+    <br>
+</form>
+<form method=get action=showSubsections>
+    <p><c:out value="${subsections}"/><br></p>
+    <input type=submit value="show subsections">
+</form>
+<form method=get action=findSubsectionByName>
+    <input type="text" name="subsectionName">
+    <input type=submit value="search Subsection">
+    <p><c:out value="${subsection}"/><br></p>
+</form>
 </body>
 </html>

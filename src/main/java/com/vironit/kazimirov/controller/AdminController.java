@@ -1,5 +1,6 @@
 package com.vironit.kazimirov.controller;
 
+import com.vironit.kazimirov.dto.ClientDto;
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
@@ -23,7 +24,6 @@ public class AdminController {
     private AdminService adminService;
 
 
-
     @RequestMapping(value = "/adminPage", method = RequestMethod.GET)
     public void redirectExample(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/WEB-INF/jsp/adminJsp.jsp").forward(request, response);
@@ -43,41 +43,36 @@ public class AdminController {
 
     @RequestMapping(value = "/addClient", method = RequestMethod.POST)
     @ResponseBody
-    public String addClient(@RequestParam("name") String name,
-                            @RequestParam("surname") String surname,
-                            @RequestParam("login") String login,
-                            @RequestParam("password") String password,
-                            @RequestParam("adress") String adress,
-                            @RequestParam("phoneNumber") String phoneNumber) throws RepeatitionException, SQLException {
+    public String addClient(ClientDto clientDto, ModelMap map) throws RepeatitionException {
+        map.addAttribute("command", clientDto);
         Client client = new Client();
-        client.setName(name);
-        client.setSurname(surname);
-        client.setLogin(login);
-        client.setPassword(password);
-        client.setAddress(adress);
-        client.setPhoneNumber(phoneNumber);
+        client.setName(clientDto.getName());
+        client.setSurname(clientDto.getSurname());
+        client.setPassword(clientDto.getPassword());
+        client.setLogin(clientDto.getLogin());
+        client.setAddress(clientDto.getAddress());
+        client.setPhoneNumber(clientDto.getPhoneNumber());
         adminService.addClient(client);
         return "Congratulate! You Add!";
     }
 
-    @PostMapping ("/deleteClient")
-    public String deleteClient (@RequestParam("number") int id) throws SQLException {
+    @PostMapping("/deleteClient")
+    public String deleteClient(@RequestParam("number") int id) throws SQLException {
 
         adminService.deleteClient(id);
         return "adminJsp";
     }
 
     @RequestMapping("/login")
-    public String findClientByLogin (@RequestParam("login") String login, ModelMap map) throws SQLException, ClientNotFoundException {
-        Client client=null;
-
+    public String findClientByLogin(@RequestParam("login") String login, ModelMap map) throws ClientNotFoundException {
+        Client client = null;
         client = adminService.findClientByLogin(login);
         map.addAttribute("client", client);
         return "adminJsp";
     }
 
     @RequestMapping("/findById")
-    public String findClientById (@RequestParam("idClient") int idClient, ModelMap map) throws SQLException, ClientNotFoundException {
+    public String findClientById(@RequestParam("idClient") int idClient, ModelMap map) throws ClientNotFoundException {
         Client client1 = adminService.findClientById(idClient);
         map.addAttribute("client1", client1);
         return "adminJsp";

@@ -3,6 +3,8 @@ package com.vironit.kazimirov.controller;
 import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.service.PurchaseService;
 import com.vironit.kazimirov.service.impl.PurchaseServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,8 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/purchaseController")
+@Controller
+//@WebServlet("/purchaseController")
 public class PurchaseController extends HttpServlet {
+    @Autowired
+    private PurchaseService purchaseService;
     //private PurchaseService purchaseService=new PurchaseServiceImpl();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
