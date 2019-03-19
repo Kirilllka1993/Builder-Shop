@@ -1,15 +1,21 @@
 package com.vironit.kazimirov.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
-//@Entity
-//@Table (name="admin")
+@Entity
+@Table (name="admin")
 public class Admin {
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "surname")
     private String surname;
+    @Column(name = "login")
     private String login;
+    @Column (name = "password")
     private String password;
 
     public Admin(int id, String name, String surname, String login, String password) {

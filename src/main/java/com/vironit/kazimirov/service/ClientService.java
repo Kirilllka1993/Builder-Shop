@@ -2,6 +2,7 @@ package com.vironit.kazimirov.service;
 
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Review;
+import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface ClientService {
 
     void removeReview(int id, Client client);
 
-    void logIn(String login, String password) throws RepeatitionException;
+    Client logIn(String login, String password) throws RepeatitionException;
 
     void logOut();
 
@@ -24,7 +25,7 @@ public interface ClientService {
 
     void changePhoneNumber (int id, String phoneNumber);
 
-    void changeAddress(int id, String adress);
+    void changeAddress(int id, String address);
 
     List<Client> findAllClients();
 

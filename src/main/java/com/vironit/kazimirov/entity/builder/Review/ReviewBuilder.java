@@ -18,7 +18,7 @@ public class ReviewBuilder {
 
 
     public ReviewBuilder withText(String text) {
-        review.setText(text);
+        review.setComment(text);
         return this;
     }
 

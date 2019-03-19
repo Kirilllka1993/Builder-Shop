@@ -12,6 +12,7 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.Query;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -58,18 +59,21 @@ public class GoodDaoImpl implements GoodDao {
 
     @Override
     public void addGood(Good good) throws GoodException {
-
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
         session.save(good);
         tx1.commit();
         session.close();
-
     }
 
     @Override
     public Good findByNameGood(String name) {
-        return null;
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery("select a from Good a where a.name = :name", Good.class);
+        query.setParameter("name", name);
+        Good good = (Good) query.getSingleResult();
+        session.close();
+        return good;
     }
 
     @Override

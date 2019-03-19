@@ -94,4 +94,14 @@ public class GoodController extends HttpServlet {
         map.addAttribute("purposes", purposes);
         return modelAndView;
     }
+
+    @RequestMapping(value = "/findGoodByName", method = RequestMethod.GET)
+    public ModelAndView findGoodByName(@RequestParam("goodName") String goodName, ModelMap map) {
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.setViewName("good");
+        map.addAttribute("command",new GoodDto());
+        Good good = goodService.findByNameGood(goodName);
+        map.addAttribute("good",good);
+        return modelAndView;
+    }
 }

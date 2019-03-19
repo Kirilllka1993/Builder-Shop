@@ -1,6 +1,5 @@
 package com.vironit.kazimirov.dao;
 
-import com.vironit.kazimirov.config.HibernateConfiguration;
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purchase;
@@ -8,20 +7,20 @@ import com.vironit.kazimirov.entity.Status;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 import com.vironit.kazimirov.fakedao.DaoInterface.AdminDao;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class AdminDaoImpl implements AdminDao {
-    private Connection connection;
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -41,7 +40,11 @@ public class AdminDaoImpl implements AdminDao {
         Session session = sessionFactory.openSession();
         Query query = session.createQuery("select a from Client a where a.login = :login", Client.class);
         query.setParameter("login", login);
-        Client client = (Client) query.getSingleResult();
+        Client client = null;
+        try {
+            client = (Client) query.getSingleResult();
+        } catch (NoResultException nre) {
+        }
         session.close();
         return client;
     }

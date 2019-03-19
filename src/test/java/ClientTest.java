@@ -1,6 +1,7 @@
 import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.entity.builder.Client.ClientBuilder;
 import com.vironit.kazimirov.entity.builder.Review.ReviewBuilder;
+import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.fakedao.ClientDaoImplFake;
 import com.vironit.kazimirov.service.ClientService;

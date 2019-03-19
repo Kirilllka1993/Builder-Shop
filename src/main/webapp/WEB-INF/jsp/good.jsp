@@ -86,5 +86,10 @@
     <p><c:out value="${goods}"/><br></p>
     <input type=submit value="show goods">
 </form>
+<form method=get action=findGoodByName>
+    <input type="text" name="goodName">
+    <input type=submit value="search good">
+    <p><c:out value="${good}"/><br></p>
+</form>
 </body>
 </html>

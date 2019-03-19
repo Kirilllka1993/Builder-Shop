@@ -4,11 +4,7 @@ import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface AdminDao{

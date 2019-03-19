@@ -1,12 +1,23 @@
 package com.vironit.kazimirov.entity;
 
+import javax.persistence.*;
 import java.util.Objects;
-
+@Entity
+@Table(name = "review")
 public class Review {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String text;
+    @Column(name = "comment")
+    private String comment;
+    @Column(name = "mark")
     private int mark;
+    @ManyToOne
+    @JoinColumn(name = "client_id")
     private Client client;
+    @ManyToOne
+    @JoinColumn(name = "Good_id")
     private Good good;
 
     public Review() {
@@ -14,7 +25,7 @@ public class Review {
 
     public Review(int id, String text, int mark, Client client, Good good) {
         this.id = id;
-        this.text = text;
+        this.comment = text;
         this.mark = mark;
         this.client = client;
         this.good = good;
@@ -28,12 +39,12 @@ public class Review {
         this.id = id;
     }
 
-    public String getText() {
-        return text;
+    public String getComment() {
+        return comment;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setComment(String text) {
+        this.comment = text;
     }
 
     public int getMark() {
@@ -67,21 +78,21 @@ public class Review {
         Review review = (Review) o;
         return id == review.id &&
                 mark == review.mark &&
-                Objects.equals(text, review.text) &&
+                Objects.equals(comment, review.comment) &&
                 Objects.equals(client, review.client) &&
                 Objects.equals(good, review.good);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, text, mark, client, good);
+        return Objects.hash(id, comment, mark, client, good);
     }
 
     @Override
     public String toString() {
         return "Review{" +
                 "id=" + id +
-                ", text='" + text + '\'' +
+                ", text='" + comment + '\'' +
                 ", mark=" + mark +
                 ", client=" + client +
                 ", good=" + good +

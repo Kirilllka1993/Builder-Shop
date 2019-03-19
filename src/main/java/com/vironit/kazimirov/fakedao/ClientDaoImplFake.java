@@ -3,7 +3,6 @@ package com.vironit.kazimirov.fakedao;
 import com.vironit.kazimirov.fakedao.DaoInterface.ClientDao;
 import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.exception.RepeatitionException;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,10 +67,11 @@ public class ClientDaoImplFake implements ClientDao {
     }
 
     @Override
-    public void logIn(String login, String password) throws RepeatitionException {
+    public Client logIn(String login, String password) throws RepeatitionException {
         if (clients.stream().anyMatch(s -> s.getLogin().equals(login) && s.getPassword().equals(password)) == false) {
             throw new RepeatitionException("It is doesnt't correct entered login or password");
         }
+        return null;//Исправить
     }
 
     @Override
@@ -111,9 +111,9 @@ public class ClientDaoImplFake implements ClientDao {
     }
 
     @Override
-    public void changeAddress(int id, String adress) {
+    public void changeAddress(int id, String address) {
 
-        clients.get(id - 1).setAddress(adress);
+        clients.get(id - 1).setAddress(address);
     }
 
     @Override

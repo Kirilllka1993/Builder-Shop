@@ -2,6 +2,7 @@ package com.vironit.kazimirov.fakedao.DaoInterface;
 
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Review;
+import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface ClientDao {
 
     void removeReview(int id, Client client);
 
-    void logIn(String login, String password) throws RepeatitionException;
+    Client logIn(String login, String password) throws RepeatitionException;
 
     void logOut();
 
@@ -23,7 +24,7 @@ public interface ClientDao {
 
     void changePhoneNumber (int id, String phoneNumber);
 
-    void changeAddress(int id, String adress);
+    void changeAddress(int id, String address);
 
     List<Client> findAllClients();
 
