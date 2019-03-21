@@ -2,7 +2,6 @@ package com.vironit.kazimirov.dao;
 
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Review;
-import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.fakedao.DaoInterface.ClientDao;
 import org.hibernate.Session;
@@ -11,8 +10,6 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.List;
 
@@ -38,19 +35,12 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public Client logIn(String login, String password) throws RepeatitionException {
+    public Client logIn(String login, String password)  {
         Session session = sessionFactory.openSession();
         Query query = session.createQuery(SQL_CHECK_ACCOUNT, Client.class);
         query.setParameter("login", login);
         query.setParameter("password", password);
-        Client client = null;
-        try {
-            client = (Client) query.getSingleResult();
-        } catch (NoResultException nre) {
-
-        }
-        session.close();
-        System.out.println(client);
+        Client client = query.getResultList().isEmpty() ? null : (Client) query.getResultList().get(0);
         session.close();
         return client;
     }
@@ -62,22 +52,18 @@ public class ClientDaoImpl implements ClientDao {
 
     @Override
     public void signIn(Client client) throws RepeatitionException {
-//        EntityManager entityManager = null;
-//        if (!entityManager.find(Client.class, client).equals(null)) {
-//            throw new RepeatitionException();
-//        }
         Session session = sessionFactory.openSession();
-        String login=client.getLogin();
+        String login = client.getLogin();
         int query = session.createQuery(FIND_CLIENT_BY_LOGIN, String.class).
-        setParameter("login", login).list().size();
-        if(query==0){
-            Transaction tx1 = session.beginTransaction();
-            session.save(client);
-            tx1.commit();
-            session.close();
-        }else {
+                setParameter("login", login).list().size();
+        if (query != 0) {
             throw new RepeatitionException();//доработать
         }
+        Transaction tx1 = session.beginTransaction();
+        session.save(client);
+        tx1.commit();
+        session.close();
+
     }
 
     @Override
@@ -86,13 +72,13 @@ public class ClientDaoImpl implements ClientDao {
         Client client = session.get(Client.class, id);
         int query = session.createQuery(FIND_CLIENT_BY_LOGIN, String.class).
                 setParameter("login", login).list().size();
-        if(query==0){
+        if (query == 0) {
             client.setLogin(login);
             Transaction tx1 = session.beginTransaction();
             session.update(client);
             tx1.commit();
             session.close();
-        }else {
+        } else {
             throw new RepeatitionException();//доработать
         }
 
@@ -130,7 +116,6 @@ public class ClientDaoImpl implements ClientDao {
         session.update(client);
         tx1.commit();
         session.close();
-
     }
 
     @Override
@@ -140,6 +125,7 @@ public class ClientDaoImpl implements ClientDao {
 
     @Override
     public List<Review> findAllReviews(Client client) {
+
         return null;
     }
 }

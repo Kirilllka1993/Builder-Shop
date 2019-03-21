@@ -9,7 +9,6 @@ import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface AdminService  {
 

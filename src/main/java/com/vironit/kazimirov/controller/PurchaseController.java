@@ -1,10 +1,22 @@
 package com.vironit.kazimirov.controller;
 
+import com.vironit.kazimirov.entity.Client;
+import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purchase;
+import com.vironit.kazimirov.exception.ClientNotFoundException;
+import com.vironit.kazimirov.exception.GoodNotFountException;
+import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.service.AdminService;
+import com.vironit.kazimirov.service.GoodService;
 import com.vironit.kazimirov.service.PurchaseService;
 import com.vironit.kazimirov.service.impl.PurchaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,15 +31,46 @@ import java.util.List;
 public class PurchaseController extends HttpServlet {
     @Autowired
     private PurchaseService purchaseService;
-    //private PurchaseService purchaseService=new PurchaseServiceImpl();
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        List<Purchase> purchases=purchaseService.findPurchases();
-//        request.setAttribute("purchases",purchases);
-//        getServletContext().getRequestDispatcher("/WEB-INF/jsp/purchase.jsp").forward(request,response);
+    @Autowired
+    private AdminService adminService;
+    @Autowired
+    private GoodService goodService;
+
+    @RequestMapping(value = "/purchasePage", method = RequestMethod.GET)
+    public ModelAndView moveToGoodPage(ModelMap map) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("purchase");
+        return modelAndView;
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @RequestMapping(value = "/createPurchase", method = RequestMethod.POST)
+    public ModelAndView createPurchase(@RequestParam ("clientLogin") String clientLogin) throws ClientNotFoundException {
+        Client client = adminService.findClientByLogin(clientLogin);
+        purchaseService.createNewPurchase(client);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("purchase");
+        return modelAndView;
     }
+
+    @RequestMapping(value = "/addIntoPurchase", method = RequestMethod.POST)
+    public ModelAndView addIntoPurchase(@RequestParam ("goodId") int goodId,
+                                        @RequestParam ("amount") int amount,
+                                        @RequestParam("purchaseId")int purchaseId) throws RepeatitionException, GoodNotFountException {
+        Purchase purchase=purchaseService.findPurchaseById(purchaseId);
+        Good good=goodService.findGoodById(goodId);
+        purchaseService.addIntoPurchase(good,amount,purchase);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("purchase");
+        return modelAndView;
+    }
+
+//    @RequestMapping(value = "/findPurchaseById", method = RequestMethod.GET)
+//    public ModelAndView findPurchaseById(@RequestParam("purchaseId")int purchaseId) throws RepeatitionException, GoodNotFountException {
+//        Purchase purchase=purchaseService.findPurchaseById(purchaseId);
+//        Good good=goodService.findGoodById(goodId);
+//        purchaseService.addIntoPurchase(good,amount,purchase);
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("purchase");
+//        return modelAndView;
+//    }
 }

@@ -91,5 +91,21 @@
     <input type=submit value="search good">
     <p><c:out value="${good}"/><br></p>
 </form>
+<form:form action="findBySubsection" method="get">
+<p>subsection</p><form:select name="subsection" path="subsection">
+    <c:forEach items="${subsections}" var="subsection">
+        <option value="${subsection.title}">${subsection.title}</option>
+    </c:forEach>
+</form:select>
+    <input type=reset value=reset>
+    <p><c:out value="${goods}"/><br></p>
+    <input type=submit value="findBySubsection">
+</form:form>
+<form method=get action=findGoodByPrice>
+    <input type="text" name="minPrice">
+    <input type="text" name="maxPrice">
+    <input type=submit value="search good">
+    <p><c:out value="${goods1}"/><br></p>
+</form>
 </body>
 </html>

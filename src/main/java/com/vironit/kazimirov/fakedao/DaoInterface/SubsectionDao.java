@@ -11,4 +11,6 @@ public interface SubsectionDao {
     List<Subsection> findSubsections();
 
     Subsection findSubsectionByName(String title);
+
+    void deleteSubsection(int idSubsection);
 }

@@ -13,4 +13,6 @@ public interface PurposeDao {
 
     Purpose findPurposeByName(String purposeName);
 
+    void deletePurpose (int idPurpose);
+
 }

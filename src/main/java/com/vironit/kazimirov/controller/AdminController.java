@@ -14,7 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 @Controller
@@ -35,7 +34,7 @@ public class AdminController {
     }
 
     @RequestMapping("/showClient")
-    public String showForm(ModelMap map) throws SQLException {
+    public String showForm(ModelMap map){
         List<Client> clients = adminService.findAllClient();
         map.addAttribute("clients", clients);
         return "adminJsp";
@@ -57,7 +56,7 @@ public class AdminController {
     }
 
     @PostMapping("/deleteClient")
-    public String deleteClient(@RequestParam("number") int id) throws SQLException {
+    public String deleteClient(@RequestParam("number") int id){
 
         adminService.deleteClient(id);
         return "adminJsp";

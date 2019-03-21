@@ -92,12 +92,17 @@ public class PurchaseDaoImplFake implements PurchaseDao {
             throw new PurchaseException("Our company don't work in minus");
         }
         LocalDateTime localDateTime = LocalDateTime.now();
-        purchase.setPurchase(localDateTime);
+        purchase.setTimeOfPurchase(localDateTime);
         purchase.setStatus(Status.IN_PROCESS);
-        purchase.setCost(cost);
+        purchase.setSumma(cost);
         purchases.add(purchase);
         purchase.setId(purchases.size());
         return purchase;
+    }
+
+    @Override
+    public Purchase findPurchaseById(int purchaseId) {
+        return null;
     }
 
     public void removePurchase(int id) throws PurchaseException {
@@ -125,9 +130,9 @@ public class PurchaseDaoImplFake implements PurchaseDao {
     }
 
     @Override
-    public Purchase addIntoPurchase(int goodId, int amount, Purchase purchase) throws RepeatitionException, GoodNotFountException {
+    public Purchase addIntoPurchase(Good good, int amount, Purchase purchase) throws RepeatitionException, GoodNotFountException {
         GoodDao dao = new GoodDaoImplFake();
-        Good good = dao.findGoodById(goodId);
+        //Good good = dao.findGoodById(goodId);
         if (good.getAmount() < amount) {
             throw new RepeatitionException("The amount of this good in the store is" + " " + good.getAmount());
         }
@@ -142,32 +147,32 @@ public class PurchaseDaoImplFake implements PurchaseDao {
         newPurchaseGood.setAmount(amount);
         newPurchaseGood.setPrice(good.getPrice());
         good.setAmount(good.getAmount() - amount);
-        dao.updateGood(goodId, good);
+        //dao.updateGood(goodId, good);
         purchasesCart.add(newPurchaseGood);
         purchase.setGoods(purchasesCart);
         double cost = purchase.getGoods().stream().mapToDouble(s -> (s.getPrice() * s.getAmount() - s.getDiscount() * s.getAmount())).sum();
-        purchase.setCost(cost);
+        purchase.setSumma(cost);
         return purchase;
     }
 
 
     @Override
-    public void deleteFromPurchase(int id) throws PurchaseException {
-        if (purchasesCart.stream().anyMatch(s -> s.getId() == id) == false) {
+    public void deleteFromPurchase(int goodId) throws PurchaseException {
+        if (purchasesCart.stream().anyMatch(s -> s.getId() == goodId) == false) {
             throw new PurchaseException("This purchase is absent in base. You can't delete it");
         }
-        Good good = purchasesCart.stream().filter(s -> s.getId() == id).findFirst().get();
+        Good good = purchasesCart.stream().filter(s -> s.getId() == goodId).findFirst().get();
         purchasesCart.remove(good);
     }
 
     @Override
     public List<Purchase> findPurchasesByDate(LocalDateTime localDateTime) throws PurchaseNotFoundException {
         List<Purchase> purchasesByDate;
-        if (purchases.stream().anyMatch(s -> (s.getPurchase().equals(localDateTime))) == false) {
+        if (purchases.stream().anyMatch(s -> (s.getTimeOfPurchase().equals(localDateTime))) == false) {
             throw new PurchaseNotFoundException("There are no purchases in that period");
 
         } else {
-            purchasesByDate = purchases.stream().filter(s -> (s.getPurchase().equals(localDateTime))).collect(Collectors.toList());
+            purchasesByDate = purchases.stream().filter(s -> (s.getTimeOfPurchase().equals(localDateTime))).collect(Collectors.toList());
         }
         return purchasesByDate;
     }

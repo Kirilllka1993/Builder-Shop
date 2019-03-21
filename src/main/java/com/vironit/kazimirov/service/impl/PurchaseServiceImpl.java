@@ -37,6 +37,11 @@ public class PurchaseServiceImpl implements PurchaseService {
         return purchaseDao.createNewPurchase(client);
     }
 
+    @Override
+    public Purchase findPurchaseById(int purchaseId) {
+        return purchaseDao.findPurchaseById(purchaseId);
+    }
+
 
     @Override
     public Purchase makeAPurchase(Purchase purchase) throws PurchaseException {
@@ -49,14 +54,14 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public Purchase addIntoPurchase(int id, int amount, Purchase purchase) throws RepeatitionException, GoodNotFountException {
-        return purchaseDao.addIntoPurchase(id, amount, purchase);
+    public Purchase addIntoPurchase(Good good, int amount, Purchase purchase) throws RepeatitionException, GoodNotFountException {
+        return purchaseDao.addIntoPurchase(good, amount, purchase);
 
     }
 
     @Override
-    public void deleteFromPurchase(int id) throws PurchaseException {
-        purchaseDao.deleteFromPurchase(id);
+    public void deleteFromPurchase(int goodId) throws PurchaseException {
+        purchaseDao.deleteFromPurchase(goodId);
     }
 
     @Override
@@ -75,7 +80,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public void removePurchase(int id) throws PurchaseException {
-        purchaseDao.removePurchase(id);
+    public void removePurchase(int purchaseId) throws PurchaseException {
+        purchaseDao.removePurchase(purchaseId);
     }
 }

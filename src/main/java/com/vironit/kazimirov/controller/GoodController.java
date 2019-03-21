@@ -104,4 +104,26 @@ public class GoodController extends HttpServlet {
         map.addAttribute("good",good);
         return modelAndView;
     }
+
+    @RequestMapping(value = "/findBySubsection", method = RequestMethod.GET)
+    public ModelAndView findGoodsBySubsection(@RequestParam("subsection") String title, ModelMap map){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("good");
+        Subsection subsection=subsectionService.findSubsectionByName(title);
+        List<Good> goods=goodService.findBySubsection(subsection);
+        map.addAttribute("goods", goods);
+        map.addAttribute("command", new GoodDto());
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/findGoodByPrice", method = RequestMethod.GET)
+    public ModelAndView findGoodsByPrice(@RequestParam("minPrice") double minPrice,
+                                         @RequestParam("maxPrice") double maxPrice, ModelMap map){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("good");
+        List<Good> goods=goodService.findGoodsByPrice(minPrice,maxPrice);
+        map.addAttribute("goods1", goods);
+        map.addAttribute("command", new GoodDto());
+        return modelAndView;
+    }
 }

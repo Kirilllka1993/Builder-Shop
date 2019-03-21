@@ -1,7 +1,6 @@
 package com.vironit.kazimirov.service.impl;
 
 import com.vironit.kazimirov.fakedao.DaoInterface.SubsectionDao;
-import com.vironit.kazimirov.fakedao.SubsectionDaoImplFake;
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.SubsectionService;
@@ -33,6 +32,12 @@ public class SubsectionServiceImpl implements SubsectionService {
     @Override
     public Subsection findSubsectionByName(String title) {
         return subsectionDao.findSubsectionByName(title);
+    }
+
+    @Override
+    public void deleteSubsection(int idSubsection) {
+        subsectionDao.deleteSubsection(idSubsection);
+
     }
 }
 

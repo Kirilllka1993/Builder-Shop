@@ -19,9 +19,11 @@ public interface PurchaseDao {
 
     Purchase makeAPurchase(Purchase purchase) throws PurchaseException;
 
-    Purchase addIntoPurchase(int id, int amount, Purchase purchase) throws RepeatitionException, GoodNotFountException;
+    Purchase findPurchaseById(int purchaseId);
 
-    void deleteFromPurchase(int id) throws PurchaseException;
+    Purchase addIntoPurchase(Good good, int amount, Purchase purchase) throws RepeatitionException, GoodNotFountException;
+
+    void deleteFromPurchase(int goodId) throws PurchaseException;
 
     List<Purchase> findPurchasesByDate(LocalDateTime localDateTime)throws PurchaseNotFoundException;
 

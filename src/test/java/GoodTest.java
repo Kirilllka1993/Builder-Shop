@@ -131,25 +131,25 @@ public class GoodTest {
         goodService.deleteGood(sumGoodId);
     }
 
-    @Test
-    public void updateTest() throws GoodNotFountException {
-        int idOfLastGood = goodService.findAllGoods().get(goodService.findAllGoods().size() - 1).getId();
-        goodService.updateGood(idOfLastGood, goodBeforeTest);
-        Good updateGood = goodService.findGoodById(idOfLastGood);
-        List<Good> missingGoods = goodService.findAllGoods();
-        List<Good> findGoodsByName = missingGoods.stream().filter(good -> !good.equals(updateGood)).collect(Collectors.toList());
-        missingGoods.removeAll(findGoodsByName);
-        Assert.assertTrue(missingGoods.stream().anyMatch(good -> good.equals(updateGood)));
-        int size = missingGoods.size();
-        assertEquals(size, 1);
-    }
+//    @Test
+//    public void updateTest() throws GoodNotFountException {
+//        int idOfLastGood = goodService.findAllGoods().get(goodService.findAllGoods().size() - 1).getId();
+//        goodService.updateGood(idOfLastGood, goodBeforeTest);
+//        Good updateGood = goodService.findGoodById(idOfLastGood);
+//        List<Good> missingGoods = goodService.findAllGoods();
+//        List<Good> findGoodsByName = missingGoods.stream().filter(good -> !good.equals(updateGood)).collect(Collectors.toList());
+//        missingGoods.removeAll(findGoodsByName);
+//        Assert.assertTrue(missingGoods.stream().anyMatch(good -> good.equals(updateGood)));
+//        int size = missingGoods.size();
+//        assertEquals(size, 1);
+//    }
 
-    @Test(expected = GoodNotFountException.class)
-    public void updateExceptionTest() throws GoodNotFountException {
-        int sumGoodId = goodService.findAllGoods().stream().mapToInt(Good::getId).sum();
-        Good good = new Good();
-        goodService.updateGood(sumGoodId, good);
-    }
+//    @Test(expected = GoodNotFountException.class)
+//    public void updateExceptionTest() throws GoodNotFountException {
+//        int sumGoodId = goodService.findAllGoods().stream().mapToInt(Good::getId).sum();
+//        Good good = new Good();
+//        goodService.updateGood(sumGoodId, good);
+//    }
 
     @Test
     public void findGoodByPriceTest() throws GoodNotFountException {

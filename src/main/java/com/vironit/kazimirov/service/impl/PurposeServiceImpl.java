@@ -36,4 +36,9 @@ public class PurposeServiceImpl implements PurposeService {
         return purposeDao.findPurposeByName(purposeName);
     }
 
+    @Override
+    public void deletePurpose(int idPurpose) {
+        purposeDao.deletePurpose(idPurpose);
+    }
+
 }

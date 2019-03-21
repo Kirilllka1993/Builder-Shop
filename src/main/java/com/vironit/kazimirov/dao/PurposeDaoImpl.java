@@ -15,6 +15,8 @@ import java.util.List;
 public class PurposeDaoImpl implements PurposeDao {
     @Autowired
     private SessionFactory sessionFactory;
+    private final String FIND_PURPOSES="select a from Purpose a";
+    private final String FIND_PURPOSE_BY_NAME="select a from Purpose a where a.purpose = :purpose";
     @Override
     public void addPurpose(Purpose purpose) throws RepeatitionException {
 
@@ -29,18 +31,28 @@ public class PurposeDaoImpl implements PurposeDao {
     @Override
     public List<Purpose> findPurposes() {
         Session session = sessionFactory.openSession();
-        String query = "select b from " + Purpose.class.getSimpleName() + " b";
-        List<Purpose> purposes = (List<Purpose>) session.createQuery(query).list();
+        List<Purpose> purposes=(List<Purpose>) session.createQuery(FIND_PURPOSES).list();
+        session.close();
         return purposes;
     }
 
     @Override
     public Purpose findPurposeByName(String purposeName) {
         Session session = sessionFactory.openSession();
-        Query query = session.createQuery("select a from Purpose a where a.purpose = :purpose", Purpose.class);
+        Query query = session.createQuery(FIND_PURPOSE_BY_NAME, Purpose.class);
         query.setParameter("purpose", purposeName);
         Purpose purpose = (Purpose) query.getSingleResult();
         session.close();
         return purpose;
+    }
+
+    @Override
+    public void deletePurpose(int idPurpose) {
+        Session session = sessionFactory.openSession();
+        Transaction tx1 = session.beginTransaction();
+        Purpose purpose = session.get(Purpose.class, idPurpose);
+        session.delete(purpose);
+        tx1.commit();
+        session.close();
     }
 }

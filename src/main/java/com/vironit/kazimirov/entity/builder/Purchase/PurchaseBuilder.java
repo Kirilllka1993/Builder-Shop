@@ -16,7 +16,7 @@ public class PurchaseBuilder {
     }
 
     public PurchaseBuilder withCost(double cost) {
-        purchase.setCost(cost);
+        purchase.setSumma(cost);
         return this;
     }
 
@@ -37,7 +37,7 @@ public class PurchaseBuilder {
     }
 
     public PurchaseBuilder withPurchase(LocalDateTime purchase1) {
-        purchase.setPurchase(purchase1);
+        purchase.setTimeOfPurchase(purchase1);
 
         return this;
     }

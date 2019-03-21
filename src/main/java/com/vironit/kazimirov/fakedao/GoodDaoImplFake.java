@@ -80,23 +80,53 @@ public class GoodDaoImplFake implements GoodDao {
     }
 
     @Override
-    public void deleteGood(int id) throws GoodException {
-        if (goods.stream().noneMatch(good -> (good.getId() == id))) {
+    public void deleteGood(int idGood) throws GoodException {
+        if (goods.stream().noneMatch(good -> (good.getId() == idGood))) {
             throw new GoodException("There is no such good");
         }
-        Good good = goods.stream().filter(s -> s.getId() == id).findFirst().get();
+        Good good = goods.stream().filter(s -> s.getId() == idGood).findFirst().get();
         goods.remove(good);
     }
 
     @Override
-    public Good updateGood(int id, Good good) throws GoodNotFountException {
-        if (goods.stream().noneMatch(good1 -> good1.getId() == id)) {
-            throw new GoodNotFountException("The is no such id in list");
-        }
+    public void changePrice(int idGood, double price) {
+
+    }
+
+    @Override
+    public void changeSubsection(int idGood, Subsection subsection) {
+
+    }
+
+    @Override
+    public void changePurpose(int idGood, Purpose purpose) {
+
+    }
+
+    @Override
+    public void changeUnit(int idGood, String unit) {
+
+    }
+
+    @Override
+    public void changeQuantity(int idGood, int quantity) {
+
+    }
+
+    @Override
+    public void changeAmount(int idGood, int amount) {
+
+    }
+
+    @Override
+    public Good updateGood(int idGood, Good good)  {
+//        if (goods.stream().noneMatch(good1 -> good1.getId() == idGood)) {
+//            throw new GoodNotFountException("The is no such id in list");
+//        }
         for (int i = 0; i <= goods.size() - 1; i++) {
             Good updateGood = goods.get(i);
-            if (updateGood.getId() == id) {
-                good.setId(id);
+            if (updateGood.getId() == idGood) {
+                good.setId(idGood);
                 goods.get(i).setAmount(good.getAmount());
                 goods.get(i).setName(good.getName());
                 goods.get(i).setPrice(good.getPrice());
@@ -107,7 +137,7 @@ public class GoodDaoImplFake implements GoodDao {
                 goods.get(i).setUnit(good.getUnit());
             }
         }
-        return goods.get(id - 1);
+        return goods.get(idGood - 1);
     }
 
     @Override

@@ -20,15 +20,24 @@ public interface GoodDao {
 
     List<Good> findByPurpose(Purpose purpose);
 
-    void deleteGood(int id) throws GoodException;//Как удалять товар, по параметрам или нет
+    void deleteGood(int idGood) throws GoodException;//Как удалять товар, по параметрам или нет
 
-    Good updateGood(int id, Good good) throws GoodNotFountException;//могут ли все параметры быть равны нулю
+    void changePrice(int idGood, double price);//могут ли все параметры быть равны нулю
+
+    void changeSubsection(int idGood, Subsection subsection);
+
+    void changePurpose(int idGood, Purpose purpose);
+
+    void changeUnit(int idGood, String unit);
+
+    void changeQuantity(int idGood, int quantity);
+
+    void changeAmount(int idGood, int amount);
 
     List<Good> findGoodsByPrice(double minPrice, double maxPrice);
 
     Good findGoodById(int id);
 
 
-
-
+    Good updateGood(int goodId, Good good);
 }

@@ -20,11 +20,13 @@ public interface PurchaseService {
 
     Purchase createNewPurchase(Client client);
 
+    Purchase findPurchaseById(int purchaseId);
+
     Purchase makeAPurchase(Purchase purchase) throws PurchaseException;
 
-    Purchase addIntoPurchase(int id, int amount, Purchase purchase) throws RepeatitionException, GoodNotFountException;
+    Purchase addIntoPurchase(Good good, int amount, Purchase purchase) throws RepeatitionException, GoodNotFountException;
 
-    void deleteFromPurchase(int id) throws PurchaseException;
+    void deleteFromPurchase(int goodId) throws PurchaseException;
 
     List<Purchase> findPurchasesByDate(LocalDateTime localDateTime) throws PurchaseNotFoundException;
 
@@ -32,7 +34,7 @@ public interface PurchaseService {
 
     Purchase changeStatus(Purchase purchase, Status status);
 
-    void removePurchase(int id) throws PurchaseException;
+    void removePurchase(int purchaseId) throws PurchaseException;
 
 
 }

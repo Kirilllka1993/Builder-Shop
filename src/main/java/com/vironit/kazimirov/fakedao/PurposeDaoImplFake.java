@@ -42,4 +42,9 @@ public class PurposeDaoImplFake implements PurposeDao {
     public Purpose findPurposeByName(String purposeName) {
         return null;
     }
+
+    @Override
+    public void deletePurpose(int idPurpose) {
+
+    }
 }

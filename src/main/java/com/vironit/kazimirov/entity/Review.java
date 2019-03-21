@@ -29,6 +29,7 @@ public class Review {
         this.mark = mark;
         this.client = client;
         this.good = good;
+
     }
 
     public int getId() {

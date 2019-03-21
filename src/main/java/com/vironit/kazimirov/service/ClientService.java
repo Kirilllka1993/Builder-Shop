@@ -2,7 +2,6 @@ package com.vironit.kazimirov.service;
 
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Review;
-import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 
 import java.util.List;

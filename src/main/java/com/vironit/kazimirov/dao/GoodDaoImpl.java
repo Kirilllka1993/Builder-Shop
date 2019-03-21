@@ -3,8 +3,6 @@ package com.vironit.kazimirov.dao;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
-import com.vironit.kazimirov.exception.GoodException;
-import com.vironit.kazimirov.exception.GoodNotFountException;
 import com.vironit.kazimirov.fakedao.DaoInterface.GoodDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,52 +11,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
+
 @Repository
 public class GoodDaoImpl implements GoodDao {
 
     @Autowired
     private SessionFactory sessionFactory;
+    private final String FIND_GOOD_BY_NAME = "select a from Good a where a.name = :name";
+    private final String FIND_GOODS = "select a from Good a";
+    private final String FIND_BY_GOODS_SUBSECTIONS = "select a from Good a where subsection =:subsection";
+    private final String FIND_BY_GOODS_PURPOSES = "select a from Good a where purpose =:purpose";
+    private final String FIND_GOODS_BY_PRICE = "select a from Good a where price>=:minPrice and price<=:maxPrice";
 
 
-
-    public List<Subsection> showGoods() throws SQLException {
-//        final String SHOW_GOODS = "SELECT*FROM shop.good";
-//        PreparedStatement preparedStatement = connection.prepareStatement(SHOW_GOODS);
-//        ResultSet resultSet = preparedStatement.executeQuery();
-//        List<Good> goods=new ArrayList<>();
-//        while (resultSet.next()) {
-//            Good good = new Good();
-//            good.setId(resultSet.getInt("id"));
-//            good.setQuantity(resultSet.getInt("quantity"));
-//            good.setDiscount(resultSet.getInt("Discount_id"));
-//            good.setName(resultSet.getString("name"));
-//            good.setPrice(resultSet.getDouble("price"));
-//            good.setPurpose(resultSet.getInt();
-//            good.setSubsection(resultSet.getString("Subsection_id"));
-//            goods.add(good);
-//        }
-//        final String SHOW_SUBSECTIONS = "SELECT*FROM shop.subsection";
-//        PreparedStatement preparedStatement = connection.prepareStatement(SHOW_SUBSECTIONS);
-//        ResultSet resultSet = preparedStatement.executeQuery();
-//        List<Subsection> subsections =new ArrayList<>();
-//        while (resultSet.next()){
-//            Subsection subsection=new Subsection();
-//            subsection.setId(resultSet.getInt("id"));
-//            subsection.setTitle(resultSet.getString("title"));
-//            subsections.add(subsection);
-//        }
-        return null;
-
-    }
 
     @Override
-    public void addGood(Good good) throws GoodException {
+    public void addGood(Good good){
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
         session.save(good);
@@ -69,7 +38,7 @@ public class GoodDaoImpl implements GoodDao {
     @Override
     public Good findByNameGood(String name) {
         Session session = sessionFactory.openSession();
-        Query query = session.createQuery("select a from Good a where a.name = :name", Good.class);
+        Query query = session.createQuery(FIND_GOOD_BY_NAME, Good.class);
         query.setParameter("name", name);
         Good good = (Good) query.getSingleResult();
         session.close();
@@ -79,38 +48,129 @@ public class GoodDaoImpl implements GoodDao {
     @Override
     public List<Good> findAllGoods() {
         Session session = sessionFactory.openSession();
-        String query = "select p from " + Good.class.getSimpleName() + " p";
-        List<Good> goods = (List<Good>) session.createQuery(query).list();
+        List<Good> goods=(List<Good>) session.createQuery(FIND_GOODS).list();
+        session.close();
         return goods;
     }
 
     @Override
     public List<Good> findBySubsection(Subsection subsection) {
-        return null;
+        Session session = sessionFactory.openSession();
+        List<Good> goods = (List<Good>) session.createQuery(FIND_BY_GOODS_SUBSECTIONS)
+                .setParameter("subsection", subsection)
+                .list();
+        session.close();
+        return goods;
     }
 
     @Override
     public List<Good> findByPurpose(Purpose purpose) {
-        return null;
+        Session session = sessionFactory.openSession();
+        List<Good> goods = (List<Good>) session.createQuery(FIND_BY_GOODS_PURPOSES)
+                .setParameter("purpose", purpose)
+                .list();
+        session.close();
+        return goods;
     }
 
     @Override
-    public void deleteGood(int id) throws GoodException {
+    public void deleteGood(int idGood){
+        Session session = sessionFactory.openSession();
+        Transaction tx1 = session.beginTransaction();
+        Good good = session.get(Good.class, idGood);
+        session.delete(good);
+        tx1.commit();
+        session.close();
 
     }
 
     @Override
-    public Good updateGood(int id, Good good) throws GoodNotFountException {
-        return null;
+    public void changePrice(int idGood, double price) {
+        Session session = sessionFactory.openSession();
+        Good good = session.get(Good.class, idGood);
+        good.setPrice(price);
+        Transaction tx1 = session.beginTransaction();
+        session.update(good);
+        tx1.commit();
+        session.close();
+    }
+
+    @Override
+    public void changeSubsection(int idGood, Subsection subsection) {
+        Session session = sessionFactory.openSession();
+        Good good = session.get(Good.class, idGood);
+        good.setSubsection(subsection);
+        Transaction tx1 = session.beginTransaction();
+        session.update(good);
+        tx1.commit();
+        session.close();
+    }
+
+    @Override
+    public void changePurpose(int idGood, Purpose purpose) {
+        Session session = sessionFactory.openSession();
+        Good good = session.get(Good.class, idGood);
+        good.setPurpose(purpose);
+        Transaction tx1 = session.beginTransaction();
+        session.update(good);
+        tx1.commit();
+        session.close();
+    }
+
+    @Override
+    public void changeUnit(int idGood, String unit) {
+        Session session = sessionFactory.openSession();
+        Good good = session.get(Good.class, idGood);
+        good.setUnit(unit);
+        Transaction tx1 = session.beginTransaction();
+        session.update(good);
+        tx1.commit();
+        session.close();
+    }
+
+    @Override
+    public void changeQuantity(int idGood, int quantity) {
+        Session session = sessionFactory.openSession();
+        Good good = session.get(Good.class, idGood);
+        good.setQuantity(quantity);
+        Transaction tx1 = session.beginTransaction();
+        session.update(good);
+        tx1.commit();
+        session.close();
+    }
+
+    @Override
+    public void changeAmount(int idGood, int amount) {
+        Session session = sessionFactory.openSession();
+        Good good = session.get(Good.class, idGood);
+        good.setAmount(amount);
+        Transaction tx1 = session.beginTransaction();
+        session.update(good);
+        tx1.commit();
+        session.close();
     }
 
     @Override
     public List<Good> findGoodsByPrice(double minPrice, double maxPrice) {
-        return null;
+        Session session = sessionFactory.openSession();
+        List<Good> goods = (List<Good>) session.createQuery(FIND_GOODS_BY_PRICE)
+                .setParameter("minPrice", minPrice)
+                .setParameter("maxPrice",maxPrice)
+                .list();
+        session.close();
+        return goods;
     }
 
     @Override
     public Good findGoodById(int id) {
+        Session session = sessionFactory.openSession();
+        Good good = session.get(Good.class, id);
+        session.close();
+        return good;
+    }
+
+    @Override
+    public Good updateGood(int goodId, Good good) {
         return null;
     }
 }

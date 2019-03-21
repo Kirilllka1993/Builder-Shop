@@ -13,4 +13,6 @@ public interface PurposeService {
 
     Purpose findPurposeByName(String purposeName);
 
+    void deletePurpose(int idPurpose);
+
 }
