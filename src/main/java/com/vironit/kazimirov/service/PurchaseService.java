@@ -27,8 +27,6 @@ public interface PurchaseService {
 
     List<Purchase> findPurchasesByDate(LocalDateTime registration) throws PurchaseNotFoundException;
 
-    List<Good> findGoods();
-
     void changeStatus(Purchase purchase, Status status);
 
     void removePurchase(int purchaseId) throws PurchaseException;

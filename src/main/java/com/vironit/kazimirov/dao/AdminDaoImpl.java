@@ -4,8 +4,6 @@ import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.entity.Status;
-import com.vironit.kazimirov.exception.ClientNotFoundException;
-import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 import com.vironit.kazimirov.fakedao.DaoInterface.AdminDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -15,6 +13,9 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
 import java.util.List;
+
+import static com.vironit.kazimirov.entity.Status.IN_PROCESS;
+import static com.vironit.kazimirov.entity.Status.NEW;
 
 @Repository
 public class AdminDaoImpl implements AdminDao {
@@ -46,17 +47,17 @@ public class AdminDaoImpl implements AdminDao {
     }
 
     @Override
-    public Client findClientById(int id) {
+    public Client findClientById(int clientId) {
         Session session = sessionFactory.openSession();
-        Client client = session.get(Client.class, id);
+        Client client = session.get(Client.class, clientId);
         session.close();
         return client;
     }
 
     @Override
-    public void changeDiscount(int id, double discount) {
+    public void changeDiscount(int goodId, double discount) {
         Session session = sessionFactory.openSession();
-        Good good = session.get(Good.class, id);
+        Good good = session.get(Good.class, goodId);
         good.setDiscount(discount);
         Transaction tx1 = session.beginTransaction();
         session.update(good);
@@ -64,43 +65,46 @@ public class AdminDaoImpl implements AdminDao {
         session.close();
     }
 
-      @Override
+    @Override
     public List<Client> findAllClient() {
         Session session = sessionFactory.openSession();
-        List<Client> clients=(List<Client>) session.createQuery(FIND_CLIENTS).list();
+        List<Client> clients = (List<Client>) session.createQuery(FIND_CLIENTS).list();
         session.close();
         return clients;
     }
 
-    public void deleteClient(int idClient) {
+    public void deleteClient(int clientId) {
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
-        Client client = session.get(Client.class, idClient);
+        Client client = session.get(Client.class, clientId);
         session.delete(client);
         tx1.commit();
         session.close();
     }
 
     @Override
-    public Purchase updateStatus(Status status, Purchase purchase) {
-        return null;
-    }
-
-    @Override
-    public Purchase findPurchasebyId(int id) throws PurchaseNotFoundException {// В purchaseService
-        return null;
-    }
-
-    @Override
-    public List<Purchase> findAllPurchases() {
+    public void updateStatus(int status, Purchase purchase) {
         Session session = sessionFactory.openSession();
-        List<Purchase> purchases=(List<Purchase>) session.createQuery(FIND_PURCHASES).list();
+        Transaction tx1 = session.beginTransaction();
+        if (status==1){
+            purchase.setStatus(NEW);
+        }else if (status==2) {
+            purchase.setStatus(IN_PROCESS);
+        }else if (status==3){
+            purchase.setStatus(Status.REGISTRATE);
+        }else if (status==4){
+            purchase.setStatus(Status.CANCELED);
+        }
+        session.update(purchase);
+        tx1.commit();
         session.close();
-        return purchases;
     }
 
-    @Override
-    public List<Good> findAllGoods() {
-        return null;
-    }
+//    @Override
+//    public List<Purchase> findAllPurchases() {
+//        Session session = sessionFactory.openSession();
+//        List<Purchase> purchases = (List<Purchase>) session.createQuery(FIND_PURCHASES).list();
+//        session.close();
+//        return purchases;
+//    }
 }

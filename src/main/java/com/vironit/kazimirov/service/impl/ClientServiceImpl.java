@@ -29,14 +29,13 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void removeReview(int id, Client client) {
-        clientDao.removeReview(id, client);
+    public void removeReview(int clientId, int goodId) {
+        clientDao.removeReview(clientId, goodId);
 
     }
 
     @Override
     public Client logIn(String login, String password) throws RepeatitionException {
-
         return clientDao.logIn(login, password);
 
     }
@@ -54,32 +53,32 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void changeLogin(int id, String login) throws RepeatitionException{
-        clientDao.changeLogin(id, login);
+    public void changeLogin(int clientId, String newLogin) throws RepeatitionException {
+        clientDao.changeLogin(clientId, newLogin);
 
     }
 
     @Override
-    public void changePassword(int id, String password) {
-        clientDao.changePassword(id, password);
+    public void changePassword(int clientId, String newPassword) {
+        clientDao.changePassword(clientId, newPassword);
 
     }
 
     @Override
-    public void changePhoneNumber(int id, String phoneNumber) {
-        clientDao.changePhoneNumber(id, phoneNumber);
+    public void changePhoneNumber(int clientId, String newPhoneNumber) {
+        clientDao.changePhoneNumber(clientId, newPhoneNumber);
     }
 
     @Override
-    public void changeAddress(int id, String address) {
-        clientDao.changeAddress(id, address);
+    public void changeAddress(int clientId, String newAddress) {
+        clientDao.changeAddress(clientId, newAddress);
 
     }
 
-    @Override
-    public List<Client> findAllClients() {
-        return clientDao.findAllClients();
-    }
+//    @Override
+//    public List<Client> findAllClients() {
+//        return clientDao.findAllClients();
+//    }
 
     @Override
     public List<Review> findAllReviews(Client client) {

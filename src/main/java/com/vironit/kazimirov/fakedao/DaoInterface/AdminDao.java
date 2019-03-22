@@ -11,21 +11,15 @@ public interface AdminDao{
 
     void addClient(Client client) throws RepeatitionException;
 
-    void deleteClient(int id);
+    void deleteClient(int clientId);
 
     Client findClientByLogin(String login) throws ClientNotFoundException;
 
-    Client findClientById(int id) throws ClientNotFoundException;
+    Client findClientById(int clientId) throws ClientNotFoundException;
 
-    void changeDiscount(int id, double discount);
-
-    List<Purchase> findAllPurchases();
+    void changeDiscount(int goodId, double discount);
 
     List<Client> findAllClient();
 
-    Purchase findPurchasebyId(int id) throws PurchaseNotFoundException;
-
-    List<Good> findAllGoods();
-
-    Purchase updateStatus(Status status, Purchase purchase);
+    void updateStatus(int status, Purchase purchase);
 }

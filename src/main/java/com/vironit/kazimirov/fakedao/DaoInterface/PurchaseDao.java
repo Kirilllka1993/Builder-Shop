@@ -24,8 +24,6 @@ public interface PurchaseDao {
 
     List<Purchase> findPurchasesByDate(LocalDateTime registration)throws PurchaseNotFoundException;
 
-    List<Good> findGoods();
-
     void removePurchase(int purchaseId) throws PurchaseException;
 
     void changeStatus (Purchase purchase, Status status);

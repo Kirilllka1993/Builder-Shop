@@ -2,28 +2,27 @@ package com.vironit.kazimirov.service.impl;
 
 import com.vironit.kazimirov.fakedao.DaoInterface.AdminDao;
 import com.vironit.kazimirov.entity.Client;
-import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purchase;
-import com.vironit.kazimirov.entity.Status;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
-import com.vironit.kazimirov.exception.PurchaseNotFoundException;
+import com.vironit.kazimirov.fakedao.DaoInterface.PurchaseDao;
 import com.vironit.kazimirov.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AdminServiceImpl implements AdminService {
 
     private final AdminDao adminDao;
+    private final PurchaseDao purchaseDao;
 
     @Autowired
-    public AdminServiceImpl(AdminDao adminDao) {
+    public AdminServiceImpl(AdminDao adminDao, PurchaseDao purchaseDao) {
         this.adminDao = adminDao;
+        this.purchaseDao = purchaseDao;
     }
 
     @Override
@@ -32,8 +31,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void deleteClient(int idClient) {
-        adminDao.deleteClient(idClient);
+    public void deleteClient(int clientId) {
+        adminDao.deleteClient(clientId);
 
     }
 
@@ -44,39 +43,38 @@ public class AdminServiceImpl implements AdminService {
 
 
     @Override
-    public Client findClientById(int id) throws ClientNotFoundException {
-        return adminDao.findClientById(id);
+    public Client findClientById(int clientId) throws ClientNotFoundException {
+        return adminDao.findClientById(clientId);
     }
 
     @Override
-    public void changeDiscount(int id, double discount) {
-        adminDao.changeDiscount(id, discount);
+    public void changeDiscount(int goodId, double discount) {
+        adminDao.changeDiscount(goodId, discount);
 
     }
 
-    @Override
-    public List<Purchase> findAllPurchases() {
-        return adminDao.findAllPurchases();
-
-    }
+//    @Override
+//    public List<Purchase> findAllPurchases() {
+//        return adminDao.findAllPurchases();
+//    }
 
     @Override
     public List<Client> findAllClient() {
         return adminDao.findAllClient();
     }
 
-    @Override
-    public Purchase findPurchasebyId(int id) throws PurchaseNotFoundException {
-        return adminDao.findPurchasebyId(id);
-    }
+//    @Override
+//    public Purchase findPurchasebyId(int id) throws PurchaseNotFoundException {
+//        return adminDao.findPurchasebyId(id);
+//    }
+
+//    @Override
+//    public List<Good> findAllGoods() {
+//        return adminDao.findAllGoods();
+//    }
 
     @Override
-    public List<Good> findAllGoods() {
-        return adminDao.findAllGoods();
-    }
-
-    @Override
-    public Purchase updateStatus(Status status, Purchase purchase) {
-        return adminDao.updateStatus(status,purchase);
+    public void updateStatus(int status, Purchase purchase) {
+         adminDao.updateStatus(status,purchase);
     }
 }

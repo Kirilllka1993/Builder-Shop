@@ -36,10 +36,10 @@ public class GoodDaoImpl implements GoodDao {
     }
 
     @Override
-    public Good findByNameGood(String name) {
+    public Good findByNameGood(String goodName) {
         Session session = sessionFactory.openSession();
         Query query = session.createQuery(FIND_GOOD_BY_NAME, Good.class);
-        query.setParameter("name", name);
+        query.setParameter("name", goodName);
         Good good = (Good) query.getSingleResult();
         session.close();
         return good;
@@ -74,10 +74,10 @@ public class GoodDaoImpl implements GoodDao {
     }
 
     @Override
-    public void deleteGood(int idGood){
+    public void deleteGood(int goodId){
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
-        Good good = session.get(Good.class, idGood);
+        Good good = session.get(Good.class, goodId);
         session.delete(good);
         tx1.commit();
         session.close();
@@ -85,9 +85,9 @@ public class GoodDaoImpl implements GoodDao {
     }
 
     @Override
-    public void changePrice(int idGood, double price) {
+    public void changePrice(int goodId, double price) {
         Session session = sessionFactory.openSession();
-        Good good = session.get(Good.class, idGood);
+        Good good = session.get(Good.class, goodId);
         good.setPrice(price);
         Transaction tx1 = session.beginTransaction();
         session.update(good);
@@ -96,9 +96,9 @@ public class GoodDaoImpl implements GoodDao {
     }
 
     @Override
-    public void changeSubsection(int idGood, Subsection subsection) {
+    public void changeSubsection(int goodId, Subsection subsection) {
         Session session = sessionFactory.openSession();
-        Good good = session.get(Good.class, idGood);
+        Good good = session.get(Good.class, goodId);
         good.setSubsection(subsection);
         Transaction tx1 = session.beginTransaction();
         session.update(good);
@@ -107,9 +107,9 @@ public class GoodDaoImpl implements GoodDao {
     }
 
     @Override
-    public void changePurpose(int idGood, Purpose purpose) {
+    public void changePurpose(int goodId, Purpose purpose) {
         Session session = sessionFactory.openSession();
-        Good good = session.get(Good.class, idGood);
+        Good good = session.get(Good.class, goodId);
         good.setPurpose(purpose);
         Transaction tx1 = session.beginTransaction();
         session.update(good);
@@ -118,9 +118,9 @@ public class GoodDaoImpl implements GoodDao {
     }
 
     @Override
-    public void changeUnit(int idGood, String unit) {
+    public void changeUnit(int goodId, String unit) {
         Session session = sessionFactory.openSession();
-        Good good = session.get(Good.class, idGood);
+        Good good = session.get(Good.class, goodId);
         good.setUnit(unit);
         Transaction tx1 = session.beginTransaction();
         session.update(good);
@@ -129,9 +129,9 @@ public class GoodDaoImpl implements GoodDao {
     }
 
     @Override
-    public void changeQuantity(int idGood, int quantity) {
+    public void changeQuantity(int goodId, int quantity) {
         Session session = sessionFactory.openSession();
-        Good good = session.get(Good.class, idGood);
+        Good good = session.get(Good.class, goodId);
         good.setQuantity(quantity);
         Transaction tx1 = session.beginTransaction();
         session.update(good);
@@ -140,9 +140,9 @@ public class GoodDaoImpl implements GoodDao {
     }
 
     @Override
-    public void changeAmount(int idGood, int amount) {
+    public void changeAmount(int goodId, int amount) {
         Session session = sessionFactory.openSession();
-        Good good = session.get(Good.class, idGood);
+        Good good = session.get(Good.class, goodId);
         good.setAmount(amount);
         Transaction tx1 = session.beginTransaction();
         session.update(good);
@@ -162,9 +162,9 @@ public class GoodDaoImpl implements GoodDao {
     }
 
     @Override
-    public Good findGoodById(int id) {
+    public Good findGoodById(int goodId) {
         Session session = sessionFactory.openSession();
-        Good good = session.get(Good.class, id);
+        Good good = session.get(Good.class, goodId);
         session.close();
         return good;
     }

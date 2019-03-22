@@ -12,7 +12,7 @@ public interface GoodDao {
 
     void addGood(Good good) throws GoodException;
 
-    Good findByNameGood(String name);
+    Good findByNameGood(String goodName);
 
     List<Good> findAllGoods();
 
@@ -20,23 +20,23 @@ public interface GoodDao {
 
     List<Good> findByPurpose(Purpose purpose);
 
-    void deleteGood(int idGood) throws GoodException;//Как удалять товар, по параметрам или нет
+    void deleteGood(int goodId) throws GoodException;//Как удалять товар, по параметрам или нет
 
-    void changePrice(int idGood, double price);//могут ли все параметры быть равны нулю
+    void changePrice(int goodId, double price);//могут ли все параметры быть равны нулю
 
-    void changeSubsection(int idGood, Subsection subsection);
+    void changeSubsection(int goodId, Subsection subsection);
 
-    void changePurpose(int idGood, Purpose purpose);
+    void changePurpose(int goodId, Purpose purpose);
 
-    void changeUnit(int idGood, String unit);
+    void changeUnit(int goodId, String unit);
 
-    void changeQuantity(int idGood, int quantity);
+    void changeQuantity(int goodId, int quantity);
 
-    void changeAmount(int idGood, int amount);
+    void changeAmount(int goodId, int amount);
 
     List<Good> findGoodsByPrice(double minPrice, double maxPrice);
 
-    Good findGoodById(int id);
+    Good findGoodById(int goodId);
 
     void changeAmountOfGood(Good good, int amount);
 

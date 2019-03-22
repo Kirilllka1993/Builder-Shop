@@ -48,8 +48,8 @@ public class GoodDaoImplFake implements GoodDao {
     }
 
     @Override
-    public Good findGoodById(int id)  {
-        Good goodName = goods.stream().filter(good -> good.getId() == id).findFirst().get();
+    public Good findGoodById(int goodId)  {
+        Good goodName = goods.stream().filter(good -> good.getId() == goodId).findFirst().get();
         return goodName;
     }
 
@@ -85,41 +85,41 @@ public class GoodDaoImplFake implements GoodDao {
     }
 
     @Override
-    public void deleteGood(int idGood) throws GoodException {
-        if (goods.stream().noneMatch(good -> (good.getId() == idGood))) {
+    public void deleteGood(int goodId) throws GoodException {
+        if (goods.stream().noneMatch(good -> (good.getId() == goodId))) {
             throw new GoodException("There is no such good");
         }
-        Good good = goods.stream().filter(s -> s.getId() == idGood).findFirst().get();
+        Good good = goods.stream().filter(s -> s.getId() == goodId).findFirst().get();
         goods.remove(good);
     }
 
     @Override
-    public void changePrice(int idGood, double price) {
+    public void changePrice(int goodId, double price) {
 
     }
 
     @Override
-    public void changeSubsection(int idGood, Subsection subsection) {
+    public void changeSubsection(int goodId, Subsection subsection) {
 
     }
 
     @Override
-    public void changePurpose(int idGood, Purpose purpose) {
+    public void changePurpose(int goodId, Purpose purpose) {
 
     }
 
     @Override
-    public void changeUnit(int idGood, String unit) {
+    public void changeUnit(int goodId, String unit) {
 
     }
 
     @Override
-    public void changeQuantity(int idGood, int quantity) {
+    public void changeQuantity(int goodId, int quantity) {
 
     }
 
     @Override
-    public void changeAmount(int idGood, int amount) {
+    public void changeAmount(int goodId, int amount) {
 
     }
 

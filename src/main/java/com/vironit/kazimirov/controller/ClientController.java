@@ -137,6 +137,15 @@ public class ClientController extends HttpServlet {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/deleteReview", method = RequestMethod.POST)
+    public ModelAndView deleteReview(@RequestParam("idGood") int idGood,
+                                      @RequestParam("idClient") int idClient,ModelMap map) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("client");
+        clientService.removeReview(idClient,idGood);
+        return modelAndView;
+    }
+
 //    List<Client> findAllClients();
 //
 //    List<Review> findAllReviews(Client client);

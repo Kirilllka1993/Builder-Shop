@@ -15,33 +15,33 @@
 <body>
 <h2>Admin Page</h2> <br>
 <%--<form method=post action=addClient>--%>
-    <%--<p>Add client</p>--%>
-    <%--<table>--%>
-        <%--<tr>--%>
-            <%--<td>name</td>--%>
-            <%--<td><input type=text name=name></td>--%>
-            <%--<br>--%>
-            <%--<td>surname</td>--%>
-            <%--<td><input type=text name=surname></td>--%>
-            <%--<br>--%>
-            <%--<td>login</td>--%>
-            <%--<td><input type=text name=login></td>--%>
-            <%--<br>--%>
-            <%--<td>password</td>--%>
-            <%--<td><input type=text name=password></td>--%>
-            <%--<br>--%>
-            <%--<td>adress</td>--%>
-            <%--<td><input type=text name=adress></td>--%>
-            <%--<br>--%>
-            <%--<td>phoneNumber</td>--%>
-            <%--<td><input type=text name=phoneNumber></td>--%>
-            <%--<br>--%>
-        <%--</tr>--%>
-        <%--<tr>--%>
-            <%--<td><input type=reset value=reset></td>--%>
-            <%--<td><input type=submit value=submit></td>--%>
-        <%--</tr>--%>
-    <%--</table>--%>
+<%--<p>Add client</p>--%>
+<%--<table>--%>
+<%--<tr>--%>
+<%--<td>name</td>--%>
+<%--<td><input type=text name=name></td>--%>
+<%--<br>--%>
+<%--<td>surname</td>--%>
+<%--<td><input type=text name=surname></td>--%>
+<%--<br>--%>
+<%--<td>login</td>--%>
+<%--<td><input type=text name=login></td>--%>
+<%--<br>--%>
+<%--<td>password</td>--%>
+<%--<td><input type=text name=password></td>--%>
+<%--<br>--%>
+<%--<td>adress</td>--%>
+<%--<td><input type=text name=adress></td>--%>
+<%--<br>--%>
+<%--<td>phoneNumber</td>--%>
+<%--<td><input type=text name=phoneNumber></td>--%>
+<%--<br>--%>
+<%--</tr>--%>
+<%--<tr>--%>
+<%--<td><input type=reset value=reset></td>--%>
+<%--<td><input type=submit value=submit></td>--%>
+<%--</tr>--%>
+<%--</table>--%>
 <%--</form>--%>
 
 <form:form action="addClient">
@@ -94,10 +94,17 @@
     <input type=submit value="search client by id">
     <p><c:out value="${client1}"/><br></p>
 </form>
-<form method=get action=findById>
-    <input type="text" name="idClient">
-    <input type=submit value="search client by id">
-    <p><c:out value="${client1}"/><br></p>
+
+
+<form method=post action=updateStatus>
+    <input type="text" name="purchaseId">
+    <select name="status">
+        <option value="1">NEW</option>
+        <option value="2">IN PROCESS</option>
+        <option value="3">REGISTRATE</option>
+        <option value="4">CANCELLED</option>
+    </select>
+    <input type=submit value="updateStatus">
 </form>
 </body>
 </html>

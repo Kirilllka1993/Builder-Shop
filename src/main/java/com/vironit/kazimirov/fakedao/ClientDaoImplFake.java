@@ -61,9 +61,9 @@ public class ClientDaoImplFake implements ClientDao {
 
 
     @Override
-    public void removeReview(int id, Client client) {
-        Review review = reviews.stream().filter(review1 -> review1.getId() == id && review1.getClient().equals(client)).findFirst().get();
-        reviews.remove(review);
+    public void removeReview(int clientId,int goodId) {
+//        Review review = reviews.stream().filter(review1 -> review1.getId() == reviewId && review1.getClient().equals(client)).findFirst().get();
+//        reviews.remove(review);
     }
 
     @Override
@@ -92,34 +92,34 @@ public class ClientDaoImplFake implements ClientDao {
 
 
     @Override
-    public void changeLogin(int id, String login) throws RepeatitionException {
+    public void changeLogin(int clientId, String newLogin) throws RepeatitionException {
 
-        if (clients.stream().anyMatch(s -> s.getLogin().equals(login)) == true) {
+        if (clients.stream().anyMatch(s -> s.getLogin().equals(newLogin)) == true) {
             throw new RepeatitionException("Such login is using");
         }
-        clients.get(id - 1).setLogin(login);
+        clients.get(clientId - 1).setLogin(newLogin);
     }
 
     @Override
-    public void changePassword(int id, String password) {
-        clients.get(id - 1).setPassword(password);
+    public void changePassword(int clientId, String newPassword) {
+        clients.get(clientId - 1).setPassword(newPassword);
     }
 
     @Override
-    public void changePhoneNumber(int id, String phoneNumber) {
-        clients.get(id - 1).setPhoneNumber(phoneNumber);
+    public void changePhoneNumber(int clientId, String newPhoneNumber) {
+        clients.get(clientId - 1).setPhoneNumber(newPhoneNumber);
     }
 
     @Override
-    public void changeAddress(int id, String address) {
+    public void changeAddress(int clientId, String newAddress) {
 
-        clients.get(id - 1).setAddress(address);
+        clients.get(clientId - 1).setAddress(newAddress);
     }
 
-    @Override
-    public List<Client> findAllClients() {
-        return clients;
-    }
+//    @Override
+//    public List<Client> findAllClients() {
+//        return clients;
+//    }
 
     @Override
     public List<Review> findAllReviews(Client client) {

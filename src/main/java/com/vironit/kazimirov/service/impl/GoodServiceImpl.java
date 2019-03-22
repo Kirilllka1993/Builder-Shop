@@ -15,29 +15,20 @@ import java.util.List;
 public class GoodServiceImpl implements GoodService {
 
     private final GoodDao goodDao;
-//    private final SubsectionDao subsectionDao;
-//    private final PurposeDao purposeDao;
 
     @Autowired
     public GoodServiceImpl(GoodDao goodDao) {
         this.goodDao = goodDao;
     }
 
-//    @Autowired
-//    public GoodServiceImpl(GoodDao goodDao, SubsectionDao subsectionDao, PurposeDao purposeDao) {
-//        this.goodDao = goodDao;
-//        this.subsectionDao = subsectionDao;
-//        this.purposeDao = purposeDao;
-//    }
-
     @Override
-    public void addGood(Good good) throws GoodException {//Good good
+    public void addGood(Good good) throws GoodException {
         goodDao.addGood(good);
     }
 
     @Override
-    public Good findByNameGood(String name) {
-        return goodDao.findByNameGood(name);
+    public Good findByNameGood(String goodName) {
+        return goodDao.findByNameGood(goodName);
     }
 
     @Override
@@ -56,43 +47,43 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public void deleteGood(int idGood) throws GoodException {
-        goodDao.deleteGood(idGood);
+    public void deleteGood(int goodId) throws GoodException {
+        goodDao.deleteGood(goodId);
     }
 
     @Override
-    public void changePrice(int idGood, double price) {
-        goodDao.changePrice(idGood,price);
+    public void changePrice(int goodId, double price) {
+        goodDao.changePrice(goodId,price);
     }
 
     @Override
-    public void changeSubsection(int idGood, Subsection subsection) {
-        goodDao.changeSubsection(idGood,subsection);
+    public void changeSubsection(int goodId, Subsection subsection) {
+        goodDao.changeSubsection(goodId,subsection);
     }
 
     @Override
-    public void changePurpose(int idGood, Purpose purpose) {
-        goodDao.changePurpose(idGood,purpose);
+    public void changePurpose(int goodId, Purpose purpose) {
+        goodDao.changePurpose(goodId,purpose);
     }
 
     @Override
-    public void changeUnit(int idGood, String unit) {
-        goodDao.changeUnit(idGood,unit);
+    public void changeUnit(int goodId, String unit) {
+        goodDao.changeUnit(goodId,unit);
     }
 
     @Override
-    public void changeQuantity(int idGood, int quantity) {
-        goodDao.changeQuantity(idGood,quantity);
+    public void changeQuantity(int goodId, int quantity) {
+        goodDao.changeQuantity(goodId,quantity);
     }
 
     @Override
-    public void changeAmount(int idGood, int amount) {
-        goodDao.changeAmount(idGood,amount);
+    public void changeAmount(int goodId, int amount) {
+        goodDao.changeAmount(goodId,amount);
     }
 
     @Override
-    public Good updateGood(int idGood, Good good) {
-        return goodDao.updateGood(idGood,good);
+    public Good updateGood(int goodId, Good good) {
+        return goodDao.updateGood(goodId,good);
     }
 
     @Override
@@ -101,7 +92,7 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public Good findGoodById(int id) {
-        return goodDao.findGoodById(id);
+    public Good findGoodById(int goodId) {
+        return goodDao.findGoodById(goodId);
     }
 }

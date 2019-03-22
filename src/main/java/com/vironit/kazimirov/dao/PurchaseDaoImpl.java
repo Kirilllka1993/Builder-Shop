@@ -99,10 +99,10 @@ public class PurchaseDaoImpl implements PurchaseDao {
         return null;
     }
 
-    @Override
-    public List<Good> findGoods() {
-        return null;
-    }
+//    @Override
+//    public List<Good> findGoods() {
+//        return null;
+//    }
 
     @Override
     public void removePurchase(int purchaseId) throws PurchaseException {

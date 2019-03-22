@@ -90,5 +90,10 @@
     <p>address</p><input type="text" name="address">
     <input type=submit value="update client">
 </form>
+<form method=post action=deleteReview>
+    <p>idGood</p><input type="text" name="idGood">
+    <p>idClient</p><input type="text" name="idClient">
+    <input type=submit value="deleteReview">
+</form>
 </body>
 </html>

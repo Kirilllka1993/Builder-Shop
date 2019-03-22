@@ -77,10 +77,10 @@ public class PurchaseServiceImpl implements PurchaseService {
         return purchaseDao.findPurchasesByDate(registration);
     }
 
-    @Override
-    public List<Good> findGoods() {
-        return purchaseDao.findGoods();
-    }
+//    @Override
+//    public List<Good> findGoods() {
+//        return purchaseDao.findGoods();
+//    }
 
     @Override
     public void changeStatus(Purchase purchase, Status status) {

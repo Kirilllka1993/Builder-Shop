@@ -76,9 +76,9 @@ public class AdminDaoImplFake implements AdminDao {
     }
 
     @Override
-    public void deleteClient(int id) {
+    public void deleteClient(int clientId) {
 
-        Client client = clients.stream().filter(s -> s.getId() == id).findFirst().get();
+        Client client = clients.stream().filter(s -> s.getId() == clientId).findFirst().get();
         clients.remove(client);
     }
 
@@ -89,20 +89,20 @@ public class AdminDaoImplFake implements AdminDao {
     }
 
     @Override
-    public Client findClientById(int id) throws ClientNotFoundException {
-        Client clientName = clients.stream().filter(s -> s.getId() == id).findFirst().orElseThrow(() -> new ClientNotFoundException("Such id is absent"));
+    public Client findClientById(int clientId) throws ClientNotFoundException {
+        Client clientName = clients.stream().filter(s -> s.getId() == clientId).findFirst().orElseThrow(() -> new ClientNotFoundException("Such id is absent"));
         return clientName;
     }
 
     @Override
-    public void changeDiscount(int id, double discount) {
-        goods.get(id - 1).setDiscount(discount);
+    public void changeDiscount(int goodId, double discount) {
+        goods.get(goodId - 1).setDiscount(discount);
     }
 
-    @Override
-    public List<Purchase> findAllPurchases() {
-        return purchases;
-    }
+//    @Override
+//    public List<Purchase> findAllPurchases() {
+//        return purchases;
+//    }
 
     @Override
     public List<Client> findAllClient() {
@@ -110,27 +110,27 @@ public class AdminDaoImplFake implements AdminDao {
     }
 
 
-    @Override
-    public Purchase findPurchasebyId(int id) throws PurchaseNotFoundException {
-        Purchase purchase = null;
-        try {
-            purchase = purchases.stream().filter(s -> s.getId() == id).findFirst().get();
-            System.out.println(purchase);
-        } catch (NoSuchElementException e) {
-            throw new PurchaseNotFoundException("This purchase is absent in base", e.getCause());
-        }
-        return purchase;
+//    @Override
+//    public Purchase findPurchasebyId(int id) throws PurchaseNotFoundException {
+//        Purchase purchase = null;
+//        try {
+//            purchase = purchases.stream().filter(s -> s.getId() == id).findFirst().get();
+//            System.out.println(purchase);
+//        } catch (NoSuchElementException e) {
+//            throw new PurchaseNotFoundException("This purchase is absent in base", e.getCause());
+//        }
+//        return purchase;
+//
+//    }
 
-    }
+//    @Override
+//    public List<Good> findAllGoods() {
+//        return goods;
+//    }
 
     @Override
-    public List<Good> findAllGoods() {
-        return goods;
-    }
-
-    @Override
-    public Purchase updateStatus(Status status, Purchase purchase) {
-        purchase.setStatus(status);
-        return purchase;
+    public void updateStatus(int status, Purchase purchase) {
+//        purchase.setStatus(status);
+//        return purchase;
     }
 }

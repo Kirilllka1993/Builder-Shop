@@ -6,7 +6,9 @@ import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.fakedao.GoodDaoImplFake;
 import com.vironit.kazimirov.fakedao.PurchaseDaoImplFake;
+import com.vironit.kazimirov.service.GoodService;
 import com.vironit.kazimirov.service.PurchaseService;
+import com.vironit.kazimirov.service.impl.GoodServiceImpl;
 import com.vironit.kazimirov.service.impl.PurchaseServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,6 +24,7 @@ import static junit.framework.TestCase.assertEquals;
 
 public class PurchaseTest {
     PurchaseService purchaseService = new PurchaseServiceImpl(new PurchaseDaoImplFake(), new GoodDaoImplFake());
+    GoodService goodService=new GoodServiceImpl(new GoodDaoImplFake());
 
     //Good good1 = new Good(1, 2.0, subsection1, "м3", 5, 0, purpose1, "Пеноплекс", 54);
 
@@ -90,7 +93,7 @@ public class PurchaseTest {
 
     @Test(expected = PurchaseException.class)
     public void deleteFromPurchaseTest() throws PurchaseException {
-        int sumId=purchaseService.findGoods().stream().mapToInt(Good::getId).sum();
+        int sumId=goodService.findAllGoods().stream().mapToInt(Good::getId).sum();
         purchaseService.deleteFromPurchase(sumId);
 
     }

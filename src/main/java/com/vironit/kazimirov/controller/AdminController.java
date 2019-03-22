@@ -6,6 +6,7 @@ import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.AdminService;
+import com.vironit.kazimirov.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,6 +24,8 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private PurchaseService purchaseService;
 
 
     @RequestMapping(value = "/adminPage", method = RequestMethod.GET)
@@ -78,5 +81,13 @@ public class AdminController {
         map.addAttribute("client1", client1);
         return "adminJsp";
     }
-
+    @RequestMapping(name = "/updateStatus", method = RequestMethod.POST)
+    public String updateStatus(@RequestParam("status") int status,
+                               @RequestParam("purchaseId")int purchaseId, ModelMap map) throws ClientNotFoundException {
+        Purchase purchase=purchaseService.findPurchaseById(purchaseId);
+        map.addAttribute("purchase", purchase);
+        map.addAttribute("status", status);
+        adminService.updateStatus(status,purchase);
+        return "adminJsp";
+    }
 }
