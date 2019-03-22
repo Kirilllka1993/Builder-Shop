@@ -32,10 +32,7 @@ public class GoodInPurchaseImpl implements GoodInPurchaseService {
             goodDao.changeAmountOfGood(good,amount);
             good.setAmount(amount);//???????????
             goodInPurchaseDao.addInGoodInPurchase(good,amount,purchase);
-
         }
-
-
     }
 
     @Override
@@ -44,22 +41,39 @@ public class GoodInPurchaseImpl implements GoodInPurchaseService {
     }
 
     @Override
-    public void deleteFromPurchase(int goodId) throws PurchaseException {
+    public void deleteFromPurchase(Good good, Purchase purchase) throws PurchaseException {
+        goodInPurchaseDao.deleteFromPurchase(good,purchase);
+    }
+
+    @Override
+    public void deleteGoodInPurchase(int goodInPurchase) {
+        goodInPurchaseDao.deleteGoodInPurchase(goodInPurchase);
 
     }
 
     @Override
-    public void deleteGoodInPurchase() {
+    public List<Good> findGoodsByPurchase(int purchaseId) {
+        return goodInPurchaseDao.findGoodsByPurchase(purchaseId);
+    }
 
+
+    @Override
+    public List<Purchase> findPurchasesByGood(int goodId) {
+        return goodInPurchaseDao.findPurchasesByGood(goodId);
     }
 
     @Override
-    public List<GoodInPurchase> findByPurchase(int purchaseId) {
-        return null;
+    public void deleteGoodInPurchasesWithCancelledStatus(Purchase purchase) {
+        goodInPurchaseDao.deleteGoodInPurchasesWithCancelledStatus(purchase);
     }
 
     @Override
-    public List<GoodInPurchase> findByGoods(int goodId) {
-        return null;
+    public void changeAmountInGoodInPurchase(int goodId, int amount, int purchaseId) throws RepeatitionException {
+        Good good=goodDao.findGoodById(goodId);
+        if (good.getAmount()<amount){
+            throw new RepeatitionException("The amount of good is so much. In the store is present "+" "+good.getAmount() );
+        }else{
+            goodInPurchaseDao.changeAmountInGoodInPurchase(goodId,amount,purchaseId);
+        }
     }
 }

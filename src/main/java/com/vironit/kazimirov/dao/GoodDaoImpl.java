@@ -171,7 +171,6 @@ public class GoodDaoImpl implements GoodDao {
 
     public void changeAmountOfGood(Good good,int amount){
         Session session = sessionFactory.openSession();
-
         Transaction tx1 = session.beginTransaction();
         good.setAmount(good.getAmount()-amount);
         session.update(good);

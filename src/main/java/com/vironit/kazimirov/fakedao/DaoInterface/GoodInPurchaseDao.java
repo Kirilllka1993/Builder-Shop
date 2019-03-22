@@ -14,11 +14,15 @@ public interface GoodInPurchaseDao {
 
     List<GoodInPurchase> findGoodInPurchases();
 
-    void deleteFromPurchase(int goodId) throws PurchaseException;
+    void deleteFromPurchase(Good good, Purchase purchase) throws PurchaseException;
 
-    void deleteGoodInPurchase();
+    void deleteGoodInPurchase(int goodInPurchase);
 
-    List<GoodInPurchase> findByPurchase(int purchaseId);
+    List<Good> findGoodsByPurchase(int purchaseId);
 
-    List<GoodInPurchase>findByGoods(int goodId);
+    List<Purchase> findPurchasesByGood(int goodId);
+
+    void deleteGoodInPurchasesWithCancelledStatus(Purchase purchase);
+
+    void changeAmountInGoodInPurchase (int goodId, int amount, int purchaseId);
 }

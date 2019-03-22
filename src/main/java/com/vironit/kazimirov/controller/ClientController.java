@@ -30,7 +30,6 @@ import java.io.PrintWriter;
 import java.util.List;
 
 @Controller
-//@WebServlet("/clientController")
 public class ClientController extends HttpServlet {
     @Autowired
     private ClientService clientService;

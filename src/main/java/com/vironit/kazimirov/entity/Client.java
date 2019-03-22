@@ -1,10 +1,16 @@
 package com.vironit.kazimirov.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
-import java.util.Objects;
-//shop.client
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name= "client", schema = "shop")
+@Table(name = "client", schema = "shop")
 public class Client {
     @Id
     @Column(name = "id")
@@ -12,115 +18,14 @@ public class Client {
     private int id;
     @Column(name = "name")
     private String name;
-    @Column (name = "surname")
+    @Column(name = "surname")
     private String surname;
-    @Column (name = "login")
+    @Column(name = "login")
     private String login;
     @Column(name = "password")
     private String password;
-    @Column (name = "address")
+    @Column(name = "address")
     private String address;
-    @Column (name ="phoneNumber" )
+    @Column(name = "phoneNumber")
     private String phoneNumber;
-
-    public Client(int id, String name, String surname, String login, String password, String adress, String phoneNumber) {
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
-        this.login = login;
-        this.password = password;
-        this.address = adress;
-        this.phoneNumber = phoneNumber;
-    }
-
-    public Client() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Client client = (Client) o;
-        return id == client.id &&
-                Objects.equals(name, client.name) &&
-                Objects.equals(surname, client.surname) &&
-                Objects.equals(login, client.login) &&
-                Objects.equals(password, client.password) &&
-                Objects.equals(address, client.address) &&
-                Objects.equals(phoneNumber, client.phoneNumber);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, surname, login, password, address, phoneNumber);
-    }
-
-    @Override
-    public String toString() {
-        return "Client{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", address='" + address + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                '}';
-    }
 }

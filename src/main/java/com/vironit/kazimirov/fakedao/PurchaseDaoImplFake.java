@@ -105,11 +105,11 @@ public class PurchaseDaoImplFake implements PurchaseDao {
         return null;
     }
 
-    public void removePurchase(int id) throws PurchaseException {
-        if (purchases.stream().noneMatch(good -> (good.getId() == id))) {
+    public void removePurchase(int purchaseId) throws PurchaseException {
+        if (purchases.stream().noneMatch(good -> (good.getId() == purchaseId))) {
             throw new PurchaseException("There is no such purchase");
         }
-        Purchase purchase = purchases.stream().filter(s -> s.getId() == id).findFirst().get();
+        Purchase purchase = purchases.stream().filter(s -> s.getId() == purchaseId).findFirst().get();
         purchases.remove(purchase);
     }
 

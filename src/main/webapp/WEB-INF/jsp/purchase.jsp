@@ -37,5 +37,31 @@
             <input type="text" name="purchaseId">
             <input type=submit value="make a purchase">
         </form>
+        <form method=post action=changeAmount>
+            <p>goodId</p><input type="text" name="goodId">
+            <p>amount</p><input type="text" name="amount">
+            <p>purchaseId</p><input type="text" name="purchaseId">
+            <input type=submit value="changeAmount">
+        </form>
+
+        <form method=post action=delete>
+            <p>goodId</p><input type="text" name="goodId">
+            <p>purchaseId</p><input type="text" name="purchaseId">
+            <input type=submit value="delete">
+        </form>
+
+        <form method=post action=deleteCancelled>
+            <p>purchaseId</p><input type="text" name="purchaseId">
+            <input type=submit value="deleteCancelled">
+        </form>
+
+        <form method=get action=findGoods>
+            <p>purchaseId</p><input type="text" name="purchaseId">
+            <p>purchaseId</p><input type="text" name="goodId">
+            <input type=submit value="show goods">
+            <p><c:out value="${goods}"/><br></p>
+            <p><c:out value="${purchases}"/><br></p>
+
+        </form>
 </body>
 </html>

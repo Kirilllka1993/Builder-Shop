@@ -11,28 +11,28 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
 import java.util.List;
+
 @Repository
 public class SubsectionDaoImpl implements SubsectionDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-    private final String FIND_SUBSECTIONS="select a from Subsection a";
-    private final String FIND_SUBSECTION_BY_NAME="select a from Subsection a where a.title = :title";
+    private final String FIND_SUBSECTIONS = "select a from Subsection a";
+    private final String FIND_SUBSECTION_BY_NAME = "select a from Subsection a where a.title = :title";
 
     @Override
     public void addSubsection(Subsection subsection) throws RepeatitionException {
-        Session session=sessionFactory.openSession();
+        Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
         session.save(subsection);
         tx1.commit();
         session.close();
-
     }
 
     @Override
     public List<Subsection> findSubsections() {
         Session session = sessionFactory.openSession();
-        List<Subsection> subsections=(List<Subsection>) session.createQuery(FIND_SUBSECTIONS).list();
+        List<Subsection> subsections = (List<Subsection>) session.createQuery(FIND_SUBSECTIONS).list();
         session.close();
         return subsections;
     }

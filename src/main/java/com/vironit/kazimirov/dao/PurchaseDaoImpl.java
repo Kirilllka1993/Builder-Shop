@@ -105,13 +105,22 @@ public class PurchaseDaoImpl implements PurchaseDao {
     }
 
     @Override
-    public void removePurchase(int id) throws PurchaseException {
+    public void removePurchase(int purchaseId) throws PurchaseException {
+        Session session = sessionFactory.openSession();
+        Transaction tx1 = session.beginTransaction();
+        Purchase purchase = session.get(Purchase.class, purchaseId);
+        session.delete(purchase);
+        tx1.commit();
+        session.close();
 
     }
 
     @Override
     public void changeStatus(Purchase purchase, Status status) {
-
-        //return null;
+        Session session = sessionFactory.openSession();
+        //Purchase purchase = session.get(Purchase.class, purchaseId);
+        purchase.setStatus(status);
+        session.update(purchase);
+        session.close();
     }
 }

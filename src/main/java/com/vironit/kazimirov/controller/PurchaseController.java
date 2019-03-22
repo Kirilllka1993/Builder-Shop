@@ -104,4 +104,53 @@ public class PurchaseController extends HttpServlet {
             modelAndView.setViewName("purchase");
         return modelAndView;
     }
+
+    @RequestMapping(value = "/changeAmount", method = RequestMethod.POST)
+    public ModelAndView changeAmount(@RequestParam("goodId") int goodId,
+                                     @RequestParam("amount") int amount,
+                                     @RequestParam("purchaseId") int purchaseId) throws GoodNotFountException {
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            goodInPurchaseService.changeAmountInGoodInPurchase(goodId,amount,purchaseId);
+            modelAndView.setViewName("purchase");
+        } catch (RepeatitionException e) {
+            e.printStackTrace();
+            modelAndView.setViewName("tryLogin");
+            return modelAndView;
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public ModelAndView delete(@RequestParam("goodId") int goodId,
+                                     @RequestParam("purchaseId") int purchaseId) throws GoodNotFountException, PurchaseException {
+        Purchase purchase = purchaseService.findPurchaseById(purchaseId);
+        Good good = goodService.findGoodById(goodId);
+        ModelAndView modelAndView = new ModelAndView();
+            goodInPurchaseService.deleteFromPurchase(good,purchase);
+            modelAndView.setViewName("purchase");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/deleteCancelled", method = RequestMethod.POST)
+    public ModelAndView delete(@RequestParam("purchaseId") int purchaseId) throws GoodNotFountException, PurchaseException {
+        Purchase purchase = purchaseService.findPurchaseById(purchaseId);
+        ModelAndView modelAndView = new ModelAndView();
+        goodInPurchaseService.deleteGoodInPurchasesWithCancelledStatus(purchase);
+        modelAndView.setViewName("purchase");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/findGoods", method = RequestMethod.GET)
+    public ModelAndView findGoods(@RequestParam("purchaseId") int purchaseId,
+            @RequestParam("goodId")int goodId
+            ,ModelMap map) throws GoodNotFountException, PurchaseException {
+        ModelAndView modelAndView = new ModelAndView();
+        List<Good>goods=goodInPurchaseService.findGoodsByPurchase(purchaseId);
+        List<Purchase> purchases=goodInPurchaseService.findPurchasesByGood(goodId);
+        map.addAttribute("goods",goods);
+        map.addAttribute("purchases",purchases);
+        modelAndView.setViewName("purchase");
+        return modelAndView;
+    }
 }

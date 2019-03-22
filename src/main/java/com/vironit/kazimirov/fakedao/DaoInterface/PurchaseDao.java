@@ -26,7 +26,7 @@ public interface PurchaseDao {
 
     List<Good> findGoods();
 
-    void removePurchase(int id) throws PurchaseException;
+    void removePurchase(int purchaseId) throws PurchaseException;
 
     void changeStatus (Purchase purchase, Status status);
 
