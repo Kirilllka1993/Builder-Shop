@@ -47,10 +47,10 @@ public class Main extends Thread {
         Good good5 = new Good(5, 6.0, subsection4, "м3", 5, 0, purpose4, "Техноэласт", 18);
         Good good6 = new Good(5, 25.0, subsection4, "м3", 5, 0, purpose4, "Техноэласт", 18);
 
-        Purchase purchase1 = new Purchase(1, 16.6, goods, client1, null, null, Status.IN_PROCESS);
-        Purchase purchase2 = new Purchase(2, 18.0, goods, client2, null, null, Status.NEW);
-        Purchase purchase3 = new Purchase(3, 20.0, goods, client3, null, null, Status.REGISTRATE);
-        Purchase purchase4 = new Purchase(4, 16.9, goods, client4, null, null, Status.CANCELED);
+//        Purchase purchase1 = new Purchase(1, 16.6, goods, client1, null, null, Status.IN_PROCESS);
+//        Purchase purchase2 = new Purchase(2, 18.0, goods, client2, null, null, Status.NEW);
+//        Purchase purchase3 = new Purchase(3, 20.0, goods, client3, null, null, Status.REGISTRATE);
+//        Purchase purchase4 = new Purchase(4, 16.9, goods, client4, null, null, Status.CANCELED);
 
         clients.add(client1);
         clients.add(client2);
@@ -61,10 +61,10 @@ public class Main extends Thread {
         goods.add(good2);
 
 
-        purchases.add(purchase1);
-        purchases.add(purchase2);
-        purchases.add(purchase3);
-        purchases.add(purchase4);
+//        purchases.add(purchase1);
+//        purchases.add(purchase2);
+//        purchases.add(purchase3);
+//        purchases.add(purchase4);
 
 
         //GooDao

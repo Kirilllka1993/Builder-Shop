@@ -12,7 +12,7 @@ public interface GoodDao {
 
     void addGood(Good good) throws GoodException;
 
-    Good findByNameGood(String name) ;
+    Good findByNameGood(String name);
 
     List<Good> findAllGoods();
 
@@ -38,6 +38,7 @@ public interface GoodDao {
 
     Good findGoodById(int id);
 
+    void changeAmountOfGood(Good good, int amount);
 
     Good updateGood(int goodId, Good good);
 }

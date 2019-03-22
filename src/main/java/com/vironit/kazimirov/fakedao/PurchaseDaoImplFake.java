@@ -49,11 +49,11 @@ public class PurchaseDaoImplFake implements PurchaseDao {
         Good good3 = new Good(3, 2.0, subsection3, "м3", 5, 1, purpose3, "Краска для дерева", 15);
         Good good4 = new Good(4, 2.0, subsection4, "м3", 5, 0, purpose4, "Техноэласт", 18);
 
-        Purchase purchase1 = new Purchase(1, 16.6, goods, client1, localDateTime1, localDateTime1, Status.NEW);
-        Purchase purchase2 = new Purchase(2, 18.0, goods, client2, null, localDateTime2, Status.NEW);
-        Purchase purchase3 = new Purchase(3, 20.0, goods, client3, null, localDateTime3, Status.NEW);
-        Purchase purchase4 = new Purchase(4, 16.9, goods, client4, null, localDateTime4, Status.REGISTRATE);
-        Purchase purchase5 = new Purchase(5, 16.6, goods, client1, null, localDateTime1, Status.IN_PROCESS);
+//        Purchase purchase1 = new Purchase(1, 16.6, goods, client1, localDateTime1, localDateTime1, Status.NEW);
+//        Purchase purchase2 = new Purchase(2, 18.0, goods, client2, null, localDateTime2, Status.NEW);
+//        Purchase purchase3 = new Purchase(3, 20.0, goods, client3, null, localDateTime3, Status.NEW);
+//        Purchase purchase4 = new Purchase(4, 16.9, goods, client4, null, localDateTime4, Status.REGISTRATE);
+//        Purchase purchase5 = new Purchase(5, 16.6, goods, client1, null, localDateTime1, Status.IN_PROCESS);
 
         clients.add(client1);
         clients.add(client2);
@@ -65,11 +65,11 @@ public class PurchaseDaoImplFake implements PurchaseDao {
         goods.add(good3);
         goods.add(good4);
 
-        purchases.add(purchase1);
-        purchases.add(purchase2);
-        purchases.add(purchase3);
-        purchases.add(purchase4);
-        purchases.add(purchase5);
+//        purchases.add(purchase1);
+//        purchases.add(purchase2);
+//        purchases.add(purchase3);
+//        purchases.add(purchase4);
+//        purchases.add(purchase5);
 
         //purchasesCart.add(good2);
         //purchasesCart.add(good3);
@@ -86,18 +86,18 @@ public class PurchaseDaoImplFake implements PurchaseDao {
     }
 
     @Override
-    public Purchase makeAPurchase(Purchase purchase) throws PurchaseException {
-        double cost = purchase.getGoods().stream().mapToDouble(s -> (s.getPrice() * s.getAmount() - s.getDiscount() * s.getAmount())).sum();
-        if (cost < 0) {
-            throw new PurchaseException("Our company don't work in minus");
-        }
-        LocalDateTime localDateTime = LocalDateTime.now();
-        purchase.setTimeOfPurchase(localDateTime);
-        purchase.setStatus(Status.IN_PROCESS);
-        purchase.setSumma(cost);
-        purchases.add(purchase);
-        purchase.setId(purchases.size());
-        return purchase;
+    public void makeAPurchase(int purchaseId) throws PurchaseException {
+//        double cost = purchase.getGoods().stream().mapToDouble(s -> (s.getPrice() * s.getAmount() - s.getDiscount() * s.getAmount())).sum();
+//        if (cost < 0) {
+//            throw new PurchaseException("Our company don't work in minus");
+//        }
+//        LocalDateTime localDateTime = LocalDateTime.now();
+//        purchase.setTimeOfPurchase(localDateTime);
+//        purchase.setStatus(Status.IN_PROCESS);
+//        purchase.setSumma(cost);
+//        purchases.add(purchase);
+//        purchase.setId(purchases.size());
+        //return purchase;
     }
 
     @Override
@@ -124,35 +124,35 @@ public class PurchaseDaoImplFake implements PurchaseDao {
     }
 
     @Override
-    public Purchase changeStatus(Purchase purchase, Status status) {
+    public void changeStatus(Purchase purchase, Status status) {
         purchase.setStatus(status);
-        return purchase;
+        //return purchase;
     }
 
     @Override
-    public Purchase addIntoPurchase(Good good, int amount, Purchase purchase) throws RepeatitionException, GoodNotFountException {
-        GoodDao dao = new GoodDaoImplFake();
-        //Good good = dao.findGoodById(goodId);
-        if (good.getAmount() < amount) {
-            throw new RepeatitionException("The amount of this good in the store is" + " " + good.getAmount());
-        }
-        Good newPurchaseGood=new Good();
-        newPurchaseGood.setUnit(good.getUnit());
-        newPurchaseGood.setId(good.getId());
-        newPurchaseGood.setName(good.getName());
-        newPurchaseGood.setQuantity(good.getQuantity());
-        newPurchaseGood.setPurpose(good.getPurpose());
-        newPurchaseGood.setSubsection(good.getSubsection());
-        newPurchaseGood.setDiscount(good.getDiscount());
-        newPurchaseGood.setAmount(amount);
-        newPurchaseGood.setPrice(good.getPrice());
-        good.setAmount(good.getAmount() - amount);
-        //dao.updateGood(goodId, good);
-        purchasesCart.add(newPurchaseGood);
-        purchase.setGoods(purchasesCart);
-        double cost = purchase.getGoods().stream().mapToDouble(s -> (s.getPrice() * s.getAmount() - s.getDiscount() * s.getAmount())).sum();
-        purchase.setSumma(cost);
-        return purchase;
+    public void addIntoPurchase(Good good, int amount, Purchase purchase) throws RepeatitionException, GoodNotFountException {
+//        GoodDao dao = new GoodDaoImplFake();
+//        //Good good = dao.findGoodById(goodId);
+//        if (good.getAmount() < amount) {
+//            throw new RepeatitionException("The amount of this good in the store is" + " " + good.getAmount());
+//        }
+//        Good newPurchaseGood=new Good();
+//        newPurchaseGood.setUnit(good.getUnit());
+//        newPurchaseGood.setId(good.getId());
+//        newPurchaseGood.setName(good.getName());
+//        newPurchaseGood.setQuantity(good.getQuantity());
+//        newPurchaseGood.setPurpose(good.getPurpose());
+//        newPurchaseGood.setSubsection(good.getSubsection());
+//        newPurchaseGood.setDiscount(good.getDiscount());
+//        newPurchaseGood.setAmount(amount);
+//        newPurchaseGood.setPrice(good.getPrice());
+//        good.setAmount(good.getAmount() - amount);
+//        //dao.updateGood(goodId, good);
+//        purchasesCart.add(newPurchaseGood);
+//        purchase.setGoods(purchasesCart);
+//        double cost = purchase.getGoods().stream().mapToDouble(s -> (s.getPrice() * s.getAmount() - s.getDiscount() * s.getAmount())).sum();
+//        purchase.setSumma(cost);
+//        //return purchase;
     }
 
 

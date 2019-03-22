@@ -111,28 +111,28 @@ public class AdminTest {
         adminService.findClientById(sumClientId);
     }
 
-    @Test
-    public void findPurchaseByIdTest() throws PurchaseNotFoundException {
-
-        List<Purchase> purchases = adminService.findAllPurchases();
-        if (purchases.size() == 0) {
-            throw new PurchaseNotFoundException("This list of purchase is empty");
-        }
-        int id = purchases.get(0).getId();
-        Purchase purchaseById = adminService.findPurchasebyId(id);
-        Assert.assertTrue(purchaseById.getId() == id);
-        List<Purchase> missingPurchases = adminService.findAllPurchases();
-        List<Purchase> purchasesById = missingPurchases.stream().filter(purchase -> purchase.getId() != id).collect(Collectors.toList());
-        missingPurchases.removeAll(purchasesById);
-        int size = missingPurchases.size();
-        assertEquals(size, 1);
-
-
-    }
+//    @Test
+//    public void findPurchaseByIdTest() throws PurchaseNotFoundException {
+//
+//        List<Purchase> purchases = adminService.findAllPurchases();
+//        if (purchases.size() == 0) {
+//            throw new PurchaseNotFoundException("This list of purchase is empty");
+//        }
+//        int id = purchases.get(0).getId();
+//        Purchase purchaseById = adminService.findPurchasebyId(id);
+//        Assert.assertTrue(purchaseById.getId() == id);
+//        List<Purchase> missingPurchases = adminService.findAllPurchases();
+//        List<Purchase> purchasesById = missingPurchases.stream().filter(purchase -> purchase.getId() != id).collect(Collectors.toList());
+//        missingPurchases.removeAll(purchasesById);
+//        int size = missingPurchases.size();
+//        assertEquals(size, 1);
+//
+//
+//    }
 
     @Test(expected = PurchaseNotFoundException.class)
     public void findPurchaseByIdExceptionTest() throws PurchaseNotFoundException {
-        int sumPurchaseId=adminService.findAllPurchases().stream().mapToInt(Purchase::getId).sum();
+        int sumPurchaseId = adminService.findAllPurchases().stream().mapToInt(Purchase::getId).sum();
         adminService.findPurchasebyId(sumPurchaseId);
     }
 

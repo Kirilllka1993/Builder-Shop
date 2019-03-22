@@ -54,6 +54,11 @@ public class GoodDaoImplFake implements GoodDao {
     }
 
     @Override
+    public void changeAmountOfGood(Good good, int amount) {
+
+    }
+
+    @Override
     public Good findByNameGood(String name){
         Good goodName;
             goodName = goods.stream().filter(s -> s.getName().equals(name)).findFirst().get();

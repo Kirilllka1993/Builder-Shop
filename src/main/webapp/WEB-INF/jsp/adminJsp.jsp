@@ -99,6 +99,5 @@
     <input type=submit value="search client by id">
     <p><c:out value="${client1}"/><br></p>
 </form>
-
 </body>
 </html>

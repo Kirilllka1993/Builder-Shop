@@ -22,6 +22,7 @@ public class AdminDaoImpl implements AdminDao {
     private SessionFactory sessionFactory;
     private final String FIND_CLIENT_BY_LOGIN = "select a from Client a where a.login = :login";
     private final String FIND_CLIENTS = "select a from Client a";
+    private final String FIND_PURCHASES = "select purchase from Purchase purchase";
 
     public AdminDaoImpl() {
     }
@@ -92,7 +93,10 @@ public class AdminDaoImpl implements AdminDao {
 
     @Override
     public List<Purchase> findAllPurchases() {
-        return null;
+        Session session = sessionFactory.openSession();
+        List<Purchase> purchases=(List<Purchase>) session.createQuery(FIND_PURCHASES).list();
+        session.close();
+        return purchases;
     }
 
     @Override

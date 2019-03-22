@@ -16,15 +16,15 @@ public class PurchaseBuilder {
     }
 
     public PurchaseBuilder withCost(double cost) {
-        purchase.setSumma(cost);
+        purchase.setSum(cost);
         return this;
     }
 
 
-    public PurchaseBuilder withGoods(List<Good> goods) {
-        purchase.setGoods(goods);
-        return this;
-    }
+//    public PurchaseBuilder withGoods(List<Good> goods) {
+//        purchase.setGoods(goods);
+//        return this;
+//    }
 
     public PurchaseBuilder withClient(Client client) {
         purchase.setClient(client);

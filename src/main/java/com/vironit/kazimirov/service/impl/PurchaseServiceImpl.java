@@ -1,10 +1,8 @@
 package com.vironit.kazimirov.service.impl;
 
+import com.vironit.kazimirov.entity.*;
+import com.vironit.kazimirov.fakedao.DaoInterface.GoodDao;
 import com.vironit.kazimirov.fakedao.DaoInterface.PurchaseDao;
-import com.vironit.kazimirov.entity.Client;
-import com.vironit.kazimirov.entity.Good;
-import com.vironit.kazimirov.entity.Purchase;
-import com.vironit.kazimirov.entity.Status;
 import com.vironit.kazimirov.exception.GoodNotFountException;
 import com.vironit.kazimirov.exception.PurchaseException;
 import com.vironit.kazimirov.exception.PurchaseNotFoundException;
@@ -21,10 +19,13 @@ import static com.vironit.kazimirov.entity.Status.CANCELED;
 public class PurchaseServiceImpl implements PurchaseService {
     @Autowired
     private final PurchaseDao purchaseDao;
+    @Autowired
+    private final GoodDao goodDao;
 
 
-    public PurchaseServiceImpl(PurchaseDao purchaseDao) {
+    public PurchaseServiceImpl(PurchaseDao purchaseDao,GoodDao goodDao) {
         this.purchaseDao = purchaseDao;
+        this.goodDao = goodDao;
     }
 
     @Override
@@ -44,29 +45,36 @@ public class PurchaseServiceImpl implements PurchaseService {
 
 
     @Override
-    public Purchase makeAPurchase(Purchase purchase) throws PurchaseException {
+    public void makeAPurchase(int purchaseId) throws PurchaseException {
         //System.out.println(purchase.getStatus());
-        if (purchase.getStatus()==CANCELED){
+        Purchase purchase=purchaseDao.findPurchaseById(purchaseId);
+        if (purchase.getStatus().equals(CANCELED)) {
             throw new PurchaseException("The purchase is canceled");
         }
-        return purchaseDao.makeAPurchase(purchase);
+        purchaseDao.makeAPurchase(purchaseId);
 
     }
 
     @Override
-    public Purchase addIntoPurchase(Good good, int amount, Purchase purchase) throws RepeatitionException, GoodNotFountException {
-        return purchaseDao.addIntoPurchase(good, amount, purchase);
-
+    public void addIntoPurchase(Good good, int amount, Purchase purchase) throws RepeatitionException, GoodNotFountException {
+        if (good.getAmount()<amount){
+            throw new RepeatitionException("The amount of good is so much. In the store is present "+" "+good.getAmount() );
+        }else{
+            //goodDao.changeAmountOfGood(good,amount);
+            purchaseDao.addIntoPurchase(good, amount, purchase);
+            //goodDao.changeAmountOfGood(good,amount);
+        }
     }
 
     @Override
     public void deleteFromPurchase(int goodId) throws PurchaseException {
+
         purchaseDao.deleteFromPurchase(goodId);
     }
 
     @Override
-    public List<Purchase> findPurchasesByDate(LocalDateTime localDateTime) throws PurchaseNotFoundException {
-        return purchaseDao.findPurchasesByDate(localDateTime);
+    public List<Purchase> findPurchasesByDate(LocalDateTime registration) throws PurchaseNotFoundException {
+        return purchaseDao.findPurchasesByDate(registration);
     }
 
     @Override
@@ -75,8 +83,8 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public Purchase changeStatus(Purchase purchase, Status status) {
-        return purchaseDao.changeStatus(purchase,status);
+    public void changeStatus(Purchase purchase, Status status) {
+         purchaseDao.changeStatus(purchase,status);
     }
 
     @Override

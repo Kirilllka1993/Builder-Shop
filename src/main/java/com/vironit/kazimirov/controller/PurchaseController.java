@@ -2,11 +2,14 @@ package com.vironit.kazimirov.controller;
 
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Good;
+import com.vironit.kazimirov.entity.GoodInPurchase;
 import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.GoodNotFountException;
+import com.vironit.kazimirov.exception.PurchaseException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.AdminService;
+import com.vironit.kazimirov.service.GoodInPurchaseService;
 import com.vironit.kazimirov.service.GoodService;
 import com.vironit.kazimirov.service.PurchaseService;
 import com.vironit.kazimirov.service.impl.PurchaseServiceImpl;
@@ -25,9 +28,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
-//@WebServlet("/purchaseController")
 public class PurchaseController extends HttpServlet {
     @Autowired
     private PurchaseService purchaseService;
@@ -35,6 +38,8 @@ public class PurchaseController extends HttpServlet {
     private AdminService adminService;
     @Autowired
     private GoodService goodService;
+    @Autowired
+    private GoodInPurchaseService goodInPurchaseService;
 
     @RequestMapping(value = "/purchasePage", method = RequestMethod.GET)
     public ModelAndView moveToGoodPage(ModelMap map) {
@@ -44,7 +49,7 @@ public class PurchaseController extends HttpServlet {
     }
 
     @RequestMapping(value = "/createPurchase", method = RequestMethod.POST)
-    public ModelAndView createPurchase(@RequestParam ("clientLogin") String clientLogin) throws ClientNotFoundException {
+    public ModelAndView createPurchase(@RequestParam("clientLogin") String clientLogin) throws ClientNotFoundException {
         Client client = adminService.findClientByLogin(clientLogin);
         purchaseService.createNewPurchase(client);
         ModelAndView modelAndView = new ModelAndView();
@@ -53,14 +58,21 @@ public class PurchaseController extends HttpServlet {
     }
 
     @RequestMapping(value = "/addIntoPurchase", method = RequestMethod.POST)
-    public ModelAndView addIntoPurchase(@RequestParam ("goodId") int goodId,
-                                        @RequestParam ("amount") int amount,
-                                        @RequestParam("purchaseId")int purchaseId) throws RepeatitionException, GoodNotFountException {
-        Purchase purchase=purchaseService.findPurchaseById(purchaseId);
-        Good good=goodService.findGoodById(goodId);
-        purchaseService.addIntoPurchase(good,amount,purchase);
+    public ModelAndView addIntoPurchase(@RequestParam("goodId") int goodId,
+                                        @RequestParam("amount") int amount,
+                                        @RequestParam("purchaseId") int purchaseId) throws GoodNotFountException {
+        Purchase purchase = purchaseService.findPurchaseById(purchaseId);
+        Good good = goodService.findGoodById(goodId);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("purchase");
+        try {
+            purchaseService.addIntoPurchase(good, amount, purchase);
+            modelAndView.setViewName("purchase");
+        } catch (RepeatitionException e) {
+            e.printStackTrace();
+            //modelAndView.setViewName("purchase");
+            modelAndView.setViewName("tryLogin");
+            return modelAndView;
+        }
         return modelAndView;
     }
 
@@ -73,4 +85,23 @@ public class PurchaseController extends HttpServlet {
 //        modelAndView.setViewName("purchase");
 //        return modelAndView;
 //    }
+
+    @RequestMapping(value = "/showPurchases", method = RequestMethod.GET)
+    public ModelAndView findPurchases(ModelMap map){
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.setViewName("purchase");
+        //List<Purchase> purchases = purchaseService.findPurchases();
+        List<GoodInPurchase> purchases=goodInPurchaseService.findGoodInPurchases();
+        map.addAttribute("purchases", purchases);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/makeAPurchase", method = RequestMethod.POST)
+    public ModelAndView addIntoPurchase(@RequestParam("purchaseId") int purchaseId) throws GoodNotFountException, PurchaseException {
+        //Purchase purchase = purchaseService.findPurchaseById(purchaseId);
+        ModelAndView modelAndView = new ModelAndView();
+            purchaseService.makeAPurchase(purchaseId);
+            modelAndView.setViewName("purchase");
+        return modelAndView;
+    }
 }

@@ -169,6 +169,17 @@ public class GoodDaoImpl implements GoodDao {
         return good;
     }
 
+    public void changeAmountOfGood(Good good,int amount){
+        Session session = sessionFactory.openSession();
+
+        Transaction tx1 = session.beginTransaction();
+        good.setAmount(good.getAmount()-amount);
+        session.update(good);
+        tx1.commit();
+        session.close();
+    }
+
+
     @Override
     public Good updateGood(int goodId, Good good) {
         return null;
