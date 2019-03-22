@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface AdminService  {
 
-    void addClient(Client client) throws RepeatitionException;
+    void addClient(Client client) throws RepeatitionException, ClientNotFoundException;
 
     void deleteClient(int clientId);
 

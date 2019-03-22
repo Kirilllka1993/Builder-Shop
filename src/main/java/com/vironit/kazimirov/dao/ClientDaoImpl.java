@@ -17,7 +17,7 @@ import java.util.List;
 public class ClientDaoImpl implements ClientDao {
     @Autowired
     private SessionFactory sessionFactory;
-    private final String FIND_REVIEW_BY_GOOD_CLIENT="select review from Review review where review.good.id =:goodId and review.client.id=:clientId";
+    private final String FIND_REVIEW_BY_GOOD_CLIENT = "select review from Review review where review.good.id =:goodId and review.client.id=:clientId";
     private final String SQL_CHECK_ACCOUNT = "select a from Client a where login =:login and password=:password";
     private final String FIND_CLIENT_BY_LOGIN = "select a.login from Client a where login =:login";
 
@@ -31,12 +31,12 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public void removeReview(int clientId,int goodId) {
+    public void removeReview(int clientId, int goodId) {
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
-        Review review=session.createQuery(FIND_REVIEW_BY_GOOD_CLIENT, Review.class)
-                .setParameter("clientId",clientId)
-                .setParameter("goodId",goodId).uniqueResult();
+        Review review = session.createQuery(FIND_REVIEW_BY_GOOD_CLIENT, Review.class)
+                .setParameter("clientId", clientId)
+                .setParameter("goodId", goodId).uniqueResult();
         session.delete(review);
         tx1.commit();
         session.close();
@@ -44,7 +44,7 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public Client logIn(String login, String password)  {
+    public Client logIn(String login, String password) {
         Session session = sessionFactory.openSession();
         Query query = session.createQuery(SQL_CHECK_ACCOUNT, Client.class);
         query.setParameter("login", login);
@@ -60,14 +60,14 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public void signIn(Client client) throws RepeatitionException {
+    public void signIn(Client client) {
         Session session = sessionFactory.openSession();
-        String login = client.getLogin();
-        int query = session.createQuery(FIND_CLIENT_BY_LOGIN, String.class).
-                setParameter("login", login).list().size();
-        if (query != 0) {
-            throw new RepeatitionException();//доработать
-        }
+//        String login = client.getLogin();
+//        int query = session.createQuery(FIND_CLIENT_BY_LOGIN, String.class).
+//                setParameter("login", login).list().size();
+//        if (query != 0) {
+//            throw new RepeatitionException();//доработать
+//        }
         Transaction tx1 = session.beginTransaction();
         session.save(client);
         tx1.commit();
@@ -76,21 +76,20 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public void changeLogin(int clientId, String newLogin) throws RepeatitionException {
+    public void changeLogin(int clientId, String newLogin) {
         Session session = sessionFactory.openSession();
         Client client = session.get(Client.class, clientId);
-        int query = session.createQuery(FIND_CLIENT_BY_LOGIN, String.class).
-                setParameter("login", newLogin).list().size();
-        if (query == 0) {
-            client.setLogin(newLogin);
-            Transaction tx1 = session.beginTransaction();
-            session.update(client);
-            tx1.commit();
-            session.close();
-        } else {
-            throw new RepeatitionException();//доработать
-        }
-
+//        int query = session.createQuery(FIND_CLIENT_BY_LOGIN, String.class).
+//                setParameter("login", newLogin).list().size();
+//        if (query == 0) {
+        client.setLogin(newLogin);
+        Transaction tx1 = session.beginTransaction();
+        session.update(client);
+        tx1.commit();
+        session.close();
+//        } else {
+//            throw new RepeatitionException();//доработать
+//        }
     }
 
     @Override
@@ -113,7 +112,6 @@ public class ClientDaoImpl implements ClientDao {
         session.update(client);
         tx1.commit();
         session.close();
-
     }
 
     @Override
@@ -126,11 +124,6 @@ public class ClientDaoImpl implements ClientDao {
         tx1.commit();
         session.close();
     }
-
-//    @Override
-//    public List<Client> findAllClients() {
-//        return null;
-//    }
 
     @Override
     public List<Review> findAllReviews(Client client) {

@@ -93,7 +93,7 @@ public class ClientController extends HttpServlet {
 
     @RequestMapping(value = "/signIn", method = RequestMethod.POST)
     @ResponseBody
-    public String signIn(ClientDto clientDto, ModelMap map) throws RepeatitionException, ClientNotFoundException {
+    public String signIn(ClientDto clientDto, ModelMap map) throws RepeatitionException {
         map.addAttribute("command", clientDto);
         Client client = new Client();
         client.setName(clientDto.getName());
@@ -102,16 +102,27 @@ public class ClientController extends HttpServlet {
         client.setLogin(clientDto.getLogin());
         client.setAddress(clientDto.getAddress());
         client.setPhoneNumber(clientDto.getPhoneNumber());
-        clientService.signIn(client);
+        try {
+            clientService.signIn(client);
+        } catch (ClientNotFoundException e) {
+            return "tryLogin";
+        }
+
         return "Congratulate! You Add!";
     }
 
     @RequestMapping(value = "/changeLogin", method = RequestMethod.POST)
     public ModelAndView changeLogin(@RequestParam("id") int id,
-                                    @RequestParam("login") String login,ModelMap map) throws RepeatitionException {
+                                    @RequestParam("login") String login, ModelMap map) throws RepeatitionException {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("client");
-        clientService.changeLogin(id, login);
+        try {
+            clientService.changeLogin(id, login);
+        } catch (ClientNotFoundException e) {
+            modelAndView.setViewName("tryLogin");
+            return modelAndView;
+        }
+
         return modelAndView;
     }
 
@@ -122,14 +133,12 @@ public class ClientController extends HttpServlet {
 
     @RequestMapping(value = "/changePhoneNumber", method = RequestMethod.POST)
     public void changePhoneNumber(@RequestParam("id") int id,
-                                  @RequestParam("phoneNumber") String phoneNumber,ModelMap map) {
-
-
+                                  @RequestParam("phoneNumber") String phoneNumber, ModelMap map) {
     }
 
     @RequestMapping(value = "/changeAddress", method = RequestMethod.POST)
     public ModelAndView changeAddress(@RequestParam("id") int id,
-                              @RequestParam("address") String address,ModelMap map) {
+                                      @RequestParam("address") String address, ModelMap map) {
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("client");
@@ -139,14 +148,10 @@ public class ClientController extends HttpServlet {
 
     @RequestMapping(value = "/deleteReview", method = RequestMethod.POST)
     public ModelAndView deleteReview(@RequestParam("idGood") int idGood,
-                                      @RequestParam("idClient") int idClient,ModelMap map) {
+                                     @RequestParam("idClient") int idClient, ModelMap map) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("client");
-        clientService.removeReview(idClient,idGood);
+        clientService.removeReview(idClient, idGood);
         return modelAndView;
     }
-
-//    List<Client> findAllClients();
-//
-//    List<Review> findAllReviews(Client client);
 }

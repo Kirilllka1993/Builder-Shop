@@ -56,7 +56,12 @@ public class AdminController {
         client.setLogin(clientDto.getLogin());
         client.setAddress(clientDto.getAddress());
         client.setPhoneNumber(clientDto.getPhoneNumber());
-        adminService.addClient(client);
+        try{
+            adminService.addClient(client);
+        }catch (ClientNotFoundException e){
+            return "tryLogin";
+        }
+
         return "Congratulate! You Add!";
     }
 

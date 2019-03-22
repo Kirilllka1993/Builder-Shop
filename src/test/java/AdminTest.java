@@ -58,7 +58,7 @@ public class AdminTest {
     }
 
     @Test
-    public void addClientTest() throws RepeatitionException, SQLException {
+    public void addClientTest() throws RepeatitionException, SQLException, ClientNotFoundException {
         adminService.addClient(clientBeforeTest);
         List<Client> missingClients = adminService.findAllClient();
         List<Client> findClientsById;
@@ -70,7 +70,7 @@ public class AdminTest {
     }
 
     @Test(expected = RepeatitionException.class)
-    public void addClientExceptionTest() throws RepeatitionException, SQLException {
+    public void addClientExceptionTest() throws RepeatitionException, SQLException, ClientNotFoundException {
         adminService.addClient(clientBeforeForExceptionTest);
 
     }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -26,8 +27,13 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void addClient(Client client) throws RepeatitionException{
-            adminDao.addClient(client);
+    public void addClient(Client client) throws RepeatitionException, ClientNotFoundException {
+        Optional<Client> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(client.getLogin()));
+            if (checkLoginClient.isPresent()==false){
+                adminDao.addClient(client);
+        }else{
+                throw new ClientNotFoundException("such login is used");
+        }
     }
 
     @Override
@@ -53,25 +59,10 @@ public class AdminServiceImpl implements AdminService {
 
     }
 
-//    @Override
-//    public List<Purchase> findAllPurchases() {
-//        return adminDao.findAllPurchases();
-//    }
-
     @Override
     public List<Client> findAllClient() {
         return adminDao.findAllClient();
     }
-
-//    @Override
-//    public Purchase findPurchasebyId(int id) throws PurchaseNotFoundException {
-//        return adminDao.findPurchasebyId(id);
-//    }
-
-//    @Override
-//    public List<Good> findAllGoods() {
-//        return adminDao.findAllGoods();
-//    }
 
     @Override
     public void updateStatus(int status, Purchase purchase) {

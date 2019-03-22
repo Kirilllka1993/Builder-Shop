@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 import static junit.framework.TestCase.assertEquals;
 
 public class ClientTest {
-    ClientService clientService = new ClientServiceImpl(new ClientDaoImplFake());
+    ClientService clientService = new ClientServiceImpl(new ClientDaoImplFake(), new AdminDaoImplFake());
     AdminService adminService=new AdminServiceImpl(new AdminDaoImplFake(), new PurchaseDaoImplFake());
     Client clientBeforeTest = null;
     Client clientBeforeExceptionTest = null;
@@ -79,7 +79,7 @@ public class ClientTest {
 //    }
 
     @Test(expected = RepeatitionException.class)
-    public void signInExceptionTest() throws RepeatitionException {
+    public void signInExceptionTest() throws RepeatitionException, ClientNotFoundException {
         clientService.signIn(clientBeforeExceptionTest);
     }
 
@@ -102,7 +102,7 @@ public class ClientTest {
     }
 
     @Test
-    public void changeLogin() throws RepeatitionException {
+    public void changeLogin() throws RepeatitionException, ClientNotFoundException {
         int idOfLastGood = adminService.findAllClient().get(adminService.findAllClient().size() - 1).getId();
         String newLogin = clientBeforeTest.getLogin();
         clientService.changeLogin(idOfLastGood, newLogin);
@@ -118,7 +118,7 @@ public class ClientTest {
     }
 
     @Test(expected = RepeatitionException.class)
-    public void changeLoginExceptionTest() throws RepeatitionException {
+    public void changeLoginExceptionTest() throws RepeatitionException, ClientNotFoundException {
         clientService.changeLogin(1, clientBeforeExceptionTest.getLogin());
 
     }
