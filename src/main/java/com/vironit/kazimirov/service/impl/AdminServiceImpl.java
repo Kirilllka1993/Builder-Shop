@@ -3,9 +3,7 @@ package com.vironit.kazimirov.service.impl;
 import com.vironit.kazimirov.fakedao.DaoInterface.AdminDao;
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Purchase;
-import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
-import com.vironit.kazimirov.fakedao.DaoInterface.PurchaseDao;
 import com.vironit.kazimirov.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,21 +16,20 @@ import java.util.Optional;
 public class AdminServiceImpl implements AdminService {
 
     private final AdminDao adminDao;
-    private final PurchaseDao purchaseDao;
 
     @Autowired
-    public AdminServiceImpl(AdminDao adminDao, PurchaseDao purchaseDao) {
+    public AdminServiceImpl(AdminDao adminDao) {
         this.adminDao = adminDao;
-        this.purchaseDao = purchaseDao;
     }
 
     @Override
-    public void addClient(Client client) throws RepeatitionException, ClientNotFoundException {
+    public void addClient(Client client) throws RepeatitionException{
+        //matcher
         Optional<Client> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(client.getLogin()));
             if (checkLoginClient.isPresent()==false){
                 adminDao.addClient(client);
         }else{
-                throw new ClientNotFoundException("such login is used");
+                throw new RepeatitionException("such login is used");
         }
     }
 
@@ -43,13 +40,13 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Client findClientByLogin(String login)  throws ClientNotFoundException{
+    public Client findClientByLogin(String login) {
         return adminDao.findClientByLogin(login);
     }
 
 
     @Override
-    public Client findClientById(int clientId) throws ClientNotFoundException {
+    public Client findClientById(int clientId){
         return adminDao.findClientById(clientId);
     }
 

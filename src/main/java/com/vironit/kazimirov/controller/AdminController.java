@@ -45,25 +45,25 @@ public class AdminController {
         return "adminJsp";
     }
 
-    @RequestMapping(value = "/addClient", method = RequestMethod.POST)
-    @ResponseBody
-    public String addClient(ClientDto clientDto, ModelMap map) throws RepeatitionException {
-        map.addAttribute("command", clientDto);
-        Client client = new Client();
-        client.setName(clientDto.getName());
-        client.setSurname(clientDto.getSurname());
-        client.setPassword(clientDto.getPassword());
-        client.setLogin(clientDto.getLogin());
-        client.setAddress(clientDto.getAddress());
-        client.setPhoneNumber(clientDto.getPhoneNumber());
-        try{
-            adminService.addClient(client);
-        }catch (ClientNotFoundException e){
-            return "tryLogin";
-        }
-
-        return "Congratulate! You Add!";
-    }
+//    @RequestMapping(value = "/addClient", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String addClient(ClientDto clientDto, ModelMap map) {
+//        map.addAttribute("command", clientDto);
+//        Client client = new Client();
+//        client.setName(clientDto.getName());
+//        client.setSurname(clientDto.getSurname());
+//        client.setPassword(clientDto.getPassword());
+//        client.setLogin(clientDto.getLogin());
+//        client.setAddress(clientDto.getAddress());
+//        client.setPhoneNumber(clientDto.getPhoneNumber());
+//        try{
+//            adminService.addClient(client);
+//        }catch (RepeatitionException e){
+//            return "tryLogin";
+//        }
+//
+//        return "Congratulate! You Add!";
+//    }
 
     @PostMapping("/deleteClient")
     public String deleteClient(@RequestParam("number") int id){
@@ -73,7 +73,7 @@ public class AdminController {
     }
 
     @RequestMapping("/login")
-    public String findClientByLogin(@RequestParam("login") String login, ModelMap map) throws ClientNotFoundException {
+    public String findClientByLogin(@RequestParam("login") String login, ModelMap map){
         Client client = null;
         client = adminService.findClientByLogin(login);
         map.addAttribute("client", client);
@@ -81,14 +81,14 @@ public class AdminController {
     }
 
     @RequestMapping("/findById")
-    public String findClientById(@RequestParam("idClient") int idClient, ModelMap map) throws ClientNotFoundException {
+    public String findClientById(@RequestParam("idClient") int idClient, ModelMap map){
         Client client1 = adminService.findClientById(idClient);
         map.addAttribute("client1", client1);
         return "adminJsp";
     }
     @RequestMapping(name = "/updateStatus", method = RequestMethod.POST)
     public String updateStatus(@RequestParam("status") int status,
-                               @RequestParam("purchaseId")int purchaseId, ModelMap map) throws ClientNotFoundException {
+                               @RequestParam("purchaseId")int purchaseId, ModelMap map)  {
         Purchase purchase=purchaseService.findPurchaseById(purchaseId);
         map.addAttribute("purchase", purchase);
         map.addAttribute("status", status);

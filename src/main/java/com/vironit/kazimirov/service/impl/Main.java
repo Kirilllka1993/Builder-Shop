@@ -10,12 +10,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.vironit.kazimirov.service.SubsectionService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 public class Main extends Thread {
 
 
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+
 
 
     public static void main(String[] args) throws RepeatitionException, ClientNotFoundException, PurchaseNotFoundException, PurchaseException, GoodException, IOException, SQLException {
@@ -102,6 +106,7 @@ public class Main extends Thread {
         //SubsectionDao
         //SubsectionServiceImpl subsectionDao = new SubsectionServiceImpl();
         try {
+
             //subsectionDao.addSubsection(1,"Утеплитель");
             //subsectionDao.showSubsections();
         } catch (Exception ex) {

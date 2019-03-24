@@ -21,7 +21,7 @@ public class SubsectionDaoImpl implements SubsectionDao {
     private final String FIND_SUBSECTION_BY_NAME = "select a from Subsection a where a.title = :title";
 
     @Override
-    public void addSubsection(Subsection subsection) throws RepeatitionException {
+    public void addSubsection(Subsection subsection) {
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
         session.save(subsection);
@@ -42,7 +42,9 @@ public class SubsectionDaoImpl implements SubsectionDao {
         Session session = sessionFactory.openSession();
         Query query = session.createQuery(FIND_SUBSECTION_BY_NAME, Subsection.class);
         query.setParameter("title", title);
-        Subsection subsection = (Subsection) query.getSingleResult();
+//        Subsection subsection = (Subsection) query.getSingleResult();
+//        Subsection subsection = session.get(Subsection.class, title);
+        Subsection subsection= query.getResultList().isEmpty() ? null : (Subsection) query.getResultList().get(0);
         session.close();
         return subsection;
     }
@@ -55,5 +57,13 @@ public class SubsectionDaoImpl implements SubsectionDao {
         session.delete(subsection);
         tx1.commit();
         session.close();
+    }
+
+    @Override
+    public Subsection findSubsectionById(int idSubsection) {
+        Session session = sessionFactory.openSession();
+        Subsection subsection = session.get(Subsection.class, idSubsection);
+        session.close();
+        return subsection;
     }
 }

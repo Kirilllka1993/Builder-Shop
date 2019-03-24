@@ -27,5 +27,13 @@
     <input type=submit value="search Subsection">
     <p><c:out value="${subsection}"/><br></p>
 </form>
+<form method=get action=findSubsectionLong>
+    <p><c:out value="${subsectionBeforeTest}"/><br></p>
+    <input type=submit value="show subsectionLong">
+</form>
+<form method=get action=deleteSubsection>
+    <input type="text" name="subsectionId">
+    <input type=submit value="deleteSubsection">
+</form>
 </body>
 </html>

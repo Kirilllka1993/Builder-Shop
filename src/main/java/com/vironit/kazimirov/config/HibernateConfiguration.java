@@ -21,7 +21,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
-@ComponentScan(basePackages = {"com.vironit.kazimirov.dao"})
+@ComponentScan(basePackages = {"com.vironit.kazimirov.dao"})//com.vironit.kazimirov.dao
 @EnableTransactionManagement
 @PropertySource("classpath:application.properties")
 public class HibernateConfiguration {

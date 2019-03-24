@@ -13,9 +13,9 @@ public interface AdminDao{
 
     void deleteClient(int clientId);
 
-    Client findClientByLogin(String login) throws ClientNotFoundException;
+    Client findClientByLogin(String login);
 
-    Client findClientById(int clientId) throws ClientNotFoundException;
+    Client findClientById(int clientId);
 
     void changeDiscount(int goodId, double discount);
 

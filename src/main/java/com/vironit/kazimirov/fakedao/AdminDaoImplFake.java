@@ -83,14 +83,16 @@ public class AdminDaoImplFake implements AdminDao {
     }
 
     @Override
-    public Client findClientByLogin(String login) throws ClientNotFoundException {
-        Client clientName = clients.stream().filter(s -> s.getLogin().equals(login)).findFirst().orElseThrow(() -> new ClientNotFoundException("Such login is absent"));
+    public Client findClientByLogin(String login) {
+        //Client clientName = clients.stream().filter(s -> s.getLogin().equals(login)).findFirst().orElseThrow(() -> new ClientNotFoundException("Such login is absent"));
+        Client clientName = clients.stream().filter(s -> s.getLogin().equals(login)).findFirst().get();
         return clientName;
     }
 
     @Override
-    public Client findClientById(int clientId) throws ClientNotFoundException {
-        Client clientName = clients.stream().filter(s -> s.getId() == clientId).findFirst().orElseThrow(() -> new ClientNotFoundException("Such id is absent"));
+    public Client findClientById(int clientId) {
+        //Client clientName = clients.stream().filter(s -> s.getId() == clientId).findFirst().orElseThrow(() -> new ClientNotFoundException("Such id is absent"));
+        Client clientName = clients.stream().filter(s -> s.getId() == clientId).findFirst().get();
         return clientName;
     }
 

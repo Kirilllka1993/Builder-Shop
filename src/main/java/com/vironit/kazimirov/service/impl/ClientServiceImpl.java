@@ -39,6 +39,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client logIn(String login, String password) throws RepeatitionException {
+        //matcher
         return clientDao.logIn(login, password);
 
     }
@@ -51,6 +52,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void signIn(Client client) throws RepeatitionException, ClientNotFoundException {
+        //matcher
         Optional<Client> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(client.getLogin()));
         if (checkLoginClient.isPresent()==false) {
             clientDao.signIn(client);
@@ -61,6 +63,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void changeLogin(int clientId, String newLogin) throws RepeatitionException, ClientNotFoundException {
+        //matcher
         Optional<Client> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(newLogin));
         if ((checkLoginClient.isPresent()==false)) {
             clientDao.changeLogin(clientId, newLogin);
@@ -73,6 +76,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void changePassword(int clientId, String newPassword) {
+        //matcher
         clientDao.changePassword(clientId, newPassword);
 
     }

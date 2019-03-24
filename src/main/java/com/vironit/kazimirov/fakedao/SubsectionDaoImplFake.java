@@ -47,4 +47,9 @@ public class SubsectionDaoImplFake implements SubsectionDao {
     public void deleteSubsection(int idSubsection) {
 
     }
+
+    @Override
+    public Subsection findSubsectionById(int idSubsection) {
+        return null;
+    }
 }
