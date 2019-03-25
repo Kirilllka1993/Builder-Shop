@@ -146,6 +146,11 @@ public class GoodDaoImplFake implements GoodDao {
     }
 
     @Override
+    public void reduceAmount(int goodId, int amount) {
+
+    }
+
+    @Override
     public List<Good> findGoodsByPrice(double minPrice, double maxPrice) {
         List<Good> goodsByPrice;
         goodsByPrice = goods.stream().filter(s -> s.getPrice() <= maxPrice && s.getPrice() >= minPrice).collect(Collectors.toList());

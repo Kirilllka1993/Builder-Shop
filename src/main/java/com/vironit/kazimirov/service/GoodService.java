@@ -4,7 +4,6 @@ import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.exception.GoodException;
-import com.vironit.kazimirov.exception.GoodNotFountException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 
 import java.util.List;
@@ -39,5 +38,7 @@ public interface GoodService {
     List<Good> findGoodsByPrice(double minPrice, double maxPrice);
 
     Good findGoodById(int goodId);
+
+    void reduceAmount(int goodId, int amount);
 
 }

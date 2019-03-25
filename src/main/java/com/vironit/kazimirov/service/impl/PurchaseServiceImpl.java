@@ -68,7 +68,6 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public void deleteFromPurchase(int goodId) throws PurchaseException {
-
         purchaseDao.deleteFromPurchase(goodId);
     }
 

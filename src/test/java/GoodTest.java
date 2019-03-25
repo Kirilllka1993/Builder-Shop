@@ -58,7 +58,7 @@ public class GoodTest {
     public void createGoodException() {
         Purpose purpose = purposeService.findPurposes().get(0);
         Subsection subsection = subsectionService.findSubsections().get(0);
-        List<Good> goods = goodService.findAllGoods();
+        //List<Good> goods = goodService.findAllGoods();
         //double discount=goods.stream().mapToDouble(Good::getPrice).count();
         GoodBuilder GoodBuilder = new GoodBuilder();
         goodBeforeExceptionTest = GoodBuilder.withCost(6)

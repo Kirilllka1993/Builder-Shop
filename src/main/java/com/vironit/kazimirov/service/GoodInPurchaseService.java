@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface GoodInPurchaseService {
 
-    void addInGoodInPurchase(Good good, int amount, Purchase purchase) throws RepeatitionException;
+    void addInGoodInPurchase(Good good, int amount, Purchase purchase) throws RepeatitionException, PurchaseException;
 
     List<GoodInPurchase> findGoodInPurchases();
 
@@ -26,6 +26,14 @@ public interface GoodInPurchaseService {
     void deleteGoodInPurchasesWithCancelledStatus(Purchase purchase);
 
     void changeAmountInGoodInPurchase (int goodId, int amount, int purchaseId) throws RepeatitionException;
+
+    GoodInPurchase findGoodInPurchase (int goodId, int purchaseId);
+
+    GoodInPurchase findGoodInPurchaseById(int goodInPurchaseId);
+
+    void returnedAmountOfGood(GoodInPurchase goodInPurchase);
+
+    void reduceAmount(int goodId, int amount);
 
 
 }

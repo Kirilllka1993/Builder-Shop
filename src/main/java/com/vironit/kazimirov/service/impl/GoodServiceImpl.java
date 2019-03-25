@@ -114,4 +114,9 @@ public class GoodServiceImpl implements GoodService {
     public Good findGoodById(int goodId) {
         return goodDao.findGoodById(goodId);
     }
+
+    @Override
+    public void reduceAmount(int goodId, int amount) {
+        goodDao.reduceAmount(goodId,amount);
+    }
 }

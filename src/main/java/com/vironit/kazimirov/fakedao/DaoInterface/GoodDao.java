@@ -42,4 +42,6 @@ public interface GoodDao {
     void changeAmountOfGood(Good good, int amount);
 
     Good updateGood(int goodId, Good good);
+
+    void reduceAmount(int goodId, int amount);
 }

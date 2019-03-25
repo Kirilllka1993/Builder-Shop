@@ -91,12 +91,12 @@ public class PurchaseTest {
 //        purchaseService.addIntoPurchase(1, sumAmount,purchaseBeforeTest);
 //    }
 
-    @Test(expected = PurchaseException.class)
-    public void deleteFromPurchaseTest() throws PurchaseException {
-        int sumId=goodService.findAllGoods().stream().mapToInt(Good::getId).sum();
-        purchaseService.deleteFromPurchase(sumId);
-
-    }
+//    @Test(expected = PurchaseException.class)
+//    public void deleteFromPurchaseTest() throws PurchaseException {
+//        int sumId=goodService.findAllGoods().stream().mapToInt(Good::getId).sum();
+//        purchaseService.deleteFromPurchase(sumId);
+//
+//    }
 
 //    @Test
 //    public void findPurchasesByDateTest() throws PurchaseNotFoundException {
@@ -109,11 +109,11 @@ public class PurchaseTest {
 //        assertEquals(purchasesByDate, filtredPurchasesByDate);
 //    }
 
-    @Test(expected = PurchaseNotFoundException.class)
-    public void findPurchasesByDateExceptionTest() throws PurchaseNotFoundException {
-        LocalDateTime localDateTime5 = LocalDateTime.of(1970, Month.JULY, 16, 12, 8);
-        purchaseService.findPurchasesByDate(localDateTime5);
-    }
+//    @Test(expected = PurchaseNotFoundException.class)
+//    public void findPurchasesByDateExceptionTest() throws PurchaseNotFoundException {
+//        LocalDateTime localDateTime5 = LocalDateTime.of(1970, Month.JULY, 16, 12, 8);
+//        purchaseService.findPurchasesByDate(localDateTime5);
+//    }
 
 //    @Test
 //    public void removePurchaseTest() throws PurchaseException {
@@ -123,9 +123,9 @@ public class PurchaseTest {
 //        Assert.assertTrue(allPurchases.stream().noneMatch(client -> client.getId() == deleteId));
 //    }
 
-    @Test(expected = PurchaseException.class)
-    public void deleteExceptionTest() throws PurchaseException {
-        int sumPurchaseId = purchaseService.findPurchases().stream().mapToInt(Purchase::getId).sum();
-        purchaseService.removePurchase(sumPurchaseId);
-    }
+//    @Test(expected = PurchaseException.class)
+//    public void deleteExceptionTest() throws PurchaseException {
+//        int sumPurchaseId = purchaseService.findPurchases().stream().mapToInt(Purchase::getId).sum();
+//        purchaseService.removePurchase(sumPurchaseId);
+//    }
 }

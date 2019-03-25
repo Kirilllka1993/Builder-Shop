@@ -24,4 +24,5 @@ public class GoodInPurchase {
     private Good good;
     @Column(name = "amount")
     private int amount;
+
 }

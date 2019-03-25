@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface GoodInPurchaseDao {
 
-    void addInGoodInPurchase(Good good, int amount, Purchase purchase) throws RepeatitionException;
+    void addInGoodInPurchase(Good good, int amount, Purchase purchase) throws PurchaseException;
 
     List<GoodInPurchase> findGoodInPurchases();
 
@@ -25,4 +25,12 @@ public interface GoodInPurchaseDao {
     void deleteGoodInPurchasesWithCancelledStatus(Purchase purchase);
 
     void changeAmountInGoodInPurchase (int goodId, int amount, int purchaseId);
+
+    GoodInPurchase findGoodInPurchase (int goodId, int purchaseId);
+
+    GoodInPurchase findGoodInPurchaseById(int goodInPurchaseId);
+
+    void returnedAmountOfGood(GoodInPurchase goodInPurchase);
+
+    void reduceAmount(int goodId, int amount);
 }

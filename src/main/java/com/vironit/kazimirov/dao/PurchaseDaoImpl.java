@@ -25,7 +25,7 @@ public class PurchaseDaoImpl implements PurchaseDao {
     private final String FIND_PURCHASES="select purchase from Purchase purchase";
     //private final String FIND_GOOD_FOR_PURCHASE="select goodInPurchase from GoodInPurchase goodInPurchase where goodInPurchase.purchase=:purchaseId";
     //private final String FIND_PURCHASES = "select purchase from Purchase purchase";
-    //private final String FIND_PURCHASES = "select goodInPurchase from GoodInPurchase goodInPurchase join Purchase purchase WHERE goodInPurchase.purchase=purchase";
+    //private final String FIND_P URCHASES = "select goodInPurchase from GoodInPurchase goodInPurchase join Purchase purchase WHERE goodInPurchase.purchase=purchase";
 
     @Override
     public List<Purchase> findPurchases() {
