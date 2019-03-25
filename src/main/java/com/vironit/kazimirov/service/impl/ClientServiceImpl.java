@@ -40,8 +40,12 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client logIn(String login, String password) throws RepeatitionException {
         //matcher
-        return clientDao.logIn(login, password);
-
+        Optional<Client> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(login));
+        if (checkLoginClient.isPresent() == false) {
+            throw new RepeatitionException("such login is absent");
+        } else {
+            return clientDao.logIn(login, password);
+        }
     }
 
 
@@ -51,24 +55,24 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void signIn(Client client) throws RepeatitionException, ClientNotFoundException {
+    public void signIn(Client client) throws RepeatitionException {
         //matcher
         Optional<Client> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(client.getLogin()));
-        if (checkLoginClient.isPresent()==false) {
+        if (checkLoginClient.isPresent() == false) {
             clientDao.signIn(client);
         } else {
-            throw new ClientNotFoundException("such login is used");
+            throw new RepeatitionException("such login is used");
         }
     }
 
     @Override
-    public void changeLogin(int clientId, String newLogin) throws RepeatitionException, ClientNotFoundException {
+    public void changeLogin(int clientId, String newLogin) throws RepeatitionException {
         //matcher
         Optional<Client> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(newLogin));
-        if ((checkLoginClient.isPresent()==false)) {
+        if ((checkLoginClient.isPresent() == false)) {
             clientDao.changeLogin(clientId, newLogin);
         } else {
-            throw new ClientNotFoundException("such login is used");
+            throw new RepeatitionException("such login is used");
         }
 
 

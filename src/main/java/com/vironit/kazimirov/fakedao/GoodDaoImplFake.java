@@ -85,10 +85,10 @@ public class GoodDaoImplFake implements GoodDao {
     }
 
     @Override
-    public void deleteGood(int goodId) throws GoodException {
-        if (goods.stream().noneMatch(good -> (good.getId() == goodId))) {
-            throw new GoodException("There is no such good");
-        }
+    public void deleteGood(int goodId) {
+//        if (goods.stream().noneMatch(good -> (good.getId() == goodId))) {
+//            throw new GoodException("There is no such good");
+//        }
         Good good = goods.stream().filter(s -> s.getId() == goodId).findFirst().get();
         goods.remove(good);
     }

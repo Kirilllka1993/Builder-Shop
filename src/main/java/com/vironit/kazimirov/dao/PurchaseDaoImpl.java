@@ -20,8 +20,9 @@ import java.util.List;
 public class PurchaseDaoImpl implements PurchaseDao {
     @Autowired
     private SessionFactory sessionFactory;
-    private final String FIND_PURCHASES = "select purchase from Purchase purchase join fetch GoodInPurchase goodInPurchase WHERE purchase.id= goodInPurchase.id";
+    //private final String FIND_PURCHASES = "select purchase from Purchase purchase join fetch GoodInPurchase goodInPurchase WHERE purchase.id= goodInPurchase.id";
     private final String FIND_GOOD_FOR_PURCHASE="select a from GoodInPurchase a where a.purchase.id =:purchaseId";
+    private final String FIND_PURCHASES="select purchase from Purchase purchase";
     //private final String FIND_GOOD_FOR_PURCHASE="select goodInPurchase from GoodInPurchase goodInPurchase where goodInPurchase.purchase=:purchaseId";
     //private final String FIND_PURCHASES = "select purchase from Purchase purchase";
     //private final String FIND_PURCHASES = "select goodInPurchase from GoodInPurchase goodInPurchase join Purchase purchase WHERE goodInPurchase.purchase=purchase";

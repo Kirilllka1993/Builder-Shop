@@ -2,7 +2,6 @@ package com.vironit.kazimirov.service;
 
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Review;
-import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 
 import java.util.List;
@@ -17,9 +16,9 @@ public interface ClientService {
 
     void logOut();
 
-    void signIn(Client client) throws RepeatitionException, ClientNotFoundException;
+    void signIn(Client client) throws RepeatitionException;
 
-    void changeLogin(int clientId, String newLogin) throws RepeatitionException, ClientNotFoundException;
+    void changeLogin(int clientId, String newLogin) throws RepeatitionException;
 
     void changePassword(int clientId, String newPassword);
 

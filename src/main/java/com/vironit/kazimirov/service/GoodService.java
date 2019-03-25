@@ -5,11 +5,12 @@ import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.exception.GoodException;
 import com.vironit.kazimirov.exception.GoodNotFountException;
+import com.vironit.kazimirov.exception.RepeatitionException;
 
 import java.util.List;
 
 public interface GoodService {
-    void addGood(Good good) throws GoodException;
+    void addGood(Good good) throws GoodException, RepeatitionException;
 
     Good findByNameGood(String goodName);
 
@@ -19,9 +20,9 @@ public interface GoodService {
 
     List<Good> findByPurpose(Purpose purpose);
 
-    void deleteGood(int goodId) throws GoodException;//Как удалять товар, по параметрам или нет
+    void deleteGood(int goodId);//Как удалять товар, по параметрам или нет
 
-    void changePrice(int goodId, double price);//могут ли все параметры быть равны нулю
+    void changePrice(int goodId, double price) throws GoodException;//могут ли все параметры быть равны нулю
 
     void changeSubsection(int goodId, Subsection subsection);
 
@@ -31,9 +32,9 @@ public interface GoodService {
 
     void changeQuantity(int goodId, int quantity);
 
-    void changeAmount(int goodId, int amount);
+    void changeAmount(int goodId, int amount) throws GoodException;
 
-    Good updateGood(int goodId, Good good);
+    Good updateGood(int goodId, Good good);//надо ли делать
     
     List<Good> findGoodsByPrice(double minPrice, double maxPrice);
 

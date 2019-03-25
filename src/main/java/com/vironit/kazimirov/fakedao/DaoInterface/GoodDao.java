@@ -5,12 +5,13 @@ import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.exception.GoodException;
 import com.vironit.kazimirov.exception.GoodNotFountException;
+import com.vironit.kazimirov.exception.RepeatitionException;
 
 import java.util.List;
 
 public interface GoodDao {
 
-    void addGood(Good good) throws GoodException;
+    void addGood(Good good) throws GoodException, RepeatitionException;
 
     Good findByNameGood(String goodName);
 
@@ -20,7 +21,7 @@ public interface GoodDao {
 
     List<Good> findByPurpose(Purpose purpose);
 
-    void deleteGood(int goodId) throws GoodException;//Как удалять товар, по параметрам или нет
+    void deleteGood(int goodId);//Как удалять товар, по параметрам или нет
 
     void changePrice(int goodId, double price);//могут ли все параметры быть равны нулю
 

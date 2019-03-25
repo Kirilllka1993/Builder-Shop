@@ -5,6 +5,7 @@ import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.exception.GoodException;
+import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.GoodService;
 import com.vironit.kazimirov.service.PurposeService;
 import com.vironit.kazimirov.service.SubsectionService;
@@ -42,7 +43,7 @@ public class GoodController extends HttpServlet {
     }
 
     @RequestMapping(value = "/addGood", method = RequestMethod.POST)
-    public ModelAndView addGood(@ModelAttribute GoodDto goodDto, BindingResult result, ModelMap map) throws GoodException {
+    public ModelAndView addGood(@ModelAttribute GoodDto goodDto, BindingResult result, ModelMap map) throws GoodException, RepeatitionException {
         Good good = new Good();
         Subsection subsection = subsectionService.findSubsectionByName(goodDto.getSubsection().getTitle());
         Purpose purpose = purposeService.findPurposeByName(goodDto.getPurpose().getPurpose());

@@ -22,7 +22,7 @@ public class GoodDaoImpl implements GoodDao {
     private final String FIND_GOODS = "select a from Good a";
     private final String FIND_BY_GOODS_SUBSECTIONS = "select a from Good a where subsection =:subsection";
     private final String FIND_BY_GOODS_PURPOSES = "select a from Good a where purpose =:purpose";
-    private final String FIND_GOODS_BY_PRICE = "select a from Good a where price>=:minPrice and price<=:maxPrice";
+    private final String FIND_GOODS_BY_PRICE = "select good from Good good where price>=:minPrice and price<=:maxPrice";
 
 
 
@@ -40,7 +40,7 @@ public class GoodDaoImpl implements GoodDao {
         Session session = sessionFactory.openSession();
         Query query = session.createQuery(FIND_GOOD_BY_NAME, Good.class);
         query.setParameter("name", goodName);
-        Good good = (Good) query.getSingleResult();
+        Good good = query.getResultList().isEmpty() ? null : (Good) query.getResultList().get(0);
         session.close();
         return good;
     }

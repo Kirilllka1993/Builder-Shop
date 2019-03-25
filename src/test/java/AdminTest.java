@@ -4,6 +4,7 @@ import com.vironit.kazimirov.entity.builder.Client.ClientBuilder;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.GoodService;
+import com.vironit.kazimirov.service.PurchaseService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,6 +28,8 @@ public class AdminTest {
     private AdminService adminService;
     @Autowired
     private GoodService goodService;
+    @Autowired
+    private PurchaseService purchaseService;
 
     Client clientBeforeForExceptionTest = null;
     Client clientBeforeTest = new Client();
@@ -37,7 +40,6 @@ public class AdminTest {
         List<Client> clients = new ArrayList<>();
         clients.add(allClients.get(0));
         clients.add(allClients.get(1));
-        clientBeforeForExceptionTest = allClients.get(0);
         String neverUseLogin = clients.stream().map(Client::getLogin).collect(Collectors.joining());
         ClientBuilder clientBuilder = new ClientBuilder();
         clientBeforeTest = clientBuilder.withId(0)
@@ -118,8 +120,9 @@ public class AdminTest {
     }
 
 //    @Test
-//    public void updateStatusTest(){
-//
+//    public void updateStatusTest() {
+//        List<Purchase> purchases = purchaseService.findPurchases();
+//        Purchase purchase = purchases.get(0);
 //    }
 }
 

@@ -55,7 +55,7 @@ public class ClientController extends HttpServlet {
                                   @RequestParam("client") String login,
                                   @RequestParam("good") String name,
                                   @RequestParam("comment") String comment,
-                                  ModelMap map) throws ClientNotFoundException {
+                                  ModelMap map) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("client");
         Client client = adminService.findClientByLogin(login);
@@ -93,7 +93,7 @@ public class ClientController extends HttpServlet {
 
     @RequestMapping(value = "/signIn", method = RequestMethod.POST)
     @ResponseBody
-    public String signIn(ClientDto clientDto, ModelMap map) throws RepeatitionException {
+    public String signIn(ClientDto clientDto, ModelMap map){
         map.addAttribute("command", clientDto);
         Client client = new Client();
         client.setName(clientDto.getName());
@@ -104,7 +104,7 @@ public class ClientController extends HttpServlet {
         client.setPhoneNumber(clientDto.getPhoneNumber());
         try {
             clientService.signIn(client);
-        } catch (ClientNotFoundException e) {
+        } catch (RepeatitionException e) {
             return "tryLogin";
         }
 
@@ -113,12 +113,12 @@ public class ClientController extends HttpServlet {
 
     @RequestMapping(value = "/changeLogin", method = RequestMethod.POST)
     public ModelAndView changeLogin(@RequestParam("id") int id,
-                                    @RequestParam("login") String login, ModelMap map) throws RepeatitionException {
+                                    @RequestParam("login") String login, ModelMap map){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("client");
         try {
             clientService.changeLogin(id, login);
-        } catch (ClientNotFoundException e) {
+        } catch (RepeatitionException e) {
             modelAndView.setViewName("tryLogin");
             return modelAndView;
         }
