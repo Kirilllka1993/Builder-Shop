@@ -18,7 +18,7 @@ public class SubsectionDaoImpl implements SubsectionDao {
     private SessionFactory sessionFactory;
 
     private final String FIND_SUBSECTIONS = "select a from Subsection a";
-    private final String FIND_SUBSECTION_BY_NAME = "select a from Subsection a where a.title = :title";
+    private final String FIND_SUBSECTION_BY_NAME = "select subsection from Subsection subsection where subsection.title = :title";
 
     @Override
     public void addSubsection(Subsection subsection) {

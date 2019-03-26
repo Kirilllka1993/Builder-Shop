@@ -29,12 +29,12 @@ public class SubsectionController {
         request.getRequestDispatcher("/WEB-INF/jsp/subsection.jsp").forward(request, response);
     }
 
-     @RequestMapping("/showSubsections")
-    public String showSubsections(ModelMap map) {
-         List<Subsection> subsections=subsectionService.findSubsections();
-         map.addAttribute("subsections",subsections);
-         return "subsection";
-     }
+//     @RequestMapping("/showSubsections")
+//    public String showSubsections(ModelMap map) {
+//         List<Subsection> subsections=subsectionService.findSubsections();
+//         map.addAttribute("subsections",subsections);
+//         return "subsection";
+//     }
 
     @RequestMapping(value = "/addSubsection", method = RequestMethod.POST)
     public String addSubsection(@RequestParam ("title") String title, ModelMap map) throws RepeatitionException {
@@ -44,13 +44,13 @@ public class SubsectionController {
         return "subsection";
     }
 
-    @RequestMapping(value = "/findSubsectionByName")
-    public String findPurposeByName(@RequestParam ("subsectionName") String purposeName, ModelMap map){
-        Subsection subsection=null;
-        subsection=subsectionService.findSubsectionByName(purposeName);
-        map.addAttribute("subsection", subsection);
-        return "subsection";
-    }
+//    @RequestMapping(value = "/findSubsectionByName")
+//    public String findPurposeByName(@RequestParam ("subsectionName") String purposeName, ModelMap map){
+//        Subsection subsection=null;
+//        subsection=subsectionService.findSubsectionByName(purposeName);
+//        map.addAttribute("subsection", subsection);
+//        return "subsection";
+//    }
 
     @RequestMapping(value = "/findSubsectionLong")
     public String findSubsectionLong(ModelMap map) {
