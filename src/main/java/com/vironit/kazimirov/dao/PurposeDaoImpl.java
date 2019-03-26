@@ -18,14 +18,12 @@ public class PurposeDaoImpl implements PurposeDao {
     private final String FIND_PURPOSES="select a from Purpose a";
     private final String FIND_PURPOSE_BY_NAME="select a from Purpose a where a.purpose = :purpose";
     @Override
-    public void addPurpose(Purpose purpose) throws RepeatitionException {
-
+    public void addPurpose(Purpose purpose) {
         Session session=sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
         session.save(purpose);
         tx1.commit();
         session.close();
-
     }
 
     @Override
@@ -41,7 +39,8 @@ public class PurposeDaoImpl implements PurposeDao {
         Session session = sessionFactory.openSession();
         Query query = session.createQuery(FIND_PURPOSE_BY_NAME, Purpose.class);
         query.setParameter("purpose", purposeName);
-        Purpose purpose = (Purpose) query.getSingleResult();
+        Purpose purpose= query.getResultList().isEmpty() ? null : (Purpose) query.getResultList().get(0);
+        //Purpose purpose = (Purpose) query.getSingleResult();
         session.close();
         return purpose;
     }
@@ -54,5 +53,13 @@ public class PurposeDaoImpl implements PurposeDao {
         session.delete(purpose);
         tx1.commit();
         session.close();
+    }
+
+    @Override
+    public Purpose findPurposeById(int idPurpose) {
+        Session session = sessionFactory.openSession();
+        Purpose purpose = session.get(Purpose.class, idPurpose);
+        session.close();
+        return purpose;
     }
 }

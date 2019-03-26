@@ -105,10 +105,10 @@ public class PurchaseDaoImplFake implements PurchaseDao {
         return null;
     }
 
-    public void removePurchase(int purchaseId) throws PurchaseException {
-        if (purchases.stream().noneMatch(good -> (good.getId() == purchaseId))) {
-            throw new PurchaseException("There is no such purchase");
-        }
+    public void removePurchase(int purchaseId)  {
+//        if (purchases.stream().noneMatch(good -> (good.getId() == purchaseId))) {
+//            throw new PurchaseException("There is no such purchase");
+//        }
         Purchase purchase = purchases.stream().filter(s -> s.getId() == purchaseId).findFirst().get();
         purchases.remove(purchase);
     }
@@ -129,8 +129,8 @@ public class PurchaseDaoImplFake implements PurchaseDao {
         //return purchase;
     }
 
-    @Override
-    public void addIntoPurchase(Good good, int amount, Purchase purchase) throws RepeatitionException, GoodNotFountException {
+
+//    public void addIntoPurchase(Good good, int amount, Purchase purchase) throws RepeatitionException, GoodNotFountException {
 //        GoodDao dao = new GoodDaoImplFake();
 //        //Good good = dao.findGoodById(goodId);
 //        if (good.getAmount() < amount) {
@@ -153,27 +153,26 @@ public class PurchaseDaoImplFake implements PurchaseDao {
 //        double cost = purchase.getGoods().stream().mapToDouble(s -> (s.getPrice() * s.getAmount() - s.getDiscount() * s.getAmount())).sum();
 //        purchase.setSumma(cost);
 //        //return purchase;
-    }
+//    }
 
+
+//    public void deleteFromPurchase(int goodId) throws PurchaseException {
+//        if (purchasesCart.stream().anyMatch(s -> s.getId() == goodId) == false) {
+//            throw new PurchaseException("This purchase is absent in base. You can't delete it");
+//        }
+//        Good good = purchasesCart.stream().filter(s -> s.getId() == goodId).findFirst().get();
+//        purchasesCart.remove(good);
+//    }
 
     @Override
-    public void deleteFromPurchase(int goodId) throws PurchaseException {
-        if (purchasesCart.stream().anyMatch(s -> s.getId() == goodId) == false) {
-            throw new PurchaseException("This purchase is absent in base. You can't delete it");
-        }
-        Good good = purchasesCart.stream().filter(s -> s.getId() == goodId).findFirst().get();
-        purchasesCart.remove(good);
-    }
-
-    @Override
-    public List<Purchase> findPurchasesByDate(LocalDateTime localDateTime) throws PurchaseNotFoundException {
+    public List<Purchase> findPurchasesByDate(LocalDateTime localDateTime) {
         List<Purchase> purchasesByDate;
-        if (purchases.stream().anyMatch(s -> (s.getTimeOfPurchase().equals(localDateTime))) == false) {
-            throw new PurchaseNotFoundException("There are no purchases in that period");
-
-        } else {
+//        if (purchases.stream().anyMatch(s -> (s.getTimeOfPurchase().equals(localDateTime))) == false) {
+//            throw new PurchaseNotFoundException("There are no purchases in that period");
+//
+//        } else {
             purchasesByDate = purchases.stream().filter(s -> (s.getTimeOfPurchase().equals(localDateTime))).collect(Collectors.toList());
-        }
+//        }
         return purchasesByDate;
     }
 

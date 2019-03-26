@@ -21,15 +21,11 @@ public interface PurchaseService {
 
     void makeAPurchase(int purchaseId) throws PurchaseException;
 
-    void addIntoPurchase(Good good, int amount, Purchase purchase) throws RepeatitionException, GoodNotFountException;
-
-    void deleteFromPurchase(int goodId) throws PurchaseException;
-
-    List<Purchase> findPurchasesByDate(LocalDateTime registration) throws PurchaseNotFoundException;
+    List<Purchase> findPurchasesByDate(LocalDateTime timeOfPurchase);
 
     void changeStatus(Purchase purchase, Status status);
 
-    void removePurchase(int purchaseId) throws PurchaseException;
+    void removePurchase(int purchaseId);
 
 
 }

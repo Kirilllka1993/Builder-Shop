@@ -33,4 +33,8 @@ public interface GoodInPurchaseDao {
     void returnedAmountOfGood(GoodInPurchase goodInPurchase);
 
     void reduceAmount(int goodId, int amount);
+
+    List<GoodInPurchase> findGoodInPurchasesByPurchase(int purchaseId);
+
+    List<GoodInPurchase> findGoodInPurchasesByGood(int goodId);
 }

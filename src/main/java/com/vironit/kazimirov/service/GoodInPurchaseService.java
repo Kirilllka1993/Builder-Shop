@@ -25,7 +25,7 @@ public interface GoodInPurchaseService {
 
     void deleteGoodInPurchasesWithCancelledStatus(Purchase purchase);
 
-    void changeAmountInGoodInPurchase (int goodId, int amount, int purchaseId) throws RepeatitionException;
+    void changeAmountInGoodInPurchase (int goodId, int amount, int purchaseId) throws PurchaseException;
 
     GoodInPurchase findGoodInPurchase (int goodId, int purchaseId);
 
@@ -34,6 +34,10 @@ public interface GoodInPurchaseService {
     void returnedAmountOfGood(GoodInPurchase goodInPurchase);
 
     void reduceAmount(int goodId, int amount);
+
+    List<GoodInPurchase> findGoodInPurchasesByPurchase(int purchaseId);
+
+    List<GoodInPurchase> findGoodInPurchasesByGood(int goodId);
 
 
 }

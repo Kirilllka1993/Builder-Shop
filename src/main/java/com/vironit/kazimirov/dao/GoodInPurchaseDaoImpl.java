@@ -26,6 +26,8 @@ public class GoodInPurchaseDaoImpl implements GoodInPurchaseDao {
     private final String FIND_GOOD_IN_PURCHASES_BY_GOOD_AND_PURCHASE = "select goodInPurchase from GoodInPurchase goodInPurchase where goodInPurchase.purchase=:purchase";
     private final String FIND_GOODS = "select goodInPurchase.good.name from GoodInPurchase goodInPurchase where goodInPurchase.purchase.id=:purchaseId";
     private final String FIND_PURCHASES = "select goodInPurchase.purchase from GoodInPurchase goodInPurchase where goodInPurchase.good.id=:goodId";
+    private final String FIND_GOOD_IN_PURCHASES_BY_PURCHASE = "select goodInPurchase from GoodInPurchase goodInPurchase where goodInPurchase.purchase.id=:purchaseId";
+    private final String FIND_GOOD_IN_PURCHASES_BY_GOOD = "select goodInPurchase from GoodInPurchase goodInPurchase where goodInPurchase.good.id=:goodId";
 
     @Override
     public void addInGoodInPurchase(Good good, int amount, Purchase purchase) {
@@ -143,10 +145,10 @@ public class GoodInPurchaseDaoImpl implements GoodInPurchaseDao {
         Session session = sessionFactory.openSession();
         //int oldAmount = good.getAmount();
         //int amountOfGoodInPurchase = goodInPurchase.getAmount();
-        Good good=goodInPurchase.getGood();
+        Good good = goodInPurchase.getGood();
         Transaction tx = session.beginTransaction();
         //good.setAmount(oldAmount + amount);
-        good.setAmount(good.getAmount()+goodInPurchase.getAmount());
+        good.setAmount(good.getAmount() + goodInPurchase.getAmount());
         session.update(good);
         tx.commit();
         session.close();
@@ -161,5 +163,21 @@ public class GoodInPurchaseDaoImpl implements GoodInPurchaseDao {
         session.update(good);
         tx1.commit();
         session.close();
+    }
+
+    @Override
+    public List<GoodInPurchase> findGoodInPurchasesByPurchase(int purchaseId) {
+        Session session = sessionFactory.openSession();
+        List<GoodInPurchase> goodInPurchases = (List<GoodInPurchase>) session.createQuery(FIND_GOOD_IN_PURCHASES_BY_PURCHASE).setParameter("purchaseId", purchaseId).list();
+        session.close();
+        return goodInPurchases;
+    }
+
+    @Override
+    public List<GoodInPurchase> findGoodInPurchasesByGood(int goodId) {
+        Session session = sessionFactory.openSession();
+        List<GoodInPurchase> goodInPurchases = (List<GoodInPurchase>) session.createQuery(FIND_GOOD_IN_PURCHASES_BY_GOOD).setParameter("goodId", goodId).list();
+        session.close();
+        return goodInPurchases;
     }
 }

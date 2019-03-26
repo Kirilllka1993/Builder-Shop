@@ -49,7 +49,6 @@ public class GoodInPurchaseImpl implements GoodInPurchaseService {
     @Override
     public void deleteFromPurchase(Good good, Purchase purchase) throws PurchaseException {
         GoodInPurchase goodInPurchase = goodInPurchaseDao.findGoodInPurchase(good.getId(), purchase.getId());
-        int amount=goodInPurchase.getAmount();
         goodInPurchaseDao.returnedAmountOfGood(goodInPurchase);
         goodInPurchaseDao.deleteFromPurchase(good, purchase);
     }
@@ -76,10 +75,10 @@ public class GoodInPurchaseImpl implements GoodInPurchaseService {
     }
 
     @Override
-    public void changeAmountInGoodInPurchase(int goodId, int amount, int purchaseId) throws RepeatitionException {
+    public void changeAmountInGoodInPurchase(int goodId, int amount, int purchaseId) throws PurchaseException {
         Good good = goodDao.findGoodById(goodId);
-        if (good.getAmount() < amount) {
-            throw new RepeatitionException("The amount of good is so much. In the store is present " + " " + good.getAmount());
+        if (good.getAmount() < amount ||amount<0) {
+            throw new PurchaseException("The amount of good is so much. In the store is present " + " " + good.getAmount());
         } else {
             goodInPurchaseDao.reduceAmount(goodId, amount);
             goodInPurchaseDao.changeAmountInGoodInPurchase(goodId, amount, purchaseId);
@@ -104,5 +103,15 @@ public class GoodInPurchaseImpl implements GoodInPurchaseService {
     @Override
     public void reduceAmount(int goodId, int amount) {
         goodInPurchaseDao.reduceAmount(goodId, amount);
+    }
+
+    @Override
+    public List<GoodInPurchase> findGoodInPurchasesByPurchase(int purchaseId) {
+        return goodInPurchaseDao.findGoodInPurchasesByPurchase(purchaseId);
+    }
+
+    @Override
+    public List<GoodInPurchase> findGoodInPurchasesByGood(int goodId) {
+        return goodInPurchaseDao.findGoodInPurchasesByGood(goodId);
     }
 }

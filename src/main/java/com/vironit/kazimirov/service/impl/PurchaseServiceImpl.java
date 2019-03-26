@@ -56,30 +56,9 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public void addIntoPurchase(Good good, int amount, Purchase purchase) throws RepeatitionException, GoodNotFountException {
-        if (good.getAmount()<amount){
-            throw new RepeatitionException("The amount of good is so much. In the store is present "+" "+good.getAmount() );
-        }else{
-            //goodDao.changeAmountOfGood(good,amount);
-            purchaseDao.addIntoPurchase(good, amount, purchase);
-            //goodDao.changeAmountOfGood(good,amount);
-        }
+    public List<Purchase> findPurchasesByDate(LocalDateTime timeOfPurchase) {
+        return purchaseDao.findPurchasesByDate(timeOfPurchase);
     }
-
-    @Override
-    public void deleteFromPurchase(int goodId) throws PurchaseException {
-        purchaseDao.deleteFromPurchase(goodId);
-    }
-
-    @Override
-    public List<Purchase> findPurchasesByDate(LocalDateTime registration) throws PurchaseNotFoundException {
-        return purchaseDao.findPurchasesByDate(registration);
-    }
-
-//    @Override
-//    public List<Good> findGoods() {
-//        return purchaseDao.findGoods();
-//    }
 
     @Override
     public void changeStatus(Purchase purchase, Status status) {
@@ -87,7 +66,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public void removePurchase(int purchaseId) throws PurchaseException {
+    public void removePurchase(int purchaseId) {
         purchaseDao.removePurchase(purchaseId);
     }
 }

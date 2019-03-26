@@ -57,24 +57,24 @@ public class PurchaseController extends HttpServlet {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/addIntoPurchase", method = RequestMethod.POST)
-    public ModelAndView addIntoPurchase(@RequestParam("goodId") int goodId,
-                                        @RequestParam("amount") int amount,
-                                        @RequestParam("purchaseId") int purchaseId) throws GoodNotFountException {
-        Purchase purchase = purchaseService.findPurchaseById(purchaseId);
-        Good good = goodService.findGoodById(goodId);
-        ModelAndView modelAndView = new ModelAndView();
-        try {
-            purchaseService.addIntoPurchase(good, amount, purchase);
-            modelAndView.setViewName("purchase");
-        } catch (RepeatitionException e) {
-            e.printStackTrace();
-            //modelAndView.setViewName("purchase");
-            modelAndView.setViewName("tryLogin");
-            return modelAndView;
-        }
-        return modelAndView;
-    }
+//    @RequestMapping(value = "/addIntoPurchase", method = RequestMethod.POST)
+//    public ModelAndView addIntoPurchase(@RequestParam("goodId") int goodId,
+//                                        @RequestParam("amount") int amount,
+//                                        @RequestParam("purchaseId") int purchaseId) throws GoodNotFountException {
+//        Purchase purchase = purchaseService.findPurchaseById(purchaseId);
+//        Good good = goodService.findGoodById(goodId);
+//        ModelAndView modelAndView = new ModelAndView();
+//        try {
+//            purchaseService.addIntoPurchase(good, amount, purchase);
+//            modelAndView.setViewName("purchase");
+//        } catch (RepeatitionException e) {
+//            e.printStackTrace();
+//            //modelAndView.setViewName("purchase");
+//            modelAndView.setViewName("tryLogin");
+//            return modelAndView;
+//        }
+//        return modelAndView;
+//    }
 
 //    @RequestMapping(value = "/findPurchaseById", method = RequestMethod.GET)
 //    public ModelAndView findPurchaseById(@RequestParam("purchaseId")int purchaseId) throws RepeatitionException, GoodNotFountException {
@@ -113,7 +113,7 @@ public class PurchaseController extends HttpServlet {
         try {
             goodInPurchaseService.changeAmountInGoodInPurchase(goodId,amount,purchaseId);
             modelAndView.setViewName("purchase");
-        } catch (RepeatitionException e) {
+        } catch (PurchaseException e) {
             e.printStackTrace();
             modelAndView.setViewName("tryLogin");
             return modelAndView;

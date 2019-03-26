@@ -1,6 +1,7 @@
 package com.vironit.kazimirov.fakedao.DaoInterface;
 
 import com.vironit.kazimirov.entity.Purpose;
+import com.vironit.kazimirov.exception.CantDeleteElement;
 import com.vironit.kazimirov.exception.RepeatitionException;
 
 import java.util.List;
@@ -13,6 +14,8 @@ public interface PurposeDao {
 
     Purpose findPurposeByName(String purposeName);
 
-    void deletePurpose (int idPurpose);
+    void deletePurpose (int idPurpose) throws CantDeleteElement;
+
+    Purpose findPurposeById(int idPurpose);
 
 }
