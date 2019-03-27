@@ -44,13 +44,20 @@ public class SubsectionController {
         return "subsection";
     }
 
-//    @RequestMapping(value = "/findSubsectionByName")
-//    public String findPurposeByName(@RequestParam ("subsectionName") String purposeName, ModelMap map){
-//        Subsection subsection=null;
-//        subsection=subsectionService.findSubsectionByName(purposeName);
-//        map.addAttribute("subsection", subsection);
-//        return "subsection";
-//    }
+    @RequestMapping(value = "/findSubsectionByName")
+    public String findPurposeByName(@RequestParam ("subsectionName") String purposeName, ModelMap map){
+        Subsection subsection=null;
+        subsection=subsectionService.findSubsectionByName(purposeName);
+        map.addAttribute("subsection", subsection);
+        return "subsection";
+    }
+
+    @RequestMapping(value = "/findSubsectionById", method = RequestMethod.GET)
+    public String findSubsectionById(@RequestParam ("id") int id, ModelMap map){
+        Subsection subsection=subsectionService.findSubsectionById(id);
+        map.addAttribute("subsection", subsection);
+        return "subsection";
+    }
 
     @RequestMapping(value = "/findSubsectionLong")
     public String findSubsectionLong(ModelMap map) {

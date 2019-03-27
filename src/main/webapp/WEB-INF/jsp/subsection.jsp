@@ -35,5 +35,12 @@
     <input type="text" name="subsectionId">
     <input type=submit value="deleteSubsection">
 </form>
+
+<form method=get action=findSubsectionById>
+    <input type="text" name="id">
+    <input type=submit value="search Subsection">
+    <p><c:out value="${subsection}"/><br></p>
+</form>
+
 </body>
 </html>
