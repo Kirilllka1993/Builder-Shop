@@ -1,4 +1,4 @@
-package com.vironit.kazimirov.controller;
+package com.vironit.kazimirov.controller.controllerWeb;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

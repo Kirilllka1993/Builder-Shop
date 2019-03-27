@@ -99,12 +99,17 @@
 <form method=post action=updateStatus>
     <input type="text" name="purchaseId">
     <select name="status">
-        <option value="1">NEW</option>
-        <option value="2">IN PROCESS</option>
-        <option value="3">REGISTRATE</option>
-        <option value="4">CANCELLED</option>
+        <option value="NEW">NEW</option>
+        <option value="IN_PROCESS">IN PROCESS</option>
+        <option value="REGISTRATE">REGISTRATE</option>
+        <option value="CANCELED">CANCELLED</option>
     </select>
     <input type=submit value="updateStatus">
+</form>
+    <form method=post action=admin/newStatus>
+        <input type="text" name="id">
+        <input type="text" name="status">
+        <input type=submit value="status">
 </form>
 </body>
 </html>

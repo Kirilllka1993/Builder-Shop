@@ -131,7 +131,7 @@ public class AdminDaoImplFake implements AdminDao {
 //    }
 
     @Override
-    public void updateStatus(int status, Purchase purchase) {
+    public void updateStatus(Status status, Purchase purchase) {
 //        purchase.setStatus(status);
 //        return purchase;
     }

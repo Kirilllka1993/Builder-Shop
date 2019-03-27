@@ -1,7 +1,6 @@
-package com.vironit.kazimirov.controller;
+package com.vironit.kazimirov.controller.controllerWeb;
 
 import com.vironit.kazimirov.entity.Purpose;
-import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.PurposeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,7 @@ public class PurposeController {
     }
 
     @RequestMapping(value = "/addPurpose", method = RequestMethod.POST)
-    public String addSubsection(@RequestParam("purpose") String purpose1, ModelMap map) throws RepeatitionException {
+    public String addSubsection(@RequestParam("purpose") String purpose1) throws RepeatitionException {
         Purpose purpose=new Purpose();
         purpose.setPurpose(purpose1);
         purposeService.addPurpose(purpose);
@@ -44,8 +43,7 @@ public class PurposeController {
 
     @RequestMapping(value = "/findPurposeByName")
     public String findPurposeByName(@RequestParam ("purposeName") String purposeName, ModelMap map){
-        Purpose purpose=null;
-        purpose=purposeService.findPurposeByName(purposeName);
+        Purpose purpose=purposeService.findPurposeByName(purposeName);
         map.addAttribute("purpose", purpose);
         return "purpose";
     }

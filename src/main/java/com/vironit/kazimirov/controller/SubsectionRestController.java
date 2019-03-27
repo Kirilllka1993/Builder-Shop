@@ -10,14 +10,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 @RestController
 @RequestMapping(value = "subsection")
-public class RestSubsectionController {
+public class SubsectionRestController {
     @Autowired
     private SubsectionService subsectionService;
 
-    @RequestMapping(value = "/showSubsections", method = RequestMethod.GET)
+    @RequestMapping(value = "/allSubsections", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     public List<Subsection> show() {//@PathVariable(value = "subsectionId"int subsectionId)
         return subsectionService.findSubsections();
@@ -40,7 +39,7 @@ public class RestSubsectionController {
         return subsection;
     }
 
-    @RequestMapping(value = "/findByName", method = RequestMethod.GET)
+    @RequestMapping(value = "/subsectionByName", method = RequestMethod.GET)
     public Subsection findSubsectionByName(@RequestBody SubsectionDto subsectionDto) {
         Subsection subsection = subsectionService.findSubsectionByName(subsectionDto.getTitle());
         return subsection;

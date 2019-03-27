@@ -2,6 +2,7 @@ package com.vironit.kazimirov.service;
 
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Purchase;
+import com.vironit.kazimirov.entity.Status;
 import com.vironit.kazimirov.exception.RepeatitionException;
 
 import java.util.List;
@@ -20,11 +21,5 @@ public interface AdminService  {
 
     List<Client> findAllClient();
 
-    void updateStatus(int status,Purchase purchase);
-
-
-
-
-
-
+    void updateStatus(Status status, Purchase purchase);
 }

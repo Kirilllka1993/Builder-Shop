@@ -21,5 +21,5 @@ public interface AdminDao{
 
     List<Client> findAllClient();
 
-    void updateStatus(int status, Purchase purchase);
+    void updateStatus(Status status, Purchase purchase);
 }

@@ -14,8 +14,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.Query;
 import java.util.List;
 
-import static com.vironit.kazimirov.entity.Status.IN_PROCESS;
-import static com.vironit.kazimirov.entity.Status.NEW;
+import static com.vironit.kazimirov.entity.Status.*;
 
 @Repository
 public class AdminDaoImpl implements AdminDao {
@@ -82,17 +81,33 @@ public class AdminDaoImpl implements AdminDao {
     }
 
     @Override
-    public void updateStatus(int status, Purchase purchase) {
+    public void updateStatus(Status status, Purchase purchase) {
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
-        if (status==1){
-            purchase.setStatus(NEW);
-        }else if (status==2) {
-            purchase.setStatus(IN_PROCESS);
-        }else if (status==3){
-            purchase.setStatus(Status.REGISTRATE);
-        }else if (status==4){
-            purchase.setStatus(Status.CANCELED);
+//        if (status==1){
+//            purchase.setStatus(NEW);
+//        }else if (status==2) {
+//            purchase.setStatus(IN_PROCESS);
+//        }else if (status==3){
+//            purchase.setStatus(Status.REGISTRATE);
+//        }else if (status==4){
+//            purchase.setStatus(Status.CANCELED);
+//        }
+        switch (status){
+            case NEW:
+                purchase.setStatus(NEW);
+                break;
+            case IN_PROCESS:
+                purchase.setStatus(IN_PROCESS);
+                break;
+            case REGISTRATE:
+                purchase.setStatus(REGISTRATE);
+                break;
+            case CANCELED:
+                purchase.setStatus(CANCELED);
+                break;
+                default:
+                    break;
         }
         session.update(purchase);
         tx1.commit();

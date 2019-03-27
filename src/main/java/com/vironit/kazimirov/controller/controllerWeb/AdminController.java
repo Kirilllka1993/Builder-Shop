@@ -1,7 +1,8 @@
-package com.vironit.kazimirov.controller;
+package com.vironit.kazimirov.controller.controllerWeb;
 
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Purchase;
+import com.vironit.kazimirov.entity.Status;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,8 +71,7 @@ public class AdminController {
 
     @RequestMapping("/login")
     public String findClientByLogin(@RequestParam("login") String login, ModelMap map) {
-        Client client = null;
-        client = adminService.findClientByLogin(login);
+        Client client = adminService.findClientByLogin(login);
         map.addAttribute("client", client);
         return "adminJsp";
     }
@@ -84,7 +84,7 @@ public class AdminController {
     }
 
     @RequestMapping(name = "/updateStatus", method = RequestMethod.POST)
-    public String updateStatus(@RequestParam("status") int status,
+    public String updateStatus(@RequestParam("status") Status status,
                                @RequestParam("purchaseId") int purchaseId, ModelMap map) {
         Purchase purchase = purchaseService.findPurchaseById(purchaseId);
         map.addAttribute("purchase", purchase);

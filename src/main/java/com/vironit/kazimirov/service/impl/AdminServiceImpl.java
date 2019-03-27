@@ -1,5 +1,6 @@
 package com.vironit.kazimirov.service.impl;
 
+import com.vironit.kazimirov.entity.Status;
 import com.vironit.kazimirov.fakedao.DaoInterface.AdminDao;
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Purchase;
@@ -62,7 +63,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void updateStatus(int status, Purchase purchase) {
+    public void updateStatus(Status status, Purchase purchase) {
          adminDao.updateStatus(status,purchase);
     }
 }

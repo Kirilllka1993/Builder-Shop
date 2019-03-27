@@ -1,4 +1,4 @@
-package com.vironit.kazimirov.controller;
+package com.vironit.kazimirov.controller.controllerWeb;
 
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Good;
