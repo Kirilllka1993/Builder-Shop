@@ -5,6 +5,7 @@ import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.exception.GoodException;
+import com.vironit.kazimirov.exception.GoodNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.GoodService;
 import com.vironit.kazimirov.service.PurposeService;
@@ -97,7 +98,7 @@ public class GoodController extends HttpServlet {
     }
 
     @RequestMapping(value = "/findGoodByName", method = RequestMethod.GET)
-    public ModelAndView findGoodByName(@RequestParam("goodName") String goodName, ModelMap map) {
+    public ModelAndView findGoodByName(@RequestParam("goodName") String goodName, ModelMap map) throws GoodNotFoundException {
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("good");
         map.addAttribute("command",new GoodDto());

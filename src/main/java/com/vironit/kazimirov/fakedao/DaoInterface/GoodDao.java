@@ -4,7 +4,6 @@ import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.exception.GoodException;
-import com.vironit.kazimirov.exception.GoodNotFountException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 
 import java.util.List;
@@ -41,7 +40,7 @@ public interface GoodDao {
 
     void changeAmountOfGood(Good good, int amount);
 
-    Good updateGood(int goodId, Good good);
+    void updateGood(int goodId, Good good);
 
     void reduceAmount(int goodId, int amount);
 }

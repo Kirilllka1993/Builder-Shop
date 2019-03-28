@@ -6,6 +6,7 @@ import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Review;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
+import com.vironit.kazimirov.exception.GoodNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.ClientService;
@@ -55,7 +56,7 @@ public class ClientController extends HttpServlet {
                                   @RequestParam("client") String login,
                                   @RequestParam("good") String name,
                                   @RequestParam("comment") String comment,
-                                  ModelMap map) {
+                                  ModelMap map) throws ClientNotFoundException, GoodNotFoundException {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("client");
         Client client = adminService.findClientByLogin(login);
@@ -75,11 +76,19 @@ public class ClientController extends HttpServlet {
     }
 
     @RequestMapping(value = "/logIn", method = RequestMethod.GET)
-    public ModelAndView logIn(@RequestParam("login") String login, @RequestParam("password") String password, ModelMap map) throws RepeatitionException {
-        Client client = clientService.logIn(login, password);
+    public ModelAndView logIn(@RequestParam("login") String login, @RequestParam("password") String password) throws ClientNotFoundException {
+
         ModelAndView modelAndView = new ModelAndView();
+//        Client client =null;
+//        try{
+//             client= clientService.logIn(login, password);
+//            return modelAndView;
+//        }catch(ClientNotFoundException e){
+//
+//        }
+        Client client= clientService.logIn(login, password);
         if (client == null) {
-            modelAndView.setViewName("tryLogin");
+            throw new ClientNotFoundException();
         } else {
             modelAndView.setViewName("client");
         }

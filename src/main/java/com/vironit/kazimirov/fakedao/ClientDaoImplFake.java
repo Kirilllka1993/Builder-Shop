@@ -1,5 +1,6 @@
 package com.vironit.kazimirov.fakedao;
 
+import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.fakedao.DaoInterface.ClientDao;
 import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.exception.RepeatitionException;
@@ -67,9 +68,9 @@ public class ClientDaoImplFake implements ClientDao {
     }
 
     @Override
-    public Client logIn(String login, String password) throws RepeatitionException {
+    public Client logIn(String login, String password) throws ClientNotFoundException {
         if (clients.stream().anyMatch(s -> s.getLogin().equals(login) && s.getPassword().equals(password)) == false) {
-            throw new RepeatitionException("It is doesnt't correct entered login or password");
+            throw new ClientNotFoundException("It is doesnt't correct entered login or password");
         }
         return null;//Исправить
     }

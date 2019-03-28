@@ -3,6 +3,7 @@ package com.vironit.kazimirov.controller.controllerWeb;
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.entity.Status;
+import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,14 +71,14 @@ public class AdminController {
     }
 
     @RequestMapping("/login")
-    public String findClientByLogin(@RequestParam("login") String login, ModelMap map) {
+    public String findClientByLogin(@RequestParam("login") String login, ModelMap map) throws ClientNotFoundException {
         Client client = adminService.findClientByLogin(login);
         map.addAttribute("client", client);
         return "adminJsp";
     }
 
     @RequestMapping("/findById")
-    public String findClientById(@RequestParam("idClient") int idClient, ModelMap map) {
+    public String findClientById(@RequestParam("idClient") int idClient, ModelMap map) throws ClientNotFoundException {
         Client client1 = adminService.findClientById(idClient);
         map.addAttribute("client1", client1);
         return "adminJsp";

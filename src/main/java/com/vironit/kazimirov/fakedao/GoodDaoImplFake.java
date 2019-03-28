@@ -5,8 +5,6 @@ import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.exception.GoodException;
-import com.vironit.kazimirov.exception.GoodNotFountException;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,9 +122,9 @@ public class GoodDaoImplFake implements GoodDao {
     }
 
     @Override
-    public Good updateGood(int idGood, Good good)  {
+    public void updateGood(int idGood, Good good)  {
 //        if (goods.stream().noneMatch(good1 -> good1.getId() == idGood)) {
-//            throw new GoodNotFountException("The is no such id in list");
+//            throw new GoodNotFoundException("The is no such id in list");
 //        }
         for (int i = 0; i <= goods.size() - 1; i++) {
             Good updateGood = goods.get(i);
@@ -142,7 +140,6 @@ public class GoodDaoImplFake implements GoodDao {
                 goods.get(i).setUnit(good.getUnit());
             }
         }
-        return goods.get(idGood - 1);
     }
 
     @Override

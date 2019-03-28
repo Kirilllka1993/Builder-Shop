@@ -2,7 +2,7 @@ package com.vironit.kazimirov.controller.controllerWeb;
 
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purchase;
-import com.vironit.kazimirov.exception.GoodNotFountException;
+import com.vironit.kazimirov.exception.GoodNotFoundException;
 import com.vironit.kazimirov.exception.PurchaseException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.AdminService;
@@ -30,7 +30,7 @@ public class GoodInPurchaseController {
     @RequestMapping(value = "/addIntoGoodInPurchase", method = RequestMethod.POST)
     public ModelAndView addIntoPurchase(@RequestParam("goodId") int goodId,
                                         @RequestParam("amount") int amount,
-                                        @RequestParam("purchaseId") int purchaseId) throws GoodNotFountException, RepeatitionException, PurchaseException {
+                                        @RequestParam("purchaseId") int purchaseId) throws GoodNotFoundException, RepeatitionException, PurchaseException {
         Purchase purchase = purchaseService.findPurchaseById(purchaseId);
         Good good = goodService.findGoodById(goodId);
         ModelAndView modelAndView = new ModelAndView();

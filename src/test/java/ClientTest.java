@@ -2,6 +2,7 @@ import com.vironit.kazimirov.config.WebApplicationConfig;
 import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.entity.builder.Client.ClientBuilder;
 import com.vironit.kazimirov.entity.builder.Review.ReviewBuilder;
+import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.ClientService;
@@ -104,13 +105,13 @@ public class ClientTest {
         assertEquals(size, 1);
     }
 
-    @Test(expected = RepeatitionException.class)
-    public void logInExceptionTest() throws RepeatitionException {
+    @Test(expected = ClientNotFoundException.class)
+    public void logInExceptionTest() throws ClientNotFoundException {
         clientService.logIn(clientBeforeTest.getLogin(), clientBeforeTest.getPassword());
     }
 
     @Test
-    public void changeLogin() throws RepeatitionException {
+    public void changeLogin() throws RepeatitionException, ClientNotFoundException {
         int idOfLastClient = adminService.findAllClient().get(adminService.findAllClient().size() - 1).getId();
         String newLogin = clientBeforeTest.getLogin();
         Client oldClient = adminService.findClientById(idOfLastClient);
@@ -155,7 +156,7 @@ public class ClientTest {
 //    }
 //
     @Test
-    public void changePasswordTest() {
+    public void changePasswordTest() throws ClientNotFoundException {
         int idOfLastClient = adminService.findAllClient().get(adminService.findAllClient().size() - 1).getId();
         String newPassword = clientBeforeTest.getPassword();
         Client oldClient = adminService.findClientById(idOfLastClient);
@@ -173,7 +174,7 @@ public class ClientTest {
     }
 
     @Test
-    public void changeAddressTest() {
+    public void changeAddressTest() throws ClientNotFoundException {
         int idOfLastClient = adminService.findAllClient().get(adminService.findAllClient().size() - 1).getId();
         String newAddress = clientBeforeTest.getAddress();
         Client oldClient = adminService.findClientById(idOfLastClient);
@@ -191,7 +192,7 @@ public class ClientTest {
     }
 
     @Test
-    public void changePhoneNumberTest() {
+    public void changePhoneNumberTest() throws ClientNotFoundException {
         int idOfLastClient = adminService.findAllClient().get(adminService.findAllClient().size() - 1).getId();
         String newPhone = clientBeforeTest.getPhoneNumber();
         Client oldClient = adminService.findClientById(idOfLastClient);

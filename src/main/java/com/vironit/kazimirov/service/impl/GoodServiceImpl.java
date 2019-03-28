@@ -1,5 +1,6 @@
 package com.vironit.kazimirov.service.impl;
 
+import com.vironit.kazimirov.exception.GoodNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.fakedao.DaoInterface.GoodDao;
 import com.vironit.kazimirov.entity.Good;
@@ -37,8 +38,13 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public Good findByNameGood(String goodName) {
-        return goodDao.findByNameGood(goodName);
+    public Good findByNameGood(String goodName) throws GoodNotFoundException {
+        Optional<Good> checkNameGood = Optional.ofNullable(goodDao.findByNameGood(goodName));
+        if (checkNameGood.isPresent() == false) {
+            throw new GoodNotFoundException("such good is absent");
+        } else {
+            return goodDao.findByNameGood(goodName);
+        }
     }
 
     @Override
@@ -101,8 +107,8 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public Good updateGood(int goodId, Good good) {
-        return goodDao.updateGood(goodId, good);
+    public void updateGood(int goodId, Good good) {
+        goodDao.updateGood(goodId, good);
     }
 
     @Override
@@ -111,12 +117,18 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public Good findGoodById(int goodId) {
-        return goodDao.findGoodById(goodId);
+    public Good findGoodById(int goodId) throws GoodNotFoundException {
+        Optional<Good> checkIdGood = Optional.ofNullable(goodDao.findGoodById(goodId));
+        if (checkIdGood.isPresent() == false) {
+            throw new GoodNotFoundException("such good is absent");
+        } else {
+            return goodDao.findGoodById(goodId);
+        }
+
     }
 
     @Override
     public void reduceAmount(int goodId, int amount) {
-        goodDao.reduceAmount(goodId,amount);
+        goodDao.reduceAmount(goodId, amount);
     }
 }

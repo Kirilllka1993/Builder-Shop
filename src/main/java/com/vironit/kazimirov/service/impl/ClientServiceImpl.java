@@ -38,11 +38,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client logIn(String login, String password) throws RepeatitionException {
+    public Client logIn(String login, String password) throws ClientNotFoundException {
         //matcher
         Optional<Client> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(login));
         if (checkLoginClient.isPresent() == false) {
-            throw new RepeatitionException("such login is absent");
+            throw new ClientNotFoundException("such login is absent");
         } else {
             return clientDao.logIn(login, password);
         }

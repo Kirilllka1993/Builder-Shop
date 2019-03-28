@@ -1,6 +1,7 @@
 import com.vironit.kazimirov.config.WebApplicationConfig;
 import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.entity.builder.Client.ClientBuilder;
+import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.GoodService;
@@ -87,7 +88,7 @@ public class AdminTest {
     }
 
     @Test
-    public void findClientByLoginTest() throws RepeatitionException {
+    public void findClientByLoginTest() throws RepeatitionException, ClientNotFoundException {
         adminService.addClient(clientBeforeTest);
         Client clientByLogin = adminService.findClientByLogin(clientBeforeTest.getLogin());
         List<Client> missingClients = adminService.findAllClient();
@@ -95,6 +96,11 @@ public class AdminTest {
         missingClients.removeAll(allClientsByLogin);
         Assert.assertTrue(missingClients.stream().allMatch((client -> client.getLogin().equals(clientByLogin.getLogin()))));
         adminService.deleteClient(clientBeforeTest.getId());
+    }
+
+    @Test(expected = ClientNotFoundException.class)
+    public void findClientByLoginExceptionTest() throws ClientNotFoundException {
+        adminService.findClientByLogin(clientBeforeTest.getLogin());
     }
 
     @Test
@@ -105,6 +111,16 @@ public class AdminTest {
         missingClients.removeAll(findClientsById);
         int size = missingClients.size();
         assertEquals(size, 1);
+    }
+
+    @Test(expected = ClientNotFoundException.class)
+    public void findClientByIdExceptionTest() throws ClientNotFoundException {
+        List<Client> clients=adminService.findAllClient();
+        int sum=1;
+        for(int i=1;i<clients.size();i++){
+            sum=sum*clients.get(i).getId();
+        }
+        adminService.findClientById(sum);
     }
 
     @Test

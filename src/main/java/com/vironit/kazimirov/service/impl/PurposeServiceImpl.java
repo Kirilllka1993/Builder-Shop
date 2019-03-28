@@ -29,12 +29,11 @@ public class PurposeServiceImpl implements PurposeService {
     @Override
     public void addPurpose(Purpose purpose) throws RepeatitionException {
         Optional<Purpose> checkPurpose = Optional.ofNullable(purposeDao.findPurposeByName(purpose.getPurpose()));
-        if (checkPurpose.isPresent()==false) {
+        if (checkPurpose.isPresent() == false) {
             purposeDao.addPurpose(purpose);
         } else {
             throw new RepeatitionException("such purpose is present");
         }
-        //purposeDao.addPurpose(purpose);
     }
 
     @Override
@@ -49,14 +48,13 @@ public class PurposeServiceImpl implements PurposeService {
 
     @Override
     public void deletePurpose(int idPurpose) throws CantDeleteElement {
-        Purpose purpose=purposeDao.findPurposeById(idPurpose);
-        List<Good> goods=goodDao.findByPurpose(purpose);
-        if (goods.size()==0) {
+        Purpose purpose = purposeDao.findPurposeById(idPurpose);
+        List<Good> goods = goodDao.findByPurpose(purpose);
+        if (goods.size() == 0) {
             purposeDao.deletePurpose(idPurpose);
         } else {
             throw new CantDeleteElement("this purpose is using with goods");
         }
-        //purposeDao.deletePurpose(idPurpose);
     }
 
     @Override

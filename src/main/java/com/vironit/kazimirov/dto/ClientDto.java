@@ -1,12 +1,10 @@
 package com.vironit.kazimirov.dto;
 
 import com.vironit.kazimirov.entity.Client;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
 public class ClientDto {
     private int id;

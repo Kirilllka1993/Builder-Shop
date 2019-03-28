@@ -2,6 +2,7 @@ import com.vironit.kazimirov.config.WebApplicationConfig;
 import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.entity.builder.Good.GoodBuilder;
 import com.vironit.kazimirov.exception.GoodException;
+import com.vironit.kazimirov.exception.GoodNotFoundException;
 import com.vironit.kazimirov.exception.PurchaseException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.*;
@@ -218,7 +219,7 @@ public class GoodInPurchaseTest {
     }
 
     @Test
-    public void returnedAmountOfGoodTest() throws RepeatitionException, GoodException, PurchaseException {
+    public void returnedAmountOfGoodTest() throws RepeatitionException, GoodException, PurchaseException, GoodNotFoundException {
         goodService.addGood(goodBeforeTest);
         int amountInStore = goodBeforeTest.getAmount();
         goodInPurchaseService.addInGoodInPurchase(goodBeforeTest, amountBeforeTest, purchaseBeforeTest);
@@ -233,7 +234,7 @@ public class GoodInPurchaseTest {
     }
 
     @Test
-    public void reduceAmountTest() throws RepeatitionException, GoodException, PurchaseException {
+    public void reduceAmountTest() throws RepeatitionException, GoodException, PurchaseException, GoodNotFoundException {
         goodService.addGood(goodBeforeTest);
         Good good = goodService.findGoodById(goodBeforeTest.getId());
         int amountInStore = good.getAmount();

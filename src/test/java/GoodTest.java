@@ -4,6 +4,7 @@ import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.entity.builder.Good.GoodBuilder;
 import com.vironit.kazimirov.exception.GoodException;
+import com.vironit.kazimirov.exception.GoodNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.GoodService;
 import com.vironit.kazimirov.service.PurposeService;
@@ -49,7 +50,7 @@ public class GoodTest {
                 .withQuantity(5)
                 .withDiscount(0)
                 .withPurpose(purpose)
-                .withName("Пеноплекс")
+                .withName("Пеноплексcccccccccccccccccccccccc")
                 .withAmount(20)
                 .build();
     }
@@ -67,7 +68,7 @@ public class GoodTest {
                 .withQuantity(5)
                 .withDiscount(10000000)
                 .withPurpose(purpose)
-                .withName("Пеноплекс")
+                .withName("Пеноплексcccccccccccccccc")
                 .withAmount(15)
                 .build();
     }
@@ -103,13 +104,20 @@ public class GoodTest {
 
 
     @Test
-    public void findByNameTest() {
+    public void findByNameTest() throws GoodNotFoundException {
         String name = goodService.findAllGoods().get(0).getName();
         Good findGoodByName = goodService.findByNameGood(name);
         List<Good> missingGoods = goodService.findAllGoods();
         List<Good> findGoodsByName = missingGoods.stream().filter(good -> good.getName().equals(findGoodByName.getName())).collect(Collectors.toList());
         missingGoods.removeAll(findGoodsByName);
         Assert.assertTrue(missingGoods.stream().noneMatch(good -> good.getName().equals(name)));
+    }
+
+    @Test(expected = GoodNotFoundException.class)
+    public void goodFindByNameExceptionTest() throws GoodNotFoundException {
+        List<Good>goods=goodService.findAllGoods();
+        String neverUseName = goods.stream().map(Good::getName).collect(Collectors.joining());
+        goodService.findByNameGood(neverUseName);
     }
 
     @Test
@@ -143,7 +151,7 @@ public class GoodTest {
     }
 
 //    @Test
-//    public void updateTest() throws GoodNotFountException {
+//    public void updateTest() throws GoodNotFoundException {
 //        int idOfLastGood = goodService.findAllGoods().get(goodService.findAllGoods().size() - 1).getId();
 //        goodService.updateGood(idOfLastGood, goodBeforeTest);
 //        Good updateGood = goodService.findGoodById(idOfLastGood);
@@ -155,8 +163,8 @@ public class GoodTest {
 //        assertEquals(size, 1);
 //    }
 
-//    @Test(expected = GoodNotFountException.class)
-//    public void updateExceptionTest() throws GoodNotFountException {
+//    @Test(expected = GoodNotFoundException.class)
+//    public void updateExceptionTest() throws GoodNotFoundException {
 //        int sumGoodId = goodService.findAllGoods().stream().mapToInt(Good::getId).sum();
 //        Good good = new Good();
 //        goodService.updateGood(sumGoodId, good);
@@ -172,7 +180,7 @@ public class GoodTest {
     }
 
     @Test
-    public void findGoodByIdTest() {
+    public void findGoodByIdTest() throws GoodNotFoundException {
         List<Good> goods = goodService.findAllGoods();
         int id = goods.get(0).getId();
         Good findGoodById = goodService.findGoodById(id);
@@ -183,8 +191,18 @@ public class GoodTest {
         assertEquals(size, 1);
     }
 
+    @Test(expected = GoodNotFoundException.class)
+    public void findClientByIdExceptionTest() throws GoodNotFoundException {
+        List<Good> goods=goodService.findAllGoods();
+        int sum=1;
+        for(int i=1;i<goods.size();i++){
+            sum=sum*goods.get(i).getId();
+        }
+        goodService.findGoodById(sum);
+    }
+
     @Test
-    public void changePriceTest() throws GoodException {
+    public void changePriceTest() throws GoodException, GoodNotFoundException {
         int idOfLastGood = goodService.findAllGoods().get(goodService.findAllGoods().size() - 1).getId();
         double newPrice = goodBeforeTest.getPrice();
         Good oldGood = goodService.findGoodById(idOfLastGood);
@@ -208,7 +226,7 @@ public class GoodTest {
     }
 
     @Test
-    public void changeSubsectionTest() {
+    public void changeSubsectionTest() throws GoodNotFoundException {
         int idOfLastGood = goodService.findAllGoods().get(goodService.findAllGoods().size() - 1).getId();
         Subsection newSubsection = goodBeforeTest.getSubsection();
         Good oldGood = goodService.findGoodById(idOfLastGood);
@@ -226,7 +244,7 @@ public class GoodTest {
     }
 
     @Test
-    public void changePurposeTest() {
+    public void changePurposeTest() throws GoodNotFoundException {
         int idOfLastGood = goodService.findAllGoods().get(goodService.findAllGoods().size() - 1).getId();
         Purpose newPurpose = goodBeforeTest.getPurpose();
         Good oldGood = goodService.findGoodById(idOfLastGood);
@@ -244,7 +262,7 @@ public class GoodTest {
     }
 
     @Test
-    public void changeAmountTest() throws GoodException {
+    public void changeAmountTest() throws GoodException, GoodNotFoundException {
         int idOfLastGood = goodService.findAllGoods().get(goodService.findAllGoods().size() - 1).getId();
         int newAmount = goodBeforeTest.getAmount();
         Good oldGood = goodService.findGoodById(idOfLastGood);
@@ -268,7 +286,7 @@ public class GoodTest {
     }
 
     @Test
-    public void changeUnitTest() {
+    public void changeUnitTest() throws GoodNotFoundException {
         int idOfLastGood = goodService.findAllGoods().get(goodService.findAllGoods().size() - 1).getId();
         String newUnit = goodBeforeTest.getUnit();
         Good oldGood = goodService.findGoodById(idOfLastGood);
@@ -286,7 +304,7 @@ public class GoodTest {
     }
 
     @Test
-    public void changeQuantityTest() {
+    public void changeQuantityTest() throws GoodNotFoundException {
         int idOfLastGood = goodService.findAllGoods().get(goodService.findAllGoods().size() - 1).getId();
         int newQuantity = goodBeforeTest.getQuantity();
         Good oldGood = goodService.findGoodById(idOfLastGood);

@@ -5,14 +5,12 @@ import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.GoodInPurchase;
 import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
-import com.vironit.kazimirov.exception.GoodNotFountException;
+import com.vironit.kazimirov.exception.GoodNotFoundException;
 import com.vironit.kazimirov.exception.PurchaseException;
-import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.GoodInPurchaseService;
 import com.vironit.kazimirov.service.GoodService;
 import com.vironit.kazimirov.service.PurchaseService;
-import com.vironit.kazimirov.service.impl.PurchaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -21,14 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class PurchaseController extends HttpServlet {
@@ -60,7 +52,7 @@ public class PurchaseController extends HttpServlet {
 //    @RequestMapping(value = "/addIntoPurchase", method = RequestMethod.POST)
 //    public ModelAndView addIntoPurchase(@RequestParam("goodId") int goodId,
 //                                        @RequestParam("amount") int amount,
-//                                        @RequestParam("purchaseId") int purchaseId) throws GoodNotFountException {
+//                                        @RequestParam("purchaseId") int purchaseId) throws GoodNotFoundException {
 //        Purchase purchase = purchaseService.findPurchaseById(purchaseId);
 //        Good good = goodService.findGoodById(goodId);
 //        ModelAndView modelAndView = new ModelAndView();
@@ -77,7 +69,7 @@ public class PurchaseController extends HttpServlet {
 //    }
 
 //    @RequestMapping(value = "/findPurchaseById", method = RequestMethod.GET)
-//    public ModelAndView findPurchaseById(@RequestParam("purchaseId")int purchaseId) throws RepeatitionException, GoodNotFountException {
+//    public ModelAndView findPurchaseById(@RequestParam("purchaseId")int purchaseId) throws RepeatitionException, GoodNotFoundException {
 //        Purchase purchase=purchaseService.findPurchaseById(purchaseId);
 //        Good good=goodService.findGoodById(goodId);
 //        purchaseService.addIntoPurchase(good,amount,purchase);
@@ -97,7 +89,7 @@ public class PurchaseController extends HttpServlet {
     }
 
     @RequestMapping(value = "/makeAPurchase", method = RequestMethod.POST)
-    public ModelAndView addIntoPurchase(@RequestParam("purchaseId") int purchaseId) throws GoodNotFountException, PurchaseException {
+    public ModelAndView addIntoPurchase(@RequestParam("purchaseId") int purchaseId) throws GoodNotFoundException, PurchaseException {
         //Purchase purchase = purchaseService.findPurchaseById(purchaseId);
         ModelAndView modelAndView = new ModelAndView();
             purchaseService.makeAPurchase(purchaseId);
@@ -108,7 +100,7 @@ public class PurchaseController extends HttpServlet {
     @RequestMapping(value = "/changeAmount", method = RequestMethod.POST)
     public ModelAndView changeAmount(@RequestParam("goodId") int goodId,
                                      @RequestParam("amount") int amount,
-                                     @RequestParam("purchaseId") int purchaseId) throws GoodNotFountException {
+                                     @RequestParam("purchaseId") int purchaseId) throws GoodNotFoundException {
         ModelAndView modelAndView = new ModelAndView();
         try {
             goodInPurchaseService.changeAmountInGoodInPurchase(goodId,amount,purchaseId);
@@ -123,7 +115,7 @@ public class PurchaseController extends HttpServlet {
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ModelAndView delete(@RequestParam("goodId") int goodId,
-                                     @RequestParam("purchaseId") int purchaseId) throws GoodNotFountException, PurchaseException {
+                                     @RequestParam("purchaseId") int purchaseId) throws GoodNotFoundException, PurchaseException {
         Purchase purchase = purchaseService.findPurchaseById(purchaseId);
         Good good = goodService.findGoodById(goodId);
         ModelAndView modelAndView = new ModelAndView();
@@ -133,7 +125,7 @@ public class PurchaseController extends HttpServlet {
     }
 
     @RequestMapping(value = "/deleteCancelled", method = RequestMethod.POST)
-    public ModelAndView delete(@RequestParam("purchaseId") int purchaseId) throws GoodNotFountException, PurchaseException {
+    public ModelAndView delete(@RequestParam("purchaseId") int purchaseId) throws GoodNotFoundException, PurchaseException {
         Purchase purchase = purchaseService.findPurchaseById(purchaseId);
         ModelAndView modelAndView = new ModelAndView();
         goodInPurchaseService.deleteGoodInPurchasesWithCancelledStatus(purchase);
@@ -144,7 +136,7 @@ public class PurchaseController extends HttpServlet {
     @RequestMapping(value = "/findGoods", method = RequestMethod.GET)
     public ModelAndView findGoods(@RequestParam("purchaseId") int purchaseId,
             @RequestParam("goodId")int goodId
-            ,ModelMap map) throws GoodNotFountException, PurchaseException {
+            ,ModelMap map) throws GoodNotFoundException, PurchaseException {
         ModelAndView modelAndView = new ModelAndView();
         List<Good>goods=goodInPurchaseService.findGoodsByPurchase(purchaseId);
         List<Purchase> purchases=goodInPurchaseService.findPurchasesByGood(goodId);
@@ -156,7 +148,7 @@ public class PurchaseController extends HttpServlet {
 
     @RequestMapping(value = "/findGoodInPurchase", method = RequestMethod.GET)
     public ModelAndView findGoods(@RequestParam("goodInPurchaseId") int goodInPurchaseId
-                                              ,ModelMap map) throws GoodNotFountException, PurchaseException {
+                                              ,ModelMap map) throws GoodNotFoundException, PurchaseException {
         ModelAndView modelAndView = new ModelAndView();
         GoodInPurchase goodInPurchase=goodInPurchaseService.findGoodInPurchaseById(goodInPurchaseId);
         map.addAttribute("goodInPurchase",goodInPurchase);
@@ -166,7 +158,7 @@ public class PurchaseController extends HttpServlet {
 
     @RequestMapping(value = "/findGoodInPurchaseByParametres", method = RequestMethod.GET)
     public ModelAndView findGoodsByParametres(@RequestParam("goodId") int goodId,
-            @RequestParam("purchaseId") int purchaseId,ModelMap map) throws GoodNotFountException, PurchaseException {
+            @RequestParam("purchaseId") int purchaseId,ModelMap map) throws GoodNotFoundException, PurchaseException {
         ModelAndView modelAndView = new ModelAndView();
         GoodInPurchase goodInPurchase=goodInPurchaseService.findGoodInPurchase(goodId,purchaseId);
         map.addAttribute("goodInPurchase",goodInPurchase);
@@ -175,7 +167,7 @@ public class PurchaseController extends HttpServlet {
     }
 
     @RequestMapping(value = "/deletePurchaseWithCancelled", method = RequestMethod.GET)
-    public ModelAndView findGoodsByParametres(@RequestParam("purchaseId") int purchaseId,ModelMap map) throws GoodNotFountException, PurchaseException {
+    public ModelAndView findGoodsByParametres(@RequestParam("purchaseId") int purchaseId,ModelMap map) throws GoodNotFoundException, PurchaseException {
         ModelAndView modelAndView = new ModelAndView();
         Purchase purchase=purchaseService.findPurchaseById(purchaseId);
         goodInPurchaseService.deleteGoodInPurchasesWithCancelledStatus(purchase);

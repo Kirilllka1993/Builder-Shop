@@ -22,6 +22,7 @@ public class AdminDaoImpl implements AdminDao {
     private SessionFactory sessionFactory;
     private final String FIND_CLIENT_BY_LOGIN = "select a from Client a where a.login = :login";
     private final String FIND_CLIENTS = "select a from Client a";
+    private final String FIND_CLIENT_BY_ID="select client from Client client where client.id=:clientId";
 
     public AdminDaoImpl() {
     }
@@ -47,7 +48,9 @@ public class AdminDaoImpl implements AdminDao {
     @Override
     public Client findClientById(int clientId) {
         Session session = sessionFactory.openSession();
-        Client client = session.get(Client.class, clientId);
+        Query query = session.createQuery(FIND_CLIENT_BY_ID, Client.class);
+        query.setParameter("clientId", clientId);
+        Client client = query.getResultList().isEmpty() ? null : (Client) query.getResultList().get(0);
         session.close();
         return client;
     }
@@ -84,15 +87,6 @@ public class AdminDaoImpl implements AdminDao {
     public void updateStatus(Status status, Purchase purchase) {
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
-//        if (status==1){
-//            purchase.setStatus(NEW);
-//        }else if (status==2) {
-//            purchase.setStatus(IN_PROCESS);
-//        }else if (status==3){
-//            purchase.setStatus(Status.REGISTRATE);
-//        }else if (status==4){
-//            purchase.setStatus(Status.CANCELED);
-//        }
         switch (status){
             case NEW:
                 purchase.setStatus(NEW);

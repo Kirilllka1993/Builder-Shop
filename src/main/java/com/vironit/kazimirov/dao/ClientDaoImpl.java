@@ -19,7 +19,7 @@ public class ClientDaoImpl implements ClientDao {
     private SessionFactory sessionFactory;
     private final String FIND_REVIEW_BY_GOOD_CLIENT = "select review from Review review where review.good.id =:goodId and review.client.id=:clientId";
     private final String SQL_CHECK_ACCOUNT = "select a from Client a where login =:login and password=:password";
-    private final String FIND_CLIENT_BY_LOGIN = "select a.login from Client a where login =:login";
+    private final String FIND_REVIEWS_OF_CLIENTS = "select review from Review review where client =:client";
 
     @Override
     public void addReview(Review review) {
@@ -62,12 +62,6 @@ public class ClientDaoImpl implements ClientDao {
     @Override
     public void signIn(Client client) {
         Session session = sessionFactory.openSession();
-//        String login = client.getLogin();
-//        int query = session.createQuery(FIND_CLIENT_BY_LOGIN, String.class).
-//                setParameter("login", login).list().size();
-//        if (query != 0) {
-//            throw new RepeatitionException();//доработать
-//        }
         Transaction tx1 = session.beginTransaction();
         session.save(client);
         tx1.commit();
@@ -79,17 +73,11 @@ public class ClientDaoImpl implements ClientDao {
     public void changeLogin(int clientId, String newLogin) {
         Session session = sessionFactory.openSession();
         Client client = session.get(Client.class, clientId);
-//        int query = session.createQuery(FIND_CLIENT_BY_LOGIN, String.class).
-//                setParameter("login", newLogin).list().size();
-//        if (query == 0) {
         client.setLogin(newLogin);
         Transaction tx1 = session.beginTransaction();
         session.update(client);
         tx1.commit();
         session.close();
-//        } else {
-//            throw new RepeatitionException();//доработать
-//        }
     }
 
     @Override
@@ -127,7 +115,10 @@ public class ClientDaoImpl implements ClientDao {
 
     @Override
     public List<Review> findAllReviews(Client client) {
-
-        return null;
+        Session session = sessionFactory.openSession();
+        List<Review> reviews = session.createQuery(FIND_REVIEWS_OF_CLIENTS, Review.class)
+                .setParameter("client", client).list();
+        session.close();
+        return reviews;
     }
 }

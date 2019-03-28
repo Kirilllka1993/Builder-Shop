@@ -12,7 +12,7 @@ public interface ClientDao {
 
     void removeReview(int clientId,int goodId);
 
-    Client logIn(String login, String password) throws RepeatitionException;
+    Client logIn(String login, String password) throws ClientNotFoundException;
 
     void logOut();
 

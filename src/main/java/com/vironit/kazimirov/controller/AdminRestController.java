@@ -1,11 +1,13 @@
 package com.vironit.kazimirov.controller;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.vironit.kazimirov.dto.ClientDto;
 import com.vironit.kazimirov.dto.GoodDto;
 import com.vironit.kazimirov.dto.PurchaseDto;
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.entity.Status;
+import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.PurchaseService;
@@ -48,14 +50,14 @@ public class AdminRestController {
 
     @RequestMapping(value = "/clientBylogin", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Client findClientByLogin(@RequestBody ClientDto clientDto) {
+    public Client findClientByLogin(@RequestBody ClientDto clientDto) throws ClientNotFoundException {
         Client client = adminService.findClientByLogin(clientDto.getLogin());
         return client;
     }
 
     @RequestMapping(value = "/{clientId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Client findClientById(@PathVariable("clientId") int clientId) {
+    public Client findClientById(@PathVariable("clientId") int clientId) throws ClientNotFoundException {
         Client client = adminService.findClientById(clientId);
         return client;
     }
@@ -63,7 +65,9 @@ public class AdminRestController {
     @RequestMapping(name = "/newStatus", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateStatus(@RequestBody PurchaseDto purchaseDto) {
-        Purchase purchase = purchaseService.findPurchaseById(5);
+//        int id=objectNode.get("id").asInt();
+//        String text=objectNode.get("text").asText();
+        Purchase purchase = purchaseService.findPurchaseById(purchaseDto.getId());
         adminService.updateStatus(purchaseDto.getStatus(), purchase);
 //        Purchase purchase = purchaseService.findPurchaseById(id);не выполнил
 //        adminService.updateStatus(status, purchase);

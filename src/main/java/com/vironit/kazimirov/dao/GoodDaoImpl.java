@@ -23,11 +23,11 @@ public class GoodDaoImpl implements GoodDao {
     private final String FIND_BY_GOODS_SUBSECTIONS = "select a from Good a where subsection =:subsection";
     private final String FIND_BY_GOODS_PURPOSES = "select a from Good a where purpose =:purpose";
     private final String FIND_GOODS_BY_PRICE = "select good from Good good where price>=:minPrice and price<=:maxPrice";
-
+    private final String FIND_GOOD_BY_ID = "select good from Good good where good.id = :goodId";
 
 
     @Override
-    public void addGood(Good good){
+    public void addGood(Good good) {
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
         session.save(good);
@@ -48,7 +48,7 @@ public class GoodDaoImpl implements GoodDao {
     @Override
     public List<Good> findAllGoods() {
         Session session = sessionFactory.openSession();
-        List<Good> goods=(List<Good>) session.createQuery(FIND_GOODS).list();
+        List<Good> goods = (List<Good>) session.createQuery(FIND_GOODS).list();
         session.close();
         return goods;
     }
@@ -74,7 +74,7 @@ public class GoodDaoImpl implements GoodDao {
     }
 
     @Override
-    public void deleteGood(int goodId){
+    public void deleteGood(int goodId) {
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
         Good good = session.get(Good.class, goodId);
@@ -155,7 +155,7 @@ public class GoodDaoImpl implements GoodDao {
         Session session = sessionFactory.openSession();
         List<Good> goods = (List<Good>) session.createQuery(FIND_GOODS_BY_PRICE)
                 .setParameter("minPrice", minPrice)
-                .setParameter("maxPrice",maxPrice)
+                .setParameter("maxPrice", maxPrice)
                 .list();
         session.close();
         return goods;
@@ -164,12 +164,14 @@ public class GoodDaoImpl implements GoodDao {
     @Override
     public Good findGoodById(int goodId) {
         Session session = sessionFactory.openSession();
-        Good good = session.get(Good.class, goodId);
+        Query query = session.createQuery(FIND_GOOD_BY_ID, Good.class);
+        query.setParameter("goodId", goodId);
+        Good good = query.getResultList().isEmpty() ? null : (Good) query.getResultList().get(0);
         session.close();
         return good;
     }
 
-    public void changeAmountOfGood(Good good,int amount){
+    public void changeAmountOfGood(Good good, int amount) {
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
         good.setAmount(amount);
@@ -180,16 +182,29 @@ public class GoodDaoImpl implements GoodDao {
 
 
     @Override
-    public Good updateGood(int goodId, Good good) {
-        return null;
+    public void updateGood(int goodId, Good good) {
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        Good findGood = session.get(Good.class, goodId);
+        findGood.setAmount(good.getAmount());
+        findGood.setName(good.getName());
+        findGood.setPurpose(good.getPurpose());
+        findGood.setQuantity(good.getQuantity());
+        findGood.setUnit(good.getUnit());
+        findGood.setSubsection(good.getSubsection());
+        findGood.setPrice(good.getPrice());
+        findGood.setDiscount(good.getDiscount());
+        session.update(findGood);
+        tx.commit();
+        session.close();
     }
 
     @Override
     public void reduceAmount(int goodId, int amount) {
-        Session session=sessionFactory.openSession();
+        Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
-        Good good=session.get(Good.class, goodId);
-        good.setAmount(good.getAmount()-amount);
+        Good good = session.get(Good.class, goodId);
+        good.setAmount(good.getAmount() - amount);
         session.update(good);
         tx1.commit();
         session.close();

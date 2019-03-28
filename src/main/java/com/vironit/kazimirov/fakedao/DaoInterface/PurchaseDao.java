@@ -1,10 +1,7 @@
 package com.vironit.kazimirov.fakedao.DaoInterface;
 
 import com.vironit.kazimirov.entity.*;
-import com.vironit.kazimirov.exception.GoodNotFountException;
 import com.vironit.kazimirov.exception.PurchaseException;
-import com.vironit.kazimirov.exception.PurchaseNotFoundException;
-import com.vironit.kazimirov.exception.RepeatitionException;
 
 import java.time.LocalDateTime;
 import java.util.List;

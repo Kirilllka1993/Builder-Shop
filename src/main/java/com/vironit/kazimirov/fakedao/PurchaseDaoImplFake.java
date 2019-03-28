@@ -1,12 +1,8 @@
 package com.vironit.kazimirov.fakedao;
 
-import com.vironit.kazimirov.fakedao.DaoInterface.GoodDao;
 import com.vironit.kazimirov.fakedao.DaoInterface.PurchaseDao;
 import com.vironit.kazimirov.entity.*;
-import com.vironit.kazimirov.exception.GoodNotFountException;
 import com.vironit.kazimirov.exception.PurchaseException;
-import com.vironit.kazimirov.exception.PurchaseNotFoundException;
-import com.vironit.kazimirov.exception.RepeatitionException;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -130,7 +126,7 @@ public class PurchaseDaoImplFake implements PurchaseDao {
     }
 
 
-//    public void addIntoPurchase(Good good, int amount, Purchase purchase) throws RepeatitionException, GoodNotFountException {
+//    public void addIntoPurchase(Good good, int amount, Purchase purchase) throws RepeatitionException, GoodNotFoundException {
 //        GoodDao dao = new GoodDaoImplFake();
 //        //Good good = dao.findGoodById(goodId);
 //        if (good.getAmount() < amount) {

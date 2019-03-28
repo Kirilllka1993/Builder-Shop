@@ -1,6 +1,7 @@
 package com.vironit.kazimirov.service.impl;
 
 import com.vironit.kazimirov.entity.Status;
+import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.fakedao.DaoInterface.AdminDao;
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Purchase;
@@ -41,14 +42,24 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Client findClientByLogin(String login) {
-        return adminDao.findClientByLogin(login);
+    public Client findClientByLogin(String login)  throws ClientNotFoundException {
+        Optional<Client> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(login));
+        if (checkLoginClient.isPresent()==false){
+            throw new ClientNotFoundException("such login is absent");
+        }else{
+            return adminDao.findClientByLogin(login);
+        }
     }
 
 
     @Override
-    public Client findClientById(int clientId){
-        return adminDao.findClientById(clientId);
+    public Client findClientById(int clientId) throws ClientNotFoundException {
+        Optional<Client> checkLoginClient = Optional.ofNullable(adminDao.findClientById(clientId));
+        if (checkLoginClient.isPresent()==false){
+            throw new ClientNotFoundException("such client is absent");
+        }else{
+            return adminDao.findClientById(clientId);
+        }
     }
 
     @Override
