@@ -9,20 +9,20 @@ import java.util.List;
 
 public interface PurchaseService {
 
-    List<Purchase> findPurchases();
+    List<Purchase> findPurchases();//выполнено
 
 
-    Purchase createNewPurchase(Client client);
+    void createNewPurchase(Client client);//выполнено
 
-    Purchase findPurchaseById(int purchaseId);
+    Purchase findPurchaseById(int purchaseId);//выполнено
 
-    void makeAPurchase(int purchaseId) throws PurchaseException;
+    void makeAPurchase(int purchaseId) throws PurchaseException;//выполнено
 
     List<Purchase> findPurchasesByDate(LocalDateTime timeOfPurchase);
 
     void changeStatus(Purchase purchase, Status status);
 
-    void removePurchase(int purchaseId);
+    void removePurchase(int purchaseId);//выполнено
 
 
 }

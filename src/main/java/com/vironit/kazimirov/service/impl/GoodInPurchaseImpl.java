@@ -11,6 +11,7 @@ import com.vironit.kazimirov.service.GoodInPurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +29,7 @@ public class GoodInPurchaseImpl implements GoodInPurchaseService {
     }
 
     @Override
+    @Transactional
     public void addInGoodInPurchase(Good good, int amount, Purchase purchase) throws PurchaseException {
         Optional<GoodInPurchase> checkGood = Optional.ofNullable(goodInPurchaseDao.findGoodInPurchase(good.getId(), purchase.getId()));
         if (good.getAmount() < amount || amount < 0) {
@@ -38,8 +40,6 @@ public class GoodInPurchaseImpl implements GoodInPurchaseService {
             goodInPurchaseDao.reduceAmount(good.getId(), amount);
             goodInPurchaseDao.addInGoodInPurchase(good, amount, purchase);
         }
-
-
     }
 
     @Override

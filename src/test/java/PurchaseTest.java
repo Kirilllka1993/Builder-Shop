@@ -41,20 +41,24 @@ public class PurchaseTest {
     @Before
     public void createPurchase() {
         clientBeforeTest = adminService.findAllClient().get(0);
-        purchaseBeforeTest = purchaseService.createNewPurchase(clientBeforeTest);
+//        purchaseService.createNewPurchase(clientBeforeTest);
+//        List<Purchase> purchases=purchaseService.findPurchases();
+//        purchaseBeforeTest=purchases.get(purchases.size()-1);
 
     }
 
     @Test
     public void createNewPurchaseTest() {
-        Purchase purchase = purchaseService.createNewPurchase(clientBeforeTest);
+        purchaseService.createNewPurchase(clientBeforeTest);
+        List<Purchase> purchases = purchaseService.findPurchases();
+        purchaseBeforeTest = purchases.get(purchases.size() - 1);
         List<Purchase> missingPurchases = purchaseService.findPurchases();
-        List<Purchase> findPurchasesById = missingPurchases.stream().filter(purchase1 -> purchase1.getId() != purchase.getId()).collect(Collectors.toList());
+        List<Purchase> findPurchasesById = missingPurchases.stream().filter(purchase1 -> purchase1.getId() != purchaseBeforeTest.getId()).collect(Collectors.toList());
         missingPurchases.removeAll(findPurchasesById);
-        Assert.assertTrue(missingPurchases.stream().allMatch(purchase1 -> purchase1.getId() == purchase.getId()));
+        Assert.assertTrue(missingPurchases.stream().allMatch(purchase1 -> purchase1.getId() == purchaseBeforeTest.getId()));
         int size = missingPurchases.size();
         assertEquals(size, 1);
-        purchaseService.removePurchase(purchase.getId());
+        purchaseService.removePurchase(purchaseBeforeTest.getId());
     }
 
     @Test
@@ -72,22 +76,28 @@ public class PurchaseTest {
 
     @Test
     public void makeAPurchaseTest() throws PurchaseException, RepeatitionException {
-        Purchase purchase = purchaseService.createNewPurchase(clientBeforeTest);
+        //Purchase purchase = purchaseService.createNewPurchase(clientBeforeTest);
+        purchaseService.createNewPurchase(clientBeforeTest);
+        List<Purchase> purchases = purchaseService.findPurchases();
+        purchaseBeforeTest = purchases.get(purchases.size() - 1);
         Good good = goodService.findAllGoods().get(0);
-        goodInPurchaseService.addInGoodInPurchase(good, 1, purchase);
-        purchaseService.makeAPurchase(purchase.getId());
+        goodInPurchaseService.addInGoodInPurchase(good, 1, purchaseBeforeTest);
+        purchaseService.makeAPurchase(purchaseBeforeTest.getId());
         List<Purchase> missingPurchases = purchaseService.findPurchases();
-        List<Purchase> findPurchaseById = missingPurchases.stream().filter(purchase1 -> purchase1.getId() != purchase.getId()).collect(Collectors.toList());
+        List<Purchase> findPurchaseById = missingPurchases.stream().filter(purchase1 -> purchase1.getId() != purchaseBeforeTest.getId()).collect(Collectors.toList());
         missingPurchases.removeAll(findPurchaseById);
-        Assert.assertTrue(missingPurchases.stream().allMatch(purchase1 -> purchase1.getId() == purchase.getId()));
+        Assert.assertTrue(missingPurchases.stream().allMatch(purchase1 -> purchase1.getId() == purchaseBeforeTest.getId()));
         int size = missingPurchases.size();
         assertEquals(size, 1);
-        goodInPurchaseService.deleteFromPurchase(good, purchase);
-        purchaseService.removePurchase(purchase.getId());
+        goodInPurchaseService.deleteFromPurchase(good, purchaseBeforeTest);
+        purchaseService.removePurchase(purchaseBeforeTest.getId());
     }
 
     @Test(expected = PurchaseException.class)
     public void makeAPurchaseExceptionTest() throws PurchaseException {
+        purchaseService.createNewPurchase(clientBeforeTest);
+        List<Purchase> purchases = purchaseService.findPurchases();
+        purchaseBeforeTest = purchases.get(purchases.size() - 1);
         purchaseService.changeStatus(purchaseBeforeTest,Status.CANCELED);
         purchaseService.makeAPurchase(purchaseBeforeTest.getId());
     }
@@ -105,25 +115,31 @@ public class PurchaseTest {
 
     @Test
     public void removePurchaseTest() {
-        Purchase purchase = purchaseService.createNewPurchase(clientBeforeTest);
-        purchaseService.removePurchase(purchase.getId());
+        //Purchase purchase = purchaseService.createNewPurchase(clientBeforeTest);
+        purchaseService.createNewPurchase(clientBeforeTest);
         List<Purchase> purchases = purchaseService.findPurchases();
-        Assert.assertTrue(purchases.stream().noneMatch(purchase1 -> purchase1.getId() == purchase.getId()));
+        purchaseBeforeTest = purchases.get(purchases.size() - 1);
+        purchaseService.removePurchase(purchaseBeforeTest.getId());
+        List<Purchase> purchases1 = purchaseService.findPurchases();
+        Assert.assertTrue(purchases1.stream().noneMatch(purchase1 -> purchase1.getId() == purchaseBeforeTest.getId()));
     }
 
     @Test
     public void changeStatusPurchaseTest() {
-        Purchase purchase = purchaseService.createNewPurchase(clientBeforeTest);
-        purchaseService.changeStatus(purchase,Status.IN_PROCESS);
-        Purchase purchase1=purchaseService.findPurchaseById(purchase.getId());
+       // Purchase purchase = purchaseService.createNewPurchase(clientBeforeTest);
+        purchaseService.createNewPurchase(clientBeforeTest);
+        List<Purchase> purchases = purchaseService.findPurchases();
+        purchaseBeforeTest = purchases.get(purchases.size() - 1);
+        purchaseService.changeStatus(purchaseBeforeTest,Status.IN_PROCESS);
+        Purchase purchase1=purchaseService.findPurchaseById(purchaseBeforeTest.getId());
         Assert.assertEquals(Status.IN_PROCESS,purchase1.getStatus());
-        purchaseService.removePurchase(purchase.getId());
-    }
-
-    @After
-    public void deletePurchase(){
         purchaseService.removePurchase(purchaseBeforeTest.getId());
     }
+
+//    @After
+//    public void deletePurchase(){
+//        purchaseService.removePurchase(purchaseBeforeTest.getId());
+//    }
 }
 
 

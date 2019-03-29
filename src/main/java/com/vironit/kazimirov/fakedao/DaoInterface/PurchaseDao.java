@@ -9,7 +9,7 @@ import java.util.List;
 public interface PurchaseDao {
     List<Purchase> findPurchases();
 
-    Purchase createNewPurchase(Client client);
+    void createNewPurchase(Client client);
 
     void makeAPurchase(int purchaseId) throws PurchaseException;
 
