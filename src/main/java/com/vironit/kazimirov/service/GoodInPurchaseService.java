@@ -11,33 +11,33 @@ import java.util.List;
 
 public interface GoodInPurchaseService {
 
-    void addInGoodInPurchase(Good good, int amount, Purchase purchase) throws RepeatitionException, PurchaseException;
+    void addInGoodInPurchase(Good good, int amount, Purchase purchase) throws RepeatitionException, PurchaseException;//выполнено
 
-    List<GoodInPurchase> findGoodInPurchases();
+    List<GoodInPurchase> findGoodInPurchases();//выполнено
 
-    void deleteFromPurchase(Good good, Purchase purchase) throws PurchaseException;
+    void deleteFromPurchase(Good good, Purchase purchase) throws PurchaseException;//выполнено
 
-    void deleteGoodInPurchase(int goodInPurchase);
+    void deleteGoodInPurchase(int goodInPurchase);//выполнено
 
-    List<Good> findGoodsByPurchase(int purchaseId);
+    List<Good> findGoodsByPurchase(int purchaseId);//выполнено
 
-    List<Purchase> findPurchasesByGood(int goodId);
+    List<Purchase> findPurchasesByGood(int goodId);//выполнено
 
-    void deleteGoodInPurchasesWithCancelledStatus(Purchase purchase);
+    void deleteGoodInPurchasesWithCancelledStatus(Purchase purchase);//выполнено
 
-    void changeAmountInGoodInPurchase (int goodId, int amount, int purchaseId) throws PurchaseException;
+    void changeAmountInGoodInPurchase (int goodId, int amount, int purchaseId) throws PurchaseException;//выполнено
 
-    GoodInPurchase findGoodInPurchase (int goodId, int purchaseId);
+    GoodInPurchase findGoodInPurchase (int goodId, int purchaseId);//выполнено
 
-    GoodInPurchase findGoodInPurchaseById(int goodInPurchaseId);
+    GoodInPurchase findGoodInPurchaseById(int goodInPurchaseId);//выполнено
 
-    void returnedAmountOfGood(GoodInPurchase goodInPurchase);
+    void returnedAmountOfGood(GoodInPurchase goodInPurchase);//выполнено
 
-    void reduceAmount(int goodId, int amount);
+    void reduceAmount(int goodId, int amount);//выполнено
 
-    List<GoodInPurchase> findGoodInPurchasesByPurchase(int purchaseId);
+    List<GoodInPurchase> findGoodInPurchasesByPurchase(int purchaseId);//выполнено
 
-    List<GoodInPurchase> findGoodInPurchasesByGood(int goodId);
+    List<GoodInPurchase> findGoodInPurchasesByGood(int goodId);//выполнено
 
 
 }

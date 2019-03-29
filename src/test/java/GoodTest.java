@@ -192,7 +192,7 @@ public class GoodTest {
     }
 
     @Test(expected = GoodNotFoundException.class)
-    public void findClientByIdExceptionTest() throws GoodNotFoundException {
+    public void findGoodByIdExceptionTest() throws GoodNotFoundException {
         List<Good> goods=goodService.findAllGoods();
         int sum=1;
         for(int i=1;i<goods.size();i++){

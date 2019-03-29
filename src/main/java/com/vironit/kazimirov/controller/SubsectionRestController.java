@@ -4,6 +4,7 @@ import com.vironit.kazimirov.dto.SubsectionDto;
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.exception.CantDeleteElement;
 import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.exception.SubsectionNotFoundException;
 import com.vironit.kazimirov.service.SubsectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,13 +35,13 @@ public class SubsectionRestController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
-    Subsection findPurposeByName(@PathVariable("id") int id) {
+    Subsection findPurposeByName(@PathVariable("id") int id) throws SubsectionNotFoundException {
         Subsection subsection = subsectionService.findSubsectionById(id);
         return subsection;
     }
 
     @RequestMapping(value = "/subsectionByName", method = RequestMethod.GET)
-    public Subsection findSubsectionByName(@RequestBody SubsectionDto subsectionDto) {
+    public Subsection findSubsectionByName(@RequestBody SubsectionDto subsectionDto) throws SubsectionNotFoundException {
         Subsection subsection = subsectionService.findSubsectionByName(subsectionDto.getTitle());
         return subsection;
     }

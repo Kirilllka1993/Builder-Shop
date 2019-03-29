@@ -3,6 +3,7 @@ package com.vironit.kazimirov.controller.controllerWeb;
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.exception.CantDeleteElement;
 import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.exception.SubsectionNotFoundException;
 import com.vironit.kazimirov.service.SubsectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,14 +46,14 @@ public class SubsectionController {
     }
 
     @RequestMapping(value = "/findSubsectionByName")
-    public String findPurposeByName(@RequestParam ("subsectionName") String purposeName, ModelMap map){
+    public String findPurposeByName(@RequestParam ("subsectionName") String purposeName, ModelMap map) throws SubsectionNotFoundException {
         Subsection subsection=subsectionService.findSubsectionByName(purposeName);
         map.addAttribute("subsection", subsection);
         return "subsection";
     }
 
     @RequestMapping(value = "/findSubsectionById", method = RequestMethod.GET)
-    public String findSubsectionById(@RequestParam ("id") int id, ModelMap map){
+    public String findSubsectionById(@RequestParam ("id") int id, ModelMap map) throws SubsectionNotFoundException {
         Subsection subsection=subsectionService.findSubsectionById(id);
         map.addAttribute("subsection", subsection);
         return "subsection";

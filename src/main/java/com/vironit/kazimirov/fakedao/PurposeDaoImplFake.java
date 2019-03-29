@@ -44,12 +44,12 @@ public class PurposeDaoImplFake implements PurposeDao {
     }
 
     @Override
-    public void deletePurpose(int idPurpose) {
+    public void deletePurpose(int purposeId) {
 
     }
 
     @Override
-    public Purpose findPurposeById(int idPurpose) {
+    public Purpose findPurposeById(int purposeId) {
         return null;
     }
 }

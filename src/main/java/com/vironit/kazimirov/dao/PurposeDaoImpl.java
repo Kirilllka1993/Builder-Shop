@@ -17,6 +17,7 @@ public class PurposeDaoImpl implements PurposeDao {
     private SessionFactory sessionFactory;
     private final String FIND_PURPOSES="select a from Purpose a";
     private final String FIND_PURPOSE_BY_NAME="select a from Purpose a where a.purpose = :purpose";
+    private final String FIND_PURPOSE_BY_ID = "select purpose from Purpose purpose where purpose.id = :purposeId";
     @Override
     public void addPurpose(Purpose purpose) {
         Session session=sessionFactory.openSession();
@@ -46,19 +47,23 @@ public class PurposeDaoImpl implements PurposeDao {
     }
 
     @Override
-    public void deletePurpose(int idPurpose) {
+    public void deletePurpose(int purposeId) {
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
-        Purpose purpose = session.get(Purpose.class, idPurpose);
+        Query query = session.createQuery(FIND_PURPOSE_BY_ID, Purpose.class);
+        query.setParameter("purposeId", purposeId);
+        Purpose purpose = query.getResultList().isEmpty() ? null : (Purpose) query.getResultList().get(0);
         session.delete(purpose);
         tx1.commit();
         session.close();
     }
 
     @Override
-    public Purpose findPurposeById(int idPurpose) {
+    public Purpose findPurposeById(int purposeId) {
         Session session = sessionFactory.openSession();
-        Purpose purpose = session.get(Purpose.class, idPurpose);
+        Query query = session.createQuery(FIND_PURPOSE_BY_ID, Purpose.class);
+        query.setParameter("purposeId", purposeId);
+        Purpose purpose = query.getResultList().isEmpty() ? null : (Purpose) query.getResultList().get(0);
         session.close();
         return purpose;
     }

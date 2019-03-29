@@ -1,6 +1,7 @@
 package com.vironit.kazimirov.controller.controllerWeb;
 
 import com.vironit.kazimirov.entity.Purpose;
+import com.vironit.kazimirov.exception.PurposeNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.PurposeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ public class PurposeController {
     }
 
     @RequestMapping(value = "/findPurposeByName")
-    public String findPurposeByName(@RequestParam ("purposeName") String purposeName, ModelMap map){
+    public String findPurposeByName(@RequestParam ("purposeName") String purposeName, ModelMap map) throws PurposeNotFoundException {
         Purpose purpose=purposeService.findPurposeByName(purposeName);
         map.addAttribute("purpose", purpose);
         return "purpose";

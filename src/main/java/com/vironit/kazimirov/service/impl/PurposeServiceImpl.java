@@ -2,6 +2,7 @@ package com.vironit.kazimirov.service.impl;
 
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.exception.CantDeleteElement;
+import com.vironit.kazimirov.exception.PurposeNotFoundException;
 import com.vironit.kazimirov.fakedao.DaoInterface.GoodDao;
 import com.vironit.kazimirov.fakedao.DaoInterface.PurposeDao;
 import com.vironit.kazimirov.entity.Purpose;
@@ -42,25 +43,33 @@ public class PurposeServiceImpl implements PurposeService {
     }
 
     @Override
-    public Purpose findPurposeByName(String purposeName) {
-        return purposeDao.findPurposeByName(purposeName);
+    public Purpose findPurposeByName(String purposeName) throws PurposeNotFoundException {
+        Optional<Purpose> checkNamePurpose = Optional.ofNullable(purposeDao.findPurposeByName(purposeName));
+        if (checkNamePurpose.isPresent() == false) {
+            throw new PurposeNotFoundException("such purpose is absent");
+        } else {
+            return purposeDao.findPurposeByName(purposeName);
+        }
     }
 
     @Override
-    public void deletePurpose(int idPurpose) throws CantDeleteElement {
-        Purpose purpose = purposeDao.findPurposeById(idPurpose);
+    public void deletePurpose(int purposeId) throws CantDeleteElement {
+        Purpose purpose = purposeDao.findPurposeById(purposeId);
         List<Good> goods = goodDao.findByPurpose(purpose);
         if (goods.size() == 0) {
-            purposeDao.deletePurpose(idPurpose);
+            purposeDao.deletePurpose(purposeId);
         } else {
             throw new CantDeleteElement("this purpose is using with goods");
         }
     }
 
     @Override
-    public Purpose findPurposeById(int idPurpose) {
-        return purposeDao.findPurposeById(idPurpose);
+    public Purpose findPurposeById(int purposeId) throws PurposeNotFoundException {
+        Optional<Purpose> checkIdPurpose = Optional.ofNullable(purposeDao.findPurposeById(purposeId));
+        if (checkIdPurpose.isPresent() == false) {
+            throw new PurposeNotFoundException("such purpose is absent");
+        } else {
+            return purposeDao.findPurposeById(purposeId);
+        }
     }
-
-
 }

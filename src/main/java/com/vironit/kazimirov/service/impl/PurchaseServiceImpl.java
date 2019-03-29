@@ -20,6 +20,7 @@ public class PurchaseServiceImpl implements PurchaseService {
     private final GoodDao goodDao;
 
 
+    @Autowired
     public PurchaseServiceImpl(PurchaseDao purchaseDao,GoodDao goodDao) {
         this.purchaseDao = purchaseDao;
         this.goodDao = goodDao;

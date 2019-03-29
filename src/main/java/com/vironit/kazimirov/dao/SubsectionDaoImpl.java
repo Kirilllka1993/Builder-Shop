@@ -19,6 +19,7 @@ public class SubsectionDaoImpl implements SubsectionDao {
 
     private final String FIND_SUBSECTIONS = "select a from Subsection a";
     private final String FIND_SUBSECTION_BY_NAME = "select subsection from Subsection subsection where subsection.title = :title";
+    private final String FIND_SUBSECTION_BY_ID = "select subsection from Subsection subsection where subsection.id = :subsectionId";
 
     @Override
     public void addSubsection(Subsection subsection) {
@@ -38,31 +39,31 @@ public class SubsectionDaoImpl implements SubsectionDao {
     }
 
     @Override
-    public Subsection findSubsectionByName(String title) {
+    public Subsection findSubsectionByName(String subsectionTitle) {
         Session session = sessionFactory.openSession();
         Query query = session.createQuery(FIND_SUBSECTION_BY_NAME, Subsection.class);
-        query.setParameter("title", title);
-//        Subsection subsection = (Subsection) query.getSingleResult();
-//        Subsection subsection = session.get(Subsection.class, title);
-        Subsection subsection= query.getResultList().isEmpty() ? null : (Subsection) query.getResultList().get(0);
+        query.setParameter("title", subsectionTitle);
+        Subsection subsection = query.getResultList().isEmpty() ? null : (Subsection) query.getResultList().get(0);
         session.close();
         return subsection;
     }
 
     @Override
-    public void deleteSubsection(int idSubsection) {
+    public void deleteSubsection(int subsectionId) {
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
-        Subsection subsection = session.get(Subsection.class, idSubsection);
+        Subsection subsection = session.get(Subsection.class, subsectionId);
         session.delete(subsection);
         tx1.commit();
         session.close();
     }
 
     @Override
-    public Subsection findSubsectionById(int idSubsection) {
+    public Subsection findSubsectionById(int subsectionId) {
         Session session = sessionFactory.openSession();
-        Subsection subsection = session.get(Subsection.class, idSubsection);
+        Query query = session.createQuery(FIND_SUBSECTION_BY_ID, Subsection.class);
+        query.setParameter("subsectionId", subsectionId);
+        Subsection subsection = query.getResultList().isEmpty() ? null : (Subsection) query.getResultList().get(0);
         session.close();
         return subsection;
     }

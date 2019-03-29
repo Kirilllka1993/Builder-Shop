@@ -4,9 +4,7 @@ import com.vironit.kazimirov.dto.GoodDto;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
-import com.vironit.kazimirov.exception.GoodException;
-import com.vironit.kazimirov.exception.GoodNotFoundException;
-import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.exception.*;
 import com.vironit.kazimirov.service.GoodService;
 import com.vironit.kazimirov.service.PurposeService;
 import com.vironit.kazimirov.service.SubsectionService;
@@ -44,10 +42,12 @@ public class GoodController extends HttpServlet {
     }
 
     @RequestMapping(value = "/addGood", method = RequestMethod.POST)
-    public ModelAndView addGood(@ModelAttribute GoodDto goodDto, BindingResult result, ModelMap map) throws GoodException, RepeatitionException {
+    public ModelAndView addGood(@ModelAttribute GoodDto goodDto, BindingResult result, ModelMap map) throws GoodException, RepeatitionException, SubsectionNotFoundException, PurposeNotFoundException {
         Good good = new Good();
-        Subsection subsection = subsectionService.findSubsectionByName(goodDto.getSubsection().getTitle());
-        Purpose purpose = purposeService.findPurposeByName(goodDto.getPurpose().getPurpose());
+//        Subsection subsection = subsectionService.findSubsectionByName(goodDto.getSubsection().getTitle());
+//        Purpose purpose = purposeService.findPurposeByName(goodDto.getPurpose().getPurpose());
+        Subsection subsection=subsectionService.findSubsectionById(goodDto.getSubsectionId());
+        Purpose purpose=purposeService.findPurposeById(goodDto.getPurposeId());
         map.addAttribute("command", goodDto);
         good.setName(goodDto.getName());
         good.setUnit(goodDto.getUnit());
@@ -108,7 +108,7 @@ public class GoodController extends HttpServlet {
     }
 
     @RequestMapping(value = "/findBySubsection", method = RequestMethod.GET)
-    public ModelAndView findGoodsBySubsection(@RequestParam("subsection") String title, ModelMap map){
+    public ModelAndView findGoodsBySubsection(@RequestParam("subsection") String title, ModelMap map) throws SubsectionNotFoundException {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("good");
         Subsection subsection=subsectionService.findSubsectionByName(title);

@@ -17,7 +17,8 @@ import java.util.Optional;
 @Service
 public class GoodServiceImpl implements GoodService {
 
-    private final GoodDao goodDao;
+    @Autowired
+    private GoodDao goodDao;
 
     @Autowired
     public GoodServiceImpl(GoodDao goodDao) {

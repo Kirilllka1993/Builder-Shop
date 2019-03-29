@@ -32,4 +32,5 @@ public class WebApplicationConfig implements WebMvcConfigurer {
         resolver.setSuffix(".jsp");
         return resolver;
     }
+
 }

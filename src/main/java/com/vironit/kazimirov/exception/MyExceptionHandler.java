@@ -26,17 +26,34 @@ public class MyExceptionHandler {
 
     @ExceptionHandler({GoodException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void goodHandle(){
-
+    public void goodHandle() {
     }
 
     @ExceptionHandler({GoodNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ModelAndView goodNotFoundHandle(){
+    public ModelAndView goodNotFoundHandle() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("tryLogin");
         return modelAndView;
+    }
+
+    @ExceptionHandler({SubsectionNotFoundException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ModelAndView subsectionNotFoundHandle() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("tryLogin");
+        return modelAndView;
+    }
+
+    @ExceptionHandler({PurposeNotFoundException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public void purposeNotFoundHandle() {
 
     }
 
+    @ExceptionHandler({PurchaseException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void purchaseHandle() {
+
+    }
 }

@@ -3,6 +3,7 @@ package com.vironit.kazimirov.service;
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.exception.CantDeleteElement;
 import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.exception.SubsectionNotFoundException;
 
 import java.util.List;
 
@@ -12,9 +13,9 @@ public interface SubsectionService {
 
     List<Subsection> findSubsections();
 
-    Subsection findSubsectionByName(String title);
+    Subsection findSubsectionByName(String subsectionTitle) throws SubsectionNotFoundException;
 
-    void deleteSubsection (int idSubsection)throws CantDeleteElement;
+    void deleteSubsection (int subsectionId)throws CantDeleteElement;
 
-    Subsection findSubsectionById(int idSubsection);
+    Subsection findSubsectionById(int subsectionId) throws SubsectionNotFoundException;
 }

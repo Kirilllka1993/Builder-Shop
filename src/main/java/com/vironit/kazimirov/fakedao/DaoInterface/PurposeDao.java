@@ -14,8 +14,8 @@ public interface PurposeDao {
 
     Purpose findPurposeByName(String purposeName);
 
-    void deletePurpose (int idPurpose) throws CantDeleteElement;
+    void deletePurpose (int purposeId) throws CantDeleteElement;
 
-    Purpose findPurposeById(int idPurpose);
+    Purpose findPurposeById(int purposeId);
 
 }

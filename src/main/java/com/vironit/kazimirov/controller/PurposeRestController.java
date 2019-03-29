@@ -3,6 +3,7 @@ package com.vironit.kazimirov.controller;
 import com.vironit.kazimirov.dto.PurposeDto;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.exception.CantDeleteElement;
+import com.vironit.kazimirov.exception.PurposeNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.PurposeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,13 +41,13 @@ public class PurposeRestController {
     @RequestMapping(value = "/{purposeId}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
-    Purpose findPurposeByName(@PathVariable("purposeId") int purposeId) {
+    Purpose findPurposeByName(@PathVariable("purposeId") int purposeId) throws PurposeNotFoundException {
         Purpose purpose = purposeService.findPurposeById(purposeId);
         return purpose;
     }
 
     @RequestMapping(value = "/purposeByName", method = RequestMethod.GET)
-    public Purpose findPurposeByName(@RequestBody PurposeDto purposeDto) {
+    public Purpose findPurposeByName(@RequestBody PurposeDto purposeDto) throws PurposeNotFoundException {
         Purpose purpose = purposeService.findPurposeByName(purposeDto.getPurpose());
         return purpose;
     }

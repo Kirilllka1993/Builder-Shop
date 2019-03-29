@@ -39,17 +39,17 @@ public class SubsectionDaoImplFake implements SubsectionDao {
     }
 
     @Override
-    public Subsection findSubsectionByName(String name) {
+    public Subsection findSubsectionByName(String subsectionTitle) {
         return null;
     }
 
     @Override
-    public void deleteSubsection(int idSubsection) {
+    public void deleteSubsection(int subsectionId) {
 
     }
 
     @Override
-    public Subsection findSubsectionById(int idSubsection) {
+    public Subsection findSubsectionById(int subsectionId) {
         return null;
     }
 }

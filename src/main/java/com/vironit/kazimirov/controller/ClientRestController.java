@@ -62,11 +62,8 @@ public class ClientRestController {
 
     @RequestMapping(value = "/newLogin", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void changeLogin(@RequestBody ClientDto clientDto) {
-        try {
+    public void changeLogin(@RequestBody ClientDto clientDto) throws RepeatitionException {
             clientService.changeLogin(clientDto.getId(), clientDto.getLogin());
-        } catch (RepeatitionException e) {
-        }
     }
 
 //    @RequestMapping(value = "/newPassword", method = RequestMethod.PUT)
@@ -77,16 +74,19 @@ public class ClientRestController {
 //    }
 
     @RequestMapping(value = "/newPassword", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void changePassword(@RequestBody ClientDto clientDto) {
         clientService.changePassword(clientDto.getId(), clientDto.getPassword());
     }
 
     @RequestMapping(value = "/newPhoneNumber", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void changePhoneNumber(@RequestBody ClientDto clientDto) {
         clientService.changePhoneNumber(clientDto.getId(), clientDto.getPassword());
     }
 
     @RequestMapping(value = "/newAddress", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void changeAddress(@RequestBody ClientDto clientDto) {
         clientService.changeAddress(clientDto.getId(), clientDto.getAddress());
     }

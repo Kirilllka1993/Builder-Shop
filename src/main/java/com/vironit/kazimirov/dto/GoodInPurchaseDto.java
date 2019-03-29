@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GoodInPurchaseDto {
     private int id;
-    private Purchase purchase;
-    private Good good;
+    private int purchaseId;
+    private int goodId;
     private int amount;
 }

@@ -4,6 +4,7 @@ import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.exception.CantDeleteElement;
 import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.exception.SubsectionNotFoundException;
 import com.vironit.kazimirov.service.GoodService;
 import com.vironit.kazimirov.service.SubsectionService;
 import org.junit.*;
@@ -63,7 +64,7 @@ public class SubsectionTest {
     }
 
     @Test
-    public void findSubsectionByName() throws RepeatitionException, CantDeleteElement {
+    public void findSubsectionByTitle() throws RepeatitionException, CantDeleteElement, SubsectionNotFoundException {
         subsectionService.addSubsection(subsectionBeforeTest);
         Subsection subsection = subsectionService.findSubsectionByName(subsectionBeforeTest.getTitle());
         List<Subsection> missingSubsections = subsectionService.findSubsections();
@@ -72,6 +73,13 @@ public class SubsectionTest {
         missingSubsections.removeAll(allsubsectionsByTitle);
         Assert.assertTrue(missingSubsections.stream().allMatch((subsection1 -> subsection1.getTitle().equals(subsection.getTitle()))));
         subsectionService.deleteSubsection(subsectionBeforeTest.getId());
+    }
+
+    @Test(expected = SubsectionNotFoundException.class)
+    public void subsectionFindByTitleExceptionTest() throws SubsectionNotFoundException {
+        List<Subsection>subsections=subsectionService.findSubsections();
+        String neverUseTitle = subsections.stream().map(Subsection::getTitle).collect(Collectors.joining());
+        subsectionService.findSubsectionByName(neverUseTitle);
     }
 
     @Test(expected = RepeatitionException.class)
@@ -94,13 +102,24 @@ public class SubsectionTest {
     }
 
     @Test
-    public void findSubsectionById() {
+    public void findSubsectionById() throws SubsectionNotFoundException {
         List<Subsection> subsections = subsectionService.findSubsections();
         int id = subsections.get(0).getId();
+        Subsection findSubsectionById=subsectionService.findSubsectionById(id);
         List<Subsection> missingSubsections = subsectionService.findSubsections();
-        List<Subsection> findSubsectionsById = missingSubsections.stream().filter(subsection -> subsection.getId() != id).collect(Collectors.toList());
+        List<Subsection> findSubsectionsById = missingSubsections.stream().filter(subsection -> subsection.getId() != findSubsectionById.getId()).collect(Collectors.toList());
         missingSubsections.removeAll(findSubsectionsById);
         int size = missingSubsections.size();
         assertEquals(size, 1);
+    }
+
+    @Test(expected = SubsectionNotFoundException.class)
+    public void findSubsectionByIdExceptionTest() throws SubsectionNotFoundException {
+        List<Subsection> subsections=subsectionService.findSubsections();
+        int sum=1;
+        for(int i=1;i<subsections.size();i++){
+            sum=sum*subsections.get(i).getId();
+        }
+        subsectionService.findSubsectionById(sum);
     }
 }

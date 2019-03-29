@@ -11,9 +11,9 @@ public interface SubsectionDao {
 
     List<Subsection> findSubsections();
 
-    Subsection findSubsectionByName(String title);
+    Subsection findSubsectionByName(String subsectionTitle);
 
-    void deleteSubsection(int idSubsection) throws CantDeleteElement;
+    void deleteSubsection(int subsectionId) throws CantDeleteElement;
 
-    Subsection findSubsectionById(int idSubsection);
+    Subsection findSubsectionById(int subsectionId);
 }

@@ -17,6 +17,7 @@ import java.util.Optional;
 @Service
 public class AdminServiceImpl implements AdminService {
 
+    @Autowired
     private final AdminDao adminDao;
 
     @Autowired

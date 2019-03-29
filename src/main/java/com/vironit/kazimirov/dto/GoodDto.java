@@ -13,21 +13,19 @@ import lombok.NoArgsConstructor;
 public class GoodDto {
     private int id;
     private double price;
-    private Subsection subsection;
+    private int subsectionId;
     private String unit;
     private int quantity;
     private double discount;
-    private Purpose purpose;
+    private int purposeId;
     private String name;
     private int amount;
 
     public Good createGood(){
         Good good=new Good();
         good.setPrice(this.price);
-        good.setSubsection(this.subsection);
         good.setUnit(this.unit);
         good.setQuantity(this.quantity);
-        good.setPurpose(this.purpose);
         good.setName(this.name);
         good.setAmount(this.amount);
         return good;

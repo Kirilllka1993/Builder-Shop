@@ -21,6 +21,7 @@ public class GoodInPurchaseImpl implements GoodInPurchaseService {
     @Autowired
     private final GoodDao goodDao;
 
+    @Autowired
     public GoodInPurchaseImpl(GoodInPurchaseDao goodInPurchaseDao, GoodDao goodDao) {
         this.goodInPurchaseDao = goodInPurchaseDao;
         this.goodDao = goodDao;
