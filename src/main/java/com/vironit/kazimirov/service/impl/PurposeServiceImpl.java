@@ -28,10 +28,10 @@ public class PurposeServiceImpl implements PurposeService {
     }
 
     @Override
-    public void addPurpose(Purpose purpose) throws RepeatitionException {
+    public int addPurpose(Purpose purpose) throws RepeatitionException {
         Optional<Purpose> checkPurpose = Optional.ofNullable(purposeDao.findPurposeByName(purpose.getPurpose()));
         if (checkPurpose.isPresent() == false) {
-            purposeDao.addPurpose(purpose);
+            return purposeDao.addPurpose(purpose);
         } else {
             throw new RepeatitionException("such purpose is present");
         }

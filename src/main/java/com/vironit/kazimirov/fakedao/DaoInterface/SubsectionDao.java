@@ -7,7 +7,7 @@ import com.vironit.kazimirov.exception.RepeatitionException;
 import java.util.List;
 
 public interface SubsectionDao {
-    void addSubsection(Subsection subsection) throws RepeatitionException;
+    int addSubsection(Subsection subsection) throws RepeatitionException;
 
     List<Subsection> findSubsections();
 

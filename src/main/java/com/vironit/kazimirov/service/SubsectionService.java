@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface SubsectionService {
 
-    void addSubsection(Subsection subsection) throws RepeatitionException;
+    int addSubsection(Subsection subsection) throws RepeatitionException;
 
     List<Subsection> findSubsections();
 

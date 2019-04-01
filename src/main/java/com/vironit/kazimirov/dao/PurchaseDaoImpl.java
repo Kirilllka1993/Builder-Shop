@@ -17,13 +17,13 @@ import java.util.List;
 public class PurchaseDaoImpl implements PurchaseDao {
     @Autowired
     private SessionFactory sessionFactory;
-    //private final String FIND_PURCHASES = "select purchase from Purchase purchase join fetch GoodInPurchase goodInPurchase WHERE purchase.id= goodInPurchase.id";
-    private final String FIND_GOOD_FOR_PURCHASE="select a from GoodInPurchase a where a.purchase.id =:purchaseId";
+    //private final String FIND_PURCHASES = "select purchase from Purchase purchase join fetch CartItem goodInPurchase WHERE purchase.id= goodInPurchase.id";
+    private final String FIND_GOOD_FOR_PURCHASE="select a from CartItem a where a.purchase.id =:purchaseId";
     private final String FIND_PURCHASES="select purchase from Purchase purchase";
     private final String FIND_BY_PURCHASES_BY_DATE = "select purchase from Purchase purchase where timeOfPurchase =:timeOfPurchase";
-    //private final String FIND_GOOD_FOR_PURCHASE="select goodInPurchase from GoodInPurchase goodInPurchase where goodInPurchase.purchase=:purchaseId";
+    //private final String FIND_GOOD_FOR_PURCHASE="select goodInPurchase from CartItem goodInPurchase where goodInPurchase.purchase=:purchaseId";
     //private final String FIND_PURCHASES = "select purchase from Purchase purchase";
-    //private final String FIND_P URCHASES = "select goodInPurchase from GoodInPurchase goodInPurchase join Purchase purchase WHERE goodInPurchase.purchase=purchase";
+    //private final String FIND_P URCHASES = "select goodInPurchase from CartItem goodInPurchase join Purchase purchase WHERE goodInPurchase.purchase=purchase";
 
     @Override
     public List<Purchase> findPurchases() {
@@ -34,7 +34,7 @@ public class PurchaseDaoImpl implements PurchaseDao {
     }
 
     @Override
-    public void createNewPurchase(Client client) {
+    public int createNewPurchase(Client client) {
         Session session=sessionFactory.openSession();
         Purchase purchase=new Purchase();
         LocalDateTime registration=LocalDateTime.now();
@@ -43,20 +43,22 @@ public class PurchaseDaoImpl implements PurchaseDao {
         purchase.setRegistration(registration);
         Transaction tx1 = session.beginTransaction();
         session.save(purchase);
+        int purchaseId=purchase.getId();
         tx1.commit();
         session.close();
+        return purchaseId;
     }
 
     @Override
     public void makeAPurchase(int purchaseId) throws PurchaseException {
         Session session=sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
-        List<GoodInPurchase>goodInPurchases=new ArrayList<>();
+        List<CartItem> cartItems =new ArrayList<>();
         Purchase purchase = session.get(Purchase.class, purchaseId);
-        goodInPurchases=(List<GoodInPurchase>) session.createQuery(FIND_GOOD_FOR_PURCHASE)
+        cartItems =(List<CartItem>) session.createQuery(FIND_GOOD_FOR_PURCHASE)
                 .setParameter("purchaseId",purchaseId)
                 .list();
-        purchase.setSum(goodInPurchases.stream().mapToDouble(goodInPurchase->((goodInPurchase.getGood().getPrice()-goodInPurchase.getGood()
+        purchase.setSum(cartItems.stream().mapToDouble(goodInPurchase->((goodInPurchase.getGood().getPrice()-goodInPurchase.getGood()
                 .getDiscount())*goodInPurchase.getAmount())).sum());
         purchase.setStatus(Status.REGISTRATE);
         purchase.setTimeOfPurchase(LocalDateTime.now());

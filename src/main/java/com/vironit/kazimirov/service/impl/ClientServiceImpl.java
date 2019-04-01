@@ -58,11 +58,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void signIn(Client client) throws RepeatitionException {
+    public int signIn(Client client) throws RepeatitionException {
         //matcher
         Optional<Client> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(client.getLogin()));
         if (checkLoginClient.isPresent() == false) {
-            clientDao.signIn(client);
+           return clientDao.signIn(client);
         } else {
             throw new RepeatitionException("such login is used");
         }

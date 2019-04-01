@@ -16,8 +16,10 @@
     <p>Add subsection</p>
     <input type=text name=title><p>Name</p>
     <td><input type=submit value="add subsection"></td>
+    <p><c:out value="${subsectionId}"/><br></p>
     <br>
 </form>
+
 <form method=get action=showSubsections>
     <p><c:out value="${subsections}"/><br></p>
     <input type=submit value="show subsections">

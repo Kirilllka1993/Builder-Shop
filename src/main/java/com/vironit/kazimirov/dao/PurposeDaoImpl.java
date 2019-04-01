@@ -1,7 +1,6 @@
 package com.vironit.kazimirov.dao;
 
 import com.vironit.kazimirov.entity.Purpose;
-import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.fakedao.DaoInterface.PurposeDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -19,12 +18,14 @@ public class PurposeDaoImpl implements PurposeDao {
     private final String FIND_PURPOSE_BY_NAME="select a from Purpose a where a.purpose = :purpose";
     private final String FIND_PURPOSE_BY_ID = "select purpose from Purpose purpose where purpose.id = :purposeId";
     @Override
-    public void addPurpose(Purpose purpose) {
+    public int addPurpose(Purpose purpose) {
         Session session=sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
         session.save(purpose);
+        int purposeId=purpose.getId();
         tx1.commit();
         session.close();
+        return purposeId;
     }
 
     @Override
@@ -41,7 +42,6 @@ public class PurposeDaoImpl implements PurposeDao {
         Query query = session.createQuery(FIND_PURPOSE_BY_NAME, Purpose.class);
         query.setParameter("purpose", purposeName);
         Purpose purpose= query.getResultList().isEmpty() ? null : (Purpose) query.getResultList().get(0);
-        //Purpose purpose = (Purpose) query.getSingleResult();
         session.close();
         return purpose;
     }

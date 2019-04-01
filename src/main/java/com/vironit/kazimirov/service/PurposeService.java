@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface PurposeService {
 
-    void addPurpose(Purpose purpose) throws RepeatitionException;
+    int addPurpose(Purpose purpose) throws RepeatitionException;
 
     List<Purpose> findPurposes();
 

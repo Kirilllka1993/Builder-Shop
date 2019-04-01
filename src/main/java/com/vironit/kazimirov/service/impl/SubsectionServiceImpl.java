@@ -29,10 +29,10 @@ public class SubsectionServiceImpl implements SubsectionService {
     }
 
     @Override
-    public void addSubsection(Subsection subsection) throws RepeatitionException {
+    public int addSubsection(Subsection subsection) throws RepeatitionException {
         Optional<Subsection> subsection1 = Optional.ofNullable(subsectionDao.findSubsectionByName(subsection.getTitle()));
         if (subsection1.isPresent() == false) {
-            subsectionDao.addSubsection(subsection);
+            return subsectionDao.addSubsection(subsection);
         } else {
             throw new RepeatitionException("such subsection is present");
         }

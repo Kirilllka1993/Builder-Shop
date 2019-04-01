@@ -11,6 +11,8 @@ import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.ClientService;
 import com.vironit.kazimirov.service.GoodService;
+import com.vironit.kazimirov.service.impl.Main;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "client")
 public class ClientRestController {
+
     @Autowired
     private ClientService clientService;
     @Autowired
@@ -30,6 +33,7 @@ public class ClientRestController {
     @RequestMapping(value = "/newReview", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void addReview(@RequestBody ReviewClientDto reviewClientDto) throws ClientNotFoundException, GoodNotFoundException {
+
         Client client = adminService.findClientById(reviewClientDto.getClientId());
         Good good = goodService.findGoodById(reviewClientDto.getGoodId());
         Review review = new Review();
@@ -40,7 +44,7 @@ public class ClientRestController {
         clientService.addReview(review);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE)
+    @RequestMapping(value = "/deleteReview",method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteReview(@RequestBody ReviewClientDto reviewClientDto) {
         clientService.removeReview(reviewClientDto.getClientId(), reviewClientDto.getGoodId());
@@ -53,11 +57,12 @@ public class ClientRestController {
         return client;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "add",method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public void signIn(@RequestBody ClientDto clientDto) throws RepeatitionException {
+    public int signIn(@RequestBody ClientDto clientDto) throws RepeatitionException {
         Client client = clientDto.createClient();
-        clientService.signIn(client);
+        int clientId=clientService.signIn(client);
+        return clientId;
     }
 
     @RequestMapping(value = "/newLogin", method = RequestMethod.PUT)

@@ -32,10 +32,10 @@ public class SubsectionRestController {
         subsectionService.addSubsection(subsection);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/findById/{id}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
-    Subsection findPurposeByName(@PathVariable("id") int id) throws SubsectionNotFoundException {
+    Subsection findSubsectionById(@PathVariable("id") int id) throws SubsectionNotFoundException {
         Subsection subsection = subsectionService.findSubsectionById(id);
         return subsection;
     }
@@ -46,7 +46,7 @@ public class SubsectionRestController {
         return subsection;
     }
 
-    @RequestMapping(value = "/{subsectionId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete/{subsectionId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteSubsection(@PathVariable("subsectionId") int subsectionId) {
         try {

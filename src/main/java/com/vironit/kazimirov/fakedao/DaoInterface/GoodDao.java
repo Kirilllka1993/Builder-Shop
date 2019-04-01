@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface GoodDao {
 
-    void addGood(Good good) throws GoodException, RepeatitionException;
+    int addGood(Good good) throws GoodException, RepeatitionException;
 
     Good findByNameGood(String goodName);
 

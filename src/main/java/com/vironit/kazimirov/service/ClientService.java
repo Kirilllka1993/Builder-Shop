@@ -17,7 +17,7 @@ public interface ClientService {
 
     void logOut();
 
-    void signIn(Client client) throws RepeatitionException;
+    int signIn(Client client) throws RepeatitionException;
 
     void changeLogin(int clientId, String newLogin) throws RepeatitionException;
 

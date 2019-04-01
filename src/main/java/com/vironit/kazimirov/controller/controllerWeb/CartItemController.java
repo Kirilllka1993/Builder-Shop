@@ -6,7 +6,7 @@ import com.vironit.kazimirov.exception.GoodNotFoundException;
 import com.vironit.kazimirov.exception.PurchaseException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.AdminService;
-import com.vironit.kazimirov.service.GoodInPurchaseService;
+import com.vironit.kazimirov.service.CartItemService;
 import com.vironit.kazimirov.service.GoodService;
 import com.vironit.kazimirov.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class GoodInPurchaseController {
+public class CartItemController {
     @Autowired
-    private GoodInPurchaseService goodInPurchaseService;
+    private CartItemService cartItemService;
     @Autowired
     private PurchaseService purchaseService;
     @Autowired
@@ -34,7 +34,7 @@ public class GoodInPurchaseController {
         Purchase purchase = purchaseService.findPurchaseById(purchaseId);
         Good good = goodService.findGoodById(goodId);
         ModelAndView modelAndView = new ModelAndView();
-            goodInPurchaseService.addInGoodInPurchase(good, amount, purchase);
+            cartItemService.addInCartItem(good, amount, purchase);
             modelAndView.setViewName("purchase");
         return modelAndView;
     }

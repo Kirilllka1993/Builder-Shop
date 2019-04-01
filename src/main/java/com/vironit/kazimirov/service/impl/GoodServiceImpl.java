@@ -26,13 +26,13 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public void addGood(Good good) throws GoodException, RepeatitionException {
+    public int addGood(Good good) throws GoodException, RepeatitionException {
         if (good.getPrice() <= good.getDiscount() || good.getAmount() < 0) {
             throw new GoodException("The discount can't be more then price");
         }
         Optional<Good> checkNameGood = Optional.ofNullable(goodDao.findByNameGood(good.getName()));
         if (checkNameGood.isPresent() == false) {
-            goodDao.addGood(good);
+            return goodDao.addGood(good);
         } else {
             throw new RepeatitionException("such good is present");
         }

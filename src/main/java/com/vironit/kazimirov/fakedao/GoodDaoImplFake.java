@@ -36,13 +36,14 @@ public class GoodDaoImplFake implements GoodDao {
         goods.add(good4);
     }
 
-    public void addGood(Good good) throws GoodException {
+    public int addGood(Good good) throws GoodException {
         if (good.getPrice() < good.getDiscount()) {
             throw new GoodException("The discount can't be more then price");
         }
         int lastIndex = goods.size();
         good.setId(lastIndex + 1);
         goods.add(good);
+        return good.getId();
     }
 
     @Override

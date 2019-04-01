@@ -10,7 +10,7 @@ import com.vironit.kazimirov.exception.RepeatitionException;
 import java.util.List;
 
 public interface GoodService {
-    void addGood(Good good) throws GoodException, RepeatitionException;//выполнено
+    int addGood(Good good) throws GoodException, RepeatitionException;//выполнено
 
     Good findByNameGood(String goodName) throws GoodNotFoundException;//выполнено
 

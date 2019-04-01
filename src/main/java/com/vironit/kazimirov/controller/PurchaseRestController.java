@@ -28,26 +28,28 @@ public class PurchaseRestController {
         return purchaseList;
     }
 
-    @RequestMapping(value = "{clientId}",method = RequestMethod.POST)
+    @RequestMapping(value = "/createPurchase/{clientId}",method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public void createPurchase(@PathVariable ("clientId")int clientId) throws ClientNotFoundException {
+    public int createPurchase(@PathVariable ("clientId")int clientId) throws ClientNotFoundException {
         Client client=adminService.findClientById(clientId);
-        purchaseService.createNewPurchase(client);
+        int purchaseId=purchaseService.createNewPurchase(client);
+        return purchaseId;
+
     }
 
-    @RequestMapping(value = "{purchaseId}",method = RequestMethod.GET)
+    @RequestMapping(value = "/findPurchase/{purchaseId}",method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public Purchase findPurchaseById(@PathVariable ("purchaseId")int purchaseId) {
        return purchaseService.findPurchaseById(purchaseId);
     }
 
-    @RequestMapping(value = "{purchaseId}",method = RequestMethod.PUT)
+    @RequestMapping(value = "/makePurchase/{purchaseId}",method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void makeAPurchase(@PathVariable ("purchaseId")int purchaseId) throws PurchaseException {
         purchaseService.makeAPurchase(purchaseId);
     }
 
-    @RequestMapping(value = "{purchaseId}",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete/{purchaseId}",method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removePurchase(@PathVariable ("purchaseId")int purchaseId) throws PurchaseException {
         purchaseService.removePurchase(purchaseId);

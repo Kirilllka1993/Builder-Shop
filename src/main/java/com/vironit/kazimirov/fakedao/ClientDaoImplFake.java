@@ -81,7 +81,7 @@ public class ClientDaoImplFake implements ClientDao {
     }
 
     @Override
-    public void signIn(Client client) throws RepeatitionException {
+    public int signIn(Client client) throws RepeatitionException {
 
         int lastIndex = clients.size();
         if (clients.stream().anyMatch(s -> s.getLogin().equals(client.getLogin())) == true) {
@@ -89,6 +89,7 @@ public class ClientDaoImplFake implements ClientDao {
         }
         clients.add(client);
         client.setId(lastIndex + 1);
+        return client.getId();
     }
 
 

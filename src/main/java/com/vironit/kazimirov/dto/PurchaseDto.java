@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 public class PurchaseDto {
     private int id;
     private double sum;
-    private Client client;
+    private int client;
     private LocalDateTime registration;
     private LocalDateTime timeOfPurchase;
-    private Status status;
+    private String status;
 }

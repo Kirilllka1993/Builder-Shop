@@ -24,13 +24,14 @@ public class PurposeDaoImplFake implements PurposeDao {
     }
 
     @Override
-    public void addPurpose(Purpose purpose) throws RepeatitionException {
+    public int addPurpose(Purpose purpose) throws RepeatitionException {
         if (purposes.stream().anyMatch(s -> s.getPurpose().equals(purpose.getPurpose())) == true) {
             throw new RepeatitionException("Such purpose is exist");
         }
         int lastIndex = purposes.size();
         purpose.setId(lastIndex + 1);
         purposes.add(purpose);
+        return purpose.getId();
     }
 
     @Override

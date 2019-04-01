@@ -106,10 +106,5 @@
     </select>
     <input type=submit value="updateStatus">
 </form>
-    <form method=post action=admin/newStatus>
-        <input type="text" name="id">
-        <input type="text" name="status">
-        <input type=submit value="status">
-</form>
 </body>
 </html>

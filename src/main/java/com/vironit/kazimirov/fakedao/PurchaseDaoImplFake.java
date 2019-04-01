@@ -110,12 +110,13 @@ public class PurchaseDaoImplFake implements PurchaseDao {
     }
 
     @Override
-    public void createNewPurchase(Client client) {
+    public int createNewPurchase(Client client) {
         LocalDateTime registration = LocalDateTime.now();
         Purchase purchase = new Purchase();
         purchase.setClient(client);
         purchase.setStatus(Status.NEW);
         purchase.setRegistration(registration);
+        return purchase.getId();
     }
 
     @Override

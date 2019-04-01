@@ -27,12 +27,14 @@ public class AdminDaoImpl implements AdminDao {
     public AdminDaoImpl() {
     }
 
-    public void addClient(Client client) {
+    public int addClient(Client client) {
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
         session.save(client);
+        int clientId=client.getId();
         tx1.commit();
         session.close();
+        return clientId;
     }
 
     @Override

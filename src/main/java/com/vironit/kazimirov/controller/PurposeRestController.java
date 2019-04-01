@@ -38,7 +38,7 @@ public class PurposeRestController {
         }
     }
 
-    @RequestMapping(value = "/{purposeId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/find/{purposeId}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
     Purpose findPurposeByName(@PathVariable("purposeId") int purposeId) throws PurposeNotFoundException {
@@ -52,7 +52,7 @@ public class PurposeRestController {
         return purpose;
     }
 
-    @RequestMapping(value = "/{purposeId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete/{purposeId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteSubsection(@PathVariable("purposeId") int purposeId) {
         try {

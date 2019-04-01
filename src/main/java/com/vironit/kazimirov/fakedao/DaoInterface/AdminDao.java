@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface AdminDao{
 
-    void addClient(Client client) throws RepeatitionException;
+    int addClient(Client client) throws RepeatitionException;
 
     void deleteClient(int clientId);
 

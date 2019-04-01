@@ -1,5 +1,6 @@
 package com.vironit.kazimirov.controller.controllerWeb;
 
+import com.vironit.kazimirov.dto.PurchaseDto;
 import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.entity.Status;
@@ -7,9 +8,11 @@ import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

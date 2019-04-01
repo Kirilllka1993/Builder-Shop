@@ -66,13 +66,14 @@ public class AdminDaoImplFake implements AdminDao {
 
 
     @Override
-    public void addClient(Client client) throws RepeatitionException {
+    public int addClient(Client client) throws RepeatitionException {
         int lastIndex = clients.size();
         if (clients.stream().anyMatch(s -> s.getLogin().equals(client.getLogin()))) {
             throw new RepeatitionException("Such login is using");
         }
         clients.add(client);
         client.setId(lastIndex + 1);
+        return client.getId();
     }
 
     @Override

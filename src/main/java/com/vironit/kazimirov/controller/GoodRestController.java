@@ -24,20 +24,21 @@ public class GoodRestController {
     @Autowired
     private PurposeService purposeService;
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/add",method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void addGood(@RequestBody GoodDto goodDto) throws RepeatitionException, GoodException, SubsectionNotFoundException, PurposeNotFoundException {
+    public int addGood(@RequestBody GoodDto goodDto) throws RepeatitionException, GoodException, SubsectionNotFoundException, PurposeNotFoundException {
         Subsection subsection=subsectionService.findSubsectionById(goodDto.getSubsectionId());
         Purpose purpose=purposeService.findPurposeById(goodDto.getPurposeId());
         Good good = goodDto.createGood();
         good.setSubsection(subsection);
         good.setPurpose(purpose);
-        goodService.addGood(good);
+        int goodId=goodService.addGood(good);
+        return goodId;
     }
 
-    @RequestMapping(value = "/name/{goodName}", method = RequestMethod.GET)
+    @RequestMapping(value = "/name", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Good findGoodByName(@PathVariable("goodName") String goodName) throws GoodNotFoundException {
+    public Good findGoodByName(@RequestBody String goodName) throws GoodNotFoundException {
         Good good = goodService.findByNameGood(goodName);
         return good;
     }
@@ -49,23 +50,23 @@ public class GoodRestController {
         return goods;
     }
 
-    @RequestMapping(value = "/subsectionTitle/{title}", method = RequestMethod.GET)
+    @RequestMapping(value = "/goodsBySubsection", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<Good> findGoodsBySubsection(@PathVariable("title") String title) throws SubsectionNotFoundException {
+    public List<Good> findGoodsBySubsection(@RequestBody String title) throws SubsectionNotFoundException {
         Subsection subsection = subsectionService.findSubsectionByName(title);
         List<Good> goods = goodService.findBySubsection(subsection);
         return goods;
     }
 
-    @RequestMapping(value = "/purposeName/{purpose}", method = RequestMethod.GET)
+    @RequestMapping(value = "/goodsByPurpose", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<Good> findGoodsByPurpose(@PathVariable("purpose") String purposeName) throws PurposeNotFoundException {
+    public List<Good> findGoodsByPurpose(@RequestBody String purposeName) throws PurposeNotFoundException {
         Purpose purpose = purposeService.findPurposeByName(purposeName);
         List<Good> goods = goodService.findByPurpose(purpose);
         return goods;
     }
 
-    @RequestMapping(value = "/{goodId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete/{goodId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteGood(@PathVariable("goodId") int goodId) {
         goodService.deleteGood(goodId);
@@ -109,7 +110,7 @@ public class GoodRestController {
         goodService.changeAmount(goodDto.getId(), goodDto.getAmount());
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
+    @RequestMapping(value = "/updateGood",method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateGood(@RequestBody GoodDto goodDto) {
         Good good = goodDto.createGood();
@@ -124,7 +125,7 @@ public class GoodRestController {
         return goods;
     }
 
-    @RequestMapping(value = "/{goodId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/findGood/{goodId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public Good findGoodById(@PathVariable("goodId") int goodId) throws GoodNotFoundException {
         Good good = goodService.findGoodById(goodId);

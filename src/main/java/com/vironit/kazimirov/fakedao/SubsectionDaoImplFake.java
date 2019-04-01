@@ -25,13 +25,14 @@ public class SubsectionDaoImplFake implements SubsectionDao {
 
     }
 
-    public void addSubsection(Subsection subsection) throws RepeatitionException {
+    public int addSubsection(Subsection subsection) throws RepeatitionException {
         if (subsections.stream().anyMatch(s -> s.getTitle().equals(subsection.getTitle())) == true) {
             throw new RepeatitionException();
         }
         int lastIndex = subsections.size();
         subsection.setId(lastIndex + 1);
         subsections.add(subsection);
+        return subsection.getId();
     }
 
     public List<Subsection> findSubsections() {

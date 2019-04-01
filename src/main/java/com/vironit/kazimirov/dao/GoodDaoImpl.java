@@ -27,12 +27,14 @@ public class GoodDaoImpl implements GoodDao {
 
 
     @Override
-    public void addGood(Good good) {
+    public int addGood(Good good) {
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
         session.save(good);
+        int goodId=good.getId();
         tx1.commit();
         session.close();
+        return goodId;
     }
 
     @Override

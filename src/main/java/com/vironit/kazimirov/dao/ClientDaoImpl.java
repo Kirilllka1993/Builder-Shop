@@ -60,13 +60,14 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
-    public void signIn(Client client) {
+    public int signIn(Client client) {
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
         session.save(client);
+        int clientId=client.getId();
         tx1.commit();
         session.close();
-
+        return clientId;
     }
 
     @Override

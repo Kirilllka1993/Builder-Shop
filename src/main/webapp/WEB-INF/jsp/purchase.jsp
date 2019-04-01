@@ -63,16 +63,16 @@
             <p><c:out value="${purchases}"/><br></p>
         </form>
 
-        <form method=get action=findGoodInPurchase>
+        <form method=get action=findCartItem>
             <p>goodInPurchaseId</p><input type="text" name="goodInPurchaseId">
-            <input type=submit value="findGoodInPurchase">
-            <p><c:out value="${goodInPurchase}"/><br></p>
+            <input type=submit value="findCartItem">
+            <p><c:out value="${cartItem}"/><br></p>
         </form>
         <form method=get action=findGoodInPurchaseByParametres>
             <p>goodId</p><input type="text" name="goodId">
             <p>purchaseId</p><input type="text" name="purchaseId">
-            <input type=submit value="findGoodInPurchase">
-            <p><c:out value="${goodInPurchase}"/><br></p>
+            <input type=submit value="findCartItem">
+            <p><c:out value="${cartItem}"/><br></p>
         </form>
 
         <form method=get action=deletePurchaseWithCancelled>

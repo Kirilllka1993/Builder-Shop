@@ -41,7 +41,8 @@ public class SubsectionController {
     public String addSubsection(@RequestParam ("title") String title, ModelMap map) throws RepeatitionException {
         Subsection subsection=new Subsection();
         subsection.setTitle(title);
-        subsectionService.addSubsection(subsection);
+        int subsectionId=subsectionService.addSubsection(subsection);
+        map.addAttribute("subsectionId",subsectionId);
         return "subsection";
     }
 

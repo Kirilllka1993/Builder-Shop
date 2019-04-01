@@ -22,12 +22,14 @@ public class SubsectionDaoImpl implements SubsectionDao {
     private final String FIND_SUBSECTION_BY_ID = "select subsection from Subsection subsection where subsection.id = :subsectionId";
 
     @Override
-    public void addSubsection(Subsection subsection) {
+    public int addSubsection(Subsection subsection) {
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
         session.save(subsection);
+        int subsectionId=subsection.getId();
         tx1.commit();
         session.close();
+        return subsectionId;
     }
 
     @Override

@@ -26,11 +26,11 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void addClient(Client client) throws RepeatitionException{
+    public int addClient(Client client) throws RepeatitionException{
         //matcher
         Optional<Client> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(client.getLogin()));
             if (checkLoginClient.isPresent()==false){
-                adminDao.addClient(client);
+               return adminDao.addClient(client);
         }else{
                 throw new RepeatitionException("such login is used");
         }

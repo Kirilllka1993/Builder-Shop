@@ -45,7 +45,7 @@ public class GoodController extends HttpServlet {
     public ModelAndView addGood(@ModelAttribute GoodDto goodDto, BindingResult result, ModelMap map) throws GoodException, RepeatitionException, SubsectionNotFoundException, PurposeNotFoundException {
         Good good = new Good();
 //        Subsection subsection = subsectionService.findSubsectionByName(goodDto.getSubsection().getTitle());
-//        Purpose purpose = purposeService.findPurposeByName(goodDto.getPurpose().getPurpose());
+//        Purpose purpose = purposeService.findSubsectionById(goodDto.getPurpose().getPurpose());
         Subsection subsection=subsectionService.findSubsectionById(goodDto.getSubsectionId());
         Purpose purpose=purposeService.findPurposeById(goodDto.getPurposeId());
         map.addAttribute("command", goodDto);
@@ -71,7 +71,7 @@ public class GoodController extends HttpServlet {
 //                          @RequestParam("amount") int amount) throws GoodException {
 //
 //        Subsection subsection=subsectionService.findSubsectionByName(title);
-//        Purpose purpose=purposeService.findPurposeByName(purposeName);
+//        Purpose purpose=purposeService.findSubsectionById(purposeName);
 //        Good good = new Good();
 //        good.setSubsection(subsection);
 //        good.setPurpose(purpose);
