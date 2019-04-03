@@ -35,13 +35,13 @@ public class PurchaseTest {
     @Autowired
     private GoodService goodService;
 
-    Client clientBeforeTest = null;
+    User userBeforeTest = null;
     Purchase purchaseBeforeTest = null;
 
     @Before
     public void createPurchase() {
-        clientBeforeTest = adminService.findAllClient().get(0);
-        purchaseService.createNewPurchase(clientBeforeTest);
+        userBeforeTest = adminService.findAllClient().get(0);
+        purchaseService.createNewPurchase(userBeforeTest);
         List<Purchase> purchases = purchaseService.findPurchases();
         purchaseBeforeTest = purchases.get(purchases.size() - 1);
 
@@ -104,7 +104,7 @@ public class PurchaseTest {
 
     @Test
     public void removePurchaseTest() {
-        purchaseService.createNewPurchase(clientBeforeTest);
+        purchaseService.createNewPurchase(userBeforeTest);
         List<Purchase> purchases = purchaseService.findPurchases();
         Purchase purchase = purchases.get(purchases.size() - 1);
         purchaseService.removePurchase(purchase.getId());

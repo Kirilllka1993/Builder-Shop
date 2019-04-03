@@ -1,6 +1,7 @@
 package com.vironit.kazimirov.dto;
 
-import com.vironit.kazimirov.entity.Client;
+import com.vironit.kazimirov.entity.User;
+import com.vironit.kazimirov.entity.UserRoleEnum;
 import lombok.*;
 
 @Data
@@ -14,15 +15,17 @@ public class ClientDto {
     private String password;
     private String address;
     private String phoneNumber;
+    private String userRoleEnum;
 
-    public Client createClient(){
-        Client client=new Client();
-        client.setLogin(this.login);
-        client.setAddress(this.address);
-        client.setPassword(this.password);
-        client.setPhoneNumber(this.phoneNumber);
-        client.setSurname(this.surname);
-        client.setName(this.name);
-        return client;
+    public User createClient(){
+        User user =new User();
+        user.setLogin(this.login);
+        user.setAddress(this.address);
+        user.setPassword(this.password);
+        user.setPhoneNumber(this.phoneNumber);
+        user.setSurname(this.surname);
+        user.setName(this.name);
+        user.setUserRoleEnum(UserRoleEnum.valueOf(this.userRoleEnum));
+        return user;
     }
 }

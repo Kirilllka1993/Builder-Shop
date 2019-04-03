@@ -42,7 +42,7 @@ import java.util.EnumSet;
 //}
 public class DispatcherServletInitializer implements WebApplicationInitializer {
     @Override
-    public void onStartup(ServletContext sc) throws ServletException {
+    public void onStartup(ServletContext sc) {
         AnnotationConfigWebApplicationContext root =
                 new AnnotationConfigWebApplicationContext();
 

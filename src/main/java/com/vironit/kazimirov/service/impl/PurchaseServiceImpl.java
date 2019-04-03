@@ -32,8 +32,8 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public int createNewPurchase(Client client) {
-        return purchaseDao.createNewPurchase(client);
+    public int createNewPurchase(User user) {
+        return purchaseDao.createNewPurchase(user);
     }
 
     @Override

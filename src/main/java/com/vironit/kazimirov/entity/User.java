@@ -10,8 +10,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "client", schema = "shop")
-public class Client {
+@Table(name = "user", schema = "shop")
+public class User {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +28,7 @@ public class Client {
     private String address;
     @Column(name = "phoneNumber")
     private String phoneNumber;
+    @Column(name = "userRoleEnum")
+    @Enumerated(EnumType.STRING)
+    private UserRoleEnum userRoleEnum;
 }

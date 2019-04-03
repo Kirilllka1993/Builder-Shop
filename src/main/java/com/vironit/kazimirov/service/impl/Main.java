@@ -3,17 +3,13 @@ package com.vironit.kazimirov.service.impl;
 
 import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.exception.*;
-import com.vironit.kazimirov.service.ClientService;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.vironit.kazimirov.service.SubsectionService;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 public class Main extends Thread {
 
@@ -25,7 +21,7 @@ public class Main extends Thread {
     public static void main(String[] args) throws RepeatitionException, ClientNotFoundException, PurchaseNotFoundException, PurchaseException, GoodException, IOException, SQLException {
         LOGGER.info("method is started");
         List<Good> goods = new ArrayList<>();
-        List<Client> clients = new ArrayList<>();
+        List<User> users = new ArrayList<>();
         List<Purchase> purchases = new ArrayList<>();
 
 
@@ -39,10 +35,10 @@ public class Main extends Thread {
         Subsection subsection3 = new Subsection(3, "Лакокрасочные покрытия");
         Subsection subsection4 = new Subsection(4, "Гидроизоляционные материалы");
 
-        Client client1 = new Client(1, "Andrei", "Stelmach", "andrei15", "andrei15", "Majkovski street", "1225689");
-        Client client2 = new Client(2, "Kirill", "Kazimirov", "kirill12", "kirill12", "Suharevska street", "56689635");
-        Client client3 = new Client(3, "Dem'an", "Gurski", "gurski93", "gurski93", "Odoevskogo street", "2568974");
-        Client client4 = new Client(4, "David", "Bekcham", "david15", "david15", "Angarskaja street", "111222333");
+        User user1 = new User(1, "Andrei", "Stelmach", "andrei15", "andrei15", "Majkovski street", "1225689",UserRoleEnum.USER);
+        User user2 = new User(2, "Kirill", "Kazimirov", "kirill12", "kirill12", "Suharevska street", "56689635",UserRoleEnum.USER);
+        User user3 = new User(3, "Dem'an", "Gurski", "gurski93", "gurski93", "Odoevskogo street", "2568974",UserRoleEnum.USER);
+        User user4 = new User(4, "David", "Bekcham", "david15", "david15", "Angarskaja street", "111222333",UserRoleEnum.USER);
 
         Good good1 = new Good(1, 2.0, subsection1, "м3", 5, 0, purpose1, "Пеноплекс", 54);
         Good good2 = new Good(2, 2.0, subsection2, "м3", 5, 1, purpose2, "Шпатлевка", 36);
@@ -51,15 +47,15 @@ public class Main extends Thread {
         Good good5 = new Good(5, 6.0, subsection4, "м3", 5, 0, purpose4, "Техноэласт", 18);
         Good good6 = new Good(5, 25.0, subsection4, "м3", 5, 0, purpose4, "Техноэласт", 18);
 
-//        Purchase purchase1 = new Purchase(1, 16.6, goods, client1, null, null, Status.IN_PROCESS);
-//        Purchase purchase2 = new Purchase(2, 18.0, goods, client2, null, null, Status.NEW);
-//        Purchase purchase3 = new Purchase(3, 20.0, goods, client3, null, null, Status.REGISTRATE);
-//        Purchase purchase4 = new Purchase(4, 16.9, goods, client4, null, null, Status.CANCELED);
+//        Purchase purchase1 = new Purchase(1, 16.6, goods, user1, null, null, Status.IN_PROCESS);
+//        Purchase purchase2 = new Purchase(2, 18.0, goods, user2, null, null, Status.NEW);
+//        Purchase purchase3 = new Purchase(3, 20.0, goods, user3, null, null, Status.REGISTRATE);
+//        Purchase purchase4 = new Purchase(4, 16.9, goods, user4, null, null, Status.CANCELED);
 
-        clients.add(client1);
-        clients.add(client2);
-        clients.add(client3);
-        clients.add(client4);
+        users.add(user1);
+        users.add(user2);
+        users.add(user3);
+        users.add(user4);
 
         goods.add(good1);
         goods.add(good2);
@@ -90,8 +86,8 @@ public class Main extends Thread {
         //Admindao
         //AdminServiceImpl adminServiceImpl = new AdminServiceImpl();
         try {
-            Client client=new Client(0, "Andreiq", "Stelmach", "andrei1q", "andrei15", "Majkovski street", "1225689");
-            //adminServiceImpl.addClient(client);
+            User user =new User(0, "Andreiq", "Stelmach", "andrei1q", "andrei15", "Majkovski street", "1225689",UserRoleEnum.USER);
+            //adminServiceImpl.addClient(user);
             //adminServiceImpl.deleteClient(4);
             //adminServiceImpl.showAllPurchases();
             //adminServiceImpl.showAllClient();
@@ -128,17 +124,17 @@ public class Main extends Thread {
         String login = "andrei15";
 
         try {
-            Review review = new Review(5, "Мне этот товар не понравился", 5, client3, good2);
+            Review review = new Review(5, "Мне этот товар не понравился", 5, user3, good2);
             //clientServiceImpl.addReview(review);
-            //clientServiceImpl.removeReview(3,client1);
+            //clientServiceImpl.removeReview(3,user1);
             //clientServiceImpl.signIn("Sergei", "fedorov", "andrei15", "sergei15", "Lenina street", "896564321");
             //clientServiceImpl.changePassword(10,"166dsfs");
             //clientServiceImpl.logIn("andrei15","andrei15");
             //clientServiceImpl.changeLogin(id, login);
             //clientServiceImpl.changeAdress(1, "Puschkina street");
             //clientServiceImpl.changePhoneNumber(1,"5698532");
-            //clientServiceImpl.removeReview(1,client1);
-            //clientServiceImpl.findAllReviews(client1);
+            //clientServiceImpl.removeReview(1,user1);
+            //clientServiceImpl.findAllReviews(user1);
             //clientServiceImpl.findAllClients();
         } catch (Exception ex) {
             LOGGER.error(ex);
@@ -154,10 +150,10 @@ public class Main extends Thread {
             //purchaseServiceImpl.deleteFromPurchase(2);
             //purchaseServiceImpl.searchPurchasesByDate(localDateTime1);
             //purchaseServiceImpl.showPurchases();
-            //purchaseServiceImpl.makeAPurchase(goods, client1, localDateTime2, localDateTime2, "Оформлен");
+            //purchaseServiceImpl.makeAPurchase(goods, user1, localDateTime2, localDateTime2, "Оформлен");
             //purchaseServiceImpl.removePurchase(1);
             //System.out.println(purchase1.getStatus());
-            //Purchase purchase=purchaseServiceImpl.createNewPurchase(client1);
+            //Purchase purchase=purchaseServiceImpl.createNewPurchase(user1);
             //purchaseServiceImpl.addIntoPurchase(2,10,purchase);
             //purchaseServiceImpl.addIntoPurchase(1,5,purchase);
             //purchaseServiceImpl.changeStatus(purchase,Status.CANCELED);
@@ -169,9 +165,9 @@ public class Main extends Thread {
         LOGGER.info("The programm end work");
 
         //Jdbc
-//        Client client=new Client(0, "Andreiq", "Stelmach", "andrei1q", "andrei15", "Majkovski street", "1225689");
+//        User user=new User(0, "Andreiq", "Stelmach", "andrei1q", "andrei15", "Majkovski street", "1225689");
 //        AdminDaoImplJdbs adminDaoImplJdbs=new AdminDaoImplJdbs();
-//        adminDaoImplJdbs.addClient(client);
+//        adminDaoImplJdbs.addClient(user);
 
         //Spring
 //        ApplicationContext ctx1=new AnnotationConfigApplicationContext(ApplicationConfig.class);

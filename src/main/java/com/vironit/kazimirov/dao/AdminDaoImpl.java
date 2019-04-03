@@ -1,6 +1,6 @@
 package com.vironit.kazimirov.dao;
 
-import com.vironit.kazimirov.entity.Client;
+import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.entity.Status;
@@ -20,41 +20,41 @@ import static com.vironit.kazimirov.entity.Status.*;
 public class AdminDaoImpl implements AdminDao {
     @Autowired
     private SessionFactory sessionFactory;
-    private final String FIND_CLIENT_BY_LOGIN = "select a from Client a where a.login = :login";
-    private final String FIND_CLIENTS = "select a from Client a";
-    private final String FIND_CLIENT_BY_ID="select client from Client client where client.id=:clientId";
+    private final String FIND_CLIENT_BY_LOGIN = "select a from User a where a.login = :login";
+    private final String FIND_CLIENTS = "select a from User a";
+    private final String FIND_CLIENT_BY_ID="select client from User client where client.id=:clientId";
 
     public AdminDaoImpl() {
     }
 
-    public int addClient(Client client) {
+    public int addClient(User user) {
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
-        session.save(client);
-        int clientId=client.getId();
+        session.save(user);
+        int clientId= user.getId();
         tx1.commit();
         session.close();
         return clientId;
     }
 
     @Override
-    public Client findClientByLogin(String login) {
+    public User findClientByLogin(String login) {
         Session session = sessionFactory.openSession();
-        Query query = session.createQuery(FIND_CLIENT_BY_LOGIN, Client.class);
+        Query query = session.createQuery(FIND_CLIENT_BY_LOGIN, User.class);
         query.setParameter("login", login);
-        Client client = query.getResultList().isEmpty() ? null : (Client) query.getResultList().get(0);
+        User user = query.getResultList().isEmpty() ? null : (User) query.getResultList().get(0);
         session.close();
-        return client;
+        return user;
     }
 
     @Override
-    public Client findClientById(int clientId) {
+    public User findClientById(int clientId) {
         Session session = sessionFactory.openSession();
-        Query query = session.createQuery(FIND_CLIENT_BY_ID, Client.class);
+        Query query = session.createQuery(FIND_CLIENT_BY_ID, User.class);
         query.setParameter("clientId", clientId);
-        Client client = query.getResultList().isEmpty() ? null : (Client) query.getResultList().get(0);
+        User user = query.getResultList().isEmpty() ? null : (User) query.getResultList().get(0);
         session.close();
-        return client;
+        return user;
     }
 
     @Override
@@ -69,18 +69,18 @@ public class AdminDaoImpl implements AdminDao {
     }
 
     @Override
-    public List<Client> findAllClient() {
+    public List<User> findAllClient() {
         Session session = sessionFactory.openSession();
-        List<Client> clients = (List<Client>) session.createQuery(FIND_CLIENTS).list();
+        List<User> users = (List<User>) session.createQuery(FIND_CLIENTS).list();
         session.close();
-        return clients;
+        return users;
     }
 
     public void deleteClient(int clientId) {
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
-        Client client = session.get(Client.class, clientId);
-        session.delete(client);
+        User user = session.get(User.class, clientId);
+        session.delete(user);
         tx1.commit();
         session.close();
     }

@@ -1,7 +1,7 @@
 package com.vironit.kazimirov.controller.controllerWeb;
 
 import com.vironit.kazimirov.entity.CartItem;
-import com.vironit.kazimirov.entity.Client;
+import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
@@ -42,8 +42,8 @@ public class PurchaseController extends HttpServlet {
 
     @RequestMapping(value = "/createPurchase", method = RequestMethod.POST)
     public ModelAndView createPurchase(@RequestParam("clientLogin") String clientLogin) throws ClientNotFoundException {
-        Client client = adminService.findClientByLogin(clientLogin);
-        purchaseService.createNewPurchase(client);
+        User user = adminService.findClientByLogin(clientLogin);
+        purchaseService.createNewPurchase(user);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("purchase");
         return modelAndView;

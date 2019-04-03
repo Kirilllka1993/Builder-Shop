@@ -34,12 +34,12 @@ public class PurchaseDaoImpl implements PurchaseDao {
     }
 
     @Override
-    public int createNewPurchase(Client client) {
+    public int createNewPurchase(User user) {
         Session session=sessionFactory.openSession();
         Purchase purchase=new Purchase();
         LocalDateTime registration=LocalDateTime.now();
         purchase.setStatus(Status.NEW);
-        purchase.setClient(client);
+        purchase.setUser(user);
         purchase.setRegistration(registration);
         Transaction tx1 = session.beginTransaction();
         session.save(purchase);

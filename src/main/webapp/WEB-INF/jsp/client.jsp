@@ -48,9 +48,9 @@
             <br>
             <td>comment</td>
             <td><input type=text name=comment></td>
-            <td><select name="client">
-                <c:forEach items="${clients}" var="client">
-                    <option value="${client.login}">${client.login}</option>
+            <td><select name="user">
+                <c:forEach items="${users}" var="user">
+                    <option value="${user.login}">${user.login}</option>
                 </c:forEach>
             </select></td>
             <td>good</td>
@@ -82,13 +82,13 @@
 <form method=post action=changeLogin>
     <p>id</p><input type="text" name="id">
     <p>login</p><input type="text" name="login">
-    <input type=submit value="update client">
+    <input type=submit value="update user">
 </form>
 <p>changeAddreess</p>
 <form method=post action=changeAddress>
     <p>id</p><input type="text" name="id">
     <p>address</p><input type="text" name="address">
-    <input type=submit value="update client">
+    <input type=submit value="update user">
 </form>
 <form method=post action=deleteReview>
     <p>idGood</p><input type="text" name="idGood">

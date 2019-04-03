@@ -14,11 +14,12 @@
   Hello<br>
   Please choose the command<br>
   <a href="adminPage">Page for admin Spring</a><br>
-  <a href="clientPage">Page for client</a><br>
+  <a href="clientPage">Page for user</a><br>
   <a href="goodPage">Page for good</a><br>
   <a href="purchasePage">Page for purchase</a><br>
   <a href="purposePage">Purpose</a><br>
   <a href="subsectionPage">Subsection</a><br>
+  <a href="login">Login page</a><br>
 
   </body>
 </html>

@@ -1,9 +1,9 @@
 package com.vironit.kazimirov.service.impl;
 
+import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.fakedao.DaoInterface.AdminDao;
 import com.vironit.kazimirov.fakedao.DaoInterface.ClientDao;
-import com.vironit.kazimirov.entity.Client;
 import com.vironit.kazimirov.entity.Review;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.ClientService;
@@ -40,10 +40,10 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client logIn(String login, String password) throws ClientNotFoundException {
+    public User logIn(String login, String password) throws ClientNotFoundException {
         //matcher
-        //Optional<Client> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(login));
-        Optional<Client> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(login));
+        //Optional<User> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(login));
+        Optional<User> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(login));
         if (checkLoginClient.isPresent() == false) {
             throw new ClientNotFoundException("such login is absent");
         } else {
@@ -58,11 +58,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public int signIn(Client client) throws RepeatitionException {
+    public int signIn(User user) throws RepeatitionException {
         //matcher
-        Optional<Client> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(client.getLogin()));
+        Optional<User> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(user.getLogin()));
         if (checkLoginClient.isPresent() == false) {
-           return clientDao.signIn(client);
+           return clientDao.signIn(user);
         } else {
             throw new RepeatitionException("such login is used");
         }
@@ -71,7 +71,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void changeLogin(int clientId, String newLogin) throws RepeatitionException {
         //matcher
-        Optional<Client> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(newLogin));
+        Optional<User> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(newLogin));
         if ((checkLoginClient.isPresent() == false)) {
             clientDao.changeLogin(clientId, newLogin);
         } else {
@@ -100,7 +100,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<Review> findAllReviews(Client client) {
-        return clientDao.findAllReviews(client);
+    public List<Review> findAllReviews(User user) {
+        return clientDao.findAllReviews(user);
     }
 }

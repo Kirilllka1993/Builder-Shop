@@ -23,7 +23,7 @@ private static final Logger LOGGER = Logger.getLogger(MyExceptionHandler.class.g
 
     @ExceptionHandler({ClientNotFoundException.class})
     public ResponseEntity<CustomErrorResponce> absentOfClient() {
-        LOGGER.error("Client Not found");
+        LOGGER.error("User Not found");
         CustomErrorResponce errors = new CustomErrorResponce(LocalDateTime.now(), 500, "ClientNotFound");
         return new ResponseEntity<>(errors, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -71,9 +71,9 @@ private static final Logger LOGGER = Logger.getLogger(MyExceptionHandler.class.g
     }
 
     @ExceptionHandler({Throwable.class})
-    public ResponseEntity<CustomErrorResponce> allHandle() {
-        LOGGER.error("Mistake");
-        CustomErrorResponce errors = new CustomErrorResponce(LocalDateTime.now(), 400, "rude mistake");
+    public ResponseEntity<CustomErrorResponce> allHandle(Throwable t) {
+        //LOGGER.error("Mistake");
+        CustomErrorResponce errors = new CustomErrorResponce(LocalDateTime.now(), 400, t.toString());
         return new ResponseEntity<>(errors, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 }

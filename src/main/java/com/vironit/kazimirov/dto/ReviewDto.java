@@ -1,8 +1,5 @@
 package com.vironit.kazimirov.dto;
 
-import com.vironit.kazimirov.entity.Client;
-import com.vironit.kazimirov.entity.Good;
-import com.vironit.kazimirov.entity.Review;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

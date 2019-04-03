@@ -1,11 +1,10 @@
 package com.vironit.kazimirov.controller;
 
-import com.vironit.kazimirov.entity.Client;
+import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.PurchaseException;
 import com.vironit.kazimirov.service.AdminService;
-import com.vironit.kazimirov.service.ClientService;
 import com.vironit.kazimirov.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,8 +30,8 @@ public class PurchaseRestController {
     @RequestMapping(value = "/createPurchase/{clientId}",method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public int createPurchase(@PathVariable ("clientId")int clientId) throws ClientNotFoundException {
-        Client client=adminService.findClientById(clientId);
-        int purchaseId=purchaseService.createNewPurchase(client);
+        User user =adminService.findClientById(clientId);
+        int purchaseId=purchaseService.createNewPurchase(user);
         return purchaseId;
 
     }

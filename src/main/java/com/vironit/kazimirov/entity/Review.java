@@ -22,7 +22,7 @@ public class Review {
     private int mark;
     @ManyToOne
     @JoinColumn(name = "client_id")
-    private Client client;
+    private User user;
     @ManyToOne
     @JoinColumn(name = "Good_id")
     private Good good;

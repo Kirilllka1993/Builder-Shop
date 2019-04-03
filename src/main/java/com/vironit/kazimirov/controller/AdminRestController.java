@@ -1,10 +1,9 @@
 package com.vironit.kazimirov.controller;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.vironit.kazimirov.dto.ClientDto;
 import com.vironit.kazimirov.dto.GoodDto;
 import com.vironit.kazimirov.dto.PurchaseDto;
-import com.vironit.kazimirov.entity.Client;
+import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.entity.Status;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
@@ -17,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.concurrent.SynchronousQueue;
 
 @RestController
 @RequestMapping(value = "admin")
@@ -30,18 +28,18 @@ public class AdminRestController {
 
     @RequestMapping(value = "/allClients", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<Client> showAllClients() {
+    public List<User> showAllClients() {
         LOGGER.info("the method allClients start");
-        List<Client> clients = adminService.findAllClient();
+        List<User> users = adminService.findAllClient();
         LOGGER.info("the method allClients end");
-        return clients;
+        return users;
     }
 
     @RequestMapping(value = "/addClient", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public int addClient(@RequestBody ClientDto clientDto) throws RepeatitionException {
-        Client client = clientDto.createClient();
-        int clientId = adminService.addClient(client);
+        User user = clientDto.createClient();
+        int clientId = adminService.addClient(user);
         return clientId;
     }
 
@@ -53,27 +51,27 @@ public class AdminRestController {
 
     @RequestMapping(value = "/clientBylogin", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Client findClientByLogin(@RequestBody ClientDto clientDto) throws ClientNotFoundException {
-        Client client = adminService.findClientByLogin(clientDto.getLogin());
-        return client;
+    public User findClientByLogin(@RequestBody ClientDto clientDto) throws ClientNotFoundException {
+        User user = adminService.findClientByLogin(clientDto.getLogin());
+        return user;
     }
 
     @RequestMapping(value = "/clientById/{clientId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Client findClientById(@PathVariable("clientId") int clientId) throws ClientNotFoundException {
-        Client client = adminService.findClientById(clientId);
-        return client;
+    public User findClientById(@PathVariable("clientId") int clientId) throws ClientNotFoundException {
+        User user = adminService.findClientById(clientId);
+        return user;
     }
 
-    @RequestMapping(name = "/newStatus", method = RequestMethod.PUT)
-    @ResponseStatus(HttpStatus.OK)
-    public void updateStatus(@RequestBody PurchaseDto purchaseDto) {
-        String text=purchaseDto.getStatus();
-        System.err.println(text);
-        Status status = Status.valueOf(purchaseDto.getStatus().toUpperCase());
-        Purchase purchase = purchaseService.findPurchaseById(purchaseDto.getId());
-        adminService.updateStatus(status, purchase);
-    }
+//    @RequestMapping(name = "/newStatus", method = RequestMethod.PUT)
+//    @ResponseStatus(HttpStatus.OK)
+//    public void updateStatus(@RequestBody PurchaseDto purchaseDto) {
+//        String text=purchaseDto.getStatus();
+//        System.err.println(text);
+//        Status status = Status.valueOf(purchaseDto.getStatus().toUpperCase());
+//        Purchase purchase = purchaseService.findPurchaseById(purchaseDto.getId());
+//        adminService.updateStatus(status, purchase);
+//    }
 
     @RequestMapping(value = "/newDiscount", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)

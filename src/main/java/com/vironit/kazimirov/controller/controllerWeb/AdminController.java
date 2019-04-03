@@ -1,18 +1,15 @@
 package com.vironit.kazimirov.controller.controllerWeb;
 
-import com.vironit.kazimirov.dto.PurchaseDto;
-import com.vironit.kazimirov.entity.Client;
+import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.entity.Status;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -41,8 +38,8 @@ public class AdminController {
 
     @RequestMapping("/showClient")
     public String showForm(ModelMap map) {
-        List<Client> clients = adminService.findAllClient();
-        map.addAttribute("clients", clients);
+        List<User> users = adminService.findAllClient();
+        map.addAttribute("clients", users);
         return "adminJsp";
     }
 
@@ -50,15 +47,15 @@ public class AdminController {
 //    @ResponseBody
 //    public String addClient(ClientDto clientDto, ModelMap map) {
 //        map.addAttribute("command", clientDto);
-//        Client client = new Client();
-//        client.setName(clientDto.getName());
-//        client.setSurname(clientDto.getSurname());
-//        client.setPassword(clientDto.getPassword());
-//        client.setLogin(clientDto.getLogin());
-//        client.setAddress(clientDto.getAddress());
-//        client.setPhoneNumber(clientDto.getPhoneNumber());
+//        User user = new User();
+//        user.setName(clientDto.getName());
+//        user.setSurname(clientDto.getSurname());
+//        user.setPassword(clientDto.getPassword());
+//        user.setLogin(clientDto.getLogin());
+//        user.setAddress(clientDto.getAddress());
+//        user.setPhoneNumber(clientDto.getPhoneNumber());
 //        try{
-//            adminService.addClient(client);
+//            adminService.addClient(user);
 //        }catch (RepeatitionException e){
 //            return "tryLogin";
 //        }
@@ -75,15 +72,15 @@ public class AdminController {
 
     @RequestMapping("/login")
     public String findClientByLogin(@RequestParam("login") String login, ModelMap map) throws ClientNotFoundException {
-        Client client = adminService.findClientByLogin(login);
-        map.addAttribute("client", client);
+        User user = adminService.findClientByLogin(login);
+        map.addAttribute("client", user);
         return "adminJsp";
     }
 
     @RequestMapping("/findById")
     public String findClientById(@RequestParam("idClient") int idClient, ModelMap map) throws ClientNotFoundException {
-        Client client1 = adminService.findClientById(idClient);
-        map.addAttribute("client1", client1);
+        User user1 = adminService.findClientById(idClient);
+        map.addAttribute("client1", user1);
         return "adminJsp";
     }
 

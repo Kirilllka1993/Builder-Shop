@@ -12,7 +12,7 @@ public interface PurchaseService {
     List<Purchase> findPurchases();//выполнено
 
 
-    int createNewPurchase(Client client);//выполнено
+    int createNewPurchase(User user);//выполнено
 
     Purchase findPurchaseById(int purchaseId);//выполнено
 

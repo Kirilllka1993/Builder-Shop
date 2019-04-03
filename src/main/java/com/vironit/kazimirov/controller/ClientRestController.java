@@ -2,7 +2,7 @@ package com.vironit.kazimirov.controller;
 
 import com.vironit.kazimirov.dto.ClientDto;
 import com.vironit.kazimirov.dto.ReviewClientDto;
-import com.vironit.kazimirov.entity.Client;
+import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Review;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
@@ -11,8 +11,6 @@ import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.ClientService;
 import com.vironit.kazimirov.service.GoodService;
-import com.vironit.kazimirov.service.impl.Main;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -34,13 +32,13 @@ public class ClientRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public void addReview(@RequestBody ReviewClientDto reviewClientDto) throws ClientNotFoundException, GoodNotFoundException {
 
-        Client client = adminService.findClientById(reviewClientDto.getClientId());
+        User user = adminService.findClientById(reviewClientDto.getClientId());
         Good good = goodService.findGoodById(reviewClientDto.getGoodId());
         Review review = new Review();
         review.setMark(reviewClientDto.getMark());
         review.setComment(reviewClientDto.getComment());
         review.setGood(good);
-        review.setClient(client);
+        review.setUser(user);
         clientService.addReview(review);
     }
 
@@ -52,16 +50,16 @@ public class ClientRestController {
 
     @RequestMapping(value = "/logIn", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Client logIn(@RequestBody ClientDto clientDto) throws ClientNotFoundException {
-        Client client = clientService.logIn(clientDto.getLogin(), clientDto.getPassword());
-        return client;
+    public User logIn(@RequestBody ClientDto clientDto) throws ClientNotFoundException {
+        User user = clientService.logIn(clientDto.getLogin(), clientDto.getPassword());
+        return user;
     }
 
     @RequestMapping(value = "add",method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public int signIn(@RequestBody ClientDto clientDto) throws RepeatitionException {
-        Client client = clientDto.createClient();
-        int clientId=clientService.signIn(client);
+        User user = clientDto.createClient();
+        int clientId=clientService.signIn(user);
         return clientId;
     }
 
@@ -98,8 +96,8 @@ public class ClientRestController {
 
     @RequestMapping(value = "/allReviews", method = RequestMethod.GET)
     public List<Review> findAllReviews(@RequestBody ReviewClientDto reviewClientDto) throws ClientNotFoundException {
-        Client client=adminService.findClientById(reviewClientDto.getClientId());
-        List<Review>reviews=clientService.findAllReviews(client);
+        User user =adminService.findClientById(reviewClientDto.getClientId());
+        List<Review>reviews=clientService.findAllReviews(user);
         return reviews;
     }
 

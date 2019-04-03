@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class PurchaseDaoImplFake implements PurchaseDao {
     private List<Purchase> purchases = new ArrayList<>();
     private List<Good> goods = new ArrayList<>();
-    private List<Client> clients = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
     private List<Good> purchasesCart = new ArrayList<>();
 
 
@@ -35,26 +35,26 @@ public class PurchaseDaoImplFake implements PurchaseDao {
         LocalDateTime localDateTime4 = LocalDateTime.of(2017, Month.JULY, 14, 12, 8);
 
 
-        Client client1 = new Client(1, "Andrei", "Stelmach", "andrei15", "andrei15", "Majkovski street", "1225689");
-        Client client2 = new Client(2, "Kirill", "Kazimirov", "kirill12", "kirill12", "Suharevska street", "56689635");
-        Client client3 = new Client(3, "Dem'an", "Gurski", "gurski93", "gurski93", "Odoevskogo street", "2568974");
-        Client client4 = new Client(4, "David", "Bekcham", "david15", "david15", "Angarskaja street", "111222333");
+        User user1 = new User(1, "Andrei", "Stelmach", "andrei15", "andrei15", "Majkovski street", "1225689",UserRoleEnum.USER);
+        User user2 = new User(2, "Kirill", "Kazimirov", "kirill12", "kirill12", "Suharevska street", "56689635",UserRoleEnum.USER);
+        User user3 = new User(3, "Dem'an", "Gurski", "gurski93", "gurski93", "Odoevskogo street", "2568974",UserRoleEnum.USER);
+        User user4 = new User(4, "David", "Bekcham", "david15", "david15", "Angarskaja street", "111222333",UserRoleEnum.USER);
 
         Good good1 = new Good(1, 2.0, subsection1, "м3", 5, 0, purpose1, "Пеноплекс", 54);
         Good good2 = new Good(2, 2.0, subsection2, "м3", 5, 1, purpose2, "Шпатлевка", 36);
         Good good3 = new Good(3, 2.0, subsection3, "м3", 5, 1, purpose3, "Краска для дерева", 15);
         Good good4 = new Good(4, 2.0, subsection4, "м3", 5, 0, purpose4, "Техноэласт", 18);
 
-//        Purchase purchase1 = new Purchase(1, 16.6, goods, client1, localDateTime1, localDateTime1, Status.NEW);
-//        Purchase purchase2 = new Purchase(2, 18.0, goods, client2, null, localDateTime2, Status.NEW);
-//        Purchase purchase3 = new Purchase(3, 20.0, goods, client3, null, localDateTime3, Status.NEW);
-//        Purchase purchase4 = new Purchase(4, 16.9, goods, client4, null, localDateTime4, Status.REGISTRATE);
-//        Purchase purchase5 = new Purchase(5, 16.6, goods, client1, null, localDateTime1, Status.IN_PROCESS);
+//        Purchase purchase1 = new Purchase(1, 16.6, goods, user1, localDateTime1, localDateTime1, Status.NEW);
+//        Purchase purchase2 = new Purchase(2, 18.0, goods, user2, null, localDateTime2, Status.NEW);
+//        Purchase purchase3 = new Purchase(3, 20.0, goods, user3, null, localDateTime3, Status.NEW);
+//        Purchase purchase4 = new Purchase(4, 16.9, goods, user4, null, localDateTime4, Status.REGISTRATE);
+//        Purchase purchase5 = new Purchase(5, 16.6, goods, user1, null, localDateTime1, Status.IN_PROCESS);
 
-        clients.add(client1);
-        clients.add(client2);
-        clients.add(client3);
-        clients.add(client4);
+        users.add(user1);
+        users.add(user2);
+        users.add(user3);
+        users.add(user4);
 
         goods.add(good1);
         goods.add(good2);
@@ -110,10 +110,10 @@ public class PurchaseDaoImplFake implements PurchaseDao {
     }
 
     @Override
-    public int createNewPurchase(Client client) {
+    public int createNewPurchase(User user) {
         LocalDateTime registration = LocalDateTime.now();
         Purchase purchase = new Purchase();
-        purchase.setClient(client);
+        purchase.setUser(user);
         purchase.setStatus(Status.NEW);
         purchase.setRegistration(registration);
         return purchase.getId();

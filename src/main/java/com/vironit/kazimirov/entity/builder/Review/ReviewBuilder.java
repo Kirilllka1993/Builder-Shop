@@ -1,6 +1,6 @@
 package com.vironit.kazimirov.entity.builder.Review;
 
-import com.vironit.kazimirov.entity.Client;
+import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Review;
 
@@ -22,8 +22,8 @@ public class ReviewBuilder {
         return this;
     }
 
-    public ReviewBuilder withClient(Client client) {
-        review.setClient(client);
+    public ReviewBuilder withClient(User user) {
+        review.setUser(user);
         return this;
     }
 

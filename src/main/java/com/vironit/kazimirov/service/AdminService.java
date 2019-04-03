@@ -1,6 +1,6 @@
 package com.vironit.kazimirov.service;
 
-import com.vironit.kazimirov.entity.Client;
+import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.entity.Status;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
@@ -10,17 +10,17 @@ import java.util.List;
 
 public interface AdminService {
 
-    int addClient(Client client) throws RepeatitionException;
+    int addClient(User user) throws RepeatitionException;
 
     void deleteClient(int clientId);
 
-    Client findClientByLogin(String login) throws ClientNotFoundException;
+    User findClientByLogin(String login) throws ClientNotFoundException;
 
-    Client findClientById(int clientId) throws ClientNotFoundException;
+    User findClientById(int clientId) throws ClientNotFoundException;
 
     void changeDiscount(int goodId, double discount);
 
-    List<Client> findAllClient();
+    List<User> findAllClient();
 
     void updateStatus(Status status, Purchase purchase);
 }

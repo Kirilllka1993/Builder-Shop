@@ -1,12 +1,10 @@
 package com.vironit.kazimirov.entity.builder.Purchase;
 
-import com.vironit.kazimirov.entity.Client;
-import com.vironit.kazimirov.entity.Good;
+import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.entity.Status;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class PurchaseBuilder {
     private Purchase purchase;
@@ -26,8 +24,8 @@ public class PurchaseBuilder {
 //        return this;
 //    }
 
-    public PurchaseBuilder withClient(Client client) {
-        purchase.setClient(client);
+    public PurchaseBuilder withClient(User user) {
+        purchase.setUser(user);
         return this;
     }
 

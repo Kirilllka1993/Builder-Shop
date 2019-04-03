@@ -2,19 +2,15 @@ package com.vironit.kazimirov.fakedao;
 
 import com.vironit.kazimirov.fakedao.DaoInterface.AdminDao;
 import com.vironit.kazimirov.entity.*;
-import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
-import com.vironit.kazimirov.exception.PurchaseNotFoundException;
-
 
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 
 public class AdminDaoImplFake implements AdminDao {
-    private List<Client> clients = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
     private List<Purchase> purchases = new ArrayList<>();
     private List<Good> goods = new ArrayList<>();
 
@@ -32,26 +28,26 @@ public class AdminDaoImplFake implements AdminDao {
         Subsection subsection3 = new Subsection(3, "Лакокрасочные покрытия");
         Subsection subsection4 = new Subsection(4, "Гидроизоляционные материалы");
 
-        Client client1 = new Client(1, "Andrei", "Stelmach", "andrei15", "andrei15", "Majkovski street", "1225689");
-        Client client2 = new Client(2, "Kirill", "Kazimirov", "kirill12", "kirill12", "Suharevska street", "56689635");
-        Client client3 = new Client(3, "Dem'an", "Gurski", "gurski93", "gurski93", "Odoevskogo street", "2568974");
-        Client client4 = new Client(4, "David", "Bekcham", "david15", "david15", "Angarskaja street", "111222333");
+        User user1 = new User(1, "Andrei", "Stelmach", "andrei15", "andrei15", "Majkovski street", "1225689",UserRoleEnum.USER);
+        User user2 = new User(2, "Kirill", "Kazimirov", "kirill12", "kirill12", "Suharevska street", "56689635",UserRoleEnum.USER);
+        User user3 = new User(3, "Dem'an", "Gurski", "gurski93", "gurski93", "Odoevskogo street", "2568974",UserRoleEnum.USER);
+        User user4 = new User(4, "David", "Bekcham", "david15", "david15", "Angarskaja street", "111222333",UserRoleEnum.USER);
 
         Good good1 = new Good(1, 2.0, subsection1, "м3", 5, 0, purpose1, "Пеноплекс", 54);
         Good good2 = new Good(2, 2.0, subsection2, "м3", 5, 5, purpose2, "Шпатлевка", 13);
         Good good3 = new Good(3, 2.0, subsection3, "м3", 5, 6, purpose3, "Краска для дерева", 15);
         Good good4 = new Good(4, 2.0, subsection4, "м3", 5, 0, purpose4, "Техноэласт", 18);
 
-//        Purchase purchase1 = new Purchase(1, 16.6, goods, client1, null, null, Status.NEW);
-//        Purchase purchase2 = new Purchase(2, 18.0, goods, client2, null, null, Status.NEW);
-//        Purchase purchase3 = new Purchase(3, 20.0, goods, client3, null, null, Status.NEW);
-//        Purchase purchase4 = new Purchase(4, 16.9, goods, client4, null, null, Status.NEW);
+//        Purchase purchase1 = new Purchase(1, 16.6, goods, user1, null, null, Status.NEW);
+//        Purchase purchase2 = new Purchase(2, 18.0, goods, user2, null, null, Status.NEW);
+//        Purchase purchase3 = new Purchase(3, 20.0, goods, user3, null, null, Status.NEW);
+//        Purchase purchase4 = new Purchase(4, 16.9, goods, user4, null, null, Status.NEW);
 
 
-        clients.add(client1);
-        clients.add(client2);
-        clients.add(client3);
-        clients.add(client4);
+        users.add(user1);
+        users.add(user2);
+        users.add(user3);
+        users.add(user4);
 
         goods.add(good1);
         goods.add(good2);
@@ -66,35 +62,35 @@ public class AdminDaoImplFake implements AdminDao {
 
 
     @Override
-    public int addClient(Client client) throws RepeatitionException {
-        int lastIndex = clients.size();
-        if (clients.stream().anyMatch(s -> s.getLogin().equals(client.getLogin()))) {
+    public int addClient(User user) throws RepeatitionException {
+        int lastIndex = users.size();
+        if (users.stream().anyMatch(s -> s.getLogin().equals(user.getLogin()))) {
             throw new RepeatitionException("Such login is using");
         }
-        clients.add(client);
-        client.setId(lastIndex + 1);
-        return client.getId();
+        users.add(user);
+        user.setId(lastIndex + 1);
+        return user.getId();
     }
 
     @Override
     public void deleteClient(int clientId) {
 
-        Client client = clients.stream().filter(s -> s.getId() == clientId).findFirst().get();
-        clients.remove(client);
+        User user = users.stream().filter(s -> s.getId() == clientId).findFirst().get();
+        users.remove(user);
     }
 
     @Override
-    public Client findClientByLogin(String login) {
-        //Client clientName = clients.stream().filter(s -> s.getLogin().equals(login)).findFirst().orElseThrow(() -> new ClientNotFoundException("Such login is absent"));
-        Client clientName = clients.stream().filter(s -> s.getLogin().equals(login)).findFirst().get();
-        return clientName;
+    public User findClientByLogin(String login) {
+        //User userName = users.stream().filter(s -> s.getLogin().equals(login)).findFirst().orElseThrow(() -> new ClientNotFoundException("Such login is absent"));
+        User userName = users.stream().filter(s -> s.getLogin().equals(login)).findFirst().get();
+        return userName;
     }
 
     @Override
-    public Client findClientById(int clientId) {
-        //Client clientName = clients.stream().filter(s -> s.getId() == clientId).findFirst().orElseThrow(() -> new ClientNotFoundException("Such id is absent"));
-        Client clientName = clients.stream().filter(s -> s.getId() == clientId).findFirst().get();
-        return clientName;
+    public User findClientById(int clientId) {
+        //User userName = users.stream().filter(s -> s.getId() == clientId).findFirst().orElseThrow(() -> new ClientNotFoundException("Such id is absent"));
+        User userName = users.stream().filter(s -> s.getId() == clientId).findFirst().get();
+        return userName;
     }
 
     @Override
@@ -108,8 +104,8 @@ public class AdminDaoImplFake implements AdminDao {
 //    }
 
     @Override
-    public List<Client> findAllClient() {
-        return clients;
+    public List<User> findAllClient() {
+        return users;
     }
 
 

@@ -15,7 +15,7 @@
 <body>
 <h2>Admin Page</h2> <br>
 <%--<form method=post action=addClient>--%>
-<%--<p>Add client</p>--%>
+<%--<p>Add user</p>--%>
 <%--<table>--%>
 <%--<tr>--%>
 <%--<td>name</td>--%>
@@ -45,7 +45,7 @@
 <%--</form>--%>
 
 <form:form action="addClient">
-    <p>Add client</p>
+    <p>Add user</p>
     <table>
         <tr>
             <td>name</td>
@@ -81,18 +81,18 @@
     <input type=submit value=delete>
 </form>
 <form method=get action=showClient>
-    <p><c:out value="${clients}"/><br></p>
-    <input type=submit value="show clients">
+    <p><c:out value="${users}"/><br></p>
+    <input type=submit value="show users">
 </form>
 <form method=get action=login>
     <input type="text" name="login">
-    <input type=submit value="search client">
-    <p><c:out value="${client}"/><br></p>
+    <input type=submit value="search user">
+    <p><c:out value="${user}"/><br></p>
 </form>
 <form method=get action=findById>
     <input type="text" name="idClient">
-    <input type=submit value="search client by id">
-    <p><c:out value="${client1}"/><br></p>
+    <input type=submit value="search user by id">
+    <p><c:out value="${user1}"/><br></p>
 </form>
 
 

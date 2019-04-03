@@ -3,13 +3,10 @@ package com.vironit.kazimirov.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,7 +30,7 @@ public class Purchase {
     //(fetch = FetchType.EAGER)
     @ManyToOne
     @JoinColumn(name = "Client_id")
-    private Client client;
+    private User user;
     @Column (name = "registration")
     private LocalDateTime registration;
     @Column (name = "timeOfPurchase")
