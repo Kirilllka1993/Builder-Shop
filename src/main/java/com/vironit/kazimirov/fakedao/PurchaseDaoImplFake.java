@@ -1,5 +1,6 @@
 package com.vironit.kazimirov.fakedao;
 
+import com.vironit.kazimirov.entity.UserRoleEnum;
 import com.vironit.kazimirov.fakedao.DaoInterface.PurchaseDao;
 import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.exception.PurchaseException;
@@ -35,10 +36,10 @@ public class PurchaseDaoImplFake implements PurchaseDao {
         LocalDateTime localDateTime4 = LocalDateTime.of(2017, Month.JULY, 14, 12, 8);
 
 
-        User user1 = new User(1, "Andrei", "Stelmach", "andrei15", "andrei15", "Majkovski street", "1225689",UserRoleEnum.USER);
-        User user2 = new User(2, "Kirill", "Kazimirov", "kirill12", "kirill12", "Suharevska street", "56689635",UserRoleEnum.USER);
-        User user3 = new User(3, "Dem'an", "Gurski", "gurski93", "gurski93", "Odoevskogo street", "2568974",UserRoleEnum.USER);
-        User user4 = new User(4, "David", "Bekcham", "david15", "david15", "Angarskaja street", "111222333",UserRoleEnum.USER);
+        User user1 = new User(1, "Andrei", "Stelmach", "andrei15", "andrei15", "Majkovski street", "1225689", UserRoleEnum.ROLE_USER);
+        User user2 = new User(2, "Kirill", "Kazimirov", "kirill12", "kirill12", "Suharevska street", "56689635", UserRoleEnum.ROLE_USER);
+        User user3 = new User(3, "Dem'an", "Gurski", "gurski93", "gurski93", "Odoevskogo street", "2568974", UserRoleEnum.ROLE_USER);
+        User user4 = new User(4, "David", "Bekcham", "david15", "david15", "Angarskaja street", "111222333", UserRoleEnum.ROLE_USER);
 
         Good good1 = new Good(1, 2.0, subsection1, "м3", 5, 0, purpose1, "Пеноплекс", 54);
         Good good2 = new Good(2, 2.0, subsection2, "м3", 5, 1, purpose2, "Шпатлевка", 36);

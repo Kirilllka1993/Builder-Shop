@@ -45,7 +45,7 @@ public class AdminController {
 
 //    @RequestMapping(value = "/addClient", method = RequestMethod.POST)
 //    @ResponseBody
-//    public String addClient(ClientDto clientDto, ModelMap map) {
+//    public UserRoleEnum addClient(ClientDto clientDto, ModelMap map) {
 //        map.addAttribute("command", clientDto);
 //        User user = new User();
 //        user.setName(clientDto.getName());

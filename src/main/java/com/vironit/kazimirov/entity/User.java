@@ -27,7 +27,7 @@ public class User {
     @Column(name = "address")
     private String address;
     @Column(name = "phoneNumber")
-    private String phoneNumber;
+    private java.lang.String phoneNumber;
     @Column(name = "userRoleEnum")
     @Enumerated(EnumType.STRING)
     private UserRoleEnum userRoleEnum;

@@ -17,13 +17,13 @@ import java.util.List;
 public class PurchaseDaoImpl implements PurchaseDao {
     @Autowired
     private SessionFactory sessionFactory;
-    //private final String FIND_PURCHASES = "select purchase from Purchase purchase join fetch CartItem goodInPurchase WHERE purchase.id= goodInPurchase.id";
+    //private final UserRoleEnum FIND_PURCHASES = "select purchase from Purchase purchase join fetch CartItem goodInPurchase WHERE purchase.id= goodInPurchase.id";
     private final String FIND_GOOD_FOR_PURCHASE="select a from CartItem a where a.purchase.id =:purchaseId";
     private final String FIND_PURCHASES="select purchase from Purchase purchase";
     private final String FIND_BY_PURCHASES_BY_DATE = "select purchase from Purchase purchase where timeOfPurchase =:timeOfPurchase";
-    //private final String FIND_GOOD_FOR_PURCHASE="select goodInPurchase from CartItem goodInPurchase where goodInPurchase.purchase=:purchaseId";
-    //private final String FIND_PURCHASES = "select purchase from Purchase purchase";
-    //private final String FIND_P URCHASES = "select goodInPurchase from CartItem goodInPurchase join Purchase purchase WHERE goodInPurchase.purchase=purchase";
+    //private final UserRoleEnum FIND_GOOD_FOR_PURCHASE="select goodInPurchase from CartItem goodInPurchase where goodInPurchase.purchase=:purchaseId";
+    //private final UserRoleEnum FIND_PURCHASES = "select purchase from Purchase purchase";
+    //private final UserRoleEnum FIND_P URCHASES = "select goodInPurchase from CartItem goodInPurchase join Purchase purchase WHERE goodInPurchase.purchase=purchase";
 
     @Override
     public List<Purchase> findPurchases() {

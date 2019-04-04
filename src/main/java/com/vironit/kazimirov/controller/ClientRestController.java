@@ -72,7 +72,7 @@ public class ClientRestController {
 //    @RequestMapping(value = "/newPassword", method = RequestMethod.PUT)
 //    public void changePassword(@RequestBody ObjectNode objectNode) {
 //        int clientId=objectNode.get("clientId").asInt();
-//        String password=objectNode.get("password").asText();
+//        UserRoleEnum password=objectNode.get("password").asText();
 //        clientService.changePassword(clientId,password);
 //    }
 

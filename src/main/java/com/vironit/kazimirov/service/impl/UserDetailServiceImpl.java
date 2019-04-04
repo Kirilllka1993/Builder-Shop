@@ -1,11 +1,9 @@
 package com.vironit.kazimirov.service.impl;
 
-import com.mysql.cj.xdevapi.Client;
 import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.entity.UserRoleEnum;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.service.AdminService;
-import com.vironit.kazimirov.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,7 +21,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     private AdminService adminService;
 
     @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(java.lang.String login) throws UsernameNotFoundException {
         UserDetails userDetails=null;
         User user = null;
         try {
@@ -32,7 +30,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
             e.printStackTrace();
         }
         Set<GrantedAuthority> roles = new HashSet();
-            roles.add(new SimpleGrantedAuthority(UserRoleEnum.USER.name()));
+            roles.add(new SimpleGrantedAuthority(user.getUserRoleEnum().name()));
             userDetails = new org.springframework.security.core.userdetails.User(user.getLogin(),
                     user.getPassword(),
                     roles);

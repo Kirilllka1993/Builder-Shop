@@ -2,6 +2,7 @@ package com.vironit.kazimirov.service.impl;
 
 
 import com.vironit.kazimirov.entity.*;
+import com.vironit.kazimirov.entity.UserRoleEnum;
 import com.vironit.kazimirov.exception.*;
 
 import java.io.IOException;
@@ -18,7 +19,7 @@ public class Main extends Thread {
 
 
 
-    public static void main(String[] args) throws RepeatitionException, ClientNotFoundException, PurchaseNotFoundException, PurchaseException, GoodException, IOException, SQLException {
+    public static void main(java.lang.String[] args) throws RepeatitionException, ClientNotFoundException, PurchaseNotFoundException, PurchaseException, GoodException, IOException, SQLException {
         LOGGER.info("method is started");
         List<Good> goods = new ArrayList<>();
         List<User> users = new ArrayList<>();
@@ -35,10 +36,10 @@ public class Main extends Thread {
         Subsection subsection3 = new Subsection(3, "Лакокрасочные покрытия");
         Subsection subsection4 = new Subsection(4, "Гидроизоляционные материалы");
 
-        User user1 = new User(1, "Andrei", "Stelmach", "andrei15", "andrei15", "Majkovski street", "1225689",UserRoleEnum.USER);
-        User user2 = new User(2, "Kirill", "Kazimirov", "kirill12", "kirill12", "Suharevska street", "56689635",UserRoleEnum.USER);
-        User user3 = new User(3, "Dem'an", "Gurski", "gurski93", "gurski93", "Odoevskogo street", "2568974",UserRoleEnum.USER);
-        User user4 = new User(4, "David", "Bekcham", "david15", "david15", "Angarskaja street", "111222333",UserRoleEnum.USER);
+        User user1 = new User(1, "Andrei", "Stelmach", "andrei15", "andrei15", "Majkovski street", "1225689", UserRoleEnum.ROLE_USER);
+        User user2 = new User(2, "Kirill", "Kazimirov", "kirill12", "kirill12", "Suharevska street", "56689635", UserRoleEnum.ROLE_USER);
+        User user3 = new User(3, "Dem'an", "Gurski", "gurski93", "gurski93", "Odoevskogo street", "2568974", UserRoleEnum.ROLE_USER);
+        User user4 = new User(4, "David", "Bekcham", "david15", "david15", "Angarskaja street", "111222333", UserRoleEnum.ROLE_USER);
 
         Good good1 = new Good(1, 2.0, subsection1, "м3", 5, 0, purpose1, "Пеноплекс", 54);
         Good good2 = new Good(2, 2.0, subsection2, "м3", 5, 1, purpose2, "Шпатлевка", 36);
@@ -86,7 +87,7 @@ public class Main extends Thread {
         //Admindao
         //AdminServiceImpl adminServiceImpl = new AdminServiceImpl();
         try {
-            User user =new User(0, "Andreiq", "Stelmach", "andrei1q", "andrei15", "Majkovski street", "1225689",UserRoleEnum.USER);
+            User user =new User(0, "Andreiq", "Stelmach", "andrei1q", "andrei15", "Majkovski street", "1225689", UserRoleEnum.ROLE_USER);
             //adminServiceImpl.addClient(user);
             //adminServiceImpl.deleteClient(4);
             //adminServiceImpl.showAllPurchases();
@@ -121,7 +122,7 @@ public class Main extends Thread {
         //ClientDao
         //ClientService clientServiceImpl = new ClientServiceImpl();
         int id = 1;
-        String login = "andrei15";
+        java.lang.String login = "andrei15";
 
         try {
             Review review = new Review(5, "Мне этот товар не понравился", 5, user3, good2);

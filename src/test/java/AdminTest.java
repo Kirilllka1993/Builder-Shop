@@ -1,5 +1,6 @@
 import com.vironit.kazimirov.config.WebApplicationConfig;
 import com.vironit.kazimirov.entity.*;
+import com.vironit.kazimirov.entity.UserRoleEnum;
 import com.vironit.kazimirov.entity.builder.Client.ClientBuilder;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
@@ -41,7 +42,7 @@ public class AdminTest {
         List<User> users = new ArrayList<>();
         users.add(allUsers.get(0));
         users.add(allUsers.get(1));
-        String neverUseLogin = users.stream().map(User::getLogin).collect(Collectors.joining());
+        java.lang.String neverUseLogin = users.stream().map(User::getLogin).collect(Collectors.joining());
         ClientBuilder clientBuilder = new ClientBuilder();
         userBeforeTest = clientBuilder.withId(0)
                 .withName("Artem")
@@ -51,7 +52,7 @@ public class AdminTest {
                 .withAdress("Nezavisimosti street")
                 .withPhoneNumber("5632398")
                 .build();
-        userBeforeTest.setUserRoleEnum(UserRoleEnum.USER);
+        userBeforeTest.setUserRoleEnum(UserRoleEnum.ROLE_USER);
     }
 
     @Before

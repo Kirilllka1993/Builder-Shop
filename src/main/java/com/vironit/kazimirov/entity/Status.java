@@ -9,16 +9,16 @@ public enum Status {
     IN_PROCESS,
     REGISTRATE,
     CANCELED
-//    private String text;
+//    private UserRoleEnum text;
 
 //    Status() {
 //    }
 //
-//    Status(String text) {
+//    Status(UserRoleEnum text) {
 //        this.text=text;
 //    }
 //
-//    public String getText() {
+//    public UserRoleEnum getText() {
 //        return text;
 //    }
 }

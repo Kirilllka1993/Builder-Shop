@@ -25,7 +25,7 @@ private static final Logger LOGGER = Logger.getLogger(MyExceptionHandler.class.g
     public ResponseEntity<CustomErrorResponce> absentOfClient() {
         LOGGER.error("User Not found");
         CustomErrorResponce errors = new CustomErrorResponce(LocalDateTime.now(), 500, "ClientNotFound");
-        return new ResponseEntity<>(errors, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(errors, new HttpHeaders(), HttpStatus.valueOf(errors.getStatus()));
     }
 
     @ExceptionHandler({RepeatitionException.class})

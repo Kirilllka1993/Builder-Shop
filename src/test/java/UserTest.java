@@ -1,5 +1,6 @@
 import com.vironit.kazimirov.config.WebApplicationConfig;
 import com.vironit.kazimirov.entity.*;
+import com.vironit.kazimirov.entity.UserRoleEnum;
 import com.vironit.kazimirov.entity.builder.Client.ClientBuilder;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
@@ -41,7 +42,7 @@ public class UserTest {
         List<User> users = new ArrayList<>();
         users.add(allUsers.get(0));
         users.add(allUsers.get(1));
-        String neverUseLogin = users.stream().map(User::getLogin).collect(Collectors.joining());
+        java.lang.String neverUseLogin = users.stream().map(User::getLogin).collect(Collectors.joining());
         ClientBuilder clientBuilder = new ClientBuilder();
         userBeforeTest = clientBuilder.withId(0)
                 .withName("Artem")
@@ -51,7 +52,7 @@ public class UserTest {
                 .withAdress("Nezavisimosti street")
                 .withPhoneNumber("5632398")
                 .build();
-        userBeforeTest.setUserRoleEnum(UserRoleEnum.USER);
+        userBeforeTest.setUserRoleEnum(UserRoleEnum.ROLE_USER);
     }
 
     @Before
@@ -113,9 +114,9 @@ public class UserTest {
     @Test
     public void changeLogin() throws RepeatitionException, ClientNotFoundException {
         int idOfLastClient = adminService.findAllClient().get(adminService.findAllClient().size() - 1).getId();
-        String newLogin = userBeforeTest.getLogin();
+        java.lang.String newLogin = userBeforeTest.getLogin();
         User oldUser = adminService.findClientById(idOfLastClient);
-        String oldLogin = oldUser.getLogin();
+        java.lang.String oldLogin = oldUser.getLogin();
         clientService.changeLogin(idOfLastClient, newLogin);
         User updateUser = adminService.findClientByLogin(newLogin);
         List<User> missingUsers = adminService.findAllClient();
@@ -158,9 +159,9 @@ public class UserTest {
     @Test
     public void changePasswordTest() throws ClientNotFoundException {
         int idOfLastClient = adminService.findAllClient().get(adminService.findAllClient().size() - 1).getId();
-        String newPassword = userBeforeTest.getPassword();
+        java.lang.String newPassword = userBeforeTest.getPassword();
         User oldUser = adminService.findClientById(idOfLastClient);
-        String oldPassword = oldUser.getPassword();
+        java.lang.String oldPassword = oldUser.getPassword();
         clientService.changePassword(idOfLastClient, newPassword);
         User updateUser = adminService.findClientById(idOfLastClient);
         List<User> missingUsers = adminService.findAllClient();
@@ -176,9 +177,9 @@ public class UserTest {
     @Test
     public void changeAddressTest() throws ClientNotFoundException {
         int idOfLastClient = adminService.findAllClient().get(adminService.findAllClient().size() - 1).getId();
-        String newAddress = userBeforeTest.getAddress();
+        java.lang.String newAddress = userBeforeTest.getAddress();
         User oldUser = adminService.findClientById(idOfLastClient);
-        String oldAddress = oldUser.getAddress();
+        java.lang.String oldAddress = oldUser.getAddress();
         clientService.changeAddress(idOfLastClient, newAddress);
         User updateUser = adminService.findClientById(idOfLastClient);
         List<User> missingUsers = adminService.findAllClient();
@@ -194,9 +195,9 @@ public class UserTest {
     @Test
     public void changePhoneNumberTest() throws ClientNotFoundException {
         int idOfLastClient = adminService.findAllClient().get(adminService.findAllClient().size() - 1).getId();
-        String newPhone = userBeforeTest.getPhoneNumber();
+        java.lang.String newPhone = userBeforeTest.getPhoneNumber();
         User oldUser = adminService.findClientById(idOfLastClient);
-        String oldPhoneNumber = oldUser.getPhoneNumber();
+        java.lang.String oldPhoneNumber = oldUser.getPhoneNumber();
         clientService.changePhoneNumber(idOfLastClient, newPhone);
         User updateUser = adminService.findClientById(idOfLastClient);
         List<User> missingUsers = adminService.findAllClient();

@@ -1,5 +1,6 @@
 package com.vironit.kazimirov.fakedao;
 
+import com.vironit.kazimirov.entity.UserRoleEnum;
 import com.vironit.kazimirov.fakedao.DaoInterface.AdminDao;
 import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.exception.RepeatitionException;
@@ -28,10 +29,10 @@ public class AdminDaoImplFake implements AdminDao {
         Subsection subsection3 = new Subsection(3, "Лакокрасочные покрытия");
         Subsection subsection4 = new Subsection(4, "Гидроизоляционные материалы");
 
-        User user1 = new User(1, "Andrei", "Stelmach", "andrei15", "andrei15", "Majkovski street", "1225689",UserRoleEnum.USER);
-        User user2 = new User(2, "Kirill", "Kazimirov", "kirill12", "kirill12", "Suharevska street", "56689635",UserRoleEnum.USER);
-        User user3 = new User(3, "Dem'an", "Gurski", "gurski93", "gurski93", "Odoevskogo street", "2568974",UserRoleEnum.USER);
-        User user4 = new User(4, "David", "Bekcham", "david15", "david15", "Angarskaja street", "111222333",UserRoleEnum.USER);
+        User user1 = new User(1, "Andrei", "Stelmach", "andrei15", "andrei15", "Majkovski street", "1225689", UserRoleEnum.ROLE_USER);
+        User user2 = new User(2, "Kirill", "Kazimirov", "kirill12", "kirill12", "Suharevska street", "56689635", UserRoleEnum.ROLE_USER);
+        User user3 = new User(3, "Dem'an", "Gurski", "gurski93", "gurski93", "Odoevskogo street", "2568974", UserRoleEnum.ROLE_USER);
+        User user4 = new User(4, "David", "Bekcham", "david15", "david15", "Angarskaja street", "111222333", UserRoleEnum.ROLE_USER);
 
         Good good1 = new Good(1, 2.0, subsection1, "м3", 5, 0, purpose1, "Пеноплекс", 54);
         Good good2 = new Good(2, 2.0, subsection2, "м3", 5, 5, purpose2, "Шпатлевка", 13);
@@ -80,7 +81,7 @@ public class AdminDaoImplFake implements AdminDao {
     }
 
     @Override
-    public User findClientByLogin(String login) {
+    public User findClientByLogin(java.lang.String login) {
         //User userName = users.stream().filter(s -> s.getLogin().equals(login)).findFirst().orElseThrow(() -> new ClientNotFoundException("Such login is absent"));
         User userName = users.stream().filter(s -> s.getLogin().equals(login)).findFirst().get();
         return userName;

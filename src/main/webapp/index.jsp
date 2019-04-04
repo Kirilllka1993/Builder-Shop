@@ -19,7 +19,6 @@
   <a href="purchasePage">Page for purchase</a><br>
   <a href="purposePage">Purpose</a><br>
   <a href="subsectionPage">Subsection</a><br>
-  <a href="login">Login page</a><br>
 
   </body>
 </html>

@@ -1,5 +1,6 @@
 package com.vironit.kazimirov.fakedao;
 
+import com.vironit.kazimirov.entity.UserRoleEnum;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.fakedao.DaoInterface.ClientDao;
 import com.vironit.kazimirov.entity.*;
@@ -26,10 +27,10 @@ public class ClientDaoImplFake implements ClientDao {
         Subsection subsection3 = new Subsection(3, "Лакокрасочные покрытия");
         Subsection subsection4 = new Subsection(4, "Гидроизоляционные материалы");
 
-        User user1 = new User(1, "Andrei", "Stelmach", "andrei15", "andrei15", "Majkovski street", "1225689",UserRoleEnum.USER);
-        User user2 = new User(2, "Kirill", "Kazimirov", "kirill12", "kirill12", "Suharevska street", "56689635",UserRoleEnum.USER);
-        User user3 = new User(3, "Dem'an", "Gurski", "gurski93", "gurski93", "Odoevskogo street", "2568974",UserRoleEnum.USER);
-        User user4 = new User(4, "David", "Bekcham", "david15", "david15", "Angarskaja street", "111222333",UserRoleEnum.USER);
+        User user1 = new User(1, "Andrei", "Stelmach", "andrei15", "andrei15", "Majkovski street", "1225689", UserRoleEnum.ROLE_USER);
+        User user2 = new User(2, "Kirill", "Kazimirov", "kirill12", "kirill12", "Suharevska street", "56689635", UserRoleEnum.ROLE_USER);
+        User user3 = new User(3, "Dem'an", "Gurski", "gurski93", "gurski93", "Odoevskogo street", "2568974", UserRoleEnum.ROLE_USER);
+        User user4 = new User(4, "David", "Bekcham", "david15", "david15", "Angarskaja street", "111222333", UserRoleEnum.ROLE_USER);
 
         Good good1 = new Good(1, 2.0, subsection1, "м3", 5, 0, purpose1, "Пеноплекс", 54);
         Good good2 = new Good(2, 2.0, subsection2, "м3", 5, 1, purpose2, "Шпатлевка", 36);
@@ -68,7 +69,7 @@ public class ClientDaoImplFake implements ClientDao {
     }
 
     @Override
-    public User logIn(String login, String password) throws ClientNotFoundException {
+    public User logIn(java.lang.String login, java.lang.String password) throws ClientNotFoundException {
         if (users.stream().anyMatch(s -> s.getLogin().equals(login) && s.getPassword().equals(password)) == false) {
             throw new ClientNotFoundException("It is doesnt't correct entered login or password");
         }
@@ -94,7 +95,7 @@ public class ClientDaoImplFake implements ClientDao {
 
 
     @Override
-    public void changeLogin(int clientId, String newLogin) throws RepeatitionException {
+    public void changeLogin(int clientId, java.lang.String newLogin) throws RepeatitionException {
 
         if (users.stream().anyMatch(s -> s.getLogin().equals(newLogin)) == true) {
             throw new RepeatitionException("Such login is using");
@@ -103,17 +104,17 @@ public class ClientDaoImplFake implements ClientDao {
     }
 
     @Override
-    public void changePassword(int clientId, String newPassword) {
+    public void changePassword(int clientId, java.lang.String newPassword) {
         users.get(clientId - 1).setPassword(newPassword);
     }
 
     @Override
-    public void changePhoneNumber(int clientId, String newPhoneNumber) {
+    public void changePhoneNumber(int clientId, java.lang.String newPhoneNumber) {
         users.get(clientId - 1).setPhoneNumber(newPhoneNumber);
     }
 
     @Override
-    public void changeAddress(int clientId, String newAddress) {
+    public void changeAddress(int clientId, java.lang.String newAddress) {
 
         users.get(clientId - 1).setAddress(newAddress);
     }

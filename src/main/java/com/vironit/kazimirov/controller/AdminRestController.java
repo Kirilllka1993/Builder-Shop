@@ -66,7 +66,7 @@ public class AdminRestController {
 //    @RequestMapping(name = "/newStatus", method = RequestMethod.PUT)
 //    @ResponseStatus(HttpStatus.OK)
 //    public void updateStatus(@RequestBody PurchaseDto purchaseDto) {
-//        String text=purchaseDto.getStatus();
+//        UserRoleEnum text=purchaseDto.getStatus();
 //        System.err.println(text);
 //        Status status = Status.valueOf(purchaseDto.getStatus().toUpperCase());
 //        Purchase purchase = purchaseService.findPurchaseById(purchaseDto.getId());

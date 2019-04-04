@@ -61,13 +61,13 @@ public class GoodController extends HttpServlet {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("good");
 
-//    public String addGood(@RequestParam("price") double price,
-//                          @RequestParam("subsection") String title,
-//                          @RequestParam("unit") String unit,
+//    public UserRoleEnum addGood(@RequestParam("price") double price,
+//                          @RequestParam("subsection") UserRoleEnum title,
+//                          @RequestParam("unit") UserRoleEnum unit,
 //                          @RequestParam("quantity") int quantity,
 //                          @RequestParam("discount") double discount,
-//                          @RequestParam("purpose") String purposeName,
-//                          @RequestParam("name") String name,
+//                          @RequestParam("purpose") UserRoleEnum purposeName,
+//                          @RequestParam("name") UserRoleEnum name,
 //                          @RequestParam("amount") int amount) throws GoodException {
 //
 //        Subsection subsection=subsectionService.findSubsectionByName(title);
