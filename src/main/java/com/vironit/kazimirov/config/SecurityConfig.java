@@ -27,8 +27,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth, PasswordEncoder passwordEncoder) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-//        auth.inMemoryAuthentication().withUser("bill").password("abc123").roles("ROLE_ADMIN");
-//        auth.inMemoryAuthentication().withUser("tom").password("abc123").roles("ROLE_USER");
     }
 
     @Override
@@ -46,7 +44,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new RestAuthenticationEntryPoint();
     }
 
-    /* To allow Pre-flight [OPTIONS] request from browser */
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
@@ -57,16 +54,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-
-    //https://www.baeldung.com/spring-security-two-login-pages
-
-    //https://www.baeldung.com/spring-security-login
-//https://docs.spring.io/spring-security/site/docs/current/reference/html/jc.html
-
-    //https://www.baeldung.com/securing-a-restful-web-service-with-spring-security
-
-    //http://websystique.com/spring-security/secure-spring-rest-api-using-basic-authentication/
-
-
-    //http://websystique.com/spring-security/secure-spring-rest-api-using-basic-authentication/
 }
