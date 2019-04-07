@@ -26,18 +26,6 @@
                     <!--<webXml>src/main/webapp/WEB-INF/web.xml</webXml>-->
                 </configuration>
             </plugin>
-<!--            Logging-->
-<!--            <plugin>-->
-<!--                <groupId>com.jcabi</groupId>-->
-<!--                <artifactId>jcabi-maven-plugin</artifactId>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <goals>-->
-<!--                            <goal>ajc</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
         </plugins>
     </build>
 
@@ -199,7 +187,7 @@
             <version>5.1.4.RELEASE</version>
         </dependency>
 
-<!--        Logging-->
+<!--        Logging with AOP-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aspects</artifactId>

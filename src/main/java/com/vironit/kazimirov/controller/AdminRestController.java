@@ -2,17 +2,12 @@ package com.vironit.kazimirov.controller;
 
 import com.vironit.kazimirov.dto.ClientDto;
 import com.vironit.kazimirov.dto.GoodDto;
-import com.vironit.kazimirov.dto.PurchaseDto;
 import com.vironit.kazimirov.entity.User;
-import com.vironit.kazimirov.entity.Purchase;
-import com.vironit.kazimirov.entity.Status;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
-import com.vironit.kazimirov.log.Log;
 import com.vironit.kazimirov.log.MyLogger;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.PurchaseService;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,22 +17,15 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "admin")
 public class AdminRestController {
-    //private static final Logger LOGGER = Logger.getLogger(AdminRestController.class.getName());
-    //private final Logger LOGGER = Logger.getLogger(this.getClass().getName());
     @Autowired
     private AdminService adminService;
     @Autowired
     private PurchaseService purchaseService;
-    @Autowired
-    private MyLogger myLogger;
 
     @RequestMapping(value = "/allClients", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    //@Log
-    public List<User> showAllClients() throws InterruptedException {
-        //LOGGER.info("the method allClients start");
+    public List<User> showAllClients() {
         List<User> users = adminService.findAllClient();
-        //LOGGER.info("the method allClients end");
         return users;
     }
 
