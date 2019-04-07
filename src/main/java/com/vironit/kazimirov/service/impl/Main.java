@@ -10,17 +10,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 public class Main extends Thread {
 
 
-    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+    //private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
 
 
     public static void main(java.lang.String[] args) throws RepeatitionException, ClientNotFoundException, PurchaseNotFoundException, PurchaseException, GoodException, IOException, SQLException {
-        LOGGER.info("method is started");
+        //LOGGER.info("method is started");
         List<Good> goods = new ArrayList<>();
         List<User> users = new ArrayList<>();
         List<Purchase> purchases = new ArrayList<>();
@@ -81,7 +81,7 @@ public class Main extends Thread {
             //goodServiceImpl1.updateGood(2, new Good(3, 5.0, null, "м3", 5, 1, null, "Шпатлевка", 36));
             //goodServiceImpl1.findGoodsByPrice(0, 2);
         } catch (Exception ex) {
-            LOGGER.error(ex);
+           // LOGGER.error(ex);
         }
 
         //Admindao
@@ -97,7 +97,7 @@ public class Main extends Thread {
             //adminServiceImpl.searchPurchasebyId(6);
             //adminServiceImpl.changeDiscount(2,65.0);
         } catch (Exception ex) {
-            LOGGER.error(ex);
+           // LOGGER.error(ex);
         }
 
         //SubsectionDao
@@ -107,7 +107,7 @@ public class Main extends Thread {
             //subsectionDao.addSubsection(1,"Утеплитель");
             //subsectionDao.showSubsections();
         } catch (Exception ex) {
-            LOGGER.error(ex);
+            //LOGGER.error(ex);
         }
 
         //PurposeDao
@@ -116,7 +116,7 @@ public class Main extends Thread {
             //purposeServiceImpl.addPurpose("Кровельные работы");
             //purposeServiceImpl.showPurposes();
         } catch (Exception ex) {
-            LOGGER.error(ex);
+           // LOGGER.error(ex);
         }
 
         //ClientDao
@@ -138,7 +138,7 @@ public class Main extends Thread {
             //clientServiceImpl.findAllReviews(user1);
             //clientServiceImpl.findAllClients();
         } catch (Exception ex) {
-            LOGGER.error(ex);
+            //LOGGER.error(ex);
         }
 
 
@@ -161,9 +161,9 @@ public class Main extends Thread {
              //purchaseServiceImpl.makeAPurchase(purchase);
              //goodServiceImpl1.findAllGoods();
         } catch (Exception ex) {
-            LOGGER.error(ex);
+           // LOGGER.error(ex);
         }
-        LOGGER.info("The programm end work");
+       // LOGGER.info("The programm end work");
 
         //Jdbc
 //        User user=new User(0, "Andreiq", "Stelmach", "andrei1q", "andrei15", "Majkovski street", "1225689");

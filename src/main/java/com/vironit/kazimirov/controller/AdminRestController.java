@@ -8,6 +8,8 @@ import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.entity.Status;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.log.Log;
+import com.vironit.kazimirov.log.MyLogger;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.PurchaseService;
 import org.apache.log4j.Logger;
@@ -20,18 +22,22 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "admin")
 public class AdminRestController {
-    private static final Logger LOGGER = Logger.getLogger(AdminRestController.class.getName());
+    //private static final Logger LOGGER = Logger.getLogger(AdminRestController.class.getName());
+    //private final Logger LOGGER = Logger.getLogger(this.getClass().getName());
     @Autowired
     private AdminService adminService;
     @Autowired
     private PurchaseService purchaseService;
+    @Autowired
+    private MyLogger myLogger;
 
     @RequestMapping(value = "/allClients", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<User> showAllClients() {
-        LOGGER.info("the method allClients start");
+    //@Log
+    public List<User> showAllClients() throws InterruptedException {
+        //LOGGER.info("the method allClients start");
         List<User> users = adminService.findAllClient();
-        LOGGER.info("the method allClients end");
+        //LOGGER.info("the method allClients end");
         return users;
     }
 
