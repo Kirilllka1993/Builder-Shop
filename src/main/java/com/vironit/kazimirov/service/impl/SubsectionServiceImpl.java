@@ -11,10 +11,9 @@ import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.SubsectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SubsectionServiceImpl implements SubsectionService {
@@ -45,13 +44,7 @@ public class SubsectionServiceImpl implements SubsectionService {
     @Override
     public List<SubsectionDto> findSubsections() {
         List<Subsection> subsections = subsectionDao.findSubsections();
-        List<SubsectionDto> subsectionDtos = new ArrayList<>();
-        for (int i = 0; i < subsections.size(); i++) {
-            SubsectionDto subsectionDto = new SubsectionDto();
-            subsectionDto.setId(subsections.get(i).getId());
-            subsectionDto.setTitle(subsections.get(i).getTitle());
-            subsectionDtos.add(subsectionDto);
-        }
+        List<SubsectionDto> subsectionDtos = subsections.stream().map(SubsectionDto::new).collect(Collectors.toList());
         return subsectionDtos;
     }
 
@@ -61,16 +54,18 @@ public class SubsectionServiceImpl implements SubsectionService {
         if (checkNameSubsection.isPresent() == false) {
             throw new SubsectionNotFoundException("such subsection is absent");
         } else {
-            Subsection subsection=subsectionDao.findSubsectionByName(subsectionTitle);
-            SubsectionDto subsectionDto=new SubsectionDto();
-            subsectionDto.setId(subsection.getId());
-            subsectionDto.setTitle(subsection.getTitle());
+            Subsection subsection = subsectionDao.findSubsectionByName(subsectionTitle);
+            SubsectionDto subsectionDto = new SubsectionDto(subsection);
             return subsectionDto;
         }
     }
 
     @Override
-    public void deleteSubsection(int subsectionId) throws CantDeleteElement {
+    public void deleteSubsection(int subsectionId) throws CantDeleteElement, SubsectionNotFoundException {
+        Optional<Subsection> checkIdSubsection = Optional.ofNullable(subsectionDao.findSubsectionById(subsectionId));
+        if (checkIdSubsection.isPresent() == false) {
+            throw new SubsectionNotFoundException("such subsection is absent");
+        }
         Subsection subsection = subsectionDao.findSubsectionById(subsectionId);
         List<Good> goods = goodDao.findBySubsection(subsection);
         if (goods.size() == 0) {
@@ -86,10 +81,8 @@ public class SubsectionServiceImpl implements SubsectionService {
         if (checkIdSubsection.isPresent() == false) {
             throw new SubsectionNotFoundException("such subsection is absent");
         } else {
-            Subsection subsection=subsectionDao.findSubsectionById(subsectionId);
-            SubsectionDto subsectionDto=new SubsectionDto();
-            subsectionDto.setId(subsection.getId());
-            subsectionDto.setTitle(subsection.getTitle());
+            Subsection subsection = subsectionDao.findSubsectionById(subsectionId);
+            SubsectionDto subsectionDto = new SubsectionDto(subsection);
             return subsectionDto;
         }
 

@@ -44,14 +44,14 @@ public class MyExceptionHandler {
     @ExceptionHandler({SubsectionNotFoundException.class})
     public ResponseEntity<CustomErrorResponce> subsectionNotFoundHandle() {
         LOGGER.error("Such subsection is absent ");
-        CustomErrorResponce errors = new CustomErrorResponce(LocalDateTime.now(), 500, "such subsection is present");
+        CustomErrorResponce errors = new CustomErrorResponce(LocalDateTime.now(), 500, "such subsection is absent");
         return new ResponseEntity<>(errors, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler({PurposeNotFoundException.class})
     public ResponseEntity<CustomErrorResponce> purposeNotFoundHandle() {
         LOGGER.error("Such purpose is absent ");
-        CustomErrorResponce errors = new CustomErrorResponce(LocalDateTime.now(), 500, "such purpose is present");
+        CustomErrorResponce errors = new CustomErrorResponce(LocalDateTime.now(), 500, "such purchase is absent");
         return new ResponseEntity<>(errors, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -68,4 +68,11 @@ public class MyExceptionHandler {
         CustomErrorResponce errors = new CustomErrorResponce(LocalDateTime.now(), 400, t.toString());
         return new ResponseEntity<>(errors, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler({CartItemNotFoundException.class})
+    public ResponseEntity<CustomErrorResponce> cartemNotFoundHandle() {
+        LOGGER.error("this cartItem is absent");
+        CustomErrorResponce errors = new CustomErrorResponce(LocalDateTime.now(), 500,"such cartItem is absent");
+        return new ResponseEntity<>(errors, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
 }

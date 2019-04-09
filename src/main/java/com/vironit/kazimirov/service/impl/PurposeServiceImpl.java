@@ -33,7 +33,7 @@ public class PurposeServiceImpl implements PurposeService {
     public int addPurpose(PurposeDto purposeDto) throws RepeatitionException {
         Optional<Purpose> checkPurpose = Optional.ofNullable(purposeDao.findPurposeByName(purposeDto.getPurpose()));
         if (checkPurpose.isPresent() == false) {
-            Purpose purpose=new Purpose();
+            Purpose purpose = new Purpose();
             purpose.setPurpose(purposeDto.getPurpose());
             return purposeDao.addPurpose(purpose);
         } else {
@@ -43,8 +43,8 @@ public class PurposeServiceImpl implements PurposeService {
 
     @Override
     public List<PurposeDto> findPurposes() {
-        List<Purpose> purposes=purposeDao.findPurposes();
-        List<PurposeDto> purposeDtos=purposes.stream().map(PurposeDto::new).collect(Collectors.toList());
+        List<Purpose> purposes = purposeDao.findPurposes();
+        List<PurposeDto> purposeDtos = purposes.stream().map(PurposeDto::new).collect(Collectors.toList());
         return purposeDtos;
     }
 
@@ -54,14 +54,18 @@ public class PurposeServiceImpl implements PurposeService {
         if (checkNamePurpose.isPresent() == false) {
             throw new PurposeNotFoundException("such purpose is absent");
         } else {
-            Purpose purpose=purposeDao.findPurposeByName(purposeName);
-            PurposeDto purposeDto=new PurposeDto(purpose);
+            Purpose purpose = purposeDao.findPurposeByName(purposeName);
+            PurposeDto purposeDto = new PurposeDto(purpose);
             return purposeDto;
         }
     }
 
     @Override
-    public void deletePurpose(int purposeId) throws CantDeleteElement {
+    public void deletePurpose(int purposeId) throws CantDeleteElement, PurposeNotFoundException {
+        Optional<Purpose> checkIdPurpose = Optional.ofNullable(purposeDao.findPurposeById(purposeId));
+        if (checkIdPurpose.isPresent() == false) {
+            throw new PurposeNotFoundException("such purpose is absent");
+        }
         Purpose purpose = purposeDao.findPurposeById(purposeId);
         List<Good> goods = goodDao.findByPurpose(purpose);
         if (goods.size() == 0) {
@@ -77,8 +81,8 @@ public class PurposeServiceImpl implements PurposeService {
         if (checkIdPurpose.isPresent() == false) {
             throw new PurposeNotFoundException("such purpose is absent");
         } else {
-            Purpose purpose=purposeDao.findPurposeById(purposeId);
-            PurposeDto purposeDto=new PurposeDto(purpose);
+            Purpose purpose = purposeDao.findPurposeById(purposeId);
+            PurposeDto purposeDto = new PurposeDto(purpose);
             return purposeDto;
         }
     }

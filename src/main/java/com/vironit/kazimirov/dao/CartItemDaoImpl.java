@@ -3,7 +3,6 @@ package com.vironit.kazimirov.dao;
 import com.vironit.kazimirov.entity.CartItem;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purchase;
-import com.vironit.kazimirov.exception.PurchaseException;
 import com.vironit.kazimirov.fakedao.DaoInterface.CartItemDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -24,10 +23,11 @@ public class CartItemDaoImpl implements CartItemDao {
     private final String FIND_CARTITEMS = "select cartitem from CartItem cartitem";
     private final String FIND_CARTITEM = "select cartitem from CartItem cartitem where cartitem.good.id=:goodId and cartitem.purchase.id=:purchaseId";
     private final String FIND_CARTITEMS_BY_GOOD_AND_PURCHASE = "select cartitem from CartItem cartitem where cartitem.purchase=:purchase";
-    private final String FIND_GOODS = "select cartitem.good.name from CartItem cartitem where cartitem.purchase.id=:purchaseId";
+    private final String FIND_GOODS = "select cartitem.good from CartItem cartitem where cartitem.purchase.id=:purchaseId";
     private final String FIND_PURCHASES = "select cartitem.purchase from CartItem cartitem where cartitem.good.id=:goodId";
     private final String FIND_CARTITEMS_BY_PURCHASE = "select cartitem from CartItem cartitem where cartitem.purchase.id=:purchaseId";
     private final String FIND_CARTITEMS_BY_GOOD = "select cartitem from CartItem cartitem where cartitem.good.id=:goodId";
+    private final String FIND_CARTITEM_BY_ID = "select purchase from Purchase purchase where purchase.id = :purchaseId";
 
     @Override
     public int addInCartItem(Good good, int amount, Purchase purchase) {
@@ -47,14 +47,14 @@ public class CartItemDaoImpl implements CartItemDao {
 
     @Override
     public List<CartItem> findCartItems() {
-        Session session = sessionFactory.openSession();//getCurrentSession
+        Session session = sessionFactory.openSession();
         List<CartItem> purchases = (List<CartItem>) session.createQuery(FIND_CARTITEMS).list();
-        session.close();//не будет для управления транзакциями в Spring
+        session.close();
         return purchases;
     }
 
     @Override
-    public void deleteFromPurchase(Good good, Purchase purchase) throws PurchaseException {
+    public void deleteFromPurchase(Good good, Purchase purchase) {
         Session session = sessionFactory.openSession();
         int goodId = good.getId();
         int purchaseId = purchase.getId();
@@ -118,7 +118,7 @@ public class CartItemDaoImpl implements CartItemDao {
         CartItem cartItem = session.createQuery(FIND_CARTITEM, CartItem.class)
                 .setParameter("purchaseId", purchaseId).
                         setParameter("goodId", goodId).uniqueResult();
-        cartItem.setAmount(cartItem.getAmount() + amount);
+        cartItem.setAmount(amount);
         session.save(cartItem);
         tx1.commit();
         session.close();
@@ -145,11 +145,8 @@ public class CartItemDaoImpl implements CartItemDao {
     @Override
     public void returnedAmountOfGood(CartItem cartItem) {
         Session session = sessionFactory.openSession();
-        //int oldAmount = goodId.getAmount();
-        //int amountOfGoodInPurchase = cartItem.getAmount();
         Good good = cartItem.getGood();
         Transaction tx = session.beginTransaction();
-        //goodId.setAmount(oldAmount + amount);
         good.setAmount(good.getAmount() + cartItem.getAmount());
         session.update(good);
         tx.commit();

@@ -6,6 +6,7 @@ import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.entity.Status;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
+import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,7 +89,7 @@ public class AdminController {
 
     @RequestMapping(name = "/updateStatus", method = RequestMethod.POST)
     public String updateStatus(@RequestParam("status") Status status,
-                               @RequestParam("purchaseId") int purchaseId, ModelMap map) {
+                               @RequestParam("purchaseId") int purchaseId, ModelMap map) throws PurchaseNotFoundException {
         PurchaseDto purchaseDto = purchaseService.findPurchaseById(purchaseId);
         map.addAttribute("purchase", purchaseDto);
         map.addAttribute("status", status);

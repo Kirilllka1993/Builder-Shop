@@ -82,6 +82,8 @@ public class SubsectionController {
          modelAndView.setViewName("subsection");
         } catch (CantDeleteElement cantDeleteElement) {
             modelAndView.setViewName("tryLogin");
+        } catch (SubsectionNotFoundException e) {
+            e.printStackTrace();
         }
         return modelAndView;
     }

@@ -101,7 +101,7 @@ public class GoodTest {
     }
 
     @Test
-    public void addGoodTest() throws GoodException, RepeatitionException {
+    public void addGoodTest() throws GoodException, RepeatitionException, SubsectionNotFoundException, PurposeNotFoundException, GoodNotFoundException {
         int goodId=goodService.addGood(goodBeforeTest);
         goodBeforeTest.setId(goodId);
         List<GoodDto> missingGoods = goodService.findAllGoods();
@@ -114,18 +114,18 @@ public class GoodTest {
     }
 
     @Test(expected = GoodException.class)
-    public void addGoodExceptionTest() throws GoodException, RepeatitionException {
+    public void addGoodExceptionTest() throws GoodException, RepeatitionException, SubsectionNotFoundException, PurposeNotFoundException {
         goodService.addGood(goodBeforeExceptionTest);
     }
 
     @Test(expected = RepeatitionException.class)
-    public void addGoodRepeatitonExceptionTest() throws GoodException, RepeatitionException {
+    public void addGoodRepeatitonExceptionTest() throws GoodException, RepeatitionException, SubsectionNotFoundException, PurposeNotFoundException {
         GoodDto good = goodService.findAllGoods().get(0);
         goodService.addGood(good);
     }
 
     @Test(expected = GoodException.class)
-    public void addGoodExceptionWrongAmountTest() throws GoodException, RepeatitionException {
+    public void addGoodExceptionWrongAmountTest() throws GoodException, RepeatitionException, SubsectionNotFoundException, PurposeNotFoundException {
         goodBeforeTest.setAmount(-1);
         goodService.addGood(goodBeforeTest);
     }
@@ -171,7 +171,7 @@ public class GoodTest {
     }
 
     @Test
-    public void deleteGoodTest() throws GoodException, RepeatitionException {
+    public void deleteGoodTest() throws GoodException, RepeatitionException, SubsectionNotFoundException, PurposeNotFoundException, GoodNotFoundException {
         int goodId=goodService.addGood(goodBeforeTest);
         goodBeforeTest.setId(goodId);
         int deleteId = goodBeforeTest.getId();
@@ -250,7 +250,7 @@ public class GoodTest {
     }
 
     @Test(expected = GoodException.class)
-    public void changePriceException() throws GoodException {
+    public void changePriceException() throws GoodException, GoodNotFoundException {
         int idOfLastGood = goodService.findAllGoods().get(goodService.findAllGoods().size() - 1).getId();
         goodService.changePrice(idOfLastGood, 0);
     }
@@ -325,7 +325,7 @@ public class GoodTest {
     }
 
     @Test(expected = GoodException.class)
-    public void changeAmountException() throws GoodException {
+    public void changeAmountException() throws GoodException, GoodNotFoundException {
         int idOfLastGood = goodService.findAllGoods().get(goodService.findAllGoods().size() - 1).getId();
         goodService.changeAmount(idOfLastGood, -1);
     }

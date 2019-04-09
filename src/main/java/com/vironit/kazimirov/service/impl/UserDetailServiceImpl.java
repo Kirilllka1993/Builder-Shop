@@ -1,7 +1,6 @@
 package com.vironit.kazimirov.service.impl;
 
 import com.vironit.kazimirov.dto.UserDto;
-import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;

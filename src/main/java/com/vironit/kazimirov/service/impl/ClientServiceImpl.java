@@ -60,10 +60,10 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void removeReview(int clientId, int goodId) throws ClientNotFoundException, GoodNotFoundException {
-        Optional<Review> checkReview = Optional.ofNullable(clientDao.findReview(clientId,goodId));
+        Optional<Review> checkReview = Optional.ofNullable(clientDao.findReview(clientId, goodId));
         Optional<Good> checkIdGood = Optional.ofNullable(goodDao.findGoodById(goodId));
         Optional<User> checkIdClient = Optional.ofNullable(adminDao.findClientById(clientId));
-        if ((checkIdClient.isPresent() == false||checkReview.isPresent() == false)) {
+        if ((checkIdClient.isPresent() == false || checkReview.isPresent() == false)) {
             throw new ClientNotFoundException();
         } else if (checkIdGood.isPresent() == false) {
             throw new GoodNotFoundException();
@@ -75,12 +75,12 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ReviewDto findReview(int clientId, int goodId) throws ClientNotFoundException {
-        Optional<Review> checkReview = Optional.ofNullable(clientDao.findReview(clientId,goodId));
+        Optional<Review> checkReview = Optional.ofNullable(clientDao.findReview(clientId, goodId));
         if ((checkReview.isPresent() == false)) {
             throw new ClientNotFoundException();
-        }else{
-            Review review=clientDao.findReview(clientId,goodId);
-            ReviewDto reviewDto=new ReviewDto(review);
+        } else {
+            Review review = clientDao.findReview(clientId, goodId);
+            ReviewDto reviewDto = new ReviewDto(review);
             return reviewDto;
         }
 
@@ -101,13 +101,12 @@ public class ClientServiceImpl implements ClientService {
 
 
     @Override
-    public void logOut() {// это не в дао
+    public void logOut() {
 
     }
 
     @Override
     public int signIn(UserDto userDto) throws RepeatitionException {
-        //matcher
         Optional<User> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(userDto.getLogin()));
         if (checkLoginClient.isPresent() == false) {
             User user = userDto.createClient();
@@ -120,7 +119,6 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void changeLogin(int clientId, String newLogin) throws RepeatitionException, ClientNotFoundException {
-        //matcher
         Optional<User> checkIdClient = Optional.ofNullable(adminDao.findClientById(clientId));
         Optional<User> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(newLogin));
         if ((checkIdClient.isPresent() == false)) {
@@ -141,7 +139,7 @@ public class ClientServiceImpl implements ClientService {
         if ((checkIdClient.isPresent() == false)) {
             throw new ClientNotFoundException();
         } else {
-            newPassword=passwordEncoder.encode(newPassword);
+            newPassword = passwordEncoder.encode(newPassword);
             clientDao.changePassword(clientId, newPassword);
         }
     }
@@ -164,14 +162,12 @@ public class ClientServiceImpl implements ClientService {
         } else {
             clientDao.changeAddress(clientId, newAddress);
         }
-
-
     }
 
     @Override
     public List<ReviewDto> findAllReviews(UserDto userDto) {
         User user = adminDao.findClientById(userDto.getId());
-        List<Review> reviews=clientDao.findAllReviews(user);
+        List<Review> reviews = clientDao.findAllReviews(user);
         List<ReviewDto> reviewDtos = reviews.stream().map(ReviewDto::new).collect(Collectors.toList());
         return reviewDtos;
     }

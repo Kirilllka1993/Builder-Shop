@@ -1,6 +1,5 @@
 package com.vironit.kazimirov.log;
 
-import com.vironit.kazimirov.controller.AdminRestController;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

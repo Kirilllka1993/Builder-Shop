@@ -12,11 +12,10 @@ import com.vironit.kazimirov.fakedao.DaoInterface.PurposeDao;
 import com.vironit.kazimirov.fakedao.DaoInterface.SubsectionDao;
 import com.vironit.kazimirov.service.GoodService;
 import com.vironit.kazimirov.service.PurposeService;
+import com.vironit.kazimirov.service.SubsectionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,6 +31,8 @@ public class GoodServiceImpl implements GoodService {
     private PurposeDao purposeDao;
     @Autowired
     private PurposeService purposeService;
+    @Autowired
+    private SubsectionService subsectionService;
 
     @Autowired
     public GoodServiceImpl(GoodDao goodDao) {
@@ -39,12 +40,15 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public int addGood(GoodDto goodDto) throws GoodException, RepeatitionException {
+    public int addGood(GoodDto goodDto) throws GoodException, RepeatitionException, SubsectionNotFoundException, PurposeNotFoundException {
+        Optional<Good> checkNameGood = Optional.ofNullable(goodDao.findByNameGood(goodDto.getName()));
         if (goodDto.getPrice() <= goodDto.getDiscount() || goodDto.getAmount() < 0) {
             throw new GoodException("The discount can't be more then price");
-        }
-        Optional<Good> checkNameGood = Optional.ofNullable(goodDao.findByNameGood(goodDto.getName()));
-        if (checkNameGood.isPresent() == false) {
+        } else if (checkNameGood.isPresent() == true) {
+            throw new RepeatitionException("such goodId is present");
+        } else {
+            subsectionService.findSubsectionById(goodDto.getSubsectionId());
+            purposeService.findPurposeById(goodDto.getPurposeId());
             Subsection subsection = subsectionDao.findSubsectionById(goodDto.getSubsectionId());
             Purpose purpose = purposeDao.findPurposeById(goodDto.getPurposeId());
             Good good = new Good();
@@ -57,8 +61,6 @@ public class GoodServiceImpl implements GoodService {
             good.setPurpose(purpose);
             good.setSubsection(subsection);
             return goodDao.addGood(good);
-        } else {
-            throw new RepeatitionException("such goodId is present");
         }
     }
 
@@ -70,16 +72,6 @@ public class GoodServiceImpl implements GoodService {
         } else {
             Good good = goodDao.findByNameGood(goodName);
             GoodDto goodDto = new GoodDto(good);
-//            GoodDto goodDto=new GoodDto();
-//            goodDto.setName(goodId.getName());
-//            goodDto.setPrice(goodId.getPrice());
-//            goodDto.setAmount(goodId.getAmount());
-//            goodDto.setQuantity(goodId.getQuantity());
-//            goodDto.setUnit(goodId.getUnit());
-//            goodDto.setDiscount(goodId.getDiscount());
-//            goodDto.setId(goodId.getId());
-//            goodDto.setSubsectionId(goodId.getSubsection().getId());
-//            goodDto.setPurposeId(goodId.getPurpose().getId());
             return goodDto;
         }
     }
@@ -87,9 +79,6 @@ public class GoodServiceImpl implements GoodService {
     @Override
     public List<GoodDto> findAllGoods() {
         List<Good> goods = goodDao.findAllGoods();
-        //  List<GoodDto> goodDtos=goods.stream().map(goodId -> new GoodDto(goodId.getId(),goodId.getPrice(),goodId.getSubsection().getId(),goodId.getUnit(),goodId.getQuantity(),goodId.getDiscount(),
-        //      goodId.getPurpose().getId(),goodId.getName(),goodId.getAmount())).collect(Collectors.toList());
-//        List<GoodDto> goodDtos=goods.stream().map(goodId -> new GoodDto(goodId)).collect(Collectors.toList());
         List<GoodDto> goodDtos = goods.stream().map(GoodDto::new).collect(Collectors.toList());
         return goodDtos;
     }
@@ -121,14 +110,22 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public void deleteGood(int goodId) {
-        goodDao.deleteGood(goodId);
+    public void deleteGood(int goodId) throws GoodNotFoundException {
+        Optional<Good> checkIdGood = Optional.ofNullable(goodDao.findGoodById(goodId));
+        if (checkIdGood.isPresent() == false) {
+            throw new GoodNotFoundException("such goodId is absent");
+        } else {
+            goodDao.deleteGood(goodId);
+        }
     }
 
     @Override
-    public void changePrice(int goodId, double price) throws GoodException {
+    public void changePrice(int goodId, double price) throws GoodException, GoodNotFoundException {
+        Optional<Good> checkIdGood = Optional.ofNullable(goodDao.findGoodById(goodId));
         Good good = goodDao.findGoodById(goodId);
-        if (price <= good.getDiscount()) {
+        if (checkIdGood.isPresent() == false) {
+            throw new GoodNotFoundException("such goodId is absent");
+        } else if (price <= good.getDiscount()) {
             throw new GoodException("The discount can't be more then price");
         } else {
             goodDao.changePrice(goodId, price);
@@ -136,10 +133,11 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public void changeSubsection(int goodId, SubsectionDto subsectionDto) throws SubsectionNotFoundException {
-        Optional<Subsection> checkNameSubsection = Optional.ofNullable(subsectionDao.findSubsectionByName(subsectionDto.getTitle()));
-        if (checkNameSubsection.isPresent() == false) {
-            throw new SubsectionNotFoundException("such subsection is absent");
+    public void changeSubsection(int goodId, SubsectionDto subsectionDto) throws SubsectionNotFoundException, GoodNotFoundException {
+        subsectionService.findSubsectionByName(subsectionDto.getTitle());
+        Optional<Good> checkIdGood = Optional.ofNullable(goodDao.findGoodById(goodId));
+        if (checkIdGood.isPresent() == false) {
+            throw new GoodNotFoundException("such goodId is absent");
         } else {
             Subsection subsection = new Subsection(subsectionDto.getId(), subsectionDto.getTitle());
             goodDao.changeSubsection(goodId, subsection);
@@ -147,30 +145,44 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public void changePurpose(int goodId, PurposeDto purposeDto) throws PurposeNotFoundException {
-        Optional<Purpose> checkNamePurpose = Optional.ofNullable(purposeDao.findPurposeByName(purposeDto.getPurpose()));
-        if (checkNamePurpose.isPresent() == false) {
-            throw new PurposeNotFoundException("such purpose is absent");
+    public void changePurpose(int goodId, PurposeDto purposeDto) throws PurposeNotFoundException, GoodNotFoundException {
+        purposeService.findPurposeByName(purposeDto.getPurpose());
+        Optional<Good> checkIdGood = Optional.ofNullable(goodDao.findGoodById(goodId));
+        if (checkIdGood.isPresent() == false) {
+            throw new GoodNotFoundException("such goodId is absent");
         } else {
-            Purpose purpose=new Purpose(purposeDto.getId(),purposeDto.getPurpose());
+            Purpose purpose = new Purpose(purposeDto.getId(), purposeDto.getPurpose());
             goodDao.changePurpose(goodId, purpose);
         }
     }
 
     @Override
-    public void changeUnit(int goodId, String unit) {
-        goodDao.changeUnit(goodId, unit);
+    public void changeUnit(int goodId, String unit) throws GoodNotFoundException {
+        Optional<Good> checkIdGood = Optional.ofNullable(goodDao.findGoodById(goodId));
+        if (checkIdGood.isPresent() == false) {
+            throw new GoodNotFoundException("such goodId is absent");
+        } else {
+            goodDao.changeUnit(goodId, unit);
+        }
     }
 
     @Override
-    public void changeQuantity(int goodId, int quantity) {
-        goodDao.changeQuantity(goodId, quantity);
+    public void changeQuantity(int goodId, int quantity) throws GoodNotFoundException {
+        Optional<Good> checkIdGood = Optional.ofNullable(goodDao.findGoodById(goodId));
+        if (checkIdGood.isPresent() == false) {
+            throw new GoodNotFoundException("such goodId is absent");
+        } else {
+            goodDao.changeQuantity(goodId, quantity);
+        }
     }
 
     @Override
-    public void changeAmount(int goodId, int amount) throws GoodException {
+    public void changeAmount(int goodId, int amount) throws GoodException, GoodNotFoundException {
+        Optional<Good> checkIdGood = Optional.ofNullable(goodDao.findGoodById(goodId));
         if (amount < 0) {
             throw new GoodException("The amount can't be less then 0");
+        } else if (checkIdGood.isPresent() == false) {
+            throw new GoodNotFoundException("such goodId is absent");
         } else {
             goodDao.changeAmount(goodId, amount);
         }
@@ -202,7 +214,7 @@ public class GoodServiceImpl implements GoodService {
 
     @Override
     public List<GoodDto> findGoodsByPrice(double minPrice, double maxPrice) {
-        List<Good> goods=goodDao.findGoodsByPrice(minPrice, maxPrice);
+        List<Good> goods = goodDao.findGoodsByPrice(minPrice, maxPrice);
         List<GoodDto> goodDtos = goods.stream().map(GoodDto::new).collect(Collectors.toList());
         return goodDtos;
     }
@@ -213,11 +225,10 @@ public class GoodServiceImpl implements GoodService {
         if (checkIdGood.isPresent() == false) {
             throw new GoodNotFoundException("such goodId is absent");
         } else {
-            Good good=goodDao.findGoodById(goodId);
-            GoodDto goodDto=new GoodDto(good);
+            Good good = goodDao.findGoodById(goodId);
+            GoodDto goodDto = new GoodDto(good);
             return goodDto;
         }
-
     }
 
     @Override

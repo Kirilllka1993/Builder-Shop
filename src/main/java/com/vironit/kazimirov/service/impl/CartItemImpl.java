@@ -6,12 +6,13 @@ import com.vironit.kazimirov.dto.PurchaseDto;
 import com.vironit.kazimirov.entity.CartItem;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purchase;
-import com.vironit.kazimirov.exception.PurchaseException;
-import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.exception.*;
 import com.vironit.kazimirov.fakedao.DaoInterface.GoodDao;
 import com.vironit.kazimirov.fakedao.DaoInterface.CartItemDao;
 import com.vironit.kazimirov.fakedao.DaoInterface.PurchaseDao;
 import com.vironit.kazimirov.service.CartItemService;
+import com.vironit.kazimirov.service.GoodService;
+import com.vironit.kazimirov.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,10 @@ public class CartItemImpl implements CartItemService {
     private final GoodDao goodDao;
     @Autowired
     private PurchaseDao purchaseDao;
+    @Autowired
+    private PurchaseService purchaseService;
+    @Autowired
+    private GoodService goodService;
 
     @Autowired
     public CartItemImpl(CartItemDao cartItemDao, GoodDao goodDao) {
@@ -37,9 +42,11 @@ public class CartItemImpl implements CartItemService {
 
     @Override
     @Transactional
-    public int addInCartItem(GoodDto goodDto, int amount, PurchaseDto purchaseDto) throws PurchaseException, RepeatitionException {
+    public int addInCartItem(GoodDto goodDto, int amount, PurchaseDto purchaseDto) throws PurchaseException, RepeatitionException, PurchaseNotFoundException, GoodNotFoundException {
         Optional<CartItem> checkGood = Optional.ofNullable(cartItemDao.findCartItem(goodDto.getId(), purchaseDto.getId()));
         Optional<Good> checkNameGood = Optional.ofNullable(goodDao.findByNameGood(goodDto.getName()));
+        purchaseService.findPurchaseById(purchaseDto.getId());
+        goodService.findGoodById(goodDto.getId());
         if (goodDto.getAmount() < amount || amount < 0) {
             throw new PurchaseException("The amount of goodId is so much. In the store is present or you entered amount<0 " + " " + goodDto.getAmount());
         } else if (checkGood.isPresent() == true) {
@@ -62,10 +69,11 @@ public class CartItemImpl implements CartItemService {
     }
 
     @Override
-    public void deleteFromPurchase(CartItemDto cartItemDto) throws PurchaseException, RepeatitionException {
+    public void deleteFromPurchase(CartItemDto cartItemDto) throws PurchaseException, GoodNotFoundException, PurchaseNotFoundException {
         Optional<Good> checkNameGood = Optional.ofNullable(goodDao.findGoodById(cartItemDto.getGoodId()));
+        purchaseService.findPurchaseById(cartItemDto.getPurchaseId());
         if (checkNameGood.isPresent() == false) {
-            throw new RepeatitionException("such goodId is present");
+            throw new GoodNotFoundException("such goodId is absent");
         } else {
             Good good = goodDao.findGoodById(cartItemDto.getGoodId());
             Purchase purchase = purchaseDao.findPurchaseById(cartItemDto.getPurchaseId());
@@ -76,12 +84,20 @@ public class CartItemImpl implements CartItemService {
     }
 
     @Override
-    public void deleteCartItem(int cartItemId) {
-        cartItemDao.deleteCartItem(cartItemId);
+    public void deleteCartItem(int cartItemId) throws CartItemNotFoundException {
+        Optional<CartItem> checkCarItemName = Optional.ofNullable(cartItemDao.findCartItemById(cartItemId));
+        if (checkCarItemName.isPresent() == false) {
+            throw new CartItemNotFoundException("such cartItem is absent");
+        } else {
+            CartItem cartItem = cartItemDao.findCartItemById(cartItemId);
+            cartItemDao.returnedAmountOfGood(cartItem);
+            cartItemDao.deleteCartItem(cartItemId);
+        }
     }
 
     @Override
-    public List<GoodDto> findGoodsByPurchase(int purchaseId) {
+    public List<GoodDto> findGoodsByPurchase(int purchaseId) throws PurchaseNotFoundException {
+        purchaseService.findPurchaseById(purchaseId);
         List<Good> goods = cartItemDao.findGoodsByPurchase(purchaseId);
         List<GoodDto> goodDtos = goods.stream().map(GoodDto::new).collect(Collectors.toList());
         return goodDtos;
@@ -89,45 +105,60 @@ public class CartItemImpl implements CartItemService {
 
 
     @Override
-    public List<PurchaseDto> findPurchasesByGood(int goodId) {
+    public List<PurchaseDto> findPurchasesByGood(int goodId) throws GoodNotFoundException {
+        goodService.findGoodById(goodId);
         List<Purchase> purchases = cartItemDao.findPurchasesByGood(goodId);
         List<PurchaseDto> purchaseDtos = purchases.stream().map(PurchaseDto::new).collect(Collectors.toList());
         return purchaseDtos;
     }
 
     @Override
-    public void deleteCartItemsWithCancelledStatus(PurchaseDto purchaseDto) {
+    public void deleteCartItemsWithCancelledStatus(PurchaseDto purchaseDto) throws PurchaseNotFoundException {
+        purchaseService.findPurchaseById(purchaseDto.getId());
         Purchase purchase = purchaseDao.findPurchaseById(purchaseDto.getId());
         cartItemDao.deleteCartItemsWithCancelledStatus(purchase);
     }
 
     @Override
-    public void changeAmountInCartItem(int goodId, int amount, int purchaseId) throws PurchaseException, RepeatitionException {
+    public void changeAmountInCartItem(int goodId, int amount, int purchaseId) throws PurchaseException, RepeatitionException, GoodNotFoundException, GoodException {
         Optional<Good> checkNameGood = Optional.ofNullable(goodDao.findGoodById(goodId));
         if (checkNameGood.isPresent() == false) {
             throw new RepeatitionException("such goodId is present");
         }
         Good good = goodDao.findGoodById(goodId);
-        if (good.getAmount() < amount || amount < 0) {
+        CartItem cartItem = cartItemDao.findCartItem(goodId, purchaseId);
+        int oldAmount = cartItem.getAmount();
+        if (good.getAmount() + oldAmount < amount || amount < 0) {
             throw new PurchaseException("The amount of goodId is so much. In the store is present " + " " + good.getAmount());
         } else {
-            cartItemDao.reduceAmount(goodId, amount);
             cartItemDao.changeAmountInCartItem(goodId, amount, purchaseId);
+            goodService.changeAmount(goodId, good.getAmount() + oldAmount - amount);
         }
     }
 
     @Override
-    public CartItemDto findCartItem(int goodId, int purchaseId) {
+    public CartItemDto findCartItem(int goodId, int purchaseId) throws GoodNotFoundException, PurchaseNotFoundException, CartItemNotFoundException {
+        Optional<CartItem> checkCarItemName = Optional.ofNullable(cartItemDao.findCartItem(goodId, purchaseId));
+        if (checkCarItemName.isPresent() == false) {
+            throw new CartItemNotFoundException("such cartItem is absent");
+        }
+        goodService.findGoodById(goodId);
+        purchaseService.findPurchaseById(purchaseId);
         CartItem cartItem = cartItemDao.findCartItem(goodId, purchaseId);
         CartItemDto cartItemDto = new CartItemDto(cartItem);
         return cartItemDto;
     }
 
     @Override
-    public CartItemDto findCartItemById(int cartItemId) {
-        CartItem cartItem = cartItemDao.findCartItemById(cartItemId);
-        CartItemDto cartItemDto = new CartItemDto(cartItem);
-        return cartItemDto;
+    public CartItemDto findCartItemById(int cartItemId) throws CartItemNotFoundException {
+        Optional<CartItem> checkCarItemName = Optional.ofNullable(cartItemDao.findCartItemById(cartItemId));
+        if (checkCarItemName.isPresent() == false) {
+            throw new CartItemNotFoundException("such cartItem is absent");
+        } else {
+            CartItem cartItem = cartItemDao.findCartItemById(cartItemId);
+            CartItemDto cartItemDto = new CartItemDto(cartItem);
+            return cartItemDto;
+        }
     }
 
     @Override
@@ -142,15 +173,17 @@ public class CartItemImpl implements CartItemService {
     }
 
     @Override
-    public List<CartItemDto> findCartItemsByPurchase(int purchaseId) {
+    public List<CartItemDto> findCartItemsByPurchase(int purchaseId) throws PurchaseNotFoundException {
+        purchaseService.findPurchaseById(purchaseId);
         List<CartItem> cartItems = cartItemDao.findCartItemsByPurchase(purchaseId);
         List<CartItemDto> cartItemDtos = cartItems.stream().map(CartItemDto::new).collect(Collectors.toList());
         return cartItemDtos;
     }
 
     @Override
-    public List<CartItemDto> findCartItemsByGood(int goodId) {
-        List<CartItem> cartItems=cartItemDao.findCartItemsByGood(goodId);
+    public List<CartItemDto> findCartItemsByGood(int goodId) throws GoodNotFoundException {
+        goodService.findGoodById(goodId);
+        List<CartItem> cartItems = cartItemDao.findCartItemsByGood(goodId);
         List<CartItemDto> cartItemDtos = cartItems.stream().map(CartItemDto::new).collect(Collectors.toList());
         return cartItemDtos;
     }

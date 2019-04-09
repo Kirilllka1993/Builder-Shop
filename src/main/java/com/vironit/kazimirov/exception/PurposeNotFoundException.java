@@ -1,8 +1,7 @@
 package com.vironit.kazimirov.exception;
 
-public class PurposeNotFoundException extends Throwable {
+public class PurposeNotFoundException extends Exception {
     public PurposeNotFoundException() {
-        super();
     }
 
     public PurposeNotFoundException(String message) {

@@ -1,8 +1,8 @@
 package com.vironit.kazimirov.exception;
 
-public class SubsectionNotFoundException extends Throwable {
+public class SubsectionNotFoundException extends Exception {
     public SubsectionNotFoundException() {
-        super();
+
     }
 
     public SubsectionNotFoundException(String message) {

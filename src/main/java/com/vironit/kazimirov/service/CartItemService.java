@@ -3,43 +3,39 @@ package com.vironit.kazimirov.service;
 import com.vironit.kazimirov.dto.CartItemDto;
 import com.vironit.kazimirov.dto.GoodDto;
 import com.vironit.kazimirov.dto.PurchaseDto;
-import com.vironit.kazimirov.entity.Good;
-import com.vironit.kazimirov.entity.CartItem;
-import com.vironit.kazimirov.entity.Purchase;
-import com.vironit.kazimirov.exception.PurchaseException;
-import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.exception.*;
 
 import java.util.List;
 
 public interface CartItemService {
 
-    int addInCartItem(GoodDto goodDto, int amount, PurchaseDto purchaseDto) throws RepeatitionException, PurchaseException;//пользователь
+    int addInCartItem(GoodDto goodDto, int amount, PurchaseDto purchaseDto) throws RepeatitionException, PurchaseException, PurchaseNotFoundException, GoodNotFoundException;//выполнено
 
-    List<CartItemDto> findCartItems();//админ
+    List<CartItemDto> findCartItems();//выполнено
 
-    void deleteFromPurchase(CartItemDto cartItemDto) throws PurchaseException, RepeatitionException;//пользователь
+    void deleteFromPurchase(CartItemDto cartItemDto) throws PurchaseException, RepeatitionException, GoodNotFoundException, PurchaseNotFoundException, CartItemNotFoundException;//выполнено
 
-    void deleteCartItem(int cartItemId);//админ
+    void deleteCartItem(int cartItemId) throws CartItemNotFoundException;//выполнено
 
-    List<GoodDto> findGoodsByPurchase(int purchaseId);//админ
+    List<GoodDto> findGoodsByPurchase(int purchaseId) throws PurchaseNotFoundException;//выполнено
 
-    List<PurchaseDto> findPurchasesByGood(int goodId);//админ
+    List<PurchaseDto> findPurchasesByGood(int goodId) throws GoodNotFoundException;//выполнено
 
-    void deleteCartItemsWithCancelledStatus(PurchaseDto purchaseDto);//?
+    void deleteCartItemsWithCancelledStatus(PurchaseDto purchaseDto) throws PurchaseNotFoundException;//выполнено
 
-    void changeAmountInCartItem(int goodId, int amount, int purchaseId) throws PurchaseException, RepeatitionException;//пользователь
+    void changeAmountInCartItem(int goodId, int amount, int purchaseId) throws PurchaseException, RepeatitionException, GoodNotFoundException, GoodException;//выполнено
 
-    CartItemDto findCartItem(int goodId, int purchaseId);//админ
+    CartItemDto findCartItem(int goodId, int purchaseId) throws GoodNotFoundException, PurchaseNotFoundException, CartItemNotFoundException;//выполнено
 
-    CartItemDto findCartItemById(int cartItemId);//админ
+    CartItemDto findCartItemById(int cartItemId) throws CartItemNotFoundException;//выполнено
 
-    void returnedAmountOfGood(CartItemDto cartItemDto);//выполнено
+    void returnedAmountOfGood(CartItemDto cartItemDto);//
 
-    void reduceAmount(int goodId, int amount);//выполнено
+    void reduceAmount(int goodId, int amount);//
 
-    List<CartItemDto> findCartItemsByPurchase(int purchaseId);//админ
+    List<CartItemDto> findCartItemsByPurchase(int purchaseId) throws PurchaseNotFoundException;//админ
 
-    List<CartItemDto> findCartItemsByGood(int goodId);//админ
+    List<CartItemDto> findCartItemsByGood(int goodId) throws GoodNotFoundException;//админ
 
 
 }

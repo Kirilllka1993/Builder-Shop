@@ -60,7 +60,7 @@ public class SubsectionTest {
     }
 
     @Test
-    public void addSubsection() throws RepeatitionException, CantDeleteElement {
+    public void addSubsection() throws RepeatitionException, CantDeleteElement, SubsectionNotFoundException {
         int subsectionId=subsectionService.addSubsection(subsectionBeforeTest);
         subsectionBeforeTest.setId(subsectionId);
         List<SubsectionDto> missingSubsections = subsectionService.findSubsections();
@@ -97,12 +97,12 @@ public class SubsectionTest {
     }
 
     @Test(expected = CantDeleteElement.class)
-    public void deleteSubsectionExceptionTest() throws CantDeleteElement {
+    public void deleteSubsectionExceptionTest() throws CantDeleteElement, SubsectionNotFoundException {
         subsectionService.deleteSubsection(subsectionForDeleteExceptionTest.getId());
     }
 
     @Test
-    public void deleteSubcetionTest() throws RepeatitionException, CantDeleteElement {
+    public void deleteSubcetionTest() throws RepeatitionException, CantDeleteElement, SubsectionNotFoundException {
         int subsectionId=subsectionService.addSubsection(subsectionBeforeTest);
         subsectionBeforeTest.setId(subsectionId);
         int deleteId = subsectionBeforeTest.getId();

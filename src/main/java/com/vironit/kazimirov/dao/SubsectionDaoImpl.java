@@ -1,7 +1,6 @@
 package com.vironit.kazimirov.dao;
 
 import com.vironit.kazimirov.entity.Subsection;
-import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.fakedao.DaoInterface.SubsectionDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

@@ -6,6 +6,7 @@ import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.exception.GoodNotFoundException;
 import com.vironit.kazimirov.exception.PurchaseException;
+import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.CartItemService;
@@ -32,7 +33,7 @@ public class CartItemController {
     @RequestMapping(value = "/addIntoGoodInPurchase", method = RequestMethod.POST)
     public ModelAndView addIntoPurchase(@RequestParam("goodId") int goodId,
                                         @RequestParam("amount") int amount,
-                                        @RequestParam("purchaseId") int purchaseId) throws GoodNotFoundException, RepeatitionException, PurchaseException {
+                                        @RequestParam("purchaseId") int purchaseId) throws GoodNotFoundException, RepeatitionException, PurchaseException, PurchaseNotFoundException {
         PurchaseDto purchaseDto = purchaseService.findPurchaseById(purchaseId);
         GoodDto goodDto = goodService.findGoodById(goodId);
         ModelAndView modelAndView = new ModelAndView();

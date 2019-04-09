@@ -19,15 +19,6 @@ public class Purchase {
     private int id;
     @Column (name = "sum")
     private double sum;
-    //(fetch = FetchType.EAGER)
-//    @ManyToMany
-//    @JoinTable(
-//            name = "good_has_purchase",
-//            joinColumns = @JoinColumn(name = "purchase_id"),
-//            inverseJoinColumns = @JoinColumn(name = "good_id"))
-//    private List<Good> goods;
-
-    //(fetch = FetchType.EAGER)
     @ManyToOne
     @JoinColumn(name = "Client_id")
     private User user;

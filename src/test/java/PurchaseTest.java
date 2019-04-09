@@ -4,9 +4,7 @@ import com.vironit.kazimirov.dto.GoodDto;
 import com.vironit.kazimirov.dto.PurchaseDto;
 import com.vironit.kazimirov.dto.UserDto;
 import com.vironit.kazimirov.entity.*;
-import com.vironit.kazimirov.exception.ClientNotFoundException;
-import com.vironit.kazimirov.exception.PurchaseException;
-import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.exception.*;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.CartItemService;
 import com.vironit.kazimirov.service.GoodService;
@@ -64,7 +62,7 @@ public class PurchaseTest {
     }
 
     @Test
-    public void findPurchaseByIdTest() {
+    public void findPurchaseByIdTest() throws PurchaseNotFoundException {
         List<PurchaseDto> purchases = purchaseService.findPurchases();
         int id = purchases.get(0).getId();
         PurchaseDto findPurchaseById = purchaseService.findPurchaseById(id);
@@ -77,7 +75,7 @@ public class PurchaseTest {
 
 
     @Test
-    public void makeAPurchaseTest() throws PurchaseException, RepeatitionException {
+    public void makeAPurchaseTest() throws PurchaseException, RepeatitionException, GoodNotFoundException, PurchaseNotFoundException, CartItemNotFoundException {
         GoodDto good = goodService.findAllGoods().get(0);
         cartItemService.addInCartItem(good, 1, purchaseBeforeTest);
         CartItemDto cartItemDto=cartItemService.findCartItem(good.getId(),purchaseBeforeTest.getId());
@@ -92,7 +90,7 @@ public class PurchaseTest {
     }
 
     @Test(expected = PurchaseException.class)
-    public void makeAPurchaseExceptionTest() throws PurchaseException {
+    public void makeAPurchaseExceptionTest() throws PurchaseException, PurchaseNotFoundException {
         purchaseService.changeStatus(purchaseBeforeTest, Status.CANCELED);
         purchaseService.makeAPurchase(purchaseBeforeTest.getId());
     }
@@ -109,7 +107,7 @@ public class PurchaseTest {
 
 
     @Test
-    public void removePurchaseTest() throws ClientNotFoundException {
+    public void removePurchaseTest() throws ClientNotFoundException, PurchaseNotFoundException, CantDeleteElement {
         purchaseService.createNewPurchase(userBeforeTest);
         List<PurchaseDto> purchases = purchaseService.findPurchases();
         PurchaseDto purchase = purchases.get(purchases.size() - 1);
@@ -126,7 +124,7 @@ public class PurchaseTest {
 //    }rete
 
     @After
-    public void deletePurchase() {
+    public void deletePurchase() throws PurchaseNotFoundException, CantDeleteElement {
         purchaseService.removePurchase(purchaseBeforeTest.getId());
     }
 }

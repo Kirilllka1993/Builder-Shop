@@ -1,8 +1,6 @@
 package com.vironit.kazimirov.dto;
 
 import com.vironit.kazimirov.entity.CartItem;
-import com.vironit.kazimirov.entity.Good;
-import com.vironit.kazimirov.entity.Purchase;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

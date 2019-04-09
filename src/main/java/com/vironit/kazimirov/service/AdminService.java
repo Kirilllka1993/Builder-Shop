@@ -2,8 +2,6 @@ package com.vironit.kazimirov.service;
 
 import com.vironit.kazimirov.dto.PurchaseDto;
 import com.vironit.kazimirov.dto.UserDto;
-import com.vironit.kazimirov.entity.User;
-import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.entity.Status;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.GoodException;

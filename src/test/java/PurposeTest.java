@@ -54,7 +54,7 @@ public class PurposeTest {
     }
 
     @Test
-    public void addPurposeTest() throws RepeatitionException, CantDeleteElement {
+    public void addPurposeTest() throws RepeatitionException, CantDeleteElement, PurposeNotFoundException {
         int purposeId=purposeService.addPurpose(purposeBeforeTest);
         purposeBeforeTest.setId(purposeId);
         List<PurposeDto> missingPurposes = purposeService.findPurposes();
@@ -91,12 +91,12 @@ public class PurposeTest {
     }
 
     @Test(expected = CantDeleteElement.class)
-    public void deletePurposeExceptionTest() throws CantDeleteElement {
+    public void deletePurposeExceptionTest() throws CantDeleteElement, PurposeNotFoundException {
         purposeService.deletePurpose(purposeForDeleteExceptionTest.getId());
     }
 
     @Test
-    public void deletePurposeTest() throws RepeatitionException, CantDeleteElement {
+    public void deletePurposeTest() throws RepeatitionException, CantDeleteElement, PurposeNotFoundException {
         int purposeId=purposeService.addPurpose(purposeBeforeTest);
         purposeBeforeTest.setId(purposeId);
         int deleteId = purposeBeforeTest.getId();

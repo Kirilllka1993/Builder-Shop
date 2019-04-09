@@ -1,14 +1,17 @@
 package com.vironit.kazimirov.service.impl;
 
+import com.vironit.kazimirov.dto.CartItemDto;
 import com.vironit.kazimirov.dto.PurchaseDto;
 import com.vironit.kazimirov.dto.UserDto;
 import com.vironit.kazimirov.entity.*;
+import com.vironit.kazimirov.exception.CantDeleteElement;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
+import com.vironit.kazimirov.exception.PurchaseNotFoundException;
 import com.vironit.kazimirov.fakedao.DaoInterface.AdminDao;
 import com.vironit.kazimirov.fakedao.DaoInterface.GoodDao;
 import com.vironit.kazimirov.fakedao.DaoInterface.PurchaseDao;
 import com.vironit.kazimirov.exception.PurchaseException;
-import com.vironit.kazimirov.service.AdminService;
+import com.vironit.kazimirov.service.CartItemService;
 import com.vironit.kazimirov.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +31,8 @@ public class PurchaseServiceImpl implements PurchaseService {
     private final GoodDao goodDao;
     @Autowired
     private AdminDao adminDao;
+    @Autowired
+    private CartItemService cartItemService;
 
 
     @Autowired
@@ -46,30 +51,39 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Override
     public int createNewPurchase(UserDto userDto) throws ClientNotFoundException {
         Optional<User> checkLoginClient = Optional.ofNullable(adminDao.findClientById(userDto.getId()));
-        if (checkLoginClient.isPresent()==false){
+        if (checkLoginClient.isPresent() == false) {
             throw new ClientNotFoundException("such user is absent");
-        }else{
-            User user =adminDao.findClientById(userDto.getId());
+        } else {
+            User user = adminDao.findClientById(userDto.getId());
             return purchaseDao.createNewPurchase(user);
         }
     }
 
     @Override
-    public PurchaseDto findPurchaseById(int purchaseId) {
-        Purchase purchase=purchaseDao.findPurchaseById(purchaseId);
-        PurchaseDto purchaseDto=new PurchaseDto(purchase);
-        return purchaseDto;
+    public PurchaseDto findPurchaseById(int purchaseId) throws PurchaseNotFoundException {
+        Optional<Purchase> checkIdPurchase = Optional.ofNullable(purchaseDao.findPurchaseById(purchaseId));
+        if (checkIdPurchase.isPresent() == false) {
+            throw new PurchaseNotFoundException("such purchase is absent");
+        } else {
+            Purchase purchase = purchaseDao.findPurchaseById(purchaseId);
+            PurchaseDto purchaseDto = new PurchaseDto(purchase);
+            return purchaseDto;
+        }
     }
 
 
     @Override
-    public void makeAPurchase(int purchaseId) throws PurchaseException {
-        Purchase purchase = purchaseDao.findPurchaseById(purchaseId);
-        if (purchase.getStatus().equals(CANCELED)) {
-            throw new PurchaseException("The purchase is canceled");
+    public void makeAPurchase(int purchaseId) throws PurchaseException, PurchaseNotFoundException {
+        Optional<Purchase> checkIdPurchase = Optional.ofNullable(purchaseDao.findPurchaseById(purchaseId));
+        if (checkIdPurchase.isPresent() == false) {
+            throw new PurchaseNotFoundException("such purchase is absent");
+        } else {
+            Purchase purchase = purchaseDao.findPurchaseById(purchaseId);
+            if (purchase.getStatus().equals(CANCELED)) {
+                throw new PurchaseException("The purchase is canceled");
+            }
+            purchaseDao.makeAPurchase(purchaseId);
         }
-        purchaseDao.makeAPurchase(purchaseId);
-
     }
 
     @Override
@@ -81,12 +95,20 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public void changeStatus(PurchaseDto purchaseDto, Status status) {
-        Purchase purchase=purchaseDao.findPurchaseById(purchaseDto.getId());
+        Purchase purchase = purchaseDao.findPurchaseById(purchaseDto.getId());
         purchaseDao.changeStatus(purchase, status);
     }
 
     @Override
-    public void removePurchase(int purchaseId) {
-        purchaseDao.removePurchase(purchaseId);
+    public void removePurchase(int purchaseId) throws PurchaseNotFoundException, CantDeleteElement {
+        Optional<Purchase> checkIdPurchase = Optional.ofNullable(purchaseDao.findPurchaseById(purchaseId));
+        List<CartItemDto> cartItemDtos = cartItemService.findCartItemsByPurchase(purchaseId);
+        if (checkIdPurchase.isPresent() == false) {
+            throw new PurchaseNotFoundException("such purchase is absent");
+        }else if (cartItemDtos.size() == 0) {
+            purchaseDao.removePurchase(purchaseId);
+        } else {
+            throw new CantDeleteElement("this purchase is using by cartItem");
+        }
     }
 }

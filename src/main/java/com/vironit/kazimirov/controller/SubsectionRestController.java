@@ -1,7 +1,6 @@
 package com.vironit.kazimirov.controller;
 
 import com.vironit.kazimirov.dto.SubsectionDto;
-import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.exception.CantDeleteElement;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.exception.SubsectionNotFoundException;
@@ -10,11 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-//@RequestMapping(value = "subsection")
 public class SubsectionRestController {
     @Autowired
     private SubsectionService subsectionService;
@@ -30,8 +27,6 @@ public class SubsectionRestController {
     @RequestMapping(value = "admin/subsection/newSubsection", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
     public int addSubsection(@RequestBody SubsectionDto subsectionDto) throws RepeatitionException {
-//        Subsection subsection = new Subsection();
-//        subsection.setTitle(subsectionDto.getTitle());
         return subsectionService.addSubsection(subsectionDto);
     }
 
@@ -50,12 +45,8 @@ public class SubsectionRestController {
     }
 
     @RequestMapping(value = "admin/subsection/delete/{subsectionId}", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteSubsection(@PathVariable("subsectionId") int subsectionId) {
-        try {
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteSubsection(@PathVariable("subsectionId") int subsectionId) throws SubsectionNotFoundException, CantDeleteElement {
             subsectionService.deleteSubsection(subsectionId);
-        } catch (CantDeleteElement cantDeleteElement) {
-
-        }
     }
 }

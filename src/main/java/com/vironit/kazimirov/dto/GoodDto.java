@@ -1,8 +1,6 @@
 package com.vironit.kazimirov.dto;
 
 import com.vironit.kazimirov.entity.Good;
-import com.vironit.kazimirov.entity.Purpose;
-import com.vironit.kazimirov.entity.Subsection;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

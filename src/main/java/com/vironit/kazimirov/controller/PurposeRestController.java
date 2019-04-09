@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-//@RequestMapping(value = "purpose")
 public class PurposeRestController {
     @Autowired
     private PurposeService purposeService;
@@ -27,15 +26,10 @@ public class PurposeRestController {
 
     @RequestMapping(value = "admin/purpose/newPurpose", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public String addPurpose(@RequestBody PurposeDto purposeDto) {
-//        Purpose purpose = new Purpose();
-//        purpose.setPurpose(purposeDto.getPurpose());
-        try {
-            purposeService.addPurpose(purposeDto);
-            return "purpose";
-        } catch (RepeatitionException e) {
-            return "another page";
-        }
+    public int addPurpose(@RequestBody PurposeDto purposeDto) throws RepeatitionException {
+        int purposeId = purposeService.addPurpose(purposeDto);
+        return purposeId;
+
     }
 
     @RequestMapping(value = "purpose/find/{purposeId}", method = RequestMethod.GET)
@@ -51,12 +45,8 @@ public class PurposeRestController {
     }
 
     @RequestMapping(value = "admin/purpose/delete/{purposeId}", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteSubsection(@PathVariable("purposeId") int purposeId) {
-        try {
-            purposeService.deletePurpose(purposeId);
-        } catch (CantDeleteElement cantDeleteElement) {
-
-        }
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteSubsection(@PathVariable("purposeId") int purposeId) throws CantDeleteElement, PurposeNotFoundException {
+        purposeService.deletePurpose(purposeId);
     }
 }

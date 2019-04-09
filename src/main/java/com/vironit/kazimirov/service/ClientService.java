@@ -2,8 +2,6 @@ package com.vironit.kazimirov.service;
 
 import com.vironit.kazimirov.dto.ReviewDto;
 import com.vironit.kazimirov.dto.UserDto;
-import com.vironit.kazimirov.entity.User;
-import com.vironit.kazimirov.entity.Review;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.GoodNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;

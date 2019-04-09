@@ -2,7 +2,6 @@ package com.vironit.kazimirov.controller;
 
 import com.vironit.kazimirov.dto.ReviewDto;
 import com.vironit.kazimirov.dto.UserDto;
-import com.vironit.kazimirov.entity.Review;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.GoodNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
@@ -23,8 +22,6 @@ public class ClientRestController {
     private ClientService clientService;
     @Autowired
     private AdminService adminService;
-    @Autowired
-    private GoodService goodService;
 
     @RequestMapping(value = "/newReview", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
