@@ -1,5 +1,6 @@
 package com.vironit.kazimirov.service.impl;
 
+import com.vironit.kazimirov.dto.UserDto;
 import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.service.AdminService;
@@ -20,16 +21,16 @@ public class UserDetailServiceImpl implements UserDetailsService {
     private AdminService adminService;
 
     @Override
-    public UserDetails loadUserByUsername(java.lang.String login) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         UserDetails userDetails=null;
-        User user = null;
+        UserDto user = null;
         try {
             user = adminService.findClientByLogin(login);
         } catch (ClientNotFoundException e) {
             e.printStackTrace();
         }
         Set<GrantedAuthority> roles = new HashSet();
-            roles.add(new SimpleGrantedAuthority(user.getUserRoleEnum().name()));
+            roles.add(new SimpleGrantedAuthority(user.getUserRoleEnum()));
             userDetails = new org.springframework.security.core.userdetails.User(user.getLogin(),
                     user.getPassword(),
                     roles);

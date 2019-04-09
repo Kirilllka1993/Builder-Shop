@@ -89,7 +89,7 @@ public class AdminDaoImplFake implements AdminDao {
 
     @Override
     public User findClientById(int clientId) {
-        //User userName = users.stream().filter(s -> s.getId() == clientId).findFirst().orElseThrow(() -> new ClientNotFoundException("Such id is absent"));
+        //User userName = users.stream().filter(s -> s.getId() == userId).findFirst().orElseThrow(() -> new ClientNotFoundException("Such id is absent"));
         User userName = users.stream().filter(s -> s.getId() == clientId).findFirst().get();
         return userName;
     }

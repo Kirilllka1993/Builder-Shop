@@ -7,7 +7,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClientDto {
+public class UserDto {
     private int id;
     private String name;
     private String surname;
@@ -27,5 +27,18 @@ public class ClientDto {
         user.setName(this.name);
         user.setUserRoleEnum(UserRoleEnum.valueOf(this.userRoleEnum));
         return user;
+
+    }
+
+    public UserDto(User user){
+
+        this.id=user.getId();
+        this.name=user.getName();
+        this.surname=user.getSurname();
+        this.login=user.getLogin();
+        this.password=user.getPassword();
+        this.address=user.getAddress();
+        this.phoneNumber=user.getPhoneNumber();
+        this.userRoleEnum=user.getUserRoleEnum().name();
     }
 }

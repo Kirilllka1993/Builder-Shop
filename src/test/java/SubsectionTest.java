@@ -1,10 +1,13 @@
 
 import com.vironit.kazimirov.config.WebApplicationConfig;
+import com.vironit.kazimirov.dto.GoodDto;
+import com.vironit.kazimirov.dto.SubsectionDto;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.exception.CantDeleteElement;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.exception.SubsectionNotFoundException;
+import com.vironit.kazimirov.fakedao.DaoInterface.GoodDao;
 import com.vironit.kazimirov.service.GoodService;
 import com.vironit.kazimirov.service.SubsectionService;
 import org.junit.*;
@@ -29,34 +32,39 @@ public class SubsectionTest {
     private SubsectionService subsectionService;
     @Autowired
     private GoodService goodService;
+    @Autowired
+    private GoodDao goodDao;
 
-    Subsection subsectionBeforeTest = null;
-    Subsection subsectionForExceptionTest = null;
-    Subsection subsectionForDeleteExceptionTest = null;
+    SubsectionDto subsectionBeforeTest = null;
+    SubsectionDto subsectionForExceptionTest = null;
+    SubsectionDto subsectionForDeleteExceptionTest = new SubsectionDto();
 
     @Before
     public void createForExceptionSubsection() {
-        List<Subsection> allSubsections = subsectionService.findSubsections();
-        List<Subsection> subsections = new ArrayList<>();
+        List<SubsectionDto> allSubsections = subsectionService.findSubsections();
+        List<SubsectionDto> subsections = new ArrayList<>();
         subsections.add(allSubsections.get(0));
         subsections.add(allSubsections.get(1));
         subsectionForExceptionTest = allSubsections.get(0);
-        String neverUseTitle = subsections.stream().map(Subsection::getTitle).collect(Collectors.joining());
+        String neverUseTitle = subsections.stream().map(SubsectionDto::getTitle).collect(Collectors.joining());
         subsectionBeforeTest = subsections.get(subsections.size() - 1);
         subsectionBeforeTest.setTitle(neverUseTitle);
     }
 
     @Before
     public void createForDeletingTest() {
-        List<Good> goods = goodService.findAllGoods();
-        subsectionForDeleteExceptionTest = goods.get(0).getSubsection();
+        List<Good> goods = goodDao.findAllGoods();
+        Subsection subsection = goods.get(0).getSubsection();
+        subsectionForDeleteExceptionTest.setId(subsection.getId());
+        subsectionForDeleteExceptionTest.setTitle(subsection.getTitle());
     }
 
     @Test
     public void addSubsection() throws RepeatitionException, CantDeleteElement {
-        subsectionService.addSubsection(subsectionBeforeTest);
-        List<Subsection> missingSubsections = subsectionService.findSubsections();
-        List<Subsection> findSubsectionById = missingSubsections.stream().filter(subsection -> subsection.getId() != subsectionBeforeTest.getId())
+        int subsectionId=subsectionService.addSubsection(subsectionBeforeTest);
+        subsectionBeforeTest.setId(subsectionId);
+        List<SubsectionDto> missingSubsections = subsectionService.findSubsections();
+        List<SubsectionDto> findSubsectionById = missingSubsections.stream().filter(subsection -> subsection.getId() != subsectionBeforeTest.getId())
                 .collect(Collectors.toList());
         missingSubsections.removeAll(findSubsectionById);
         Assert.assertTrue(missingSubsections.stream().allMatch(subsection -> subsection.getId() == subsectionBeforeTest.getId()));
@@ -65,10 +73,11 @@ public class SubsectionTest {
 
     @Test
     public void findSubsectionByTitle() throws RepeatitionException, CantDeleteElement, SubsectionNotFoundException {
-        subsectionService.addSubsection(subsectionBeforeTest);
-        Subsection subsection = subsectionService.findSubsectionByName(subsectionBeforeTest.getTitle());
-        List<Subsection> missingSubsections = subsectionService.findSubsections();
-        List<Subsection> allsubsectionsByTitle = missingSubsections.stream().filter(subsection1 -> !subsection1.getTitle()
+        int subsectionId=subsectionService.addSubsection(subsectionBeforeTest);
+        subsectionBeforeTest.setId(subsectionId);
+        SubsectionDto subsection = subsectionService.findSubsectionByName(subsectionBeforeTest.getTitle());
+        List<SubsectionDto> missingSubsections = subsectionService.findSubsections();
+        List<SubsectionDto> allsubsectionsByTitle = missingSubsections.stream().filter(subsection1 -> !subsection1.getTitle()
                 .equals(subsectionBeforeTest.getTitle())).collect(Collectors.toList());
         missingSubsections.removeAll(allsubsectionsByTitle);
         Assert.assertTrue(missingSubsections.stream().allMatch((subsection1 -> subsection1.getTitle().equals(subsection.getTitle()))));
@@ -77,8 +86,8 @@ public class SubsectionTest {
 
     @Test(expected = SubsectionNotFoundException.class)
     public void subsectionFindByTitleExceptionTest() throws SubsectionNotFoundException {
-        List<Subsection>subsections=subsectionService.findSubsections();
-        String neverUseTitle = subsections.stream().map(Subsection::getTitle).collect(Collectors.joining());
+        List<SubsectionDto> subsections = subsectionService.findSubsections();
+        String neverUseTitle = subsections.stream().map(SubsectionDto::getTitle).collect(Collectors.joining());
         subsectionService.findSubsectionByName(neverUseTitle);
     }
 
@@ -94,20 +103,21 @@ public class SubsectionTest {
 
     @Test
     public void deleteSubcetionTest() throws RepeatitionException, CantDeleteElement {
-        subsectionService.addSubsection(subsectionBeforeTest);
+        int subsectionId=subsectionService.addSubsection(subsectionBeforeTest);
+        subsectionBeforeTest.setId(subsectionId);
         int deleteId = subsectionBeforeTest.getId();
         subsectionService.deleteSubsection(subsectionBeforeTest.getId());
-        List<Subsection> subsections = subsectionService.findSubsections();
+        List<SubsectionDto> subsections = subsectionService.findSubsections();
         Assert.assertTrue(subsections.stream().noneMatch(subsection -> subsection.getId() == deleteId));
     }
 
     @Test
     public void findSubsectionById() throws SubsectionNotFoundException {
-        List<Subsection> subsections = subsectionService.findSubsections();
+        List<SubsectionDto> subsections = subsectionService.findSubsections();
         int id = subsections.get(0).getId();
-        Subsection findSubsectionById=subsectionService.findSubsectionById(id);
-        List<Subsection> missingSubsections = subsectionService.findSubsections();
-        List<Subsection> findSubsectionsById = missingSubsections.stream().filter(subsection -> subsection.getId() != findSubsectionById.getId()).collect(Collectors.toList());
+        SubsectionDto findSubsectionById = subsectionService.findSubsectionById(id);
+        List<SubsectionDto> missingSubsections = subsectionService.findSubsections();
+        List<SubsectionDto> findSubsectionsById = missingSubsections.stream().filter(subsection -> subsection.getId() != findSubsectionById.getId()).collect(Collectors.toList());
         missingSubsections.removeAll(findSubsectionsById);
         int size = missingSubsections.size();
         assertEquals(size, 1);
@@ -115,10 +125,10 @@ public class SubsectionTest {
 
     @Test(expected = SubsectionNotFoundException.class)
     public void findSubsectionByIdExceptionTest() throws SubsectionNotFoundException {
-        List<Subsection> subsections=subsectionService.findSubsections();
-        int sum=1;
-        for(int i=1;i<subsections.size();i++){
-            sum=sum*subsections.get(i).getId();
+        List<SubsectionDto> subsections = subsectionService.findSubsections();
+        int sum = 1;
+        for (int i = 1; i < subsections.size(); i++) {
+            sum = sum * subsections.get(i).getId();
         }
         subsectionService.findSubsectionById(sum);
     }

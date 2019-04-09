@@ -1,51 +1,70 @@
 package com.vironit.kazimirov.service.impl;
 
+import com.vironit.kazimirov.dto.PurchaseDto;
+import com.vironit.kazimirov.dto.UserDto;
 import com.vironit.kazimirov.entity.*;
+import com.vironit.kazimirov.exception.ClientNotFoundException;
+import com.vironit.kazimirov.fakedao.DaoInterface.AdminDao;
 import com.vironit.kazimirov.fakedao.DaoInterface.GoodDao;
 import com.vironit.kazimirov.fakedao.DaoInterface.PurchaseDao;
 import com.vironit.kazimirov.exception.PurchaseException;
+import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.vironit.kazimirov.entity.Status.CANCELED;
+
 @Service
 public class PurchaseServiceImpl implements PurchaseService {
     @Autowired
     private final PurchaseDao purchaseDao;
     @Autowired
     private final GoodDao goodDao;
+    @Autowired
+    private AdminDao adminDao;
 
 
     @Autowired
-    public PurchaseServiceImpl(PurchaseDao purchaseDao,GoodDao goodDao) {
+    public PurchaseServiceImpl(PurchaseDao purchaseDao, GoodDao goodDao) {
         this.purchaseDao = purchaseDao;
         this.goodDao = goodDao;
     }
 
     @Override
-    public List<Purchase> findPurchases() {
-        return purchaseDao.findPurchases();
+    public List<PurchaseDto> findPurchases() {
+        List<Purchase> purchases = purchaseDao.findPurchases();
+        List<PurchaseDto> purchaseDtos = purchases.stream().map(PurchaseDto::new).collect(Collectors.toList());
+        return purchaseDtos;
     }
 
     @Override
-    public int createNewPurchase(User user) {
-        return purchaseDao.createNewPurchase(user);
+    public int createNewPurchase(UserDto userDto) throws ClientNotFoundException {
+        Optional<User> checkLoginClient = Optional.ofNullable(adminDao.findClientById(userDto.getId()));
+        if (checkLoginClient.isPresent()==false){
+            throw new ClientNotFoundException("such user is absent");
+        }else{
+            User user =adminDao.findClientById(userDto.getId());
+            return purchaseDao.createNewPurchase(user);
+        }
     }
 
     @Override
-    public Purchase findPurchaseById(int purchaseId) {
-        return purchaseDao.findPurchaseById(purchaseId);
+    public PurchaseDto findPurchaseById(int purchaseId) {
+        Purchase purchase=purchaseDao.findPurchaseById(purchaseId);
+        PurchaseDto purchaseDto=new PurchaseDto(purchase);
+        return purchaseDto;
     }
 
 
     @Override
     public void makeAPurchase(int purchaseId) throws PurchaseException {
-        //System.out.println(purchase.getStatus());
-        Purchase purchase=purchaseDao.findPurchaseById(purchaseId);
+        Purchase purchase = purchaseDao.findPurchaseById(purchaseId);
         if (purchase.getStatus().equals(CANCELED)) {
             throw new PurchaseException("The purchase is canceled");
         }
@@ -54,13 +73,16 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public List<Purchase> findPurchasesByDate(LocalDateTime timeOfPurchase) {
-        return purchaseDao.findPurchasesByDate(timeOfPurchase);
+    public List<PurchaseDto> findPurchasesByDate(LocalDateTime timeOfPurchase) {
+        List<Purchase> purchases = purchaseDao.findPurchasesByDate(timeOfPurchase);
+        List<PurchaseDto> purchaseDtos = purchases.stream().map(PurchaseDto::new).collect(Collectors.toList());
+        return purchaseDtos;
     }
 
     @Override
-    public void changeStatus(Purchase purchase, Status status) {
-         purchaseDao.changeStatus(purchase,status);
+    public void changeStatus(PurchaseDto purchaseDto, Status status) {
+        Purchase purchase=purchaseDao.findPurchaseById(purchaseDto.getId());
+        purchaseDao.changeStatus(purchase, status);
     }
 
     @Override

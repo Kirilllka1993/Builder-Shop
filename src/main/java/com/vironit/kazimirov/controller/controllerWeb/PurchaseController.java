@@ -1,5 +1,9 @@
 package com.vironit.kazimirov.controller.controllerWeb;
 
+import com.vironit.kazimirov.dto.CartItemDto;
+import com.vironit.kazimirov.dto.GoodDto;
+import com.vironit.kazimirov.dto.PurchaseDto;
+import com.vironit.kazimirov.dto.UserDto;
 import com.vironit.kazimirov.entity.CartItem;
 import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.entity.Good;
@@ -7,6 +11,7 @@ import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.GoodNotFoundException;
 import com.vironit.kazimirov.exception.PurchaseException;
+import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.CartItemService;
 import com.vironit.kazimirov.service.GoodService;
@@ -42,8 +47,8 @@ public class PurchaseController extends HttpServlet {
 
     @RequestMapping(value = "/createPurchase", method = RequestMethod.POST)
     public ModelAndView createPurchase(@RequestParam("clientLogin") String clientLogin) throws ClientNotFoundException {
-        User user = adminService.findClientByLogin(clientLogin);
-        purchaseService.createNewPurchase(user);
+//        User user = adminService.findClientByLogin(clientLogin);
+//        purchaseService.createNewPurchase(user);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("purchase");
         return modelAndView;
@@ -54,10 +59,10 @@ public class PurchaseController extends HttpServlet {
 //                                        @RequestParam("amount") int amount,
 //                                        @RequestParam("purchaseId") int purchaseId) throws GoodNotFoundException {
 //        Purchase purchase = purchaseService.findPurchaseById(purchaseId);
-//        Good good = goodService.findGoodById(goodId);
+//        Good goodId = goodService.findGoodById(goodId);
 //        ModelAndView modelAndView = new ModelAndView();
 //        try {
-//            purchaseService.addIntoPurchase(good, amount, purchase);
+//            purchaseService.addIntoPurchase(goodId, amount, purchase);
 //            modelAndView.setViewName("purchase");
 //        } catch (RepeatitionException e) {
 //            e.printStackTrace();
@@ -71,8 +76,8 @@ public class PurchaseController extends HttpServlet {
 //    @RequestMapping(value = "/findPurchaseById", method = RequestMethod.GET)
 //    public ModelAndView findPurchaseById(@RequestParam("purchaseId")int purchaseId) throws RepeatitionException, GoodNotFoundException {
 //        Purchase purchase=purchaseService.findPurchaseById(purchaseId);
-//        Good good=goodService.findGoodById(goodId);
-//        purchaseService.addIntoPurchase(good,amount,purchase);
+//        Good goodId=goodService.findGoodById(goodId);
+//        purchaseService.addIntoPurchase(goodId,amount,purchase);
 //        ModelAndView modelAndView = new ModelAndView();
 //        modelAndView.setViewName("purchase");
 //        return modelAndView;
@@ -83,7 +88,7 @@ public class PurchaseController extends HttpServlet {
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("purchase");
         //List<Purchase> purchases = purchaseService.findPurchases();
-        List<CartItem> purchases= cartItemService.findCartItems();
+        List<CartItemDto> purchases= cartItemService.findCartItems();
         map.addAttribute("purchases", purchases);
         return modelAndView;
     }
@@ -105,7 +110,7 @@ public class PurchaseController extends HttpServlet {
         try {
             cartItemService.changeAmountInCartItem(goodId,amount,purchaseId);
             modelAndView.setViewName("purchase");
-        } catch (PurchaseException e) {
+        } catch (PurchaseException | RepeatitionException e) {
             e.printStackTrace();
             modelAndView.setViewName("tryLogin");
             return modelAndView;
@@ -116,19 +121,19 @@ public class PurchaseController extends HttpServlet {
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ModelAndView delete(@RequestParam("goodId") int goodId,
                                      @RequestParam("purchaseId") int purchaseId) throws GoodNotFoundException, PurchaseException {
-        Purchase purchase = purchaseService.findPurchaseById(purchaseId);
-        Good good = goodService.findGoodById(goodId);
+//        PurchaseDto purchaseDto = purchaseService.findPurchaseById(purchaseId);
+//        GoodDto goodDto = goodService.findGoodById(goodId);
         ModelAndView modelAndView = new ModelAndView();
-            cartItemService.deleteFromPurchase(good,purchase);
-            modelAndView.setViewName("purchase");
+//            cartItemService.deleteFromPurchase(goodDto,purchaseDto);
+//            modelAndView.setViewName("purchase");
         return modelAndView;
     }
 
     @RequestMapping(value = "/deleteCancelled", method = RequestMethod.POST)
     public ModelAndView delete(@RequestParam("purchaseId") int purchaseId) throws GoodNotFoundException, PurchaseException {
-        Purchase purchase = purchaseService.findPurchaseById(purchaseId);
+        PurchaseDto purchaseDto = purchaseService.findPurchaseById(purchaseId);
         ModelAndView modelAndView = new ModelAndView();
-        cartItemService.deleteCartItemsWithCancelledStatus(purchase);
+        cartItemService.deleteCartItemsWithCancelledStatus(purchaseDto);
         modelAndView.setViewName("purchase");
         return modelAndView;
     }
@@ -138,8 +143,8 @@ public class PurchaseController extends HttpServlet {
             @RequestParam("goodId")int goodId
             ,ModelMap map) throws GoodNotFoundException, PurchaseException {
         ModelAndView modelAndView = new ModelAndView();
-        List<Good>goods= cartItemService.findGoodsByPurchase(purchaseId);
-        List<Purchase> purchases= cartItemService.findPurchasesByGood(goodId);
+        List<GoodDto>goods= cartItemService.findGoodsByPurchase(purchaseId);
+        List<PurchaseDto> purchases= cartItemService.findPurchasesByGood(goodId);
         map.addAttribute("goods",goods);
         map.addAttribute("purchases",purchases);
         modelAndView.setViewName("purchase");
@@ -150,8 +155,8 @@ public class PurchaseController extends HttpServlet {
     public ModelAndView findGoods(@RequestParam("goodInPurchaseId") int goodInPurchaseId
                                               ,ModelMap map) throws GoodNotFoundException, PurchaseException {
         ModelAndView modelAndView = new ModelAndView();
-        CartItem cartItem = cartItemService.findCartItemById(goodInPurchaseId);
-        map.addAttribute("goodInPurchase", cartItem);
+        CartItemDto cartItemDto = cartItemService.findCartItemById(goodInPurchaseId);
+        map.addAttribute("goodInPurchase", cartItemDto);
         modelAndView.setViewName("purchase");
         return modelAndView;
     }
@@ -160,8 +165,8 @@ public class PurchaseController extends HttpServlet {
     public ModelAndView findGoodsByParametres(@RequestParam("goodId") int goodId,
             @RequestParam("purchaseId") int purchaseId,ModelMap map) throws GoodNotFoundException, PurchaseException {
         ModelAndView modelAndView = new ModelAndView();
-        CartItem cartItem = cartItemService.findCartItem(goodId,purchaseId);
-        map.addAttribute("goodInPurchase", cartItem);
+        CartItemDto cartItemDto = cartItemService.findCartItem(goodId,purchaseId);
+        map.addAttribute("goodInPurchase", cartItemDto);
         modelAndView.setViewName("purchase");
         return modelAndView;
     }
@@ -169,8 +174,8 @@ public class PurchaseController extends HttpServlet {
     @RequestMapping(value = "/deletePurchaseWithCancelled", method = RequestMethod.GET)
     public ModelAndView findGoodsByParametres(@RequestParam("purchaseId") int purchaseId,ModelMap map) throws GoodNotFoundException, PurchaseException {
         ModelAndView modelAndView = new ModelAndView();
-        Purchase purchase=purchaseService.findPurchaseById(purchaseId);
-        cartItemService.deleteCartItemsWithCancelledStatus(purchase);
+        PurchaseDto purchaseDto=purchaseService.findPurchaseById(purchaseId);
+        cartItemService.deleteCartItemsWithCancelledStatus(purchaseDto);
         modelAndView.setViewName("purchase");
         return modelAndView;
     }

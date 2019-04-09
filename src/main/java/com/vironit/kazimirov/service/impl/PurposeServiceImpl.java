@@ -1,5 +1,6 @@
 package com.vironit.kazimirov.service.impl;
 
+import com.vironit.kazimirov.dto.PurposeDto;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.exception.CantDeleteElement;
 import com.vironit.kazimirov.exception.PurposeNotFoundException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PurposeServiceImpl implements PurposeService {
@@ -28,9 +30,11 @@ public class PurposeServiceImpl implements PurposeService {
     }
 
     @Override
-    public int addPurpose(Purpose purpose) throws RepeatitionException {
-        Optional<Purpose> checkPurpose = Optional.ofNullable(purposeDao.findPurposeByName(purpose.getPurpose()));
+    public int addPurpose(PurposeDto purposeDto) throws RepeatitionException {
+        Optional<Purpose> checkPurpose = Optional.ofNullable(purposeDao.findPurposeByName(purposeDto.getPurpose()));
         if (checkPurpose.isPresent() == false) {
+            Purpose purpose=new Purpose();
+            purpose.setPurpose(purposeDto.getPurpose());
             return purposeDao.addPurpose(purpose);
         } else {
             throw new RepeatitionException("such purpose is present");
@@ -38,17 +42,21 @@ public class PurposeServiceImpl implements PurposeService {
     }
 
     @Override
-    public List<Purpose> findPurposes() {
-        return purposeDao.findPurposes();
+    public List<PurposeDto> findPurposes() {
+        List<Purpose> purposes=purposeDao.findPurposes();
+        List<PurposeDto> purposeDtos=purposes.stream().map(PurposeDto::new).collect(Collectors.toList());
+        return purposeDtos;
     }
 
     @Override
-    public Purpose findPurposeByName(String purposeName) throws PurposeNotFoundException {
+    public PurposeDto findPurposeByName(String purposeName) throws PurposeNotFoundException {
         Optional<Purpose> checkNamePurpose = Optional.ofNullable(purposeDao.findPurposeByName(purposeName));
         if (checkNamePurpose.isPresent() == false) {
             throw new PurposeNotFoundException("such purpose is absent");
         } else {
-            return purposeDao.findPurposeByName(purposeName);
+            Purpose purpose=purposeDao.findPurposeByName(purposeName);
+            PurposeDto purposeDto=new PurposeDto(purpose);
+            return purposeDto;
         }
     }
 
@@ -64,12 +72,14 @@ public class PurposeServiceImpl implements PurposeService {
     }
 
     @Override
-    public Purpose findPurposeById(int purposeId) throws PurposeNotFoundException {
+    public PurposeDto findPurposeById(int purposeId) throws PurposeNotFoundException {
         Optional<Purpose> checkIdPurpose = Optional.ofNullable(purposeDao.findPurposeById(purposeId));
         if (checkIdPurpose.isPresent() == false) {
             throw new PurposeNotFoundException("such purpose is absent");
         } else {
-            return purposeDao.findPurposeById(purposeId);
+            Purpose purpose=purposeDao.findPurposeById(purposeId);
+            PurposeDto purposeDto=new PurposeDto(purpose);
+            return purposeDto;
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.vironit.kazimirov.service;
 
+import com.vironit.kazimirov.dto.PurposeDto;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.exception.CantDeleteElement;
 import com.vironit.kazimirov.exception.PurposeNotFoundException;
@@ -9,14 +10,14 @@ import java.util.List;
 
 public interface PurposeService {
 
-    int addPurpose(Purpose purpose) throws RepeatitionException;
+    int addPurpose(PurposeDto purposeDto) throws RepeatitionException;//админ
 
-    List<Purpose> findPurposes();
+    List<PurposeDto> findPurposes();//пользователь
 
-    Purpose findPurposeByName(String purposeName) throws PurposeNotFoundException;
+    PurposeDto findPurposeByName(String purposeName) throws PurposeNotFoundException;//пользователь
 
-    void deletePurpose(int purposeId) throws CantDeleteElement;
+    void deletePurpose(int purposeId) throws CantDeleteElement;//алдмин
 
-    Purpose findPurposeById(int purposeId) throws PurposeNotFoundException;
+    PurposeDto findPurposeById(int purposeId) throws PurposeNotFoundException;//админ
 
 }

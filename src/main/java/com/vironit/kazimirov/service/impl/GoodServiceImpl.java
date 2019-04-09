@@ -1,24 +1,37 @@
 package com.vironit.kazimirov.service.impl;
 
-import com.vironit.kazimirov.exception.GoodNotFoundException;
-import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.dto.GoodDto;
+import com.vironit.kazimirov.dto.PurposeDto;
+import com.vironit.kazimirov.dto.SubsectionDto;
+import com.vironit.kazimirov.exception.*;
 import com.vironit.kazimirov.fakedao.DaoInterface.GoodDao;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
-import com.vironit.kazimirov.exception.GoodException;
+import com.vironit.kazimirov.fakedao.DaoInterface.PurposeDao;
+import com.vironit.kazimirov.fakedao.DaoInterface.SubsectionDao;
 import com.vironit.kazimirov.service.GoodService;
+import com.vironit.kazimirov.service.PurposeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class GoodServiceImpl implements GoodService {
 
     @Autowired
     private GoodDao goodDao;
+    @Autowired
+    private SubsectionDao subsectionDao;
+    @Autowired
+    private PurposeDao purposeDao;
+    @Autowired
+    private PurposeService purposeService;
 
     @Autowired
     public GoodServiceImpl(GoodDao goodDao) {
@@ -26,41 +39,85 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public int addGood(Good good) throws GoodException, RepeatitionException {
-        if (good.getPrice() <= good.getDiscount() || good.getAmount() < 0) {
+    public int addGood(GoodDto goodDto) throws GoodException, RepeatitionException {
+        if (goodDto.getPrice() <= goodDto.getDiscount() || goodDto.getAmount() < 0) {
             throw new GoodException("The discount can't be more then price");
         }
-        Optional<Good> checkNameGood = Optional.ofNullable(goodDao.findByNameGood(good.getName()));
+        Optional<Good> checkNameGood = Optional.ofNullable(goodDao.findByNameGood(goodDto.getName()));
         if (checkNameGood.isPresent() == false) {
+            Subsection subsection = subsectionDao.findSubsectionById(goodDto.getSubsectionId());
+            Purpose purpose = purposeDao.findPurposeById(goodDto.getPurposeId());
+            Good good = new Good();
+            good.setName(goodDto.getName());
+            good.setPrice(goodDto.getPrice());
+            good.setAmount(goodDto.getAmount());
+            good.setQuantity(goodDto.getQuantity());
+            good.setUnit(goodDto.getUnit());
+            good.setDiscount(goodDto.getDiscount());
+            good.setPurpose(purpose);
+            good.setSubsection(subsection);
             return goodDao.addGood(good);
         } else {
-            throw new RepeatitionException("such good is present");
+            throw new RepeatitionException("such goodId is present");
         }
     }
 
     @Override
-    public Good findByNameGood(String goodName) throws GoodNotFoundException {
+    public GoodDto findByNameGood(String goodName) throws GoodNotFoundException {
         Optional<Good> checkNameGood = Optional.ofNullable(goodDao.findByNameGood(goodName));
         if (checkNameGood.isPresent() == false) {
-            throw new GoodNotFoundException("such good is absent");
+            throw new GoodNotFoundException("such goodId is absent");
         } else {
-            return goodDao.findByNameGood(goodName);
+            Good good = goodDao.findByNameGood(goodName);
+            GoodDto goodDto = new GoodDto(good);
+//            GoodDto goodDto=new GoodDto();
+//            goodDto.setName(goodId.getName());
+//            goodDto.setPrice(goodId.getPrice());
+//            goodDto.setAmount(goodId.getAmount());
+//            goodDto.setQuantity(goodId.getQuantity());
+//            goodDto.setUnit(goodId.getUnit());
+//            goodDto.setDiscount(goodId.getDiscount());
+//            goodDto.setId(goodId.getId());
+//            goodDto.setSubsectionId(goodId.getSubsection().getId());
+//            goodDto.setPurposeId(goodId.getPurpose().getId());
+            return goodDto;
         }
     }
 
     @Override
-    public List<Good> findAllGoods() {
-        return goodDao.findAllGoods();
+    public List<GoodDto> findAllGoods() {
+        List<Good> goods = goodDao.findAllGoods();
+        //  List<GoodDto> goodDtos=goods.stream().map(goodId -> new GoodDto(goodId.getId(),goodId.getPrice(),goodId.getSubsection().getId(),goodId.getUnit(),goodId.getQuantity(),goodId.getDiscount(),
+        //      goodId.getPurpose().getId(),goodId.getName(),goodId.getAmount())).collect(Collectors.toList());
+//        List<GoodDto> goodDtos=goods.stream().map(goodId -> new GoodDto(goodId)).collect(Collectors.toList());
+        List<GoodDto> goodDtos = goods.stream().map(GoodDto::new).collect(Collectors.toList());
+        return goodDtos;
     }
 
     @Override
-    public List<Good> findBySubsection(Subsection subsection) {
-        return goodDao.findBySubsection(subsection);
+    public List<GoodDto> findBySubsection(SubsectionDto subsectionDto) throws SubsectionNotFoundException {
+        Optional<Subsection> checkNameSubsection = Optional.ofNullable(subsectionDao.findSubsectionByName(subsectionDto.getTitle()));
+        if (checkNameSubsection.isPresent() == false) {
+            throw new SubsectionNotFoundException("such subsection is absent");
+        } else {
+            Subsection subsection = subsectionDao.findSubsectionByName(subsectionDto.getTitle());
+            List<Good> goods = goodDao.findBySubsection(subsection);
+            List<GoodDto> goodDtos = goods.stream().map(GoodDto::new).collect(Collectors.toList());
+            return goodDtos;
+        }
     }
 
     @Override
-    public List<Good> findByPurpose(Purpose purpose) {
-        return goodDao.findByPurpose(purpose);
+    public List<GoodDto> findByPurpose(PurposeDto purposeDto) throws PurposeNotFoundException {
+        Optional<Purpose> checkNamePurpose = Optional.ofNullable(purposeDao.findPurposeByName(purposeDto.getPurpose()));
+        if (checkNamePurpose.isPresent() == false) {
+            throw new PurposeNotFoundException("such purpose is absent");
+        } else {
+            Purpose purpose = purposeDao.findPurposeByName(purposeDto.getPurpose());
+            List<Good> goods = goodDao.findByPurpose(purpose);
+            List<GoodDto> goodDtos = goods.stream().map(GoodDto::new).collect(Collectors.toList());
+            return goodDtos;
+        }
     }
 
     @Override
@@ -79,13 +136,25 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public void changeSubsection(int goodId, Subsection subsection) {
-        goodDao.changeSubsection(goodId, subsection);
+    public void changeSubsection(int goodId, SubsectionDto subsectionDto) throws SubsectionNotFoundException {
+        Optional<Subsection> checkNameSubsection = Optional.ofNullable(subsectionDao.findSubsectionByName(subsectionDto.getTitle()));
+        if (checkNameSubsection.isPresent() == false) {
+            throw new SubsectionNotFoundException("such subsection is absent");
+        } else {
+            Subsection subsection = new Subsection(subsectionDto.getId(), subsectionDto.getTitle());
+            goodDao.changeSubsection(goodId, subsection);
+        }
     }
 
     @Override
-    public void changePurpose(int goodId, Purpose purpose) {
-        goodDao.changePurpose(goodId, purpose);
+    public void changePurpose(int goodId, PurposeDto purposeDto) throws PurposeNotFoundException {
+        Optional<Purpose> checkNamePurpose = Optional.ofNullable(purposeDao.findPurposeByName(purposeDto.getPurpose()));
+        if (checkNamePurpose.isPresent() == false) {
+            throw new PurposeNotFoundException("such purpose is absent");
+        } else {
+            Purpose purpose=new Purpose(purposeDto.getId(),purposeDto.getPurpose());
+            goodDao.changePurpose(goodId, purpose);
+        }
     }
 
     @Override
@@ -108,22 +177,45 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public void updateGood(int goodId, Good good) {
-        goodDao.updateGood(goodId, good);
+    public void updateGood(int goodId, GoodDto goodDto) throws GoodException, GoodNotFoundException {
+        if (goodDto.getPrice() <= goodDto.getDiscount() || goodDto.getAmount() < 0) {
+            throw new GoodException("The discount can't be more then price");
+        }
+        Optional<Good> checkNameGood = Optional.ofNullable(goodDao.findGoodById(goodId));
+        if (checkNameGood.isPresent() == false) {
+            throw new GoodNotFoundException("such goodId is absent");
+        } else {
+            Subsection subsection = subsectionDao.findSubsectionById(goodDto.getSubsectionId());
+            Purpose purpose = purposeDao.findPurposeById(goodDto.getPurposeId());
+            Good good = new Good();
+            good.setName(goodDto.getName());
+            good.setPrice(goodDto.getPrice());
+            good.setAmount(goodDto.getAmount());
+            good.setQuantity(goodDto.getQuantity());
+            good.setUnit(goodDto.getUnit());
+            good.setDiscount(goodDto.getDiscount());
+            good.setPurpose(purpose);
+            good.setSubsection(subsection);
+            goodDao.updateGood(goodId, good);
+        }
     }
 
     @Override
-    public List<Good> findGoodsByPrice(double minPrice, double maxPrice) {
-        return goodDao.findGoodsByPrice(minPrice, maxPrice);
+    public List<GoodDto> findGoodsByPrice(double minPrice, double maxPrice) {
+        List<Good> goods=goodDao.findGoodsByPrice(minPrice, maxPrice);
+        List<GoodDto> goodDtos = goods.stream().map(GoodDto::new).collect(Collectors.toList());
+        return goodDtos;
     }
 
     @Override
-    public Good findGoodById(int goodId) throws GoodNotFoundException {
+    public GoodDto findGoodById(int goodId) throws GoodNotFoundException {
         Optional<Good> checkIdGood = Optional.ofNullable(goodDao.findGoodById(goodId));
         if (checkIdGood.isPresent() == false) {
-            throw new GoodNotFoundException("such good is absent");
+            throw new GoodNotFoundException("such goodId is absent");
         } else {
-            return goodDao.findGoodById(goodId);
+            Good good=goodDao.findGoodById(goodId);
+            GoodDto goodDto=new GoodDto(good);
+            return goodDto;
         }
 
     }

@@ -1,5 +1,7 @@
 package com.vironit.kazimirov.service;
 
+import com.vironit.kazimirov.dto.ReviewDto;
+import com.vironit.kazimirov.dto.UserDto;
 import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.entity.Review;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
@@ -9,15 +11,15 @@ import java.util.List;
 
 public interface ClientService {
 
-    void addReview(Review review);
+    void addReview(ReviewDto reviewDto);//
 
     void removeReview(int clientId, int goodId);
 
-    User logIn(String login, String password) throws ClientNotFoundException;
+    UserDto logIn(String login, String password) throws ClientNotFoundException;
 
     void logOut();
 
-    int signIn(User user) throws RepeatitionException;
+    int signIn(UserDto userDto) throws RepeatitionException;
 
     void changeLogin(int clientId, String newLogin) throws RepeatitionException;
 
@@ -27,7 +29,7 @@ public interface ClientService {
 
     void changeAddress(int clientId, String newAddress);
 
-    List<Review> findAllReviews(User user);
+    List<Review> findAllReviews(UserDto userDto);
 
 
 }

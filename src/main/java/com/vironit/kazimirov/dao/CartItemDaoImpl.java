@@ -145,11 +145,11 @@ public class CartItemDaoImpl implements CartItemDao {
     @Override
     public void returnedAmountOfGood(CartItem cartItem) {
         Session session = sessionFactory.openSession();
-        //int oldAmount = good.getAmount();
+        //int oldAmount = goodId.getAmount();
         //int amountOfGoodInPurchase = cartItem.getAmount();
         Good good = cartItem.getGood();
         Transaction tx = session.beginTransaction();
-        //good.setAmount(oldAmount + amount);
+        //goodId.setAmount(oldAmount + amount);
         good.setAmount(good.getAmount() + cartItem.getAmount());
         session.update(good);
         tx.commit();

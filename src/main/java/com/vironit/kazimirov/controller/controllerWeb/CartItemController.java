@@ -1,5 +1,7 @@
 package com.vironit.kazimirov.controller.controllerWeb;
 
+import com.vironit.kazimirov.dto.GoodDto;
+import com.vironit.kazimirov.dto.PurchaseDto;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.exception.GoodNotFoundException;
@@ -31,10 +33,10 @@ public class CartItemController {
     public ModelAndView addIntoPurchase(@RequestParam("goodId") int goodId,
                                         @RequestParam("amount") int amount,
                                         @RequestParam("purchaseId") int purchaseId) throws GoodNotFoundException, RepeatitionException, PurchaseException {
-        Purchase purchase = purchaseService.findPurchaseById(purchaseId);
-        Good good = goodService.findGoodById(goodId);
+        PurchaseDto purchaseDto = purchaseService.findPurchaseById(purchaseId);
+        GoodDto goodDto = goodService.findGoodById(goodId);
         ModelAndView modelAndView = new ModelAndView();
-            cartItemService.addInCartItem(good, amount, purchase);
+            cartItemService.addInCartItem(goodDto, amount, purchaseDto);
             modelAndView.setViewName("purchase");
         return modelAndView;
     }

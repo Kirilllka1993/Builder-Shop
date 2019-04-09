@@ -30,4 +30,16 @@ public class GoodDto {
         good.setAmount(this.amount);
         return good;
     }
+
+    public GoodDto(Good good){
+        this.id=good.getId();
+        this.price=good.getPrice();
+        this.subsectionId=good.getSubsection().getId();
+        this.purposeId=good.getPurpose().getId();
+        this.unit=good.getUnit();
+        this.quantity=good.getQuantity();
+        this.discount=good.getDiscount();
+        this.name=good.getName();
+        this.amount=good.getAmount();
+    }
 }

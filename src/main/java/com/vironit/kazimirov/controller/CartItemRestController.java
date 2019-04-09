@@ -1,12 +1,15 @@
 package com.vironit.kazimirov.controller;
 
 import com.vironit.kazimirov.dto.CartItemDto;
+import com.vironit.kazimirov.dto.GoodDto;
+import com.vironit.kazimirov.dto.PurchaseDto;
 import com.vironit.kazimirov.entity.CartItem;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.exception.GoodNotFoundException;
 import com.vironit.kazimirov.exception.PurchaseException;
 import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.fakedao.DaoInterface.PurchaseDao;
 import com.vironit.kazimirov.service.CartItemService;
 import com.vironit.kazimirov.service.GoodService;
 import com.vironit.kazimirov.service.PurchaseService;
@@ -17,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "cartItem")
 public class CartItemRestController {
     @Autowired
     private CartItemService cartItemService;
@@ -26,100 +28,101 @@ public class CartItemRestController {
     @Autowired
     private PurchaseService purchaseService;
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "cartItem/add", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public int addInCartItem(@RequestBody CartItemDto cartItemDto) throws GoodNotFoundException, RepeatitionException, PurchaseException {
-        Good good = goodService.findGoodById(cartItemDto.getGoodId());
-        Purchase purchase = purchaseService.findPurchaseById(cartItemDto.getPurchaseId());
-        int cartItemId=cartItemService.addInCartItem(good, cartItemDto.getAmount(), purchase);
+        GoodDto goodDto = goodService.findGoodById(cartItemDto.getGoodId());
+        PurchaseDto purchaseDto = purchaseService.findPurchaseById(cartItemDto.getPurchaseId());
+        int cartItemId=cartItemService.addInCartItem(goodDto, cartItemDto.getAmount(), purchaseDto);
         return cartItemId;
     }
 
-    @RequestMapping(value = "/allCartItems", method = RequestMethod.GET)
+    @RequestMapping(value = "admin/cartItem/allCartItems", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<CartItem> showAllGoodInPurchases() {
-        List<CartItem> cartItems = cartItemService.findCartItems();
-        return cartItems;
+    public List<CartItemDto> showAllGoodInPurchases() {
+        List<CartItemDto> cartItemDtos = cartItemService.findCartItems();
+        return cartItemDtos;
     }
 
-    @RequestMapping(value = "/deleteFromCart", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteFromCart(@RequestBody CartItemDto cartItemDto) throws GoodNotFoundException, PurchaseException {
-        Good good = goodService.findGoodById(cartItemDto.getGoodId());
-        Purchase purchase = purchaseService.findPurchaseById(cartItemDto.getPurchaseId());
-        cartItemService.deleteFromPurchase(good, purchase);
+    @RequestMapping(value = "cartItem/deleteFromCart", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteFromCart(@RequestBody CartItemDto cartItemDto) throws GoodNotFoundException, PurchaseException, RepeatitionException {
+//        GoodDto goodDto = goodService.findGoodById(cartItemDto.getGoodId());
+//        PurchaseDto purchaseDto = purchaseService.findPurchaseById(cartItemDto.getPurchaseId());
+        cartItemService.deleteFromPurchase(cartItemDto);
     }
 
-    @RequestMapping(value = "delete/{cartItemId}", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @RequestMapping(value = "admin/cartItem/delete/{cartItemId}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
     public void deleteCartItem(@PathVariable("cartItemId") int cartItemId) {
         cartItemService.deleteCartItem(cartItemId);
     }
 
-    @RequestMapping(value = "/findGoods", method = RequestMethod.GET)
+    @RequestMapping(value = "admin/cartItem/findGoods", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<Good> findGoodsInPurchase(@RequestBody CartItemDto cartItemDto) {
-        List<Good> goods = cartItemService.findGoodsByPurchase(cartItemDto.getPurchaseId());
-        return goods;
+    public List<GoodDto> findGoodsInPurchase(@RequestBody CartItemDto cartItemDto) {
+        List<GoodDto> goodDtos = cartItemService.findGoodsByPurchase(cartItemDto.getPurchaseId());
+        return goodDtos;
     }
 
-    @RequestMapping(value = "/findPurchases", method = RequestMethod.GET)
+    @RequestMapping(value = "admin/cartItem/findPurchases", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<Purchase> findPurchasesByGood(@RequestBody CartItemDto cartItemDto) {
-        List<Purchase> purchases = cartItemService.findPurchasesByGood(cartItemDto.getGoodId());
-        return purchases;
+    public List<PurchaseDto> findPurchasesByGood(@RequestBody CartItemDto cartItemDto) {
+        List<PurchaseDto> purchaseDtos = cartItemService.findPurchasesByGood(cartItemDto.getGoodId());
+        return purchaseDtos;
     }
 
-    @RequestMapping(value = "/deleteWithCancelled", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePurchase(@RequestBody CartItemDto cartItemDto) {
-        Purchase purchase = purchaseService.findPurchaseById(cartItemDto.getPurchaseId());
-        cartItemService.deleteCartItemsWithCancelledStatus(purchase);
+    @RequestMapping(value = "admin/cartItem/deleteWithCancelled", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
+    public void deletePurchase(@RequestBody PurchaseDto purchaseDto) {
+        //Purchase purchase = purchaseService.findPurchaseById(cartItemDto.getPurchaseId());
+        cartItemService.deleteCartItemsWithCancelledStatus(purchaseDto);
     }
 
-    @RequestMapping(value = "/newAmount", method = RequestMethod.PUT)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void changeAmount(@RequestBody CartItemDto cartItemDto) throws PurchaseException {
+    @RequestMapping(value = "cartItem/newAmount", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public void changeAmount(@RequestBody CartItemDto cartItemDto) throws PurchaseException, RepeatitionException {
         cartItemService.changeAmountInCartItem(cartItemDto.getGoodId(), cartItemDto.getAmount(), cartItemDto.getPurchaseId());
     }
 
-    @RequestMapping(value = "/cartItem", method = RequestMethod.GET)
+    @RequestMapping(value = "admin/cartItem/cartItem", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public CartItem findCartItemByGoodAndPurchase(@RequestBody CartItemDto cartItemDto) {
+    public CartItemDto findCartItemByGoodAndPurchase(@RequestBody CartItemDto cartItemDto) {
         return cartItemService.findCartItem(cartItemDto.getGoodId(), cartItemDto.getPurchaseId());
     }
 
 
-    @RequestMapping(value = "/cartItemById/{cartItemId}", method = RequestMethod.GET)
+    @RequestMapping(value = "admin/cartItem/cartItemById/{cartItemId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public CartItem findCartItemById(@PathVariable("cartItemId") int cartItemId) {
+    public CartItemDto findCartItemById(@PathVariable("cartItemId") int cartItemId) {
         return cartItemService.findCartItemById(cartItemId);
     }
 
-    @RequestMapping(value = "/oldAmountOfGood/{cartItemId}", method = RequestMethod.PUT)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @RequestMapping(value = "cartItem/oldAmountOfGood/{cartItemId}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
     public void returnedAmountOfGood(@PathVariable("cartItemId") int cartItemId) {
-        CartItem cartItem = cartItemService.findCartItemById(cartItemId);
-        cartItemService.returnedAmountOfGood(cartItem);
+        //CartItem cartItem = cartItemService.findCartItemById(cartItemId);
+        CartItemDto cartItemDto=cartItemService.findCartItemById(cartItemId);
+        cartItemService.returnedAmountOfGood(cartItemDto);
     }
 
-    @RequestMapping(value = "/newAmountOfGood/", method = RequestMethod.PUT)
+    @RequestMapping(value = "cartItem/newAmountOfGood/", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void reduceAmount(@RequestBody CartItemDto cartItemDto) {
         cartItemService.reduceAmount(cartItemDto.getGoodId(), cartItemDto.getAmount());
     }
 
-    @RequestMapping(value = "/allCartByPurchase/{purchaseId}", method = RequestMethod.GET)
+    @RequestMapping(value = "admin/cartItem/allCartByPurchase/{purchaseId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<CartItem> findCartItemsByPurchase(@PathVariable("purchaseId") int purchaseId) {
-        List<CartItem> cartItems = cartItemService.findCartItemsByPurchase(purchaseId);
-        return cartItems;
+    public List<CartItemDto> findCartItemsByPurchase(@PathVariable("purchaseId") int purchaseId) {
+        List<CartItemDto> cartItemDtos = cartItemService.findCartItemsByPurchase(purchaseId);
+        return cartItemDtos;
     }
 
-    @RequestMapping(value = "/allCartByGood/{goodId}", method = RequestMethod.GET)
+    @RequestMapping(value = "admin/cartItem/allCartByGood/{goodId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<CartItem> findCartItemsByGood(@PathVariable("goodId") int goodId) {
-        List<CartItem> cartItems = cartItemService.findCartItemsByGood(goodId);
-        return cartItems;
+    public List<CartItemDto> findCartItemsByGood(@PathVariable("goodId") int goodId) {
+        List<CartItemDto> cartItemDtos = cartItemService.findCartItemsByGood(goodId);
+        return cartItemDtos;
     }
 }

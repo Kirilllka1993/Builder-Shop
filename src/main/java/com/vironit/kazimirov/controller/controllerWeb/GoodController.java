@@ -1,6 +1,8 @@
 package com.vironit.kazimirov.controller.controllerWeb;
 
 import com.vironit.kazimirov.dto.GoodDto;
+import com.vironit.kazimirov.dto.PurposeDto;
+import com.vironit.kazimirov.dto.SubsectionDto;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
@@ -30,9 +32,9 @@ public class GoodController extends HttpServlet {
 
     @RequestMapping(value = "/goodPage", method = RequestMethod.GET)
     public ModelAndView moveToGoodPage(ModelMap map) {
-        List<Purpose> purposes = purposeService.findPurposes();
+        List<PurposeDto> purposes = purposeService.findPurposes();
         map.addAttribute("purposes", purposes);
-        List<Subsection> subsections = subsectionService.findSubsections();
+        List<SubsectionDto> subsections = subsectionService.findSubsections();
         map.addAttribute("subsections", subsections);
         ModelAndView modelAndView = new ModelAndView();
         map.addAttribute("command", new GoodDto());
@@ -46,20 +48,20 @@ public class GoodController extends HttpServlet {
         Good good = new Good();
 //        Subsection subsection = subsectionService.findSubsectionByName(goodDto.getSubsection().getTitle());
 //        Purpose purpose = purposeService.findSubsectionById(goodDto.getPurpose().getPurpose());
-        Subsection subsection=subsectionService.findSubsectionById(goodDto.getSubsectionId());
-        Purpose purpose=purposeService.findPurposeById(goodDto.getPurposeId());
-        map.addAttribute("command", goodDto);
-        good.setName(goodDto.getName());
-        good.setUnit(goodDto.getUnit());
-        good.setQuantity(goodDto.getQuantity());
-        good.setDiscount(goodDto.getDiscount());
-        good.setPrice(goodDto.getPrice());
-        good.setAmount(goodDto.getAmount());
-        good.setPurpose(purpose);
-        good.setSubsection(subsection);
-        goodService.addGood(good);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("good");
+//        SubsectionDto subsection=subsectionService.findSubsectionById(goodDto.getSubsectionId());
+//        Purpose purpose=purposeService.findPurposeById(goodDto.getPurposeId());
+//        map.addAttribute("command", goodDto);
+//        goodId.setName(goodDto.getName());
+//        goodId.setUnit(goodDto.getUnit());
+//        goodId.setQuantity(goodDto.getQuantity());
+//        goodId.setDiscount(goodDto.getDiscount());
+//        goodId.setPrice(goodDto.getPrice());
+//        goodId.setAmount(goodDto.getAmount());
+//        goodId.setPurpose(purpose);
+//        goodId.setSubsection(subsection);
+//        goodService.addGood(goodId);
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("goodId");
 
 //    public UserRoleEnum addGood(@RequestParam("price") double price,
 //                          @RequestParam("subsection") UserRoleEnum title,
@@ -72,27 +74,28 @@ public class GoodController extends HttpServlet {
 //
 //        Subsection subsection=subsectionService.findSubsectionByName(title);
 //        Purpose purpose=purposeService.findSubsectionById(purposeName);
-//        Good good = new Good();
-//        good.setSubsection(subsection);
-//        good.setPurpose(purpose);
-//        good.setPrice(price);
-//        good.setName(name);
-//        good.setDiscount(discount);
-//        good.setQuantity(quantity);
-//        good.setAmount(amount);
-//        good.setUnit(unit);
-//        goodService.addGood(good);
-        return modelAndView;
+//        Good goodId = new Good();
+//        goodId.setSubsection(subsection);
+//        goodId.setPurpose(purpose);
+//        goodId.setPrice(price);
+//        goodId.setName(name);
+//        goodId.setDiscount(discount);
+//        goodId.setQuantity(quantity);
+//        goodId.setAmount(amount);
+//        goodId.setUnit(unit);
+//        goodService.addGood(goodId);
+       // return modelAndView;
+        return null;
     }
 
     @RequestMapping(value = "/showGoods", method = RequestMethod.GET)
     public ModelAndView showGoods(ModelMap map) throws SQLException {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("good");
-        List<Good> goods = goodService.findAllGoods();
+        List<GoodDto> goods = goodService.findAllGoods();
         map.addAttribute("goods", goods);
         map.addAttribute("command", new GoodDto());
-        List<Purpose> purposes = purposeService.findPurposes();
+        List<PurposeDto> purposes = purposeService.findPurposes();
         map.addAttribute("purposes", purposes);
         return modelAndView;
     }
@@ -102,20 +105,21 @@ public class GoodController extends HttpServlet {
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("good");
         map.addAttribute("command",new GoodDto());
-        Good good = goodService.findByNameGood(goodName);
-        map.addAttribute("good",good);
+        GoodDto goodDto = goodService.findByNameGood(goodName);
+        map.addAttribute("good",goodDto);
         return modelAndView;
     }
 
     @RequestMapping(value = "/findBySubsection", method = RequestMethod.GET)
     public ModelAndView findGoodsBySubsection(@RequestParam("subsection") String title, ModelMap map) throws SubsectionNotFoundException {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("good");
-        Subsection subsection=subsectionService.findSubsectionByName(title);
-        List<Good> goods=goodService.findBySubsection(subsection);
-        map.addAttribute("goods", goods);
-        map.addAttribute("command", new GoodDto());
-        return modelAndView;
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("goodId");
+//        SubsectionDto subsection=subsectionService.findSubsectionByName(title);
+//        List<Good> goods=goodService.findBySubsection(subsection);
+//        map.addAttribute("goods", goods);
+//        map.addAttribute("command", new GoodDto());
+//        return modelAndView;
+        return null;
     }
 
     @RequestMapping(value = "/findGoodByPrice", method = RequestMethod.GET)
@@ -123,7 +127,7 @@ public class GoodController extends HttpServlet {
                                          @RequestParam("maxPrice") double maxPrice, ModelMap map){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("good");
-        List<Good> goods=goodService.findGoodsByPrice(minPrice,maxPrice);
+        List<GoodDto> goods=goodService.findGoodsByPrice(minPrice,maxPrice);
         map.addAttribute("goods1", goods);
         map.addAttribute("command", new GoodDto());
         return modelAndView;

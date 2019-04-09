@@ -1,4 +1,6 @@
 import com.vironit.kazimirov.config.WebApplicationConfig;
+import com.vironit.kazimirov.dto.GoodDto;
+import com.vironit.kazimirov.dto.PurposeDto;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.exception.CantDeleteElement;
@@ -29,33 +31,34 @@ public class PurposeTest {
     private PurposeService purposeService;
     @Autowired
     private GoodService goodService;
-    Purpose purposeBeforeTest = null;
-    Purpose purposeForException = null;
-    Purpose purposeForDeleteExceptionTest = null;
+    PurposeDto purposeBeforeTest = null;
+    PurposeDto purposeForException = null;
+    PurposeDto purposeForDeleteExceptionTest = null;
 
     @Before
     public void createPurpose() {
-        List<Purpose> allpurposes = purposeService.findPurposes();
-        List<Purpose> purposes = new ArrayList<>();
+        List<PurposeDto> allpurposes = purposeService.findPurposes();
+        List<PurposeDto> purposes = new ArrayList<>();
         purposes.add(allpurposes.get(0));
         purposes.add(allpurposes.get(1));
         purposeForException = allpurposes.get(0);
-        String neverUseTitle = purposes.stream().map(Purpose::getPurpose).collect(Collectors.joining());
+        String neverUseTitle = purposes.stream().map(PurposeDto::getPurpose).collect(Collectors.joining());
         purposeBeforeTest = purposes.get(purposes.size() - 1);
         purposeBeforeTest.setPurpose(neverUseTitle);
     }
 
     @Before
-    public void createPurposeForException() {
-        List<Good> goods = goodService.findAllGoods();
-        purposeForDeleteExceptionTest = goods.get(0).getPurpose();
+    public void createPurposeForException() throws PurposeNotFoundException {
+        List<GoodDto> goods = goodService.findAllGoods();
+        purposeForDeleteExceptionTest = purposeService.findPurposeById(goods.get(0).getPurposeId());
     }
 
     @Test
     public void addPurposeTest() throws RepeatitionException, CantDeleteElement {
-        purposeService.addPurpose(purposeBeforeTest);
-        List<Purpose> missingPurposes = purposeService.findPurposes();
-        List<Purpose> findPurposeById = missingPurposes.stream().filter(purpose -> purpose.getId() != purposeBeforeTest.getId())
+        int purposeId=purposeService.addPurpose(purposeBeforeTest);
+        purposeBeforeTest.setId(purposeId);
+        List<PurposeDto> missingPurposes = purposeService.findPurposes();
+        List<PurposeDto> findPurposeById = missingPurposes.stream().filter(purpose -> purpose.getId() != purposeBeforeTest.getId())
                 .collect(Collectors.toList());
         missingPurposes.removeAll(findPurposeById);
         Assert.assertTrue(missingPurposes.stream().allMatch(purpose -> purpose.getId() == purposeBeforeTest.getId()));
@@ -64,10 +67,11 @@ public class PurposeTest {
 
     @Test
     public void findPurposeByName() throws RepeatitionException, CantDeleteElement, PurposeNotFoundException {
-        purposeService.addPurpose(purposeBeforeTest);
-        Purpose purpose = purposeService.findPurposeByName(purposeBeforeTest.getPurpose());
-        List<Purpose> missingPurposes = purposeService.findPurposes();
-        List<Purpose> allPurposesByTitle = missingPurposes.stream().filter(purpose1 -> !purpose1.getPurpose()
+        int purposeId=purposeService.addPurpose(purposeBeforeTest);
+        purposeBeforeTest.setId(purposeId);
+        PurposeDto purpose = purposeService.findPurposeByName(purposeBeforeTest.getPurpose());
+        List<PurposeDto> missingPurposes = purposeService.findPurposes();
+        List<PurposeDto> allPurposesByTitle = missingPurposes.stream().filter(purpose1 -> !purpose1.getPurpose()
                 .equals(purposeBeforeTest.getPurpose())).collect(Collectors.toList());
         missingPurposes.removeAll(allPurposesByTitle);
         Assert.assertTrue(missingPurposes.stream().allMatch((purpose1 -> purpose1.getPurpose().equals(purpose.getPurpose()))));
@@ -76,8 +80,8 @@ public class PurposeTest {
 
     @Test(expected = PurposeNotFoundException.class)
     public void subsectionFindByTitleExceptionTest() throws PurposeNotFoundException {
-        List<Purpose>purposes=purposeService.findPurposes();
-        String neverUsePurpose = purposes.stream().map(Purpose::getPurpose).collect(Collectors.joining());
+        List<PurposeDto>purposes=purposeService.findPurposes();
+        String neverUsePurpose = purposes.stream().map(PurposeDto::getPurpose).collect(Collectors.joining());
         purposeService.findPurposeByName(neverUsePurpose);
     }
 
@@ -93,20 +97,21 @@ public class PurposeTest {
 
     @Test
     public void deletePurposeTest() throws RepeatitionException, CantDeleteElement {
-        purposeService.addPurpose(purposeBeforeTest);
+        int purposeId=purposeService.addPurpose(purposeBeforeTest);
+        purposeBeforeTest.setId(purposeId);
         int deleteId = purposeBeforeTest.getId();
         purposeService.deletePurpose(purposeBeforeTest.getId());
-        List<Purpose> purposes = purposeService.findPurposes();
+        List<PurposeDto> purposes = purposeService.findPurposes();
         Assert.assertTrue(purposes.stream().noneMatch(purpose -> purpose.getId() == deleteId));
     }
 
     @Test
     public void findPurposeById() throws PurposeNotFoundException {
-        List<Purpose> purposes = purposeService.findPurposes();
+        List<PurposeDto> purposes = purposeService.findPurposes();
         int id = purposes.get(0).getId();
-        Purpose findPurposeById=purposeService.findPurposeById(id);
-        List<Purpose> missingPurposes = purposeService.findPurposes();
-        List<Purpose> findPurposesById = missingPurposes.stream().filter(purpose -> purpose.getId() != findPurposeById.getId()).collect(Collectors.toList());
+        PurposeDto findPurposeById=purposeService.findPurposeById(id);
+        List<PurposeDto> missingPurposes = purposeService.findPurposes();
+        List<PurposeDto> findPurposesById = missingPurposes.stream().filter(purpose -> purpose.getId() != findPurposeById.getId()).collect(Collectors.toList());
         missingPurposes.removeAll(findPurposesById);
         int size = missingPurposes.size();
         assertEquals(size, 1);
@@ -114,7 +119,7 @@ public class PurposeTest {
 
     @Test(expected = PurposeNotFoundException.class)
     public void findPurposeByIdExceptionTest() throws PurposeNotFoundException {
-        List<Purpose> purposes=purposeService.findPurposes();
+        List<PurposeDto> purposes=purposeService.findPurposes();
         int sum=1;
         for(int i=1;i<purposes.size();i++){
             sum=sum*purposes.get(i).getId();

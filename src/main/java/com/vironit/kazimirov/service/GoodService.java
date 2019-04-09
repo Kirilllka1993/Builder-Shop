@@ -1,44 +1,45 @@
 package com.vironit.kazimirov.service;
 
+import com.vironit.kazimirov.dto.GoodDto;
+import com.vironit.kazimirov.dto.PurposeDto;
+import com.vironit.kazimirov.dto.SubsectionDto;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
-import com.vironit.kazimirov.exception.GoodException;
-import com.vironit.kazimirov.exception.GoodNotFoundException;
-import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.exception.*;
 
 import java.util.List;
 
 public interface GoodService {
-    int addGood(Good good) throws GoodException, RepeatitionException;//выполнено
+    int addGood(GoodDto goodDto) throws GoodException, RepeatitionException;//выполнено
 
-    Good findByNameGood(String goodName) throws GoodNotFoundException;//выполнено
+    GoodDto findByNameGood(String goodName) throws GoodNotFoundException;//выполнено
 
-    List<Good> findAllGoods();//выполнено
+    List<GoodDto> findAllGoods();//пользователь
 
-    List<Good> findBySubsection(Subsection subsection);//выполнено
+    List<GoodDto> findBySubsection(SubsectionDto subsectionDto) throws SubsectionNotFoundException;//пользователь
 
-    List<Good> findByPurpose(Purpose purpose);//выполнено
+    List<GoodDto> findByPurpose(PurposeDto purposeDto) throws PurposeNotFoundException;//пользователь
 
-    void deleteGood(int goodId);//Как удалять товар, по параметрам или нет выполнено
+    void deleteGood(int goodId);//админ
 
-    void changePrice(int goodId, double price) throws GoodException;//могут ли все параметры быть равны нулю выполнео
+    void changePrice(int goodId, double price) throws GoodException;//админ
 
-    void changeSubsection(int goodId, Subsection subsection);//выполнено
+    void changeSubsection(int goodId, SubsectionDto subsectionDto) throws SubsectionNotFoundException;//админ
 
-    void changePurpose(int goodId, Purpose purpose); //выполнено
+    void changePurpose(int goodId, PurposeDto purposeDto) throws PurposeNotFoundException; //админ
 
-    void changeUnit(int goodId, String unit);//выполнено
+    void changeUnit(int goodId, String unit);//админ
 
-    void changeQuantity(int goodId, int quantity);//выполнено
+    void changeQuantity(int goodId, int quantity);//админ
 
-    void changeAmount(int goodId, int amount) throws GoodException;//выполнено
+    void changeAmount(int goodId, int amount) throws GoodException;//админ
 
-    void updateGood(int goodId, Good good);//надо ли делать выполнено
+    void updateGood(int goodId, GoodDto goodDto) throws GoodException,GoodNotFoundException;//админ
     
-    List<Good> findGoodsByPrice(double minPrice, double maxPrice);//выполнено
+    List<GoodDto> findGoodsByPrice(double minPrice, double maxPrice);//админ
 
-    Good findGoodById(int goodId) throws GoodNotFoundException;//выполнено
+    GoodDto findGoodById(int goodId) throws GoodNotFoundException;//админ
 
     void reduceAmount(int goodId, int amount);
 

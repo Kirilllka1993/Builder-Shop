@@ -103,7 +103,7 @@ public class PurchaseDaoImplFake implements PurchaseDao {
     }
 
     public void removePurchase(int purchaseId)  {
-//        if (purchases.stream().noneMatch(good -> (good.getId() == purchaseId))) {
+//        if (purchases.stream().noneMatch(goodId -> (goodId.getId() == purchaseId))) {
 //            throw new PurchaseException("There is no such purchase");
 //        }
         Purchase purchase = purchases.stream().filter(s -> s.getId() == purchaseId).findFirst().get();
@@ -127,24 +127,24 @@ public class PurchaseDaoImplFake implements PurchaseDao {
     }
 
 
-//    public void addIntoPurchase(Good good, int amount, Purchase purchase) throws RepeatitionException, GoodNotFoundException {
+//    public void addIntoPurchase(Good goodId, int amount, Purchase purchase) throws RepeatitionException, GoodNotFoundException {
 //        GoodDao dao = new GoodDaoImplFake();
-//        //Good good = dao.findGoodById(goodId);
-//        if (good.getAmount() < amount) {
-//            throw new RepeatitionException("The amount of this good in the store is" + " " + good.getAmount());
+//        //Good goodId = dao.findGoodById(goodId);
+//        if (goodId.getAmount() < amount) {
+//            throw new RepeatitionException("The amount of this goodId in the store is" + " " + goodId.getAmount());
 //        }
 //        Good newPurchaseGood=new Good();
-//        newPurchaseGood.setUnit(good.getUnit());
-//        newPurchaseGood.setId(good.getId());
-//        newPurchaseGood.setName(good.getName());
-//        newPurchaseGood.setQuantity(good.getQuantity());
-//        newPurchaseGood.setPurpose(good.getPurpose());
-//        newPurchaseGood.setSubsection(good.getSubsection());
-//        newPurchaseGood.setDiscount(good.getDiscount());
+//        newPurchaseGood.setUnit(goodId.getUnit());
+//        newPurchaseGood.setId(goodId.getId());
+//        newPurchaseGood.setName(goodId.getName());
+//        newPurchaseGood.setQuantity(goodId.getQuantity());
+//        newPurchaseGood.setPurpose(goodId.getPurpose());
+//        newPurchaseGood.setSubsection(goodId.getSubsection());
+//        newPurchaseGood.setDiscount(goodId.getDiscount());
 //        newPurchaseGood.setAmount(amount);
-//        newPurchaseGood.setPrice(good.getPrice());
-//        good.setAmount(good.getAmount() - amount);
-//        //dao.updateGood(goodId, good);
+//        newPurchaseGood.setPrice(goodId.getPrice());
+//        goodId.setAmount(goodId.getAmount() - amount);
+//        //dao.updateGood(goodId, goodId);
 //        purchasesCart.add(newPurchaseGood);
 //        purchase.setGoods(purchasesCart);
 //        double cost = purchase.getGoods().stream().mapToDouble(s -> (s.getPrice() * s.getAmount() - s.getDiscount() * s.getAmount())).sum();
@@ -157,8 +157,8 @@ public class PurchaseDaoImplFake implements PurchaseDao {
 //        if (purchasesCart.stream().anyMatch(s -> s.getId() == goodId) == false) {
 //            throw new PurchaseException("This purchase is absent in base. You can't delete it");
 //        }
-//        Good good = purchasesCart.stream().filter(s -> s.getId() == goodId).findFirst().get();
-//        purchasesCart.remove(good);
+//        Good goodId = purchasesCart.stream().filter(s -> s.getId() == goodId).findFirst().get();
+//        purchasesCart.remove(goodId);
 //    }
 
     @Override

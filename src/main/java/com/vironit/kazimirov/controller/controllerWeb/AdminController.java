@@ -1,5 +1,7 @@
 package com.vironit.kazimirov.controller.controllerWeb;
 
+import com.vironit.kazimirov.dto.PurchaseDto;
+import com.vironit.kazimirov.dto.UserDto;
 import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.entity.Status;
@@ -38,14 +40,14 @@ public class AdminController {
 
     @RequestMapping("/showClient")
     public String showForm(ModelMap map) {
-        List<User> users = adminService.findAllClient();
-        map.addAttribute("clients", users);
+        List<UserDto> userDtos = adminService.findAllClient();
+        map.addAttribute("clients", userDtos);
         return "adminJsp";
     }
 
 //    @RequestMapping(value = "/addClient", method = RequestMethod.POST)
 //    @ResponseBody
-//    public UserRoleEnum addClient(ClientDto clientDto, ModelMap map) {
+//    public UserRoleEnum addClient(UserDto clientDto, ModelMap map) {
 //        map.addAttribute("command", clientDto);
 //        User user = new User();
 //        user.setName(clientDto.getName());
@@ -72,25 +74,25 @@ public class AdminController {
 
     @RequestMapping("/login")
     public String findClientByLogin(@RequestParam("login") String login, ModelMap map) throws ClientNotFoundException {
-        User user = adminService.findClientByLogin(login);
-        map.addAttribute("client", user);
+        UserDto clientByLogin = adminService.findClientByLogin(login);
+        map.addAttribute("client", clientByLogin);
         return "adminJsp";
     }
 
     @RequestMapping("/findById")
     public String findClientById(@RequestParam("idClient") int idClient, ModelMap map) throws ClientNotFoundException {
-        User user1 = adminService.findClientById(idClient);
-        map.addAttribute("client1", user1);
+        UserDto userDto = adminService.findClientById(idClient);
+        map.addAttribute("client1", userDto);
         return "adminJsp";
     }
 
     @RequestMapping(name = "/updateStatus", method = RequestMethod.POST)
     public String updateStatus(@RequestParam("status") Status status,
                                @RequestParam("purchaseId") int purchaseId, ModelMap map) {
-        Purchase purchase = purchaseService.findPurchaseById(purchaseId);
-        map.addAttribute("purchase", purchase);
+        PurchaseDto purchaseDto = purchaseService.findPurchaseById(purchaseId);
+        map.addAttribute("purchase", purchaseDto);
         map.addAttribute("status", status);
-        adminService.updateStatus(status, purchase);
+        adminService.updateStatus(status, purchaseDto);
         return "adminJsp";
     }
 }

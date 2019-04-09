@@ -1,7 +1,8 @@
 package com.vironit.kazimirov.controller.controllerWeb;
 
 
-import com.vironit.kazimirov.dto.ClientDto;
+import com.vironit.kazimirov.dto.GoodDto;
+import com.vironit.kazimirov.dto.UserDto;
 import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.Review;
@@ -34,9 +35,9 @@ public class ClientController extends HttpServlet {
 
     @RequestMapping(value = "/clientPage", method = RequestMethod.GET)
     public ModelAndView moveToGoodPage(ModelMap map) {
-        List<Good> goods = goodService.findAllGoods();
+        List<GoodDto> goods = goodService.findAllGoods();
         map.addAttribute("goods", goods);
-        List<User> users = adminService.findAllClient();
+        List<UserDto> users = adminService.findAllClient();
         map.addAttribute("clients", users);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addAllObjects(map);
@@ -47,19 +48,19 @@ public class ClientController extends HttpServlet {
     @RequestMapping(value = "/addReview", method = RequestMethod.POST)
     public ModelAndView addReview(@RequestParam("mark") int mark,
                                   @RequestParam("user") String login,
-                                  @RequestParam("good") String name,
+                                  @RequestParam("goodId") String name,
                                   @RequestParam("comment") String comment,
                                   ModelMap map) throws ClientNotFoundException, GoodNotFoundException {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("user");
-        User user = adminService.findClientByLogin(login);
-        Good good1 = goodService.findByNameGood(name);
-        Review review = new Review();
-        review.setMark(mark);
-        review.setComment(comment);
-        review.setGood(good1);
-        review.setUser(user);
-        clientService.addReview(review);
+//        UserDto userDto = adminService.findClientByLogin(login);
+//        GoodDto goodDto = goodService.findByNameGood(name);
+//        Review review = new Review();
+//        review.setMark(mark);
+//        review.setComment(comment);
+//        review.setGood(goodDto);
+//        review.setUser(user);
+//        clientService.addReview(review);
         return modelAndView;
     }
 
@@ -79,8 +80,8 @@ public class ClientController extends HttpServlet {
 //        }catch(ClientNotFoundException e){
 //
 //        }
-        User user = clientService.logIn(login, password);
-        if (user == null) {
+        UserDto userDto = clientService.logIn(login, password);
+        if (userDto == null) {
             throw new ClientNotFoundException();
         } else {
             modelAndView.setViewName("user");
@@ -95,17 +96,17 @@ public class ClientController extends HttpServlet {
 
     @RequestMapping(value = "/signIn", method = RequestMethod.POST)
     @ResponseBody
-    public String signIn(ClientDto clientDto, ModelMap map){
-        map.addAttribute("command", clientDto);
+    public String signIn(UserDto userDto, ModelMap map){
+        map.addAttribute("command", userDto);
         User user = new User();
-        user.setName(clientDto.getName());
-        user.setSurname(clientDto.getSurname());
-        user.setPassword(clientDto.getPassword());
-        user.setLogin(clientDto.getLogin());
-        user.setAddress(clientDto.getAddress());
-        user.setPhoneNumber(clientDto.getPhoneNumber());
+        user.setName(userDto.getName());
+        user.setSurname(userDto.getSurname());
+        user.setPassword(userDto.getPassword());
+        user.setLogin(userDto.getLogin());
+        user.setAddress(userDto.getAddress());
+        user.setPhoneNumber(userDto.getPhoneNumber());
         try {
-            clientService.signIn(user);
+            clientService.signIn(userDto);
         } catch (RepeatitionException e) {
             return "tryLogin";
         }

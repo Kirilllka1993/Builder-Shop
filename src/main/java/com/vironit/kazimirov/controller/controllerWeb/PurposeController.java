@@ -1,5 +1,6 @@
 package com.vironit.kazimirov.controller.controllerWeb;
 
+import com.vironit.kazimirov.dto.PurposeDto;
 import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.exception.PurposeNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
@@ -29,29 +30,29 @@ public class PurposeController {
 
     @RequestMapping("/showPurposes")
     public String showSubsections(ModelMap map) {
-        List<Purpose> purposes=purposeService.findPurposes();
+        List<PurposeDto> purposes=purposeService.findPurposes();
         map.addAttribute("purposes",purposes);
         return "purpose";
     }
 
     @RequestMapping(value = "/addPurpose", method = RequestMethod.POST)
     public String addSubsection(@RequestParam("purpose") String purpose1) throws RepeatitionException {
-        Purpose purpose=new Purpose();
-        purpose.setPurpose(purpose1);
-        purposeService.addPurpose(purpose);
+        PurposeDto purposeDto=new PurposeDto();
+        purposeDto.setPurpose(purpose1);
+        purposeService.addPurpose(purposeDto);
         return "purpose";
     }
 
     @RequestMapping(value = "/findPurposeByName")
     public String findPurposeByName(@RequestParam ("purposeName") String purposeName, ModelMap map) throws PurposeNotFoundException {
-        Purpose purpose=purposeService.findPurposeByName(purposeName);
-        map.addAttribute("purpose", purpose);
+        PurposeDto purposeDto=purposeService.findPurposeByName(purposeName);
+        map.addAttribute("purpose", purposeDto);
         return "purpose";
     }
 
     @RequestMapping(value = "/doPurpose1")
     public String doPurpose(ModelMap map) {
-        List<Purpose> purposes = purposeService.findPurposes();
+        List<PurposeDto> purposes = purposeService.findPurposes();
         map.addAttribute("purposes", purposes);
         return "purpose";
     }

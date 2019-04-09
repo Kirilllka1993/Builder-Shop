@@ -38,14 +38,14 @@ private static final Logger LOGGER = Logger.getLogger(MyExceptionHandler.class.g
     @ExceptionHandler({GoodException.class})
     public ResponseEntity<CustomErrorResponce> goodHandle() {
         LOGGER.error("Good Exception ");
-        CustomErrorResponce errors = new CustomErrorResponce(LocalDateTime.now(), 400, "good exception");
+        CustomErrorResponce errors = new CustomErrorResponce(LocalDateTime.now(), 400, "goodId exception");
         return new ResponseEntity<>(errors, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({GoodNotFoundException.class})
     public ResponseEntity<CustomErrorResponce> goodNotFoundHandle() {
-        LOGGER.error("Such good is absent ");
-        CustomErrorResponce errors = new CustomErrorResponce(LocalDateTime.now(), 500, "such good is present");
+        LOGGER.error("Such goodId is absent ");
+        CustomErrorResponce errors = new CustomErrorResponce(LocalDateTime.now(), 500, "such goodId is present");
         return new ResponseEntity<>(errors, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

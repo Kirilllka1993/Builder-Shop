@@ -1,10 +1,12 @@
 import com.vironit.kazimirov.config.WebApplicationConfig;
+import com.vironit.kazimirov.dto.*;
 import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.entity.builder.Good.GoodBuilder;
 import com.vironit.kazimirov.exception.GoodException;
 import com.vironit.kazimirov.exception.GoodNotFoundException;
 import com.vironit.kazimirov.exception.PurchaseException;
 import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.fakedao.DaoInterface.GoodDao;
 import com.vironit.kazimirov.service.*;
 import org.junit.Assert;
 import org.junit.Before;
@@ -35,97 +37,113 @@ public class CartItemTest {
     @Autowired
     private SubsectionService subsectionService;
 
-    Good goodBeforeTest = null;
-    Purchase purchaseBeforeTest = null;
+    GoodDto goodBeforeTest = new GoodDto();
+    PurchaseDto purchaseBeforeTest = null;
     int amountBeforeTest = 1;
 
     @Before
     public void findElementsForTests() {
-        Purpose purpose = purposeService.findPurposes().get(0);
-        Subsection subsection = subsectionService.findSubsections().get(0);
-        GoodBuilder GoodBuilder = new GoodBuilder();
-        goodBeforeTest = GoodBuilder.withCost(6)
-                .withSubsection(subsection)
-                .withUnit("м3")
-                .withQuantity(5)
-                .withDiscount(0)
-                .withPurpose(purpose)
-                .withName("Пеноплекс")
-                .withAmount(20)
-                .build();
+        PurposeDto purposeDto = purposeService.findPurposes().get(0);
+//        Subsection subsection = subsectionService.findSubsections().get(0);
+        SubsectionDto subsectionDto = subsectionService.findSubsections().get(0);
+        Subsection subsection=new Subsection();
+        subsection.setId(subsectionDto.getId());
+        subsection.setTitle(subsectionDto.getTitle());
+//        GoodBuilder GoodBuilder = new GoodBuilder();
+//        goodBeforeTest = GoodBuilder.withCost(6)
+//                .withSubsection(subsection)
+//                .withUnit("м3")
+//                .withQuantity(5)
+//                .withDiscount(0)
+//                .withPurpose(purposeDto)
+//                .withName("Пеноплекс")
+//                .withAmount(20)
+//                .build();
+        goodBeforeTest.setSubsectionId(subsection.getId());
+        goodBeforeTest.setName("Пеноплекс");
+        goodBeforeTest.setPurposeId(purposeDto.getId());
+        goodBeforeTest.setQuantity(5);
+        goodBeforeTest.setDiscount(0);
+        goodBeforeTest.setAmount(20);
+        goodBeforeTest.setUnit("м3");
+        goodBeforeTest.setPrice(6);
 
-        List<Purchase> purchases = purchaseService.findPurchases();
-        purchaseBeforeTest = purchases.get(purchases.size() - 1);
+        List<PurchaseDto> purchaseDtos = purchaseService.findPurchases();
+        purchaseBeforeTest = purchaseDtos.get(purchaseDtos.size() - 1);
 
     }
 
     @Test
     public void addIntoCartItemTest() throws RepeatitionException, PurchaseException, GoodException {
-        goodService.addGood(goodBeforeTest);
+        int goodId=goodService.addGood(goodBeforeTest);
+        goodBeforeTest.setId(goodId);
         amountBeforeTest = 3;
-        cartItemService.addInCartItem(goodBeforeTest, amountBeforeTest, purchaseBeforeTest);
-        List<CartItem> missingGoods = cartItemService.findCartItems();
-        List<CartItem> findGoodsById = missingGoods.stream().filter(goodInPurchase -> goodInPurchase.getGood().getId() != goodBeforeTest.getId() ||
-                goodInPurchase.getPurchase().getId() != purchaseBeforeTest.getId()).collect(Collectors.toList());
+        int cartItemId=cartItemService.addInCartItem(goodBeforeTest, amountBeforeTest, purchaseBeforeTest);
+        List<CartItemDto> missingGoods = cartItemService.findCartItems();
+        List<CartItemDto> findGoodsById = missingGoods.stream().filter(cartItemDto -> cartItemDto.getGoodId() != goodBeforeTest.getId() ||
+                cartItemDto.getPurchaseId()!= purchaseBeforeTest.getId()).collect(Collectors.toList());
         missingGoods.removeAll(findGoodsById);
-        Assert.assertTrue(missingGoods.stream().allMatch(goodInPurchase -> goodInPurchase.getGood().getId() == goodBeforeTest.getId() ||
-                goodInPurchase.getPurchase().getId() == purchaseBeforeTest.getId()));
+        Assert.assertTrue(missingGoods.stream().allMatch(cartItemDto -> cartItemDto.getGoodId() == goodBeforeTest.getId() ||
+                cartItemDto.getPurchaseId() == purchaseBeforeTest.getId()));
         int size = missingGoods.size();
         assertEquals(size, 1);
-        cartItemService.deleteFromPurchase(goodBeforeTest, purchaseBeforeTest);
+        CartItemDto cartItemDto=cartItemService.findCartItem(goodBeforeTest.getId(), purchaseBeforeTest.getId());
+        cartItemService.deleteFromPurchase(cartItemDto);
         goodService.deleteGood(goodBeforeTest.getId());
     }
 
     @Test(expected = PurchaseException.class)
-    public void addIntoGoodInPurchaseExceptionTestSameGood() throws RepeatitionException, PurchaseException {
-        List<CartItem> cartItems = cartItemService.findCartItems();
-        CartItem cartItem = cartItems.get(0);
-        Purchase purchase = cartItem.getPurchase();
-        Good good = cartItem.getGood();
-        cartItemService.addInCartItem(good, amountBeforeTest, purchase);
+    public void addIntoGoodInPurchaseExceptionTestSameGood() throws RepeatitionException, PurchaseException, GoodNotFoundException {
+        List<CartItemDto> cartItemDtos = cartItemService.findCartItems();
+        CartItemDto cartItemDto = cartItemDtos.get(0);
+        PurchaseDto purchaseDto = purchaseService.findPurchaseById(cartItemDto.getPurchaseId());
+        GoodDto goodDto = goodService.findGoodById(cartItemDto.getGoodId());
+        cartItemService.addInCartItem(goodDto, amountBeforeTest, purchaseDto);
     }
 
     @Test(expected = PurchaseException.class)
     public void addIntoGoodInPurchaseExceptionTestMoreAmount() throws RepeatitionException, PurchaseException {
-        List<Good> goods = goodService.findAllGoods();
-        Good good = goods.get(0);
-        int newAmount = good.getAmount() + 50;
-        List<CartItem> cartItems = cartItemService.findCartItems();
-        CartItem cartItem = cartItems.get(0);
-        Purchase purchase = cartItem.getPurchase();
-        cartItemService.addInCartItem(good, newAmount, purchase);
+        List<GoodDto> goodDtos = goodService.findAllGoods();
+        GoodDto goodDto = goodDtos.get(0);
+        int newAmount = goodDto.getAmount() + 50;
+        List<CartItemDto> cartItems = cartItemService.findCartItems();
+        CartItemDto cartItemDto = cartItems.get(0);
+        PurchaseDto purchaseDto = purchaseService.findPurchaseById(cartItemDto.getPurchaseId());
+        cartItemService.addInCartItem(goodDto, newAmount, purchaseDto);
     }
 
     @Test(expected = PurchaseException.class)
     public void addIntoGoodInPurchaseExceptionTestLessAmount() throws RepeatitionException, PurchaseException {
-        List<Good> goods = goodService.findAllGoods();
-        Good good = goods.get(0);
+        List<GoodDto> goodDtos = goodService.findAllGoods();
+        GoodDto goodDto = goodDtos.get(0);
         int newAmount = -1;
-        List<CartItem> cartItems = cartItemService.findCartItems();
-        CartItem cartItem = cartItems.get(0);
-        Purchase purchase = cartItem.getPurchase();
-        cartItemService.addInCartItem(good, newAmount, purchase);
+        List<CartItemDto> cartItemDtos = cartItemService.findCartItems();
+        CartItemDto cartItemDto = cartItemDtos.get(0);
+        PurchaseDto purchaseDto =purchaseService.findPurchaseById(cartItemDto.getPurchaseId());
+        cartItemService.addInCartItem(goodDto, newAmount, purchaseDto);
     }
 
     @Test
     public void deleteFromPurchaseTest() throws RepeatitionException, PurchaseException, GoodException {
-        goodService.addGood(goodBeforeTest);
+        int goodId=goodService.addGood(goodBeforeTest);
+        goodBeforeTest.setId(goodId);
         cartItemService.addInCartItem(goodBeforeTest, amountBeforeTest, purchaseBeforeTest);
-        CartItem cartItem = cartItemService.findCartItem(goodBeforeTest.getId(), purchaseBeforeTest.getId());
-        cartItemService.deleteFromPurchase(goodBeforeTest, purchaseBeforeTest);
-        List<CartItem> cartItems = cartItemService.findCartItems();
-        Assert.assertTrue(cartItems.stream().noneMatch(goodInPurchase1 -> goodInPurchase1.getId() == cartItem.getId()));
+        CartItemDto cartItemDto = cartItemService.findCartItem(goodBeforeTest.getId(), purchaseBeforeTest.getId());
+        cartItemService.deleteFromPurchase(cartItemDto);
+        List<CartItemDto> cartItemDtos = cartItemService.findCartItems();
+        Assert.assertTrue(cartItemDtos.stream().noneMatch(cartItemDto1 -> cartItemDto1.getId() == cartItemDto.getId()));
         goodService.deleteGood(goodBeforeTest.getId());
     }
 
     @Test
     public void deleteGoodInPurchaseTest() throws RepeatitionException, GoodException, PurchaseException {
-        goodService.addGood(goodBeforeTest);
+        int goodId=goodService.addGood(goodBeforeTest);
+        goodBeforeTest.setId(goodId);
         cartItemService.addInCartItem(goodBeforeTest, amountBeforeTest, purchaseBeforeTest);
-        CartItem cartItem = cartItemService.findCartItem(goodBeforeTest.getId(), purchaseBeforeTest.getId());
-        cartItemService.deleteCartItem(cartItem.getId());
-        List<CartItem> cartItems = cartItemService.findCartItems();
-        Assert.assertTrue(cartItems.stream().noneMatch(goodInPurchase1 -> goodInPurchase1.getId() == cartItem.getId()));
+        CartItemDto cartItemDto = cartItemService.findCartItem(goodBeforeTest.getId(), purchaseBeforeTest.getId());
+        cartItemService.deleteCartItem(cartItemDto.getId());
+        List<CartItemDto> cartItemDtos = cartItemService.findCartItems();
+        Assert.assertTrue(cartItemDtos.stream().noneMatch(cartItemDto1 -> cartItemDto1.getId() == cartItemDto.getId()));
         goodService.deleteGood(goodBeforeTest.getId());
     }
 
@@ -138,66 +156,68 @@ public class CartItemTest {
 //        Assert.assertEquals();
 ////        List<Good> missingGoods = goodService.findAllGoods();
 ////        missingGoods.removeAll(foundsGoodsBySubsection);
-////        Assert.assertTrue(missingGoods.stream().noneMatch(good -> good.getSubsection().equals(subsection)));
+////        Assert.assertTrue(missingGoods.stream().noneMatch(goodId -> goodId.getSubsection().equals(subsection)));
 //    }
 
     @Test
     public void deleteGoodInPurchasesWithCancelledStatus() throws RepeatitionException, GoodException, PurchaseException {
-        goodService.addGood(goodBeforeTest);
+        int goodId=goodService.addGood(goodBeforeTest);
+        goodBeforeTest.setId(goodId);
         cartItemService.addInCartItem(goodBeforeTest, amountBeforeTest, purchaseBeforeTest);
-        CartItem cartItem = cartItemService.findCartItem(goodBeforeTest.getId(), purchaseBeforeTest.getId());
+        CartItemDto cartItemDto = cartItemService.findCartItem(goodBeforeTest.getId(), purchaseBeforeTest.getId());
         cartItemService.deleteCartItemsWithCancelledStatus(purchaseBeforeTest);
-        List<CartItem> cartItems = cartItemService.findCartItems();
-        Assert.assertTrue(cartItems.stream().noneMatch(goodInPurchase1 -> goodInPurchase1.getId() == cartItem.getId()));
+        List<CartItemDto> cartItemDtos = cartItemService.findCartItems();
+        Assert.assertTrue(cartItemDtos.stream().noneMatch(cartItemDto1 -> cartItemDto1.getId() == cartItemDto.getId()));
         goodService.deleteGood(goodBeforeTest.getId());
     }
 
     @Test
     public void changeAmountInGoodInPurchaseTest() throws GoodException, RepeatitionException, PurchaseException {
-        goodService.addGood(goodBeforeTest);
+        int goodId=goodService.addGood(goodBeforeTest);
+        goodBeforeTest.setId(goodId);
         cartItemService.addInCartItem(goodBeforeTest, amountBeforeTest, purchaseBeforeTest);
         cartItemService.changeAmountInCartItem(goodBeforeTest.getId(), amountBeforeTest, purchaseBeforeTest.getId());
-        CartItem cartItem = cartItemService.findCartItem(goodBeforeTest.getId(), purchaseBeforeTest.getId());
-        List<CartItem> missingGoods = cartItemService.findCartItems();
-        List<CartItem> findCartItem = missingGoods.stream().filter(goodInPurchase1 -> goodInPurchase1.getId() != cartItem.getId()).collect(Collectors.toList());
+        CartItemDto cartItemDto = cartItemService.findCartItem(goodBeforeTest.getId(), purchaseBeforeTest.getId());
+        List<CartItemDto> missingGoods = cartItemService.findCartItems();
+        List<CartItemDto> findCartItem = missingGoods.stream().filter(cartItemDto1 -> cartItemDto1.getId() != cartItemDto.getId()).collect(Collectors.toList());
         missingGoods.removeAll(findCartItem);
-        Assert.assertTrue(missingGoods.stream().anyMatch(goodInPurchase1 -> goodInPurchase1
-                .getAmount() == cartItem.getAmount()));
+        Assert.assertTrue(missingGoods.stream().anyMatch(cartItemDto1 -> cartItemDto1
+                .getAmount() == cartItemDto.getAmount()));
         int size = missingGoods.size();
         assertEquals(size, 1);
-        cartItemService.deleteCartItem(cartItem.getId());
+        cartItemService.deleteCartItem(cartItemDto.getId());
         goodService.deleteGood(goodBeforeTest.getId());
     }
 
     @Test(expected = PurchaseException.class)
-    public void changeAmountInGoodInPurchaseExceptionMoreAmountTest() throws PurchaseException {
-        List<Good> goods = goodService.findAllGoods();
-        Good good = goods.get(0);
-        int newAmount = good.getAmount() + 50;
-        List<CartItem> cartItems = cartItemService.findCartItems();
-        CartItem cartItem = cartItems.get(0);
-        Purchase purchase = cartItem.getPurchase();
-        cartItemService.changeAmountInCartItem(good.getId(), newAmount, purchase.getId());
+    public void changeAmountInGoodInPurchaseExceptionMoreAmountTest() throws PurchaseException, RepeatitionException {
+        List<GoodDto> goods = goodService.findAllGoods();
+        GoodDto goodDto = goods.get(0);
+        int newAmount = goodDto.getAmount() + 50;
+        List<CartItemDto> cartItems = cartItemService.findCartItems();
+        CartItemDto cartItemDto = cartItems.get(0);
+        PurchaseDto purchaseDto = purchaseService.findPurchaseById(cartItemDto.getPurchaseId());
+        cartItemService.changeAmountInCartItem(goodDto.getId(), newAmount, purchaseDto.getId());
     }
 
     @Test(expected = PurchaseException.class)
-    public void changeAmountInGoodInPurchaseExceptionLessAmountTest() throws PurchaseException {
-        List<Good> goods = goodService.findAllGoods();
-        Good good = goods.get(0);
+    public void changeAmountInGoodInPurchaseExceptionLessAmountTest() throws PurchaseException, RepeatitionException {
+        List<GoodDto> goodDtos = goodService.findAllGoods();
+        GoodDto goodDto = goodDtos.get(0);
         int newAmount = -1;
-        List<CartItem> cartItems = cartItemService.findCartItems();
-        CartItem cartItem = cartItems.get(0);
-        Purchase purchase = cartItem.getPurchase();
-        cartItemService.changeAmountInCartItem(good.getId(), newAmount, purchase.getId());
+        List<CartItemDto> cartItemDtos = cartItemService.findCartItems();
+        CartItemDto cartItemDto = cartItemDtos.get(0);
+        PurchaseDto purchaseDto = purchaseService.findPurchaseById(cartItemDto.getPurchaseId());
+        cartItemService.changeAmountInCartItem(goodDto.getId(), newAmount, purchaseDto.getId());
     }
 
     @Test
     public void findGoodInPurchaseByIdTest() {
-        List<CartItem> cartItems = cartItemService.findCartItems();
-        int id = cartItems.get(0).getId();
-        CartItem findCartItemById = cartItemService.findCartItemById(id);
-        List<CartItem> missingGoods = cartItemService.findCartItems();
-        List<CartItem> findGoodsById = missingGoods.stream().filter(goodInPurchase1 -> goodInPurchase1.getId() != findCartItemById.getId()).collect(Collectors.toList());
+        List<CartItemDto> cartItemDtos = cartItemService.findCartItems();
+        int id = cartItemDtos.get(0).getId();
+        CartItemDto findCartItemById = cartItemService.findCartItemById(id);
+        List<CartItemDto> missingGoods = cartItemService.findCartItems();
+        List<CartItemDto> findGoodsById = missingGoods.stream().filter(cartItemDto1 -> cartItemDto1.getId() != findCartItemById.getId()).collect(Collectors.toList());
         missingGoods.removeAll(findGoodsById);
         int size = missingGoods.size();
         assertEquals(size, 1);
@@ -205,63 +225,68 @@ public class CartItemTest {
 
     @Test
     public void findGoodInPurchaseTest() throws RepeatitionException, GoodException, PurchaseException {
-        goodService.addGood(goodBeforeTest);
+        int goodId=goodService.addGood(goodBeforeTest);
+        goodBeforeTest.setId(goodId);
         cartItemService.addInCartItem(goodBeforeTest, amountBeforeTest, purchaseBeforeTest);
-        CartItem findCartItemById = cartItemService.findCartItem(goodBeforeTest.getId(), purchaseBeforeTest.getId());
-        List<CartItem> missingGoods = cartItemService.findCartItems();
-        List<CartItem> findGoodsById = missingGoods.stream().filter(goodInPurchase1 -> goodInPurchase1.getId() != findCartItemById.getId() ||
-                goodInPurchase1.getPurchase().getId() != purchaseBeforeTest.getId()).collect(Collectors.toList());
+        CartItemDto findCartItemById = cartItemService.findCartItem(goodBeforeTest.getId(), purchaseBeforeTest.getId());
+        List<CartItemDto> missingGoods = cartItemService.findCartItems();
+        List<CartItemDto> findGoodsById = missingGoods.stream().filter(cartItemDto -> cartItemDto.getId() != findCartItemById.getId() ||
+                cartItemDto.getPurchaseId() != purchaseBeforeTest.getId()).collect(Collectors.toList());
         missingGoods.removeAll(findGoodsById);
         int size = missingGoods.size();
         assertEquals(size, 1);
-        cartItemService.deleteFromPurchase(goodBeforeTest, purchaseBeforeTest);
+        cartItemService.deleteFromPurchase(findCartItemById);
         goodService.deleteGood(goodBeforeTest.getId());
     }
 
     @Test
     public void returnedAmountOfGoodTest() throws RepeatitionException, GoodException, PurchaseException, GoodNotFoundException {
-        goodService.addGood(goodBeforeTest);
+        int goodId1=goodService.addGood(goodBeforeTest);
+        goodBeforeTest.setId(goodId1);
         int amountInStore = goodBeforeTest.getAmount();
         cartItemService.addInCartItem(goodBeforeTest, amountBeforeTest, purchaseBeforeTest);
-        CartItem cartItem = cartItemService.findCartItem(goodBeforeTest.getId(), purchaseBeforeTest.getId());
-        int amountAfterAddingInGoodInPurchase = cartItem.getGood().getAmount();
+        CartItemDto cartItemDto = cartItemService.findCartItem(goodBeforeTest.getId(), purchaseBeforeTest.getId());
+        int goodId=cartItemDto.getGoodId();
+        GoodDto goodDto1=goodService.findGoodById(goodId);
+        int amountAfterAddingInGoodInPurchase = goodDto1.getAmount();
         Assert.assertNotEquals(amountAfterAddingInGoodInPurchase, amountInStore);
-        cartItemService.returnedAmountOfGood(cartItem);
-        Good good = goodService.findGoodById(goodBeforeTest.getId());
-        Assert.assertEquals(amountInStore, good.getAmount());
-        cartItemService.deleteFromPurchase(goodBeforeTest, purchaseBeforeTest);
+        cartItemService.returnedAmountOfGood(cartItemDto);
+        GoodDto goodDto = goodService.findGoodById(goodBeforeTest.getId());
+        Assert.assertEquals(amountInStore, goodDto.getAmount());
+        cartItemService.deleteFromPurchase(cartItemDto);
         goodService.deleteGood(goodBeforeTest.getId());
     }
 
     @Test
     public void reduceAmountTest() throws RepeatitionException, GoodException, PurchaseException, GoodNotFoundException {
-        goodService.addGood(goodBeforeTest);
-        Good good = goodService.findGoodById(goodBeforeTest.getId());
-        int amountInStore = good.getAmount();
+        int goodId=goodService.addGood(goodBeforeTest);
+        goodBeforeTest.setId(goodId);
+        GoodDto goodDto = goodService.findGoodById(goodBeforeTest.getId());
+        int amountInStore = goodDto.getAmount();
         cartItemService.reduceAmount(goodBeforeTest.getId(), amountBeforeTest);
-        Good good1 = goodService.findGoodById(goodBeforeTest.getId());
-        int amountAfterReduce = good1.getAmount();
+        GoodDto goodDto1 = goodService.findGoodById(goodBeforeTest.getId());
+        int amountAfterReduce = goodDto1.getAmount();
         Assert.assertNotEquals(amountAfterReduce, amountInStore);
         goodService.deleteGood(goodBeforeTest.getId());
     }
 
     @Test
     public void findGoodInPurchasesByPurchaseTest() {
-        List<CartItem> foundsGoodsByPurchase = cartItemService.findCartItemsByPurchase(purchaseBeforeTest.getId());
-        Assert.assertTrue(foundsGoodsByPurchase.stream().allMatch(goodInPurchase1 -> goodInPurchase1.getPurchase().equals(purchaseBeforeTest)));
-        List<CartItem> missingGoods = cartItemService.findCartItems();
+        List<CartItemDto> foundsGoodsByPurchase = cartItemService.findCartItemsByPurchase(purchaseBeforeTest.getId());
+        Assert.assertTrue(foundsGoodsByPurchase.stream().allMatch(cartItemDto -> cartItemDto.getPurchaseId()==purchaseBeforeTest.getId()));
+        List<CartItemDto> missingGoods = cartItemService.findCartItems();
         missingGoods.removeAll(foundsGoodsByPurchase);
-        Assert.assertTrue(missingGoods.stream().noneMatch(goodInPurchase1 -> goodInPurchase1.getPurchase().equals(purchaseBeforeTest)));
+        Assert.assertTrue(missingGoods.stream().noneMatch(cartItemDto -> cartItemDto.getPurchaseId()==purchaseBeforeTest.getId()));
     }
 
     @Test
     public void findGoodInPurchasesByGoodTest() {
-        Good good=goodService.findAllGoods().get(0);
-        List<CartItem> foundsGoodsByPurchase = cartItemService.findCartItemsByGood(good.getId());
-        Assert.assertTrue(foundsGoodsByPurchase.stream().allMatch(goodInPurchase1 -> goodInPurchase1.getGood().equals(good)));
-        List<CartItem> missingGoods = cartItemService.findCartItems();
+        GoodDto goodDto=goodService.findAllGoods().get(0);
+        List<CartItemDto> foundsGoodsByPurchase = cartItemService.findCartItemsByGood(goodDto.getId());
+        Assert.assertTrue(foundsGoodsByPurchase.stream().allMatch(cartItemDto -> cartItemDto.getGoodId()==goodDto.getId()));
+        List<CartItemDto> missingGoods = cartItemService.findCartItems();
         missingGoods.removeAll(foundsGoodsByPurchase);
-        Assert.assertTrue(missingGoods.stream().noneMatch(goodInPurchase1 -> goodInPurchase1.getGood().equals(good)));//Доработать
+        Assert.assertTrue(missingGoods.stream().noneMatch(cartItemDto -> cartItemDto.getGoodId()==goodDto.getId()));//Доработать
     }
 
 

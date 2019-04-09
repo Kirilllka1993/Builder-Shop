@@ -28,6 +28,7 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 
     @Override
     protected String[] getServletMappings() {
+//        ServletContext sc=null;
 //        EnumSet<DispatcherType> dispatcherTypes = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ERROR);
 //
 //        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
@@ -37,10 +38,9 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 //        FilterRegistration.Dynamic characterEncoding = sc.addFilter("characterEncoding", characterEncodingFilter);
 //        characterEncoding.addMappingForUrlPatterns(dispatcherTypes, true, "/*");
 //        characterEncoding.setAsyncSupported(true);
-
         return new String[]{"/"};
     }
-}
+
 
 //public class DispatcherServletInitializer implements WebApplicationInitializer {
 //    @Override
@@ -66,4 +66,4 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 //        characterEncoding.addMappingForUrlPatterns(dispatcherTypes, true, "/*");
 //        characterEncoding.setAsyncSupported(true);
 //    }
-//}
+}

@@ -1,6 +1,9 @@
 package com.vironit.kazimirov.service;
 
+import com.vironit.kazimirov.dto.PurchaseDto;
+import com.vironit.kazimirov.dto.UserDto;
 import com.vironit.kazimirov.entity.*;
+import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.PurchaseException;
 
 
@@ -9,18 +12,18 @@ import java.util.List;
 
 public interface PurchaseService {
 
-    List<Purchase> findPurchases();//выполнено
+    List<PurchaseDto> findPurchases();//выполнено
 
 
-    int createNewPurchase(User user);//выполнено
+    int createNewPurchase(UserDto userDto) throws ClientNotFoundException;//пользователь
 
-    Purchase findPurchaseById(int purchaseId);//выполнено
+    PurchaseDto findPurchaseById(int purchaseId);//админ
 
-    void makeAPurchase(int purchaseId) throws PurchaseException;//выполнено
+    void makeAPurchase(int purchaseId) throws PurchaseException;//пользователь
 
-    List<Purchase> findPurchasesByDate(LocalDateTime timeOfPurchase);
+    List<PurchaseDto> findPurchasesByDate(LocalDateTime timeOfPurchase);//админ
 
-    void changeStatus(Purchase purchase, Status status);
+    void changeStatus(PurchaseDto purchaseDto, Status status);//пользователь
 
     void removePurchase(int purchaseId);//выполнено
 

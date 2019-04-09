@@ -1,9 +1,12 @@
 import com.vironit.kazimirov.config.WebApplicationConfig;
+import com.vironit.kazimirov.dto.GoodDto;
+import com.vironit.kazimirov.dto.UserDto;
 import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.entity.UserRoleEnum;
 import com.vironit.kazimirov.entity.builder.Client.ClientBuilder;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.fakedao.DaoInterface.AdminDao;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.GoodService;
 import com.vironit.kazimirov.service.PurchaseService;
@@ -32,41 +35,50 @@ public class AdminTest {
     private GoodService goodService;
     @Autowired
     private PurchaseService purchaseService;
+    @Autowired
+    private AdminDao adminDao;
 
-    User userBeforeForExceptionTest = null;
-    User userBeforeTest = new User();
+    UserDto userBeforeForExceptionTest = null;
+    UserDto userBeforeTest = null;
 
     @Before
     public void createClient() {
-        List<User> allUsers = adminService.findAllClient();
+        List<User> allUsers = adminDao.findAllClient();
         List<User> users = new ArrayList<>();
         users.add(allUsers.get(0));
         users.add(allUsers.get(1));
-        java.lang.String neverUseLogin = users.stream().map(User::getLogin).collect(Collectors.joining());
-        ClientBuilder clientBuilder = new ClientBuilder();
-        userBeforeTest = clientBuilder.withId(0)
-                .withName("Artem")
-                .withSurname("Pupkin")
-                .withLogin(neverUseLogin)
-                .withPassword("artem15")
-                .withAdress("Nezavisimosti street")
-                .withPhoneNumber("5632398")
-                .build();
-        userBeforeTest.setUserRoleEnum(UserRoleEnum.ROLE_USER);
+        String neverUseLogin = users.stream().map(User::getLogin).collect(Collectors.joining());
+//        ClientBuilder clientBuilder = new ClientBuilder();
+//        userBeforeTest = clientBuilder.withId(0)
+//                .withName("Artem")
+//                .withSurname("Pupkin")
+//                .withLogin(neverUseLogin)
+//                .withPassword("artem15")
+//                .withAdress("Nezavisimosti street")
+//                .withPhoneNumber("5632398")
+//                .build();
+        userBeforeTest = new UserDto();
+        userBeforeTest.setName("Artem");
+        userBeforeTest.setSurname("Pupkin");
+        userBeforeTest.setLogin(neverUseLogin);
+        userBeforeTest.setPassword("artem15");
+        userBeforeTest.setAddress("Nezavisimosti street");
+        userBeforeTest.setPhoneNumber("5632398");
+        userBeforeTest.setUserRoleEnum(UserRoleEnum.ROLE_USER.name());
     }
 
     @Before
     public void createClientForException() {
-        List<User> allUsers = adminService.findAllClient();
+        List<UserDto> allUsers = adminService.findAllClient();
         userBeforeForExceptionTest = allUsers.get(0);
     }
 
     @Test
     public void addClientTest() throws RepeatitionException {
-        adminService.addClient(userBeforeTest);
-        List<User> missingUsers = adminService.findAllClient();
-        List<User> findClientsById;
-        findClientsById = missingUsers.stream().filter(client -> client.getId() != userBeforeTest.getId()).collect(Collectors.toList());
+        int id=adminService.addClient(userBeforeTest);
+        userBeforeTest.setId(id);
+        List<UserDto> missingUsers = adminService.findAllClient();
+        List<UserDto> findClientsById = missingUsers.stream().filter(client -> client.getId() != userBeforeTest.getId()).collect(Collectors.toList());
         missingUsers.removeAll(findClientsById);
         Assert.assertTrue(missingUsers.stream().allMatch(client -> client.getId() == userBeforeTest.getId()));
         int size = missingUsers.size();
@@ -77,24 +89,25 @@ public class AdminTest {
     @Test(expected = RepeatitionException.class)
     public void addClientExceptionTest() throws RepeatitionException {
         adminService.addClient(userBeforeForExceptionTest);
-
     }
 
     @Test
     public void deleteClientTest() throws RepeatitionException {
-        adminService.addClient(userBeforeTest);
+        int id=adminService.addClient(userBeforeTest);
+        userBeforeTest.setId(id);
         int deleteId = userBeforeTest.getId();
         adminService.deleteClient(userBeforeTest.getId());
-        List<User> clients1 = adminService.findAllClient();
+        List<UserDto> clients1 = adminService.findAllClient();
         Assert.assertTrue(clients1.stream().noneMatch(client -> client.getId() == deleteId));
     }
 
     @Test
     public void findClientByLoginTest() throws RepeatitionException, ClientNotFoundException {
-        adminService.addClient(userBeforeTest);
-        User userByLogin = adminService.findClientByLogin(userBeforeTest.getLogin());
-        List<User> missingUsers = adminService.findAllClient();
-        List<User> allClientsByLogin = missingUsers.stream().filter(client -> !client.getLogin().equals(userByLogin.getLogin())).collect(Collectors.toList());
+        int id=adminService.addClient(userBeforeTest);
+        userBeforeTest.setId(id);
+        UserDto userByLogin = adminService.findClientByLogin(userBeforeTest.getLogin());
+        List<UserDto> missingUsers = adminService.findAllClient();
+        List<UserDto> allClientsByLogin = missingUsers.stream().filter(client -> !client.getLogin().equals(userByLogin.getLogin())).collect(Collectors.toList());
         missingUsers.removeAll(allClientsByLogin);
         Assert.assertTrue(missingUsers.stream().allMatch((client -> client.getLogin().equals(userByLogin.getLogin()))));
         adminService.deleteClient(userBeforeTest.getId());
@@ -107,9 +120,9 @@ public class AdminTest {
 
     @Test
     public void findClientByIdTest() {
-        User userByID = adminService.findAllClient().get(0);
-        List<User> missingUsers = adminService.findAllClient();
-        List<User> findClientsById = missingUsers.stream().filter(client -> client.getId() != userByID.getId()).collect(Collectors.toList());
+        UserDto userByID = adminService.findAllClient().get(0);
+        List<UserDto> missingUsers = adminService.findAllClient();
+        List<UserDto> findClientsById = missingUsers.stream().filter(client -> client.getId() != userByID.getId()).collect(Collectors.toList());
         missingUsers.removeAll(findClientsById);
         int size = missingUsers.size();
         assertEquals(size, 1);
@@ -117,22 +130,22 @@ public class AdminTest {
 
     @Test(expected = ClientNotFoundException.class)
     public void findClientByIdExceptionTest() throws ClientNotFoundException {
-        List<User> users =adminService.findAllClient();
-        int sum=1;
-        for(int i = 1; i< users.size(); i++){
-            sum=sum* users.get(i).getId();
+        List<UserDto> users = adminService.findAllClient();
+        int sum = 1;
+        for (int i = 1; i < users.size(); i++) {
+            sum = sum * users.get(i).getId();
         }
         adminService.findClientById(sum);
     }
 
     @Test
     public void changeDiscountTest() {
-        List<Good> goods = goodService.findAllGoods();
+        List<GoodDto> goods = goodService.findAllGoods();
         int id = goods.get(0).getId();
         double discountfirst = goods.get(0).getDiscount();
         double discount = goods.get(goods.size() - 1).getDiscount();
         adminService.changeDiscount(id, discount);
-        List<Good> allGoods = goodService.findAllGoods();
+        List<GoodDto> allGoods = goodService.findAllGoods();
         Assert.assertTrue(allGoods.stream().anyMatch(good -> good.getId() == id && good.getDiscount() == discount));
         adminService.changeDiscount(id, discountfirst);
     }

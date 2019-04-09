@@ -1,11 +1,10 @@
 package com.vironit.kazimirov.controller;
 
-import com.vironit.kazimirov.dto.ClientDto;
+import com.vironit.kazimirov.dto.UserDto;
 import com.vironit.kazimirov.dto.GoodDto;
 import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
-import com.vironit.kazimirov.log.MyLogger;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +23,16 @@ public class AdminRestController {
 
     @RequestMapping(value = "/allClients", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<User> showAllClients() {
-        List<User> users = adminService.findAllClient();
-        return users;
+    public List<UserDto> showAllClients() {
+        List<UserDto> userDtos = adminService.findAllClient();
+        return userDtos;
     }
 
     @RequestMapping(value = "/addClient", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public int addClient(@RequestBody ClientDto clientDto) throws RepeatitionException {
-        User user = clientDto.createClient();
-        int clientId = adminService.addClient(user);
+    public int addClient(@RequestBody UserDto userDto) throws RepeatitionException {
+//        User user = userDto.createClient();
+        int clientId = adminService.addClient(userDto);
         return clientId;
     }
 
@@ -45,16 +44,16 @@ public class AdminRestController {
 
     @RequestMapping(value = "/clientBylogin", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public User findClientByLogin(@RequestBody ClientDto clientDto) throws ClientNotFoundException {
-        User user = adminService.findClientByLogin(clientDto.getLogin());
-        return user;
+    public UserDto findClientByLogin(@RequestBody UserDto userDto) throws ClientNotFoundException {
+        UserDto clientByLogin = adminService.findClientByLogin(userDto.getLogin());
+        return clientByLogin;
     }
 
     @RequestMapping(value = "/clientById/{clientId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public User findClientById(@PathVariable("clientId") int clientId) throws ClientNotFoundException {
-        User user = adminService.findClientById(clientId);
-        return user;
+    public UserDto findClientById(@PathVariable("clientId") int clientId) throws ClientNotFoundException {
+        UserDto userDto = adminService.findClientById(clientId);
+        return userDto;
     }
 
 //    @RequestMapping(name = "/newStatus", method = RequestMethod.PUT)

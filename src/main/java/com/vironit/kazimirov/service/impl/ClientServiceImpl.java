@@ -1,11 +1,15 @@
 package com.vironit.kazimirov.service.impl;
 
+import com.vironit.kazimirov.dto.ReviewDto;
+import com.vironit.kazimirov.dto.UserDto;
+import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.fakedao.DaoInterface.AdminDao;
 import com.vironit.kazimirov.fakedao.DaoInterface.ClientDao;
 import com.vironit.kazimirov.entity.Review;
 import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.fakedao.DaoInterface.GoodDao;
 import com.vironit.kazimirov.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +24,8 @@ public class ClientServiceImpl implements ClientService {
     private final ClientDao clientDao;
     @Autowired
     private final AdminDao adminDao;
+    @Autowired
+    private GoodDao goodDao;
 
     @Autowired
     public ClientServiceImpl(ClientDao clientDao, AdminDao adminDao) {
@@ -28,7 +34,14 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void addReview(Review review) {
+    public void addReview(ReviewDto reviewDto) {
+        User user = adminDao.findClientById(reviewDto.getUserId());
+        Good good = goodDao.findGoodById(reviewDto.getGoodId());
+        Review review = new Review();
+        review.setMark(reviewDto.getMark());
+        review.setComment(reviewDto.getComment());
+        review.setGood(good);
+        review.setUser(user);
         clientDao.addReview(review);
 
     }
@@ -40,14 +53,16 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public User logIn(String login, String password) throws ClientNotFoundException {
+    public UserDto logIn(String login, String password) throws ClientNotFoundException {
         //matcher
         //Optional<User> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(login));
         Optional<User> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(login));
         if (checkLoginClient.isPresent() == false) {
             throw new ClientNotFoundException("such login is absent");
         } else {
-            return clientDao.logIn(login, password);
+            User user=clientDao.logIn(login, password);
+            UserDto userDto=new UserDto(user);
+            return userDto;
         }
     }
 
@@ -58,10 +73,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public int signIn(User user) throws RepeatitionException {
+    public int signIn(UserDto userDto) throws RepeatitionException {
         //matcher
-        Optional<User> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(user.getLogin()));
+        Optional<User> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(userDto.getLogin()));
         if (checkLoginClient.isPresent() == false) {
+            User user=userDto.createClient();
            return clientDao.signIn(user);
         } else {
             throw new RepeatitionException("such login is used");
@@ -100,7 +116,8 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<Review> findAllReviews(User user) {
+    public List<Review> findAllReviews(UserDto userDto) {
+        User user=adminDao.findClientById(userDto.getId());
         return clientDao.findAllReviews(user);
     }
 }

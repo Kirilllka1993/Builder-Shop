@@ -1,5 +1,8 @@
 package com.vironit.kazimirov.service;
 
+import com.vironit.kazimirov.dto.CartItemDto;
+import com.vironit.kazimirov.dto.GoodDto;
+import com.vironit.kazimirov.dto.PurchaseDto;
 import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.CartItem;
 import com.vironit.kazimirov.entity.Purchase;
@@ -10,33 +13,33 @@ import java.util.List;
 
 public interface CartItemService {
 
-    int addInCartItem(Good good, int amount, Purchase purchase) throws RepeatitionException, PurchaseException;//выполнено
+    int addInCartItem(GoodDto goodDto, int amount, PurchaseDto purchaseDto) throws RepeatitionException, PurchaseException;//пользователь
 
-    List<CartItem> findCartItems();//выполнено
+    List<CartItemDto> findCartItems();//админ
 
-    void deleteFromPurchase(Good good, Purchase purchase) throws PurchaseException;//выполнено
+    void deleteFromPurchase(CartItemDto cartItemDto) throws PurchaseException, RepeatitionException;//пользователь
 
-    void deleteCartItem(int cartItemId);//выполнено
+    void deleteCartItem(int cartItemId);//админ
 
-    List<Good> findGoodsByPurchase(int purchaseId);//выполнено
+    List<GoodDto> findGoodsByPurchase(int purchaseId);//админ
 
-    List<Purchase> findPurchasesByGood(int goodId);//выполнено
+    List<PurchaseDto> findPurchasesByGood(int goodId);//админ
 
-    void deleteCartItemsWithCancelledStatus(Purchase purchase);//выполнено
+    void deleteCartItemsWithCancelledStatus(PurchaseDto purchaseDto);//?
 
-    void changeAmountInCartItem(int goodId, int amount, int purchaseId) throws PurchaseException;//выполнено
+    void changeAmountInCartItem(int goodId, int amount, int purchaseId) throws PurchaseException, RepeatitionException;//пользователь
 
-    CartItem findCartItem(int goodId, int purchaseId);//выполнено
+    CartItemDto findCartItem(int goodId, int purchaseId);//админ
 
-    CartItem findCartItemById(int cartItemId);//выполнено
+    CartItemDto findCartItemById(int cartItemId);//админ
 
-    void returnedAmountOfGood(CartItem cartItem);//выполнено
+    void returnedAmountOfGood(CartItemDto cartItemDto);//выполнено
 
     void reduceAmount(int goodId, int amount);//выполнено
 
-    List<CartItem> findCartItemsByPurchase(int purchaseId);//выполнено
+    List<CartItemDto> findCartItemsByPurchase(int purchaseId);//админ
 
-    List<CartItem> findCartItemsByGood(int goodId);//выполнено
+    List<CartItemDto> findCartItemsByGood(int goodId);//админ
 
 
 }

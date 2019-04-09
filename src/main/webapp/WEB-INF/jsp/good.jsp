@@ -16,7 +16,7 @@
 
 <p><c:out value="${purposes}"/><br></p>
 <%--<form method=post action=addGood>--%>
-    <%--<p>Add good</p>--%>
+    <%--<p>Add goodId</p>--%>
     <%--<table>--%>
         <%--<tr>--%>
             <%--<td>price</td>--%>
@@ -55,7 +55,7 @@
         <%--</tr>--%>
         <%--<tr>--%>
             <%--<td><input type=reset value=reset></td>--%>
-            <%--<td><input type=submit value="add good"></td>--%>
+            <%--<td><input type=submit value="add goodId"></td>--%>
         <%--</tr>--%>
     <%--</table>--%>
 <%--</form>--%>
