@@ -123,7 +123,7 @@ public class PurchaseTest {
 ////        purchaseService.changeStatus(purchaseBeforeTest, Status.IN_PROCESS);
 ////        PurchaseDto purchase1 = purchaseService.findPurchaseById(purchaseBeforeTest.getId());
 ////        Assert.assertEquals(Status.IN_PROCESS, purchase1.getStatus());
-//    }
+//    }rete
 
     @After
     public void deletePurchase() {
