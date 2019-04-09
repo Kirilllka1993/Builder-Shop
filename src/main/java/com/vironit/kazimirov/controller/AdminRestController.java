@@ -2,8 +2,9 @@ package com.vironit.kazimirov.controller;
 
 import com.vironit.kazimirov.dto.UserDto;
 import com.vironit.kazimirov.dto.GoodDto;
-import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
+import com.vironit.kazimirov.exception.GoodException;
+import com.vironit.kazimirov.exception.GoodNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.PurchaseService;
@@ -31,14 +32,13 @@ public class AdminRestController {
     @RequestMapping(value = "/addClient", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public int addClient(@RequestBody UserDto userDto) throws RepeatitionException {
-//        User user = userDto.createClient();
         int clientId = adminService.addClient(userDto);
         return clientId;
     }
 
     @RequestMapping(value = "/delete/{clientId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    public void deleteClient(@PathVariable("clientId") int clientId) {
+    public void deleteClient(@PathVariable("clientId") int clientId) throws ClientNotFoundException {
         adminService.deleteClient(clientId);
     }
 
@@ -68,7 +68,7 @@ public class AdminRestController {
 
     @RequestMapping(value = "/newDiscount", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    public void changeDiscount(@RequestBody GoodDto goodDto) {
+    public void changeDiscount(@RequestBody GoodDto goodDto) throws GoodNotFoundException, GoodException {
         adminService.changeDiscount(goodDto.getId(), goodDto.getDiscount());
     }
 }

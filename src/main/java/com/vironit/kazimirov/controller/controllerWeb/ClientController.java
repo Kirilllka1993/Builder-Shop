@@ -124,6 +124,8 @@ public class ClientController extends HttpServlet {
         } catch (RepeatitionException e) {
             modelAndView.setViewName("tryLogin");
             return modelAndView;
+        } catch (ClientNotFoundException e) {
+            e.printStackTrace();
         }
 
         return modelAndView;
@@ -141,7 +143,7 @@ public class ClientController extends HttpServlet {
 
     @RequestMapping(value = "/changeAddress", method = RequestMethod.POST)
     public ModelAndView changeAddress(@RequestParam("id") int id,
-                                      @RequestParam("address") String address, ModelMap map) {
+                                      @RequestParam("address") String address, ModelMap map) throws ClientNotFoundException {
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("user");
@@ -151,7 +153,7 @@ public class ClientController extends HttpServlet {
 
     @RequestMapping(value = "/deleteReview", method = RequestMethod.POST)
     public ModelAndView deleteReview(@RequestParam("idGood") int idGood,
-                                     @RequestParam("idClient") int idClient, ModelMap map) {
+                                     @RequestParam("idClient") int idClient, ModelMap map) throws GoodNotFoundException, ClientNotFoundException {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("user");
         clientService.removeReview(idClient, idGood);

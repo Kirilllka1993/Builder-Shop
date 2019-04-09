@@ -12,6 +12,8 @@ public interface ClientDao {
 
     void removeReview(int clientId,int goodId);
 
+    Review findReview(int clientId, int goodId);
+
     User logIn(String login, String password) throws ClientNotFoundException;
 
     void logOut();

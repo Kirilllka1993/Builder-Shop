@@ -66,7 +66,7 @@ public class AdminController {
 //    }
 
     @PostMapping("/deleteClient")
-    public String deleteClient(@RequestParam("number") int id) {
+    public String deleteClient(@RequestParam("number") int id) throws ClientNotFoundException {
 
         adminService.deleteClient(id);
         return "adminJsp";

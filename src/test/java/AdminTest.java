@@ -5,6 +5,8 @@ import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.entity.UserRoleEnum;
 import com.vironit.kazimirov.entity.builder.Client.ClientBuilder;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
+import com.vironit.kazimirov.exception.GoodException;
+import com.vironit.kazimirov.exception.GoodNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.fakedao.DaoInterface.AdminDao;
 import com.vironit.kazimirov.service.AdminService;
@@ -48,15 +50,6 @@ public class AdminTest {
         users.add(allUsers.get(0));
         users.add(allUsers.get(1));
         String neverUseLogin = users.stream().map(User::getLogin).collect(Collectors.joining());
-//        ClientBuilder clientBuilder = new ClientBuilder();
-//        userBeforeTest = clientBuilder.withId(0)
-//                .withName("Artem")
-//                .withSurname("Pupkin")
-//                .withLogin(neverUseLogin)
-//                .withPassword("artem15")
-//                .withAdress("Nezavisimosti street")
-//                .withPhoneNumber("5632398")
-//                .build();
         userBeforeTest = new UserDto();
         userBeforeTest.setName("Artem");
         userBeforeTest.setSurname("Pupkin");
@@ -74,8 +67,8 @@ public class AdminTest {
     }
 
     @Test
-    public void addClientTest() throws RepeatitionException {
-        int id=adminService.addClient(userBeforeTest);
+    public void addClientTest() throws RepeatitionException, ClientNotFoundException {
+        int id = adminService.addClient(userBeforeTest);
         userBeforeTest.setId(id);
         List<UserDto> missingUsers = adminService.findAllClient();
         List<UserDto> findClientsById = missingUsers.stream().filter(client -> client.getId() != userBeforeTest.getId()).collect(Collectors.toList());
@@ -92,8 +85,8 @@ public class AdminTest {
     }
 
     @Test
-    public void deleteClientTest() throws RepeatitionException {
-        int id=adminService.addClient(userBeforeTest);
+    public void deleteClientTest() throws RepeatitionException, ClientNotFoundException {
+        int id = adminService.addClient(userBeforeTest);
         userBeforeTest.setId(id);
         int deleteId = userBeforeTest.getId();
         adminService.deleteClient(userBeforeTest.getId());
@@ -103,7 +96,7 @@ public class AdminTest {
 
     @Test
     public void findClientByLoginTest() throws RepeatitionException, ClientNotFoundException {
-        int id=adminService.addClient(userBeforeTest);
+        int id = adminService.addClient(userBeforeTest);
         userBeforeTest.setId(id);
         UserDto userByLogin = adminService.findClientByLogin(userBeforeTest.getLogin());
         List<UserDto> missingUsers = adminService.findAllClient();
@@ -139,7 +132,7 @@ public class AdminTest {
     }
 
     @Test
-    public void changeDiscountTest() {
+    public void changeDiscountTest() throws GoodNotFoundException, GoodException {
         List<GoodDto> goods = goodService.findAllGoods();
         int id = goods.get(0).getId();
         double discountfirst = goods.get(0).getDiscount();

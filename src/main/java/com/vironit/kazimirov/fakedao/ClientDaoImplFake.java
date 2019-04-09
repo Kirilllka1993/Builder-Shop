@@ -69,6 +69,11 @@ public class ClientDaoImplFake implements ClientDao {
     }
 
     @Override
+    public Review findReview(int clientId, int goodId) {
+        return null;
+    }
+
+    @Override
     public User logIn(java.lang.String login, java.lang.String password) throws ClientNotFoundException {
         if (users.stream().anyMatch(s -> s.getLogin().equals(login) && s.getPassword().equals(password)) == false) {
             throw new ClientNotFoundException("It is doesnt't correct entered login or password");

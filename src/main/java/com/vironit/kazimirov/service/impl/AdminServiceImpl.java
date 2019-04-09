@@ -1,15 +1,19 @@
 package com.vironit.kazimirov.service.impl;
 
+import com.vironit.kazimirov.dto.GoodDto;
 import com.vironit.kazimirov.dto.PurchaseDto;
 import com.vironit.kazimirov.dto.UserDto;
 import com.vironit.kazimirov.entity.Status;
 import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
+import com.vironit.kazimirov.exception.GoodException;
+import com.vironit.kazimirov.exception.GoodNotFoundException;
 import com.vironit.kazimirov.fakedao.DaoInterface.AdminDao;
 import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.fakedao.DaoInterface.PurchaseDao;
 import com.vironit.kazimirov.service.AdminService;
+import com.vironit.kazimirov.service.GoodService;
 import com.vironit.kazimirov.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +33,8 @@ public class AdminServiceImpl implements AdminService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private PurchaseDao purchaseDao;
+    @Autowired
+    private GoodService goodService;
 
 
     public AdminServiceImpl(AdminDao adminDao) {
@@ -37,7 +43,6 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public int addClient(UserDto userDto) throws RepeatitionException {
-        //matcher
         Optional<User> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(userDto.getLogin()));
         if (checkLoginClient.isPresent() == false) {
             User user = userDto.createClient();
@@ -49,8 +54,14 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void deleteClient(int clientId) {
-        adminDao.deleteClient(clientId);
+    public void deleteClient(int clientId) throws ClientNotFoundException {
+        Optional<User> checkLoginClient = Optional.ofNullable(adminDao.findClientById(clientId));
+        if (checkLoginClient.isPresent() == false) {
+            throw new ClientNotFoundException("such user is absent");
+        } else {
+            adminDao.deleteClient(clientId);
+        }
+
 
     }
 
@@ -80,7 +91,11 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void changeDiscount(int goodId, double discount) {
+    public void changeDiscount(int goodId, double discount) throws GoodNotFoundException, GoodException {
+        GoodDto goodDto=goodService.findGoodById(goodId);
+        if (goodDto.getPrice() <= goodDto.getDiscount()) {
+            throw new GoodException("The discount can't be more then price");
+        }
         adminDao.changeDiscount(goodId, discount);
 
     }

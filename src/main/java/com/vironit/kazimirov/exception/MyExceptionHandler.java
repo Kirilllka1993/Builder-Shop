@@ -6,25 +6,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
 
 @RestControllerAdvice
 public class MyExceptionHandler {
-//    @ExceptionHandler({ClientNotFoundException.class})
-//    @ResponseStatus(HttpStatus.NOT_FOUND)
-//    public ModelAndView absentOfClient() {
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("tryLogin");
-//        return modelAndView;
-//    }
-private static final Logger LOGGER = Logger.getLogger(MyExceptionHandler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(MyExceptionHandler.class.getName());
 
     @ExceptionHandler({ClientNotFoundException.class})
     public ResponseEntity<CustomErrorResponce> absentOfClient() {
         LOGGER.error("User Not found");
-        CustomErrorResponce errors = new CustomErrorResponce(LocalDateTime.now(), 500, "ClientNotFound");
+        CustomErrorResponce errors = new CustomErrorResponce(LocalDateTime.now(), 500, "User not found");
         return new ResponseEntity<>(errors, new HttpHeaders(), HttpStatus.valueOf(errors.getStatus()));
     }
 
@@ -38,14 +30,14 @@ private static final Logger LOGGER = Logger.getLogger(MyExceptionHandler.class.g
     @ExceptionHandler({GoodException.class})
     public ResponseEntity<CustomErrorResponce> goodHandle() {
         LOGGER.error("Good Exception ");
-        CustomErrorResponce errors = new CustomErrorResponce(LocalDateTime.now(), 400, "goodId exception");
+        CustomErrorResponce errors = new CustomErrorResponce(LocalDateTime.now(), 400, "the discount can't be more then price");
         return new ResponseEntity<>(errors, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({GoodNotFoundException.class})
     public ResponseEntity<CustomErrorResponce> goodNotFoundHandle() {
         LOGGER.error("Such goodId is absent ");
-        CustomErrorResponce errors = new CustomErrorResponce(LocalDateTime.now(), 500, "such goodId is present");
+        CustomErrorResponce errors = new CustomErrorResponce(LocalDateTime.now(), 500, "such goodId is absent");
         return new ResponseEntity<>(errors, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

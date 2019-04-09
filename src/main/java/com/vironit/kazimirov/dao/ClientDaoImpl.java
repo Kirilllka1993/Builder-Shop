@@ -16,9 +16,9 @@ import java.util.List;
 public class ClientDaoImpl implements ClientDao {
     @Autowired
     private SessionFactory sessionFactory;
-    private final String FIND_REVIEW_BY_GOOD_CLIENT = "select review from Review review where review.good.id =:goodId and review.client.id=:clientId";
+    private final String FIND_REVIEW_BY_GOOD_CLIENT = "select review from Review review where review.good.id =:goodId and review.user.id=:clientId";
     private final String SQL_CHECK_ACCOUNT = "select a from User a where login =:login and password=:password";
-    private final String FIND_REVIEWS_OF_CLIENTS = "select review from Review review where client =:client";
+    private final String FIND_REVIEWS_OF_CLIENTS = "select review from Review review where user =:client";
 
     @Override
     public void addReview(Review review) {
@@ -43,6 +43,20 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     @Override
+    public Review findReview(int clientId, int goodId) {
+        Session session = sessionFactory.openSession();
+        Transaction tx1 = session.beginTransaction();
+        Query query = session.createQuery(FIND_REVIEW_BY_GOOD_CLIENT, Review.class);
+        query.setParameter("clientId", clientId)
+                .setParameter("goodId", goodId);
+        Review review = query.getResultList().isEmpty() ? null : (Review) query.getResultList().get(0);
+        tx1.commit();
+        session.close();
+        return review;
+
+    }
+
+    @Override
     public User logIn(String login, String password) {
         Session session = sessionFactory.openSession();
         Query query = session.createQuery(SQL_CHECK_ACCOUNT, User.class);
@@ -63,7 +77,7 @@ public class ClientDaoImpl implements ClientDao {
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
         session.save(user);
-        int clientId= user.getId();
+        int clientId = user.getId();
         tx1.commit();
         session.close();
         return clientId;
@@ -94,9 +108,9 @@ public class ClientDaoImpl implements ClientDao {
     @Override
     public void changePhoneNumber(int clientId, String newPhoneNumber) {
         Session session = sessionFactory.openSession();
+        Transaction tx1 = session.beginTransaction();
         User user = session.get(User.class, clientId);
         user.setPhoneNumber(newPhoneNumber);
-        Transaction tx1 = session.beginTransaction();
         session.update(user);
         tx1.commit();
         session.close();

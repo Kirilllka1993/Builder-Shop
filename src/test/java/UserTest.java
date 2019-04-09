@@ -54,7 +54,6 @@ public class UserTest {
 //                .withPhoneNumber("5632398")
 //                .build();
 //        userBeforeTest.setUserRoleEnum(UserRoleEnum.ROLE_USER);
-
         userBeforeTest = new UserDto();
         userBeforeTest.setName("Artem");
         userBeforeTest.setSurname("Pupkin");
@@ -87,7 +86,7 @@ public class UserTest {
 
 
     @Test
-    public void signInTest() throws RepeatitionException {
+    public void signInTest() throws RepeatitionException, ClientNotFoundException {
         int clientId=clientService.signIn(userBeforeTest);
         userBeforeTest.setId(clientId);
         List<UserDto> missingUsers = adminService.findAllClient();
@@ -142,7 +141,7 @@ public class UserTest {
     }
 
     @Test(expected = RepeatitionException.class)
-    public void changeLoginExceptionTest() throws RepeatitionException {
+    public void changeLoginExceptionTest() throws RepeatitionException, ClientNotFoundException {
         UserDto user = adminService.findAllClient().get(0);
         clientService.changeLogin(user.getId(), userBeforeExceptionTest.getLogin());
     }
