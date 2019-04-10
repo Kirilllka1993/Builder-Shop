@@ -15,12 +15,14 @@ import com.vironit.kazimirov.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class ClientServiceImpl implements ClientService {
 
     @Autowired
@@ -39,13 +41,16 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void addReview(ReviewDto reviewDto) throws ClientNotFoundException, GoodNotFoundException {
+    public int addReview(ReviewDto reviewDto) throws ClientNotFoundException, GoodNotFoundException {
         Optional<Good> checkIdGood = Optional.ofNullable(goodDao.findGoodById(reviewDto.getGoodId()));
         Optional<User> checkIdClient = Optional.ofNullable(adminDao.findClientById(reviewDto.getUserId()));
+        Optional<Review> checkReview = Optional.ofNullable(clientDao.findReview(reviewDto.getUserId(),reviewDto.getGoodId()));
         if ((checkIdClient.isPresent() == false)) {
             throw new ClientNotFoundException();
         } else if (checkIdGood.isPresent() == false) {
             throw new GoodNotFoundException();
+        }else if(checkReview.isPresent() == true){
+            throw new ClientNotFoundException("Such review is create ");
         } else {
             User user = adminDao.findClientById(reviewDto.getUserId());
             Good good = goodDao.findGoodById(reviewDto.getGoodId());
@@ -54,7 +59,7 @@ public class ClientServiceImpl implements ClientService {
             review.setComment(reviewDto.getComment());
             review.setGood(good);
             review.setUser(user);
-            clientDao.addReview(review);
+            return clientDao.addReview(review);
         }
     }
 
@@ -70,7 +75,6 @@ public class ClientServiceImpl implements ClientService {
         } else {
             clientDao.removeReview(clientId, goodId);
         }
-
     }
 
     @Override
@@ -83,7 +87,6 @@ public class ClientServiceImpl implements ClientService {
             ReviewDto reviewDto = new ReviewDto(review);
             return reviewDto;
         }
-
     }
 
     @Override

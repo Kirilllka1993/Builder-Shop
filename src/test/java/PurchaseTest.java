@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,6 +29,7 @@ import static junit.framework.TestCase.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WebApplicationConfig.class)
 @WebAppConfiguration
+@Transactional
 public class PurchaseTest {
     @Autowired
     private PurchaseService purchaseService;
@@ -116,12 +118,16 @@ public class PurchaseTest {
         Assert.assertTrue(purchases1.stream().noneMatch(purchase1 -> purchase1.getId() == purchase.getId()));
     }
 
-//    @Test
-//    public void changeStatusPurchaseTest() {
-////        purchaseService.changeStatus(purchaseBeforeTest, Status.IN_PROCESS);
-////        PurchaseDto purchase1 = purchaseService.findPurchaseById(purchaseBeforeTest.getId());
-////        Assert.assertEquals(Status.IN_PROCESS, purchase1.getStatus());
-//    }rete
+    @Test
+    public void changeStatusPurchaseTest() throws PurchaseNotFoundException {
+        String statusDto=purchaseBeforeTest.getStatus();
+        purchaseService.changeStatus(purchaseBeforeTest, Status.IN_PROCESS);
+        PurchaseDto purchase1 = purchaseService.findPurchaseById(purchaseBeforeTest.getId());
+        Status newStatus=Status.valueOf(purchase1.getStatus());
+        Assert.assertEquals(Status.IN_PROCESS, newStatus);
+        Status status=Status.valueOf(statusDto);
+        purchaseService.changeStatus(purchaseBeforeTest,status);
+    }
 
     @After
     public void deletePurchase() throws PurchaseNotFoundException, CantDeleteElement {

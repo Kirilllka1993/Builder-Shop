@@ -19,52 +19,52 @@ public class PurposeDaoImpl implements PurposeDao {
     private final String FIND_PURPOSE_BY_ID = "select purpose from Purpose purpose where purpose.id = :purposeId";
     @Override
     public int addPurpose(Purpose purpose) {
-        Session session=sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
+        Session session=sessionFactory.getCurrentSession();
+        //Transaction tx1 = session.beginTransaction();
         session.save(purpose);
         int purposeId=purpose.getId();
-        tx1.commit();
-        session.close();
+        //tx1.commit();
+        //session.close();
         return purposeId;
     }
 
     @Override
     public List<Purpose> findPurposes() {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         List<Purpose> purposes=(List<Purpose>) session.createQuery(FIND_PURPOSES).list();
-        session.close();
+        //session.close();
         return purposes;
     }
 
     @Override
     public Purpose findPurposeByName(String purposeName) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery(FIND_PURPOSE_BY_NAME, Purpose.class);
         query.setParameter("purpose", purposeName);
         Purpose purpose= query.getResultList().isEmpty() ? null : (Purpose) query.getResultList().get(0);
-        session.close();
+        //session.close();
         return purpose;
     }
 
     @Override
     public void deletePurpose(int purposeId) {
-        Session session = sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
+        //Transaction tx1 = session.beginTransaction();
         Query query = session.createQuery(FIND_PURPOSE_BY_ID, Purpose.class);
         query.setParameter("purposeId", purposeId);
         Purpose purpose = query.getResultList().isEmpty() ? null : (Purpose) query.getResultList().get(0);
         session.delete(purpose);
-        tx1.commit();
-        session.close();
+        //tx1.commit();
+        //session.close();
     }
 
     @Override
     public Purpose findPurposeById(int purposeId) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery(FIND_PURPOSE_BY_ID, Purpose.class);
         query.setParameter("purposeId", purposeId);
         Purpose purpose = query.getResultList().isEmpty() ? null : (Purpose) query.getResultList().get(0);
-        session.close();
+        //session.close();
         return purpose;
     }
 }

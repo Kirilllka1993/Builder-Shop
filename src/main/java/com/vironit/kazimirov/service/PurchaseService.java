@@ -16,15 +16,15 @@ public interface PurchaseService {
 
     List<PurchaseDto> findPurchases();//выполнено
 
-
     int createNewPurchase(UserDto userDto) throws ClientNotFoundException;//выполнено
+
     PurchaseDto findPurchaseById(int purchaseId) throws PurchaseNotFoundException;//выполнено
 
     void makeAPurchase(int purchaseId) throws PurchaseException, PurchaseNotFoundException;//выполнено
 
     List<PurchaseDto> findPurchasesByDate(LocalDateTime timeOfPurchase);//
 
-    void changeStatus(PurchaseDto purchaseDto, Status status);//
+    void changeStatus(PurchaseDto purchaseDto, Status status);//выполнено
 
     void removePurchase(int purchaseId) throws PurchaseNotFoundException, CantDeleteElement;//выполнено
 

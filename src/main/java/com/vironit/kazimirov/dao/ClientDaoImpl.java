@@ -21,49 +21,51 @@ public class ClientDaoImpl implements ClientDao {
     private final String FIND_REVIEWS_OF_CLIENTS = "select review from Review review where user =:client";
 
     @Override
-    public void addReview(Review review) {
-        Session session = sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
+    public int addReview(Review review) {
+        Session session = sessionFactory.getCurrentSession();
+        //Transaction tx1 = session.beginTransaction();
         session.save(review);
-        tx1.commit();
-        session.close();
+        int reviewId=review.getId();
+        //tx1.commit();
+        //session.close();
+        return reviewId;
     }
 
     @Override
     public void removeReview(int clientId, int goodId) {
-        Session session = sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
+        //Transaction tx1 = session.beginTransaction();
         Review review = session.createQuery(FIND_REVIEW_BY_GOOD_CLIENT, Review.class)
                 .setParameter("clientId", clientId)
                 .setParameter("goodId", goodId).uniqueResult();
         session.delete(review);
-        tx1.commit();
-        session.close();
+        //tx1.commit();
+        //session.close();
 
     }
 
     @Override
     public Review findReview(int clientId, int goodId) {
-        Session session = sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
+        //Transaction tx1 = session.beginTransaction();
         Query query = session.createQuery(FIND_REVIEW_BY_GOOD_CLIENT, Review.class);
         query.setParameter("clientId", clientId)
                 .setParameter("goodId", goodId);
         Review review = query.getResultList().isEmpty() ? null : (Review) query.getResultList().get(0);
-        tx1.commit();
-        session.close();
+        //tx1.commit();
+        //session.close();
         return review;
 
     }
 
     @Override
     public User logIn(String login, String password) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery(SQL_CHECK_ACCOUNT, User.class);
         query.setParameter("login", login);
         query.setParameter("password", password);
         User user = query.getResultList().isEmpty() ? null : (User) query.getResultList().get(0);
-        session.close();
+       // session.close();
         return user;
     }
 
@@ -74,65 +76,65 @@ public class ClientDaoImpl implements ClientDao {
 
     @Override
     public int signIn(User user) {
-        Session session = sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
+        //Transaction tx1 = session.beginTransaction();
         session.save(user);
         int clientId = user.getId();
-        tx1.commit();
-        session.close();
+        //tx1.commit();
+        //session.close();
         return clientId;
     }
 
     @Override
     public void changeLogin(int clientId, String newLogin) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         User user = session.get(User.class, clientId);
         user.setLogin(newLogin);
-        Transaction tx1 = session.beginTransaction();
+        //Transaction tx1 = session.beginTransaction();
         session.update(user);
-        tx1.commit();
-        session.close();
+        //tx1.commit();
+        //session.close();
     }
 
     @Override
     public void changePassword(int clientId, String newPassword) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         User user = session.get(User.class, clientId);
         user.setPassword(newPassword);
-        Transaction tx1 = session.beginTransaction();
+       // Transaction tx1 = session.beginTransaction();
         session.update(user);
-        tx1.commit();
-        session.close();
+        //tx1.commit();
+        //session.close();
     }
 
     @Override
     public void changePhoneNumber(int clientId, String newPhoneNumber) {
-        Session session = sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
+        //Transaction tx1 = session.beginTransaction();
         User user = session.get(User.class, clientId);
         user.setPhoneNumber(newPhoneNumber);
         session.update(user);
-        tx1.commit();
-        session.close();
+        //tx1.commit();
+        //session.close();
     }
 
     @Override
     public void changeAddress(int clientId, String newAddress) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         User user = session.get(User.class, clientId);
         user.setAddress(newAddress);
-        Transaction tx1 = session.beginTransaction();
+        //Transaction tx1 = session.beginTransaction();
         session.update(user);
-        tx1.commit();
-        session.close();
+        //tx1.commit();
+        //session.close();
     }
 
     @Override
     public List<Review> findAllReviews(User user) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         List<Review> reviews = session.createQuery(FIND_REVIEWS_OF_CLIENTS, Review.class)
                 .setParameter("client", user).list();
-        session.close();
+        //session.close();
         return reviews;
     }
 }

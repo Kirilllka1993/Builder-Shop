@@ -1,8 +1,6 @@
 package com.vironit.kazimirov.service;
 
-import com.vironit.kazimirov.dto.PurchaseDto;
 import com.vironit.kazimirov.dto.UserDto;
-import com.vironit.kazimirov.entity.Status;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.GoodException;
 import com.vironit.kazimirov.exception.GoodNotFoundException;
@@ -24,5 +22,4 @@ public interface AdminService {
 
     List<UserDto> findAllClient();//все работате
 
-    void updateStatus(Status status, PurchaseDto purchaseDto);
 }

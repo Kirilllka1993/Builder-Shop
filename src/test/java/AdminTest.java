@@ -17,9 +17,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,26 +32,23 @@ import static junit.framework.TestCase.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WebApplicationConfig.class)
 @WebAppConfiguration
+@Transactional
 public class AdminTest {
     @Autowired
     private AdminService adminService;
     @Autowired
     private GoodService goodService;
-    @Autowired
-    private PurchaseService purchaseService;
-    @Autowired
-    private AdminDao adminDao;
 
     UserDto userBeforeForExceptionTest = null;
     UserDto userBeforeTest = null;
 
     @Before
     public void createClient() {
-        List<User> allUsers = adminDao.findAllClient();
-        List<User> users = new ArrayList<>();
+        List<UserDto> allUsers = adminService.findAllClient();
+        List<UserDto> users = new ArrayList<>();
         users.add(allUsers.get(0));
         users.add(allUsers.get(1));
-        String neverUseLogin = users.stream().map(User::getLogin).collect(Collectors.joining());
+        String neverUseLogin = users.stream().map(UserDto::getLogin).collect(Collectors.joining());
         userBeforeTest = new UserDto();
         userBeforeTest.setName("Artem");
         userBeforeTest.setSurname("Pupkin");
@@ -142,12 +141,6 @@ public class AdminTest {
         Assert.assertTrue(allGoods.stream().anyMatch(good -> good.getId() == id && good.getDiscount() == discount));
         adminService.changeDiscount(id, discountfirst);
     }
-
-//    @Test
-//    public void updateStatusTest() {
-//        List<Purchase> purchases = purchaseService.findPurchases();
-//        Purchase purchase = purchases.get(0);
-//    }
 }
 
 

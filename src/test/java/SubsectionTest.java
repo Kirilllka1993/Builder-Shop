@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.ArrayList;
@@ -27,13 +28,12 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WebApplicationConfig.class)
 @WebAppConfiguration
+@Transactional
 public class SubsectionTest {
     @Autowired
     private SubsectionService subsectionService;
     @Autowired
     private GoodService goodService;
-    @Autowired
-    private GoodDao goodDao;
 
     SubsectionDto subsectionBeforeTest = null;
     SubsectionDto subsectionForExceptionTest = null;
@@ -52,11 +52,9 @@ public class SubsectionTest {
     }
 
     @Before
-    public void createForDeletingTest() {
-        List<Good> goods = goodDao.findAllGoods();
-        Subsection subsection = goods.get(0).getSubsection();
-        subsectionForDeleteExceptionTest.setId(subsection.getId());
-        subsectionForDeleteExceptionTest.setTitle(subsection.getTitle());
+    public void createForDeletingTest() throws SubsectionNotFoundException {
+        List<GoodDto> goods = goodService.findAllGoods();
+        subsectionForDeleteExceptionTest = subsectionService.findSubsectionById(goods.get(0).getId());
     }
 
     @Test

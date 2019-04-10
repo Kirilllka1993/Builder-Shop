@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ClientService {
 
-    void addReview(ReviewDto reviewDto) throws ClientNotFoundException, GoodNotFoundException;//все работает
+    int addReview(ReviewDto reviewDto) throws ClientNotFoundException, GoodNotFoundException;//все работает
 
     void removeReview(int clientId, int goodId) throws ClientNotFoundException, GoodNotFoundException;//все работает
 

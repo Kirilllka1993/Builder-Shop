@@ -1,7 +1,6 @@
 package com.vironit.kazimirov.controller;
 
 import com.vironit.kazimirov.dto.PurposeDto;
-import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.exception.CantDeleteElement;
 import com.vironit.kazimirov.exception.PurposeNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;

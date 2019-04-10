@@ -31,74 +31,74 @@ public class CartItemDaoImpl implements CartItemDao {
 
     @Override
     public int addInCartItem(Good good, int amount, Purchase purchase) {
-        Session session = sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
+        //Transaction tx1 = session.beginTransaction();
         CartItem cartItem = new CartItem();
         cartItem.setAmount(amount);
         cartItem.setGood(good);
         cartItem.setPurchase(purchase);
         session.save(cartItem);
         int cartItemId=cartItem.getId();
-        tx1.commit();
-        session.close();
+        //tx1.commit();
+        //session.close();
         return cartItemId;
 
     }
 
     @Override
     public List<CartItem> findCartItems() {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         List<CartItem> purchases = (List<CartItem>) session.createQuery(FIND_CARTITEMS).list();
-        session.close();
+        //session.close();
         return purchases;
     }
 
     @Override
     public void deleteFromPurchase(Good good, Purchase purchase) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         int goodId = good.getId();
         int purchaseId = purchase.getId();
-        Transaction tx1 = session.beginTransaction();
+        //Transaction tx1 = session.beginTransaction();
         CartItem cartItem = session.createQuery(FIND_CARTITEM, CartItem.class)
                 .setParameter("purchaseId", purchaseId).
                         setParameter("goodId", goodId).uniqueResult();
         session.delete(cartItem);
-        tx1.commit();
-        session.close();
+        //tx1.commit();
+        //session.close();
     }
 
     @Override
     public void deleteCartItem(int cartItemId) {
-        Session session = sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
+        //Transaction tx1 = session.beginTransaction();
         CartItem cartItem1 = session.get(CartItem.class, cartItemId);
         session.delete(cartItem1);
-        tx1.commit();
-        session.close();
+        //tx1.commit();
+        //session.close();
 
     }
 
     @Override
     public List<Good> findGoodsByPurchase(int purchaseId) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         List<Good> goods = (List<Good>) session.createQuery(FIND_GOODS).setParameter("purchaseId", purchaseId).list();
-        session.close();
+        //session.close();
         return goods;
     }
 
     @Override
     public List<Purchase> findPurchasesByGood(int goodId) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         List<Purchase> purchases = (List<Purchase>) session.createQuery(FIND_PURCHASES).setParameter("goodId", goodId).list();
-        session.close();
+        //session.close();
         return purchases;
 
     }
 
     @Override
     public void deleteCartItemsWithCancelledStatus(Purchase purchase) {
-        Session session = sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
+       // Transaction tx1 = session.beginTransaction();
         List<CartItem> cartItems = session.createQuery(FIND_CARTITEMS_BY_GOOD_AND_PURCHASE, CartItem.class)
                 .setParameter("purchase", purchase).list();
         for (int i = 0; i < cartItems.size(); i++) {
@@ -107,76 +107,76 @@ public class CartItemDaoImpl implements CartItemDao {
             session.update(good);
             session.delete(cartItems.get(i));
         }
-        tx1.commit();
-        session.close();
+        //tx1.commit();
+        //session.close();
     }
 
     @Override
     public void changeAmountInCartItem(int goodId, int amount, int purchaseId) {
-        Session session = sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
+        //Transaction tx1 = session.beginTransaction();
         CartItem cartItem = session.createQuery(FIND_CARTITEM, CartItem.class)
                 .setParameter("purchaseId", purchaseId).
                         setParameter("goodId", goodId).uniqueResult();
         cartItem.setAmount(amount);
         session.save(cartItem);
-        tx1.commit();
-        session.close();
+        //tx1.commit();
+        //session.close();
     }
 
     @Override
     public CartItem findCartItem(int goodId, int purchaseId) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery(FIND_CARTITEM, CartItem.class);
         query.setParameter("purchaseId", purchaseId).setParameter("goodId", goodId);
         CartItem cartItem = query.getResultList().isEmpty() ? null : (CartItem) query.getResultList().get(0);
-        session.close();
+        //session.close();
         return cartItem;
     }
 
     @Override
     public CartItem findCartItemById(int cartItemId) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         CartItem cartItem = session.get(CartItem.class, cartItemId);
-        session.close();
+        //session.close();
         return cartItem;
     }
 
     @Override
     public void returnedAmountOfGood(CartItem cartItem) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         Good good = cartItem.getGood();
-        Transaction tx = session.beginTransaction();
+        //Transaction tx = session.beginTransaction();
         good.setAmount(good.getAmount() + cartItem.getAmount());
         session.update(good);
-        tx.commit();
-        session.close();
+        //tx.commit();
+        //session.close();
     }
 
     @Override
     public void reduceAmount(int goodId, int amount) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         Good good = session.get(Good.class, goodId);
-        Transaction tx1 = session.beginTransaction();
+        //Transaction tx1 = session.beginTransaction();
         good.setAmount(good.getAmount() - amount);
         session.update(good);
-        tx1.commit();
-        session.close();
+        //tx1.commit();
+        //session.close();
     }
 
     @Override
     public List<CartItem> findCartItemsByPurchase(int purchaseId) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         List<CartItem> cartItems = (List<CartItem>) session.createQuery(FIND_CARTITEMS_BY_PURCHASE).setParameter("purchaseId", purchaseId).list();
-        session.close();
+        //session.close();
         return cartItems;
     }
 
     @Override
     public List<CartItem> findCartItemsByGood(int goodId) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         List<CartItem> cartItems = (List<CartItem>) session.createQuery(FIND_CARTITEMS_BY_GOOD).setParameter("goodId", goodId).list();
-        session.close();
+        //session.close();
         return cartItems;
     }
 }

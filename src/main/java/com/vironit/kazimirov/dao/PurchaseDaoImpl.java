@@ -24,32 +24,32 @@ public class PurchaseDaoImpl implements PurchaseDao {
 
     @Override
     public List<Purchase> findPurchases() {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         List<Purchase> purchases = (List<Purchase>) session.createQuery(FIND_PURCHASES).list();
-        session.close();
+        //session.close();
         return purchases;
     }
 
     @Override
     public int createNewPurchase(User user) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         Purchase purchase = new Purchase();
         LocalDateTime registration = LocalDateTime.now();
         purchase.setStatus(Status.NEW);
         purchase.setUser(user);
         purchase.setRegistration(registration);
-        Transaction tx1 = session.beginTransaction();
+        //Transaction tx1 = session.beginTransaction();
         session.save(purchase);
         int purchaseId = purchase.getId();
-        tx1.commit();
-        session.close();
+        //tx1.commit();
+        //session.close();
         return purchaseId;
     }
 
     @Override
     public void makeAPurchase(int purchaseId) {
-        Session session = sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
+        //Transaction tx1 = session.beginTransaction();
         List<CartItem> cartItems = new ArrayList<>();
         Purchase purchase = session.get(Purchase.class, purchaseId);
         cartItems = (List<CartItem>) session.createQuery(FIND_GOOD_FOR_PURCHASE)
@@ -60,49 +60,49 @@ public class PurchaseDaoImpl implements PurchaseDao {
         purchase.setStatus(Status.REGISTRATE);
         purchase.setTimeOfPurchase(LocalDateTime.now());
         session.update(purchase);
-        tx1.commit();
-        session.close();
+        //tx1.commit();
+        //session.close();
     }
 
     @Override
     public Purchase findPurchaseById(int purchaseId) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         Purchase purchase = session.get(Purchase.class, purchaseId);
-        session.close();
+        //session.close();
         return purchase;
     }
 
     @Override
     public List<Purchase> findPurchasesByDate(LocalDateTime timeOfPurchase) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         List<Purchase> purchases = (List<Purchase>) session.createQuery(FIND_BY_PURCHASES_BY_DATE)
                 .setParameter("timeOfPurchase", timeOfPurchase)
                 .list();
-        session.close();
+        //session.close();
         return purchases;
 
     }
 
     @Override
     public void removePurchase(int purchaseId) {
-        Session session = sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
+        //Transaction tx1 = session.beginTransaction();
         Query query = session.createQuery(FIND_PURCHASE_BY_ID, Purchase.class);
         query.setParameter("purchaseId", purchaseId);
         Purchase purchase = query.getResultList().isEmpty() ? null : (Purchase) query.getResultList().get(0);
         session.delete(purchase);
-        tx1.commit();
-        session.close();
+        //tx1.commit();
+        //session.close();
 
     }
 
     @Override
     public void changeStatus(Purchase purchase, Status status) {
-        Session session = sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
+        //Transaction tx1 = session.beginTransaction();
         purchase.setStatus(status);
         session.update(purchase);
-        tx1.commit();
-        session.close();
+        //tx1.commit();
+        //session.close();
     }
 }

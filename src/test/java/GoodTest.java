@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
@@ -29,6 +30,7 @@ import static junit.framework.TestCase.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WebApplicationConfig.class)
 @WebAppConfiguration
+@Transactional
 public class GoodTest {
     @Autowired
     private GoodService goodService;
@@ -47,16 +49,6 @@ public class GoodTest {
         Subsection subsection=new Subsection();
         subsection.setId(subsectionDto.getId());
         subsection.setTitle(subsectionDto.getTitle());
-//        GoodBuilder GoodBuilder = new GoodBuilder();
-//        goodBeforeTest = GoodBuilder.withCost(6)
-//                .withSubsection(subsection)
-//                .withUnit("м3")
-//                .withQuantity(5)
-//                .withDiscount(0)
-//                .withPurpose(purpose)
-//                .withName("Пеноплексcccccccccccccccccccccccc")
-//                .withAmount(20)
-//                .build();
         goodBeforeTest = new GoodDto();
         goodBeforeTest.setSubsectionId(subsection.getId());
         goodBeforeTest.setName("Пеноплексcccccccccccccccccccccccc");

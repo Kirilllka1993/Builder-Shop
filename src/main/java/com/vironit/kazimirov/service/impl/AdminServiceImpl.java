@@ -17,6 +17,7 @@ import com.vironit.kazimirov.service.GoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
@@ -24,14 +25,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private final AdminDao adminDao;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private PurchaseDao purchaseDao;
     @Autowired
     private GoodService goodService;
 
@@ -104,11 +104,5 @@ public class AdminServiceImpl implements AdminService {
         List<User> users = adminDao.findAllClient();
         List<UserDto> userDtos = users.stream().map(UserDto::new).collect(Collectors.toList());
         return userDtos;
-    }
-
-    @Override
-    public void updateStatus(Status status, PurchaseDto purchaseDto) {
-        Purchase purchase = purchaseDao.findPurchaseById(purchaseDto.getId());
-        adminDao.updateStatus(status, purchase);
     }
 }

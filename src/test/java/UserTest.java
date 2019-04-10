@@ -1,9 +1,12 @@
 import com.vironit.kazimirov.config.WebApplicationConfig;
+import com.vironit.kazimirov.dto.GoodDto;
+import com.vironit.kazimirov.dto.ReviewDto;
 import com.vironit.kazimirov.dto.UserDto;
 import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.entity.UserRoleEnum;
 import com.vironit.kazimirov.entity.builder.Client.ClientBuilder;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
+import com.vironit.kazimirov.exception.GoodNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.ClientService;
@@ -16,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +30,7 @@ import static junit.framework.TestCase.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WebApplicationConfig.class)
 @WebAppConfiguration
+@Transactional
 public class UserTest {
     @Autowired
     private ClientService clientService;
@@ -35,7 +40,7 @@ public class UserTest {
     private GoodService goodService;
     UserDto userBeforeTest = null;
     UserDto userBeforeExceptionTest = null;
-    Review reviewBeforeTest = null;
+    ReviewDto reviewBeforeTest = null;
 
     @Before
     public void createClient() {
@@ -43,17 +48,7 @@ public class UserTest {
         List<UserDto> users = new ArrayList<>();
         users.add(allUsers.get(0));
         users.add(allUsers.get(1));
-        java.lang.String neverUseLogin = users.stream().map(UserDto::getLogin).collect(Collectors.joining());
-//        ClientBuilder clientBuilder = new ClientBuilder();
-//        userBeforeTest = clientBuilder.withId(0)
-//                .withName("Artem")
-//                .withSurname("Pupkin")
-//                .withLogin(neverUseLogin)
-//                .withPassword("artem15")
-//                .withAdress("Nezavisimosti street")
-//                .withPhoneNumber("5632398")
-//                .build();
-//        userBeforeTest.setUserRoleEnum(UserRoleEnum.ROLE_USER);
+        String neverUseLogin = users.stream().map(UserDto::getLogin).collect(Collectors.joining());
         userBeforeTest = new UserDto();
         userBeforeTest.setName("Artem");
         userBeforeTest.setSurname("Pupkin");
@@ -70,24 +65,21 @@ public class UserTest {
         userBeforeExceptionTest = allUsers.get(0);
     }
 
-//    @Before
-//    public void createReview() {
-//        Subsection subsection2 = new Subsection(2, "Сухие смеси");
-//        Purpose purpose2 = new Purpose(2, "Внутренние работы");
-//        Good good2 = new Good(2, 2.0, subsection2, "м3", 5, 1, purpose2, "Шпатлевка", 36);
-//        User client3 = new User(3, "Dem'an", "Gurski", "gurski93", "gurski93", "Odoevskogo street", "2568974");
-//        ReviewBuilder reviewBuilder = new ReviewBuilder();
-//        reviewBeforeTest = reviewBuilder.withMark(5)
-//                .withText("Мне этот товар не понравился")
-//                .withClient(client3)
-//                .withGood(good2)
-//                .build();
-//    }
+    @Before
+    public void createReview() {
+        GoodDto goodDto = goodService.findAllGoods().get(0);
+        UserDto userDto = adminService.findAllClient().get(0);
+        reviewBeforeTest = new ReviewDto();
+        reviewBeforeTest.setComment("Мне этот товар не понравился");
+        reviewBeforeTest.setGoodId(goodDto.getId());
+        reviewBeforeTest.setUserId(userDto.getId());
+        reviewBeforeTest.setMark(5);
+    }
 
 
     @Test
     public void signInTest() throws RepeatitionException, ClientNotFoundException {
-        int clientId=clientService.signIn(userBeforeTest);
+        int clientId = clientService.signIn(userBeforeTest);
         userBeforeTest.setId(clientId);
         List<UserDto> missingUsers = adminService.findAllClient();
         List<UserDto> findClientsById = missingUsers.stream().filter(client -> client.getId() != userBeforeTest.getId()).collect(Collectors.toList());
@@ -124,7 +116,7 @@ public class UserTest {
     @Test
     public void changeLogin() throws RepeatitionException, ClientNotFoundException {
         int idOfLastClient = adminService.findAllClient().get(adminService.findAllClient().size() - 1).getId();
-        java.lang.String newLogin = userBeforeTest.getLogin();
+        String newLogin = userBeforeTest.getLogin();
         UserDto oldUser = adminService.findClientById(idOfLastClient);
         java.lang.String oldLogin = oldUser.getLogin();
         clientService.changeLogin(idOfLastClient, newLogin);
@@ -146,17 +138,23 @@ public class UserTest {
         clientService.changeLogin(user.getId(), userBeforeExceptionTest.getLogin());
     }
 
-    //    @Test
-//    public void addReviewTest() {
-//        User clientForTest = new User(3, "Dem'an", "Gurski", "gurski93", "gurski93", "Odoevskogo street", "2568974");
-//        clientService.addReview(reviewBeforeTest);
-//        List<Review> missingReviews = clientService.findAllReviews(clientForTest);
-//        List<Review> findReviewsById = missingReviews.stream().filter(review -> review.getId() != reviewBeforeTest.getId() &&
-//                !review.getUser().equals(clientForTest)).collect(Collectors.toList());
-//        missingReviews.removeAll(findReviewsById);
-//        Assert.assertTrue(missingReviews.stream().anyMatch(review -> review.getId() == reviewBeforeTest.getId() && review.getUser().equals(clientForTest)));
-//    }
-//
+    @Test
+    public void addReviewTest() throws GoodNotFoundException, ClientNotFoundException, RepeatitionException {
+        int clientId = adminService.addClient(userBeforeTest);
+        userBeforeTest.setId(clientId);
+        reviewBeforeTest.setUserId(userBeforeTest.getId());
+        int reviewId = clientService.addReview(reviewBeforeTest);
+        reviewBeforeTest.setId(reviewId);
+        UserDto userDto = adminService.findClientById(reviewBeforeTest.getUserId());
+        List<ReviewDto> missingReviews = clientService.findAllReviews(userDto);
+        List<ReviewDto> findReviewsById = missingReviews.stream().filter(review -> review.getId() != reviewBeforeTest.getId() &&
+                review.getUserId() != userDto.getId()).collect(Collectors.toList());
+        missingReviews.removeAll(findReviewsById);
+        Assert.assertTrue(missingReviews.stream().anyMatch(review -> review.getId() == reviewBeforeTest.getId() && review.getUserId() == userDto.getId()));
+        clientService.removeReview(reviewBeforeTest.getUserId(), reviewBeforeTest.getGoodId());
+        adminService.deleteClient(userBeforeTest.getId());
+    }
+
 //    @Test
 //    public void removeReviewTest() {
 //        User client1 = new User(1, "Andrei", "Stelmach", "andrei15", "andrei15", "Majkovski street", "1225689");не правильный
@@ -165,7 +163,7 @@ public class UserTest {
 //        List<Review> allReviews = clientService.findAllReviews(client1);
 //        Assert.assertTrue(allReviews.stream().noneMatch(review -> review.getId() == id));
 //    }
-//
+
     @Test
     public void changePasswordTest() throws ClientNotFoundException {
         int idOfLastClient = adminService.findAllClient().get(adminService.findAllClient().size() - 1).getId();

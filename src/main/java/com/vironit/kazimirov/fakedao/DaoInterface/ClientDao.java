@@ -8,7 +8,7 @@ import com.vironit.kazimirov.exception.RepeatitionException;
 import java.util.List;
 
 public interface ClientDao {
-    void addReview(Review review);
+    int addReview(Review review);
 
     void removeReview(int clientId,int goodId);
 

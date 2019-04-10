@@ -2,6 +2,7 @@ package com.vironit.kazimirov.controller;
 
 import com.vironit.kazimirov.dto.PurchaseDto;
 import com.vironit.kazimirov.dto.UserDto;
+import com.vironit.kazimirov.entity.Status;
 import com.vironit.kazimirov.exception.CantDeleteElement;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.PurchaseException;
@@ -57,9 +58,10 @@ public class PurchaseRestController {
         return purchaseService.findPurchasesByDate(purchaseDto.getTimeOfPurchase());
     }
 
-//    @RequestMapping(value = "newStatus",method = RequestMethod.PUT)
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    public void changeStatus(@PathVariable ("purchaseId")int purchaseId) throws PurchaseException {
-//        purchaseService.removePurchase(purchaseId);
-//    }
+    @RequestMapping(value = "purchase/newStatus",method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public void changeStatus(@RequestBody PurchaseDto purchaseDto){
+        Status status=Status.valueOf(purchaseDto.getStatus());
+        purchaseService.changeStatus(purchaseDto,status);
+    }
 }

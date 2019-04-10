@@ -25,8 +25,8 @@ public class ClientRestController {
 
     @RequestMapping(value = "/newReview", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public void addReview(@RequestBody ReviewDto reviewDto) throws ClientNotFoundException, GoodNotFoundException {
-        clientService.addReview(reviewDto);
+    public int addReview(@RequestBody ReviewDto reviewDto) throws ClientNotFoundException, GoodNotFoundException {
+        return clientService.addReview(reviewDto);
     }
 
     @RequestMapping(value = "/deleteReview", method = RequestMethod.DELETE)

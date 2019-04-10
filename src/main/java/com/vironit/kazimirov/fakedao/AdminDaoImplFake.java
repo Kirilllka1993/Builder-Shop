@@ -128,9 +128,4 @@ public class AdminDaoImplFake implements AdminDao {
 //        return goods;
 //    }
 
-    @Override
-    public void updateStatus(Status status, Purchase purchase) {
-//        purchase.setStatus(status);
-//        return purchase;
-    }
 }

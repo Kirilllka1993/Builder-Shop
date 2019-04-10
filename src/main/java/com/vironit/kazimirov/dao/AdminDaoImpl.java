@@ -28,85 +28,60 @@ public class AdminDaoImpl implements AdminDao {
     }
 
     public int addClient(User user) {
-        Session session = sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
+        //Transaction tx1 = session.beginTransaction();
         session.save(user);
         int clientId= user.getId();
-        tx1.commit();
-        session.close();
+        //tx1.commit();
+        //session.close();
         return clientId;
     }
 
     @Override
     public User findClientByLogin(String login) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery(FIND_CLIENT_BY_LOGIN, User.class);
         query.setParameter("login", login);
         User user = query.getResultList().isEmpty() ? null : (User) query.getResultList().get(0);
-        session.close();
+        //session.close();
         return user;
     }
 
     @Override
     public User findClientById(int clientId) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery(FIND_CLIENT_BY_ID, User.class);
         query.setParameter("clientId", clientId);
         User user = query.getResultList().isEmpty() ? null : (User) query.getResultList().get(0);
-        session.close();
+        //session.close();
         return user;
     }
 
     @Override
     public void changeDiscount(int goodId, double discount) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         Good good = session.get(Good.class, goodId);
         good.setDiscount(discount);
-        Transaction tx1 = session.beginTransaction();
+        //Transaction tx1 = session.beginTransaction();
         session.update(good);
-        tx1.commit();
-        session.close();
+        //tx1.commit();
+        //session.close();
     }
 
     @Override
     public List<User> findAllClient() {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         List<User> users = (List<User>) session.createQuery(FIND_CLIENTS).list();
-        session.close();
+        //session.close();
         return users;
     }
 
     public void deleteClient(int clientId) {
-        Session session = sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
+        //Transaction tx1 = session.beginTransaction();
         User user = session.get(User.class, clientId);
         session.delete(user);
-        tx1.commit();
-        session.close();
-    }
-
-    @Override
-    public void updateStatus(Status status, Purchase purchase) {
-        Session session = sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
-        switch (status){
-            case NEW:
-                purchase.setStatus(NEW);
-                break;
-            case IN_PROCESS:
-                purchase.setStatus(IN_PROCESS);
-                break;
-            case REGISTRATE:
-                purchase.setStatus(REGISTRATE);
-                break;
-            case CANCELED:
-                purchase.setStatus(CANCELED);
-                break;
-                default:
-                    break;
-        }
-        session.update(purchase);
-        tx1.commit();
-        session.close();
+        //tx1.commit();
+        //session.close();
     }
 }

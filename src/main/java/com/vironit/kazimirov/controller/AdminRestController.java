@@ -7,7 +7,6 @@ import com.vironit.kazimirov.exception.GoodException;
 import com.vironit.kazimirov.exception.GoodNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 import com.vironit.kazimirov.service.AdminService;
-import com.vironit.kazimirov.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +18,6 @@ import java.util.List;
 public class AdminRestController {
     @Autowired
     private AdminService adminService;
-    @Autowired
-    private PurchaseService purchaseService;
 
     @RequestMapping(value = "/allClients", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
@@ -55,16 +52,6 @@ public class AdminRestController {
         UserDto userDto = adminService.findClientById(clientId);
         return userDto;
     }
-
-//    @RequestMapping(name = "/newStatus", method = RequestMethod.PUT)
-//    @ResponseStatus(HttpStatus.OK)
-//    public void updateStatus(@RequestBody PurchaseDto purchaseDto) {
-//        UserRoleEnum text=purchaseDto.getStatus();
-//        System.err.println(text);
-//        Status status = Status.valueOf(purchaseDto.getStatus().toUpperCase());
-//        Purchase purchase = purchaseService.findPurchaseById(purchaseDto.getId());
-//        adminService.updateStatus(status, purchase);
-//    }
 
     @RequestMapping(value = "/newDiscount", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)

@@ -87,13 +87,13 @@ public class AdminController {
         return "adminJsp";
     }
 
-    @RequestMapping(name = "/updateStatus", method = RequestMethod.POST)
-    public String updateStatus(@RequestParam("status") Status status,
-                               @RequestParam("purchaseId") int purchaseId, ModelMap map) throws PurchaseNotFoundException {
-        PurchaseDto purchaseDto = purchaseService.findPurchaseById(purchaseId);
-        map.addAttribute("purchase", purchaseDto);
-        map.addAttribute("status", status);
-        adminService.updateStatus(status, purchaseDto);
-        return "adminJsp";
-    }
+//    @RequestMapping(name = "/updateStatus", method = RequestMethod.POST)
+//    public String updateStatus(@RequestParam("status") Status status,
+//                               @RequestParam("purchaseId") int purchaseId, ModelMap map) throws PurchaseNotFoundException {
+//        PurchaseDto purchaseDto = purchaseService.findPurchaseById(purchaseId);
+//        map.addAttribute("purchase", purchaseDto);
+//        map.addAttribute("status", status);
+//        adminService.updateStatus(status, purchaseDto);
+//        return "adminJsp";
+//    }
 }

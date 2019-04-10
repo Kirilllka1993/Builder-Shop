@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +23,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WebApplicationConfig.class)
 @WebAppConfiguration
+@Transactional
 public class CartItemTest {
     @Autowired
     private CartItemService cartItemService;
@@ -41,21 +43,10 @@ public class CartItemTest {
     @Before
     public void findElementsForTests() {
         PurposeDto purposeDto = purposeService.findPurposes().get(0);
-//        Subsection subsection = subsectionService.findSubsections().get(0);
         SubsectionDto subsectionDto = subsectionService.findSubsections().get(0);
         Subsection subsection = new Subsection();
         subsection.setId(subsectionDto.getId());
         subsection.setTitle(subsectionDto.getTitle());
-//        GoodBuilder GoodBuilder = new GoodBuilder();
-//        goodBeforeTest = GoodBuilder.withCost(6)
-//                .withSubsection(subsection)
-//                .withUnit("м3")
-//                .withQuantity(5)
-//                .withDiscount(0)
-//                .withPurpose(purposeDto)
-//                .withName("Пеноплекс")
-//                .withAmount(20)
-//                .build();
         goodBeforeTest.setSubsectionId(subsection.getId());
         goodBeforeTest.setName("Пеноплекс");
         goodBeforeTest.setPurposeId(purposeDto.getId());

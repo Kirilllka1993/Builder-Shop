@@ -54,11 +54,12 @@ public class ClientDaoImplFake implements ClientDao {
     }
 
     @Override
-    public void addReview(Review review) {
+    public int addReview(Review review) {
 
         int lastIndex = reviews.size();
         review.setId(lastIndex + 1);
         reviews.add(review);
+        return review.getId();
     }
 
 

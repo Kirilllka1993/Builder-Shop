@@ -15,13 +15,14 @@ import com.vironit.kazimirov.service.GoodService;
 import com.vironit.kazimirov.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class CartItemImpl implements CartItemService {
     @Autowired
     private final CartItemDao cartItemDao;
@@ -41,7 +42,6 @@ public class CartItemImpl implements CartItemService {
     }
 
     @Override
-    @Transactional
     public int addInCartItem(GoodDto goodDto, int amount, PurchaseDto purchaseDto) throws PurchaseException, RepeatitionException, PurchaseNotFoundException, GoodNotFoundException {
         Optional<CartItem> checkGood = Optional.ofNullable(cartItemDao.findCartItem(goodDto.getId(), purchaseDto.getId()));
         Optional<Good> checkNameGood = Optional.ofNullable(goodDao.findByNameGood(goodDto.getName()));
