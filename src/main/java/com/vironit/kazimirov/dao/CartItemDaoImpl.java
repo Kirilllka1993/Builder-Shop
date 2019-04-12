@@ -6,7 +6,6 @@ import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.fakedao.DaoInterface.CartItemDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -32,15 +31,12 @@ public class CartItemDaoImpl implements CartItemDao {
     @Override
     public int addInCartItem(Good good, int amount, Purchase purchase) {
         Session session = sessionFactory.getCurrentSession();
-        //Transaction tx1 = session.beginTransaction();
         CartItem cartItem = new CartItem();
         cartItem.setAmount(amount);
         cartItem.setGood(good);
         cartItem.setPurchase(purchase);
         session.save(cartItem);
         int cartItemId=cartItem.getId();
-        //tx1.commit();
-        //session.close();
         return cartItemId;
 
     }
@@ -49,7 +45,6 @@ public class CartItemDaoImpl implements CartItemDao {
     public List<CartItem> findCartItems() {
         Session session = sessionFactory.getCurrentSession();
         List<CartItem> purchases = (List<CartItem>) session.createQuery(FIND_CARTITEMS).list();
-        //session.close();
         return purchases;
     }
 
@@ -58,31 +53,23 @@ public class CartItemDaoImpl implements CartItemDao {
         Session session = sessionFactory.getCurrentSession();
         int goodId = good.getId();
         int purchaseId = purchase.getId();
-        //Transaction tx1 = session.beginTransaction();
         CartItem cartItem = session.createQuery(FIND_CARTITEM, CartItem.class)
                 .setParameter("purchaseId", purchaseId).
                         setParameter("goodId", goodId).uniqueResult();
         session.delete(cartItem);
-        //tx1.commit();
-        //session.close();
     }
 
     @Override
     public void deleteCartItem(int cartItemId) {
         Session session = sessionFactory.getCurrentSession();
-        //Transaction tx1 = session.beginTransaction();
         CartItem cartItem1 = session.get(CartItem.class, cartItemId);
         session.delete(cartItem1);
-        //tx1.commit();
-        //session.close();
-
     }
 
     @Override
     public List<Good> findGoodsByPurchase(int purchaseId) {
         Session session = sessionFactory.getCurrentSession();
         List<Good> goods = (List<Good>) session.createQuery(FIND_GOODS).setParameter("purchaseId", purchaseId).list();
-        //session.close();
         return goods;
     }
 
@@ -90,7 +77,6 @@ public class CartItemDaoImpl implements CartItemDao {
     public List<Purchase> findPurchasesByGood(int goodId) {
         Session session = sessionFactory.getCurrentSession();
         List<Purchase> purchases = (List<Purchase>) session.createQuery(FIND_PURCHASES).setParameter("goodId", goodId).list();
-        //session.close();
         return purchases;
 
     }
@@ -130,7 +116,6 @@ public class CartItemDaoImpl implements CartItemDao {
         Query query = session.createQuery(FIND_CARTITEM, CartItem.class);
         query.setParameter("purchaseId", purchaseId).setParameter("goodId", goodId);
         CartItem cartItem = query.getResultList().isEmpty() ? null : (CartItem) query.getResultList().get(0);
-        //session.close();
         return cartItem;
     }
 
@@ -138,7 +123,6 @@ public class CartItemDaoImpl implements CartItemDao {
     public CartItem findCartItemById(int cartItemId) {
         Session session = sessionFactory.getCurrentSession();
         CartItem cartItem = session.get(CartItem.class, cartItemId);
-        //session.close();
         return cartItem;
     }
 
@@ -146,29 +130,22 @@ public class CartItemDaoImpl implements CartItemDao {
     public void returnedAmountOfGood(CartItem cartItem) {
         Session session = sessionFactory.getCurrentSession();
         Good good = cartItem.getGood();
-        //Transaction tx = session.beginTransaction();
         good.setAmount(good.getAmount() + cartItem.getAmount());
         session.update(good);
-        //tx.commit();
-        //session.close();
     }
 
     @Override
     public void reduceAmount(int goodId, int amount) {
         Session session = sessionFactory.getCurrentSession();
         Good good = session.get(Good.class, goodId);
-        //Transaction tx1 = session.beginTransaction();
         good.setAmount(good.getAmount() - amount);
         session.update(good);
-        //tx1.commit();
-        //session.close();
     }
 
     @Override
     public List<CartItem> findCartItemsByPurchase(int purchaseId) {
         Session session = sessionFactory.getCurrentSession();
         List<CartItem> cartItems = (List<CartItem>) session.createQuery(FIND_CARTITEMS_BY_PURCHASE).setParameter("purchaseId", purchaseId).list();
-        //session.close();
         return cartItems;
     }
 
@@ -176,7 +153,6 @@ public class CartItemDaoImpl implements CartItemDao {
     public List<CartItem> findCartItemsByGood(int goodId) {
         Session session = sessionFactory.getCurrentSession();
         List<CartItem> cartItems = (List<CartItem>) session.createQuery(FIND_CARTITEMS_BY_GOOD).setParameter("goodId", goodId).list();
-        //session.close();
         return cartItems;
     }
 }

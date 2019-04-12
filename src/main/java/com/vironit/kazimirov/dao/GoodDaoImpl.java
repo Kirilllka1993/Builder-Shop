@@ -6,7 +6,6 @@ import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.fakedao.DaoInterface.GoodDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -29,11 +28,8 @@ public class GoodDaoImpl implements GoodDao {
     @Override
     public int addGood(Good good) {
         Session session = sessionFactory.getCurrentSession();
-        //Transaction tx1 = session.beginTransaction();
         session.save(good);
         int goodId=good.getId();
-        //tx1.commit();
-        //session.close();
         return goodId;
     }
 
@@ -43,7 +39,6 @@ public class GoodDaoImpl implements GoodDao {
         Query query = session.createQuery(FIND_GOOD_BY_NAME, Good.class);
         query.setParameter("name", goodName);
         Good good = query.getResultList().isEmpty() ? null : (Good) query.getResultList().get(0);
-        //session.close();
         return good;
     }
 
@@ -51,7 +46,6 @@ public class GoodDaoImpl implements GoodDao {
     public List<Good> findAllGoods() {
         Session session = sessionFactory.getCurrentSession();
         List<Good> goods = (List<Good>) session.createQuery(FIND_GOODS).list();
-        //session.close();
         return goods;
     }
 
@@ -61,7 +55,6 @@ public class GoodDaoImpl implements GoodDao {
         List<Good> goods = (List<Good>) session.createQuery(FIND_BY_GOODS_SUBSECTIONS)
                 .setParameter("subsection", subsection)
                 .list();
-        //session.close();
         return goods;
     }
 
@@ -71,19 +64,14 @@ public class GoodDaoImpl implements GoodDao {
         List<Good> goods = (List<Good>) session.createQuery(FIND_BY_GOODS_PURPOSES)
                 .setParameter("purpose", purpose)
                 .list();
-        //session.close();
         return goods;
     }
 
     @Override
     public void deleteGood(int goodId) {
         Session session = sessionFactory.getCurrentSession();
-        //Transaction tx1 = session.beginTransaction();
         Good good = session.get(Good.class, goodId);
         session.delete(good);
-        //tx1.commit();
-        //session.close();
-
     }
 
     @Override
@@ -91,10 +79,7 @@ public class GoodDaoImpl implements GoodDao {
         Session session = sessionFactory.getCurrentSession();
         Good good = session.get(Good.class, goodId);
         good.setPrice(price);
-        //Transaction tx1 = session.beginTransaction();
         session.update(good);
-        //tx1.commit();
-        //session.close();
     }
 
     @Override
@@ -102,10 +87,7 @@ public class GoodDaoImpl implements GoodDao {
         Session session = sessionFactory.getCurrentSession();
         Good good = session.get(Good.class, goodId);
         good.setSubsection(subsection);
-        //Transaction tx1 = session.beginTransaction();
         session.update(good);
-        //tx1.commit();
-        //session.close();
     }
 
     @Override
@@ -113,10 +95,7 @@ public class GoodDaoImpl implements GoodDao {
         Session session = sessionFactory.getCurrentSession();
         Good good = session.get(Good.class, goodId);
         good.setPurpose(purpose);
-        //Transaction tx1 = session.beginTransaction();
         session.update(good);
-        //tx1.commit();
-        //session.close();
     }
 
     @Override
@@ -124,10 +103,7 @@ public class GoodDaoImpl implements GoodDao {
         Session session = sessionFactory.getCurrentSession();
         Good good = session.get(Good.class, goodId);
         good.setUnit(unit);
-        //Transaction tx1 = session.beginTransaction();
         session.update(good);
-        //tx1.commit();
-        //session.close();
     }
 
     @Override
@@ -135,10 +111,7 @@ public class GoodDaoImpl implements GoodDao {
         Session session = sessionFactory.getCurrentSession();
         Good good = session.get(Good.class, goodId);
         good.setQuantity(quantity);
-        //Transaction tx1 = session.beginTransaction();
         session.update(good);
-        //tx1.commit();
-        //session.close();
     }
 
     @Override
@@ -146,10 +119,7 @@ public class GoodDaoImpl implements GoodDao {
         Session session = sessionFactory.getCurrentSession();
         Good good = session.get(Good.class, goodId);
         good.setAmount(amount);
-        //Transaction tx1 = session.beginTransaction();
         session.update(good);
-        //tx1.commit();
-        //session.close();
     }
 
     @Override
@@ -159,7 +129,6 @@ public class GoodDaoImpl implements GoodDao {
                 .setParameter("minPrice", minPrice)
                 .setParameter("maxPrice", maxPrice)
                 .list();
-        //session.close();
         return goods;
     }
 
@@ -169,24 +138,19 @@ public class GoodDaoImpl implements GoodDao {
         Query query = session.createQuery(FIND_GOOD_BY_ID, Good.class);
         query.setParameter("goodId", goodId);
         Good good = query.getResultList().isEmpty() ? null : (Good) query.getResultList().get(0);
-        //session.close();
         return good;
     }
 
     public void changeAmountOfGood(Good good, int amount) {
         Session session = sessionFactory.getCurrentSession();
-        //Transaction tx1 = session.beginTransaction();
         good.setAmount(amount);
         session.update(good);
-        //tx1.commit();
-        //session.close();
     }
 
 
     @Override
     public void updateGood(int goodId, Good good) {
         Session session = sessionFactory.getCurrentSession();
-        //Transaction tx = session.beginTransaction();
         Good findGood = session.get(Good.class, goodId);
         findGood.setAmount(good.getAmount());
         findGood.setName(good.getName());
@@ -197,18 +161,13 @@ public class GoodDaoImpl implements GoodDao {
         findGood.setPrice(good.getPrice());
         findGood.setDiscount(good.getDiscount());
         session.update(findGood);
-        //tx.commit();
-        //session.close();
     }
 
     @Override
     public void reduceAmount(int goodId, int amount) {
         Session session = sessionFactory.getCurrentSession();
-        //Transaction tx1 = session.beginTransaction();
         Good good = session.get(Good.class, goodId);
         good.setAmount(good.getAmount() - amount);
         session.update(good);
-        //tx1.commit();
-        //session.close();
     }
 }

@@ -4,7 +4,6 @@ import com.vironit.kazimirov.entity.Subsection;
 import com.vironit.kazimirov.fakedao.DaoInterface.SubsectionDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -23,11 +22,8 @@ public class SubsectionDaoImpl implements SubsectionDao {
     @Override
     public int addSubsection(Subsection subsection) {
         Session session = sessionFactory.getCurrentSession();
-        //Transaction tx1 = session.beginTransaction();
         session.save(subsection);
         int subsectionId=subsection.getId();
-        //tx1.commit();
-        //session.close();
         return subsectionId;
     }
 
@@ -35,7 +31,6 @@ public class SubsectionDaoImpl implements SubsectionDao {
     public List<Subsection> findSubsections() {
         Session session = sessionFactory.getCurrentSession();
         List<Subsection> subsections = (List<Subsection>) session.createQuery(FIND_SUBSECTIONS).list();
-        //session.close();
         return subsections;
     }
 
@@ -45,18 +40,14 @@ public class SubsectionDaoImpl implements SubsectionDao {
         Query query = session.createQuery(FIND_SUBSECTION_BY_NAME, Subsection.class);
         query.setParameter("title", subsectionTitle);
         Subsection subsection = query.getResultList().isEmpty() ? null : (Subsection) query.getResultList().get(0);
-        //session.close();
         return subsection;
     }
 
     @Override
     public void deleteSubsection(int subsectionId) {
         Session session = sessionFactory.getCurrentSession();
-        //Transaction tx1 = session.beginTransaction();
         Subsection subsection = session.get(Subsection.class, subsectionId);
         session.delete(subsection);
-        //tx1.commit();
-        //session.close();
     }
 
     @Override
@@ -65,7 +56,6 @@ public class SubsectionDaoImpl implements SubsectionDao {
         Query query = session.createQuery(FIND_SUBSECTION_BY_ID, Subsection.class);
         query.setParameter("subsectionId", subsectionId);
         Subsection subsection = query.getResultList().isEmpty() ? null : (Subsection) query.getResultList().get(0);
-        //session.close();
         return subsection;
     }
 }

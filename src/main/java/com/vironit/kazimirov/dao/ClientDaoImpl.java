@@ -23,37 +23,27 @@ public class ClientDaoImpl implements ClientDao {
     @Override
     public int addReview(Review review) {
         Session session = sessionFactory.getCurrentSession();
-        //Transaction tx1 = session.beginTransaction();
         session.save(review);
         int reviewId=review.getId();
-        //tx1.commit();
-        //session.close();
         return reviewId;
     }
 
     @Override
     public void removeReview(int clientId, int goodId) {
         Session session = sessionFactory.getCurrentSession();
-        //Transaction tx1 = session.beginTransaction();
         Review review = session.createQuery(FIND_REVIEW_BY_GOOD_CLIENT, Review.class)
                 .setParameter("clientId", clientId)
                 .setParameter("goodId", goodId).uniqueResult();
         session.delete(review);
-        //tx1.commit();
-        //session.close();
-
     }
 
     @Override
     public Review findReview(int clientId, int goodId) {
         Session session = sessionFactory.getCurrentSession();
-        //Transaction tx1 = session.beginTransaction();
         Query query = session.createQuery(FIND_REVIEW_BY_GOOD_CLIENT, Review.class);
         query.setParameter("clientId", clientId)
                 .setParameter("goodId", goodId);
         Review review = query.getResultList().isEmpty() ? null : (Review) query.getResultList().get(0);
-        //tx1.commit();
-        //session.close();
         return review;
 
     }
@@ -65,7 +55,6 @@ public class ClientDaoImpl implements ClientDao {
         query.setParameter("login", login);
         query.setParameter("password", password);
         User user = query.getResultList().isEmpty() ? null : (User) query.getResultList().get(0);
-       // session.close();
         return user;
     }
 
@@ -77,11 +66,8 @@ public class ClientDaoImpl implements ClientDao {
     @Override
     public int signIn(User user) {
         Session session = sessionFactory.getCurrentSession();
-        //Transaction tx1 = session.beginTransaction();
         session.save(user);
         int clientId = user.getId();
-        //tx1.commit();
-        //session.close();
         return clientId;
     }
 
@@ -90,10 +76,7 @@ public class ClientDaoImpl implements ClientDao {
         Session session = sessionFactory.getCurrentSession();
         User user = session.get(User.class, clientId);
         user.setLogin(newLogin);
-        //Transaction tx1 = session.beginTransaction();
         session.update(user);
-        //tx1.commit();
-        //session.close();
     }
 
     @Override
@@ -101,21 +84,15 @@ public class ClientDaoImpl implements ClientDao {
         Session session = sessionFactory.getCurrentSession();
         User user = session.get(User.class, clientId);
         user.setPassword(newPassword);
-       // Transaction tx1 = session.beginTransaction();
         session.update(user);
-        //tx1.commit();
-        //session.close();
     }
 
     @Override
     public void changePhoneNumber(int clientId, String newPhoneNumber) {
         Session session = sessionFactory.getCurrentSession();
-        //Transaction tx1 = session.beginTransaction();
         User user = session.get(User.class, clientId);
         user.setPhoneNumber(newPhoneNumber);
         session.update(user);
-        //tx1.commit();
-        //session.close();
     }
 
     @Override
@@ -123,10 +100,7 @@ public class ClientDaoImpl implements ClientDao {
         Session session = sessionFactory.getCurrentSession();
         User user = session.get(User.class, clientId);
         user.setAddress(newAddress);
-        //Transaction tx1 = session.beginTransaction();
         session.update(user);
-        //tx1.commit();
-        //session.close();
     }
 
     @Override
@@ -134,7 +108,6 @@ public class ClientDaoImpl implements ClientDao {
         Session session = sessionFactory.getCurrentSession();
         List<Review> reviews = session.createQuery(FIND_REVIEWS_OF_CLIENTS, Review.class)
                 .setParameter("client", user).list();
-        //session.close();
         return reviews;
     }
 }

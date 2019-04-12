@@ -4,7 +4,6 @@ import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.fakedao.DaoInterface.PurposeDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -20,11 +19,8 @@ public class PurposeDaoImpl implements PurposeDao {
     @Override
     public int addPurpose(Purpose purpose) {
         Session session=sessionFactory.getCurrentSession();
-        //Transaction tx1 = session.beginTransaction();
         session.save(purpose);
         int purposeId=purpose.getId();
-        //tx1.commit();
-        //session.close();
         return purposeId;
     }
 
@@ -32,7 +28,6 @@ public class PurposeDaoImpl implements PurposeDao {
     public List<Purpose> findPurposes() {
         Session session = sessionFactory.getCurrentSession();
         List<Purpose> purposes=(List<Purpose>) session.createQuery(FIND_PURPOSES).list();
-        //session.close();
         return purposes;
     }
 
@@ -42,20 +37,16 @@ public class PurposeDaoImpl implements PurposeDao {
         Query query = session.createQuery(FIND_PURPOSE_BY_NAME, Purpose.class);
         query.setParameter("purpose", purposeName);
         Purpose purpose= query.getResultList().isEmpty() ? null : (Purpose) query.getResultList().get(0);
-        //session.close();
         return purpose;
     }
 
     @Override
     public void deletePurpose(int purposeId) {
         Session session = sessionFactory.getCurrentSession();
-        //Transaction tx1 = session.beginTransaction();
         Query query = session.createQuery(FIND_PURPOSE_BY_ID, Purpose.class);
         query.setParameter("purposeId", purposeId);
         Purpose purpose = query.getResultList().isEmpty() ? null : (Purpose) query.getResultList().get(0);
         session.delete(purpose);
-        //tx1.commit();
-        //session.close();
     }
 
     @Override
@@ -64,7 +55,6 @@ public class PurposeDaoImpl implements PurposeDao {
         Query query = session.createQuery(FIND_PURPOSE_BY_ID, Purpose.class);
         query.setParameter("purposeId", purposeId);
         Purpose purpose = query.getResultList().isEmpty() ? null : (Purpose) query.getResultList().get(0);
-        //session.close();
         return purpose;
     }
 }
