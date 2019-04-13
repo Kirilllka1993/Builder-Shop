@@ -120,12 +120,9 @@ public class CartItemTest {
         List<PurchaseDto> purchaseDtos = purchaseService.findPurchases();
         List<GoodDto> goodDtos = goodService.findAllGoods();
         GoodDto goodDto = goodDtos.get(0);
-        int purchaseId = 1;
-        for (int i = 1; i < purchaseDtos.size(); i++) {
-            purchaseId = purchaseId * purchaseDtos.get(i).getId();
-        }
+        int purchaseDtoId = purchaseDtos.stream().mapToInt(purchaseDto -> purchaseDto.getId()).sum();
         PurchaseDto purchaseDto = purchaseDtos.get(0);
-        purchaseDto.setId(purchaseId);
+        purchaseDto.setId(purchaseDtoId);
         cartItemService.addInCartItem(goodDto, 1, purchaseDto);
     }
 
@@ -134,11 +131,8 @@ public class CartItemTest {
         List<PurchaseDto> purchaseDtos = purchaseService.findPurchases();
         List<GoodDto> goodDtos = goodService.findAllGoods();
         PurchaseDto purchaseDto = purchaseDtos.get(0);
-        int goodId = 1;
-        for (int i = 1; i < goodDtos.size(); i++) {
-            goodId = goodId * purchaseDtos.get(i).getId();
-        }
-        goodBeforeTest.setId(goodId);
+        int goodDtoId = goodDtos.stream().mapToInt(goodDto -> goodDto.getId()).sum();
+        goodBeforeTest.setId(goodDtoId);
         cartItemService.addInCartItem(goodBeforeTest, 1, purchaseDto);
     }
 
@@ -182,10 +176,7 @@ public class CartItemTest {
     @Test(expected = CartItemNotFoundException.class)
     public void deleteCartItemExceptionTest() throws CartItemNotFoundException {
         List<CartItemDto> cartItemDtos = cartItemService.findCartItems();
-        int cartItemId = 1;
-        for (int i = 1; i < cartItemDtos.size(); i++) {
-            cartItemId = cartItemId * cartItemDtos.get(i).getId();
-        }
+        int cartItemId = cartItemDtos.stream().mapToInt(cartItemDto -> cartItemDto.getId()).sum();
         cartItemService.deleteCartItem(cartItemId);
     }
 
@@ -204,10 +195,7 @@ public class CartItemTest {
     @Test(expected = PurchaseNotFoundException.class)
     public void deleteGoodInPurchasesWithCancelledStatusException() throws PurchaseNotFoundException {
         List<PurchaseDto> purchaseDtos = purchaseService.findPurchases();
-        int purchaseDtoId = 1;
-        for (int i = 1; i < purchaseDtos.size(); i++) {
-            purchaseDtoId = purchaseDtoId * purchaseDtos.get(i).getId();
-        }
+        int purchaseDtoId = purchaseDtos.stream().mapToInt(purchaseDto -> purchaseDto.getId()).sum();
         PurchaseDto purchaseDto = purchaseDtos.get(0);
         purchaseDto.setId(purchaseDtoId);
         cartItemService.deleteCartItemsWithCancelledStatus(purchaseDto);
@@ -268,10 +256,7 @@ public class CartItemTest {
     @Test(expected = CartItemNotFoundException.class)
     public void findCartItemByIdExceptionTest() throws CartItemNotFoundException {
         List<CartItemDto> cartItemDtos = cartItemService.findCartItems();
-        int cartItemId = 1;
-        for (int i = 1; i < cartItemDtos.size(); i++) {
-            cartItemId = cartItemId * cartItemDtos.get(i).getId();
-        }
+        int cartItemId = cartItemDtos.stream().mapToInt(cartItemDto -> cartItemDto.getId()).sum();
         cartItemService.findCartItemById(cartItemId);
     }
 
@@ -294,10 +279,7 @@ public class CartItemTest {
     @Test(expected = GoodNotFoundException.class)
     public void findCartItemTestExceptionGoodNotFound() throws GoodNotFoundException, PurchaseNotFoundException, CartItemNotFoundException {
         List<GoodDto> goodDtos = goodService.findAllGoods();
-        int goodDtoId = 1;
-        for (int i = 1; i < goodDtos.size(); i++) {
-            goodDtoId = goodDtoId * goodDtos.get(i).getId();
-        }
+        int goodDtoId = goodDtos.stream().mapToInt(goodDto -> goodDto.getId()).sum();
         List<CartItemDto> cartItemDtos = cartItemService.findCartItems();
         int purchaseId = cartItemDtos.get(0).getPurchaseId();
         cartItemService.findCartItem(goodDtoId, purchaseId);
@@ -313,10 +295,7 @@ public class CartItemTest {
     @Test(expected = PurchaseNotFoundException.class)
     public void findCartItemTestPurchaseNotFound() throws PurchaseNotFoundException, GoodNotFoundException, CartItemNotFoundException {
         List<PurchaseDto> purchaseDtos = purchaseService.findPurchases();
-        int purchaseDtoId = 1;
-        for (int i = 1; i < purchaseDtos.size(); i++) {
-            purchaseDtoId = purchaseDtoId * purchaseDtos.get(i).getId();
-        }
+        int purchaseDtoId = purchaseDtos.stream().mapToInt(purchaseDto -> purchaseDto.getId()).sum();
         List<CartItemDto> cartItemDtos = cartItemService.findCartItems();
         int goodId = cartItemDtos.get(0).getGoodId();
         cartItemService.findCartItem(goodId, purchaseDtoId);
@@ -365,10 +344,7 @@ public class CartItemTest {
     @Test(expected = PurchaseNotFoundException.class)
     public void findCartItemsExceptionByPurchaseTest() throws PurchaseNotFoundException {
         List<PurchaseDto> purchaseDtos = purchaseService.findPurchases();
-        int purchaseDtoId = 1;
-        for (int i = 1; i < purchaseDtos.size(); i++) {
-            purchaseDtoId = purchaseDtoId * purchaseDtos.get(i).getId();
-        }
+        int purchaseDtoId = purchaseDtos.stream().mapToInt(purchaseDto -> purchaseDto.getId()).sum();
         cartItemService.findCartItemsByPurchase(purchaseDtoId);
     }
 
@@ -385,10 +361,7 @@ public class CartItemTest {
     @Test(expected = GoodNotFoundException.class)
     public void findCartItemsExceptionByGoodTest() throws GoodNotFoundException {
         List<GoodDto> goodDtos = goodService.findAllGoods();
-        int goodDtoId = 1;
-        for (int i = 1; i < goodDtos.size(); i++) {
-            goodDtoId = goodDtoId * goodDtos.get(i).getId();
-        }
+        int goodDtoId = goodDtos.stream().mapToInt(goodDto -> goodDto.getId()).sum();
         cartItemService.findCartItemsByGood(goodDtoId);
     }
 

@@ -128,12 +128,9 @@ public class AdminTest {
 
     @Test(expected = ClientNotFoundException.class)
     public void findClientByIdExceptionTest() throws ClientNotFoundException {
-        List<UserDto> users = adminService.findAllClient();
-        int sum = 1;
-        for (int i = 1; i < users.size(); i++) {
-            sum = sum * users.get(i).getId();
-        }
-        adminService.findClientById(sum);
+        List<UserDto> userDtos = adminService.findAllClient();
+        int clientId = userDtos.stream().mapToInt(userDto -> userDto.getId()).sum();
+        adminService.findClientById(clientId);
     }
 
     @Test
@@ -151,22 +148,16 @@ public class AdminTest {
     @Test(expected = GoodException.class)
     public void changeDiscountExceptionTest() throws GoodNotFoundException, GoodException {
         List<GoodDto> goodDtos = goodService.findAllGoods();
-        double discount = 1;
-        for (int i = 1; i < goodDtos.size(); i++) {
-            discount = discount * goodDtos.get(i).getPrice();
-        }
+        double discount=goodDtos.stream().mapToDouble(goodDto -> goodDto.getPrice()).sum();
         int goodId=goodDtos.get(0).getId();
         adminService.changeDiscount(goodId,discount);
     }
 
     @Test(expected = GoodNotFoundException.class)
     public void changeDiscountException2Test() throws GoodNotFoundException, GoodException {
-        int goodId = 1;
         double discount=1;
-        List<GoodDto>goodDtos=goodService.findAllGoods();
-        for (int i = 1; i < goodDtos.size(); i++) {
-            goodId = goodId * goodDtos.get(i).getId();
-        }
+        List<GoodDto> goodDtos = goodService.findAllGoods();
+        int goodId=goodDtos.stream().mapToInt(goodDto -> goodDto.getId()).sum();
         adminService.changeDiscount(goodId,discount);
     }
 }

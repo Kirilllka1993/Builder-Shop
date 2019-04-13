@@ -74,11 +74,24 @@ public class ClientRestController {
         clientService.changeAddress(userDto.getId(), userDto.getAddress());
     }
 
-    @RequestMapping(value = "/allReviews", method = RequestMethod.GET)
+    @RequestMapping(value = "/allReviewsByUser", method = RequestMethod.GET)
     public List<ReviewDto> findAllReviews(@RequestBody ReviewDto reviewDto) throws ClientNotFoundException {
         UserDto userDto = adminService.findClientById(reviewDto.getUserId());
         List<ReviewDto> reviewDtos = clientService.findAllReviewsByUser(userDto);
         return reviewDtos;
     }
 
+    @RequestMapping(value = "/allReviews", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<ReviewDto> findAllReviews() {
+        List<ReviewDto> reviewDtos = clientService.findAllReviews();
+        return reviewDtos;
+    }
+
+    @RequestMapping(value = "/reviewById/{reviewId}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public ReviewDto findAllReviews(@PathVariable("reviewId") int reviewId) throws ReviewNotFoundException {
+        ReviewDto reviewDto = clientService.findReviewById(reviewId);
+        return reviewDto;
+    }
 }
