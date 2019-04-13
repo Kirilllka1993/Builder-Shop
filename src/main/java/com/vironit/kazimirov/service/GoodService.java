@@ -8,34 +8,35 @@ import com.vironit.kazimirov.exception.*;
 import java.util.List;
 
 public interface GoodService {
-    int addGood(GoodDto goodDto) throws GoodException, RepeatitionException, SubsectionNotFoundException, PurposeNotFoundException;//выполнено
+    int addGood(GoodDto goodDto) throws GoodException, RepeatitionException, SubsectionNotFoundException, PurposeNotFoundException;
 
-    GoodDto findByNameGood(String goodName) throws GoodNotFoundException;//выполнено
+    GoodDto findByNameGood(String goodName) throws GoodNotFoundException;
 
-    List<GoodDto> findAllGoods();//выполнено
+    List<GoodDto> findAllGoods();
 
-    List<GoodDto> findBySubsection(SubsectionDto subsectionDto) throws SubsectionNotFoundException;//выполнено
+    List<GoodDto> findBySubsection(SubsectionDto subsectionDto) throws SubsectionNotFoundException;
 
-    List<GoodDto> findByPurpose(PurposeDto purposeDto) throws PurposeNotFoundException;//выполнено
+    List<GoodDto> findByPurpose(PurposeDto purposeDto) throws PurposeNotFoundException;
 
-    void deleteGood(int goodId) throws GoodNotFoundException;//выполнено
+    void deleteGood(int goodId) throws GoodNotFoundException;
 
-    void changePrice(int goodId, double price) throws GoodException, GoodNotFoundException;//выполнено
-    void changeSubsection(int goodId, SubsectionDto subsectionDto) throws SubsectionNotFoundException, GoodNotFoundException;//выполнено
+    void changePrice(int goodId, double price) throws GoodException, GoodNotFoundException;
 
-    void changePurpose(int goodId, PurposeDto purposeDto) throws PurposeNotFoundException, GoodNotFoundException; //выполнено
+    void changeSubsection(int goodId, SubsectionDto subsectionDto) throws SubsectionNotFoundException, GoodNotFoundException;
 
-    void changeUnit(int goodId, String unit) throws GoodNotFoundException;//выполнено
+    void changePurpose(int goodId, PurposeDto purposeDto) throws PurposeNotFoundException, GoodNotFoundException;
 
-    void changeQuantity(int goodId, int quantity) throws GoodNotFoundException;//выполнено
+    void changeUnit(int goodId, String unit) throws GoodNotFoundException;
 
-    void changeAmount(int goodId, int amount) throws GoodException, GoodNotFoundException;//выполнено
+    void changeQuantity(int goodId, int quantity) throws GoodNotFoundException;
 
-    void updateGood(int goodId, GoodDto goodDto) throws GoodException,GoodNotFoundException;//
+    void changeAmount(int goodId, int amount) throws GoodException, GoodNotFoundException;
+
+    void updateGood(int goodId, GoodDto goodDto) throws GoodException,GoodNotFoundException;
     
-    List<GoodDto> findGoodsByPrice(double minPrice, double maxPrice);//выполнено
+    List<GoodDto> findGoodsByPrice(double minPrice, double maxPrice);
 
-    GoodDto findGoodById(int goodId) throws GoodNotFoundException;//выполнено
+    GoodDto findGoodById(int goodId) throws GoodNotFoundException;
 
     void reduceAmount(int goodId, int amount);
 

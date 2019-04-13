@@ -1,8 +1,5 @@
 import com.vironit.kazimirov.config.WebApplicationConfig;
-import com.vironit.kazimirov.dto.CartItemDto;
-import com.vironit.kazimirov.dto.GoodDto;
-import com.vironit.kazimirov.dto.PurchaseDto;
-import com.vironit.kazimirov.dto.UserDto;
+import com.vironit.kazimirov.dto.*;
 import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.exception.*;
 import com.vironit.kazimirov.service.AdminService;
@@ -40,8 +37,8 @@ public class PurchaseTest {
     @Autowired
     private GoodService goodService;
 
-    UserDto userBeforeTest = null;
-    PurchaseDto purchaseBeforeTest = null;
+    UserDto userBeforeTest = new UserDto();
+    PurchaseDto purchaseBeforeTest = new PurchaseDto();
 
     @Before
     public void createPurchase() throws ClientNotFoundException {
@@ -49,12 +46,10 @@ public class PurchaseTest {
         purchaseService.createNewPurchase(userBeforeTest);
         List<PurchaseDto> purchases = purchaseService.findPurchases();
         purchaseBeforeTest = purchases.get(purchases.size() - 1);
-
     }
 
     @Test
     public void createNewPurchaseTest() {
-
         List<PurchaseDto> missingPurchases = purchaseService.findPurchases();
         List<PurchaseDto> findPurchasesById = missingPurchases.stream().filter(purchase1 -> purchase1.getId() != purchaseBeforeTest.getId()).collect(Collectors.toList());
         missingPurchases.removeAll(findPurchasesById);
@@ -62,6 +57,15 @@ public class PurchaseTest {
         int size = missingPurchases.size();
         assertEquals(size, 1);
     }
+
+    @Test(expected = ClientNotFoundException.class)
+    public void createNewPurchaseExceptionTest() throws ClientNotFoundException {
+        List<UserDto> userDtos = adminService.findAllClient();
+        int userId = userDtos.stream().mapToInt(userDto -> userDto.getId()).sum();
+        userBeforeTest.setId(userId);
+        purchaseService.createNewPurchase(userBeforeTest);
+    }
+
 
     @Test
     public void findPurchaseByIdTest() throws PurchaseNotFoundException {
@@ -75,12 +79,19 @@ public class PurchaseTest {
         assertEquals(size, 1);
     }
 
+    @Test(expected = PurchaseNotFoundException.class)
+    public void findPurchaseByIdExceptionTest() throws PurchaseNotFoundException {
+        List<PurchaseDto> purchaseDtos = purchaseService.findPurchases();
+        int purchaseDtoId = purchaseDtos.stream().mapToInt(purchaseDto -> purchaseDto.getId()).sum();
+        purchaseService.findPurchaseById(purchaseDtoId);
+    }
+
 
     @Test
     public void makeAPurchaseTest() throws PurchaseException, RepeatitionException, GoodNotFoundException, PurchaseNotFoundException, CartItemNotFoundException {
         GoodDto good = goodService.findAllGoods().get(0);
         cartItemService.addInCartItem(good, 1, purchaseBeforeTest);
-        CartItemDto cartItemDto=cartItemService.findCartItem(good.getId(),purchaseBeforeTest.getId());
+        CartItemDto cartItemDto = cartItemService.findCartItem(good.getId(), purchaseBeforeTest.getId());
         purchaseService.makeAPurchase(purchaseBeforeTest.getId());
         List<PurchaseDto> missingPurchases = purchaseService.findPurchases();
         List<PurchaseDto> findPurchaseById = missingPurchases.stream().filter(purchase1 -> purchase1.getId() != purchaseBeforeTest.getId()).collect(Collectors.toList());
@@ -95,6 +106,13 @@ public class PurchaseTest {
     public void makeAPurchaseExceptionTest() throws PurchaseException, PurchaseNotFoundException {
         purchaseService.changeStatus(purchaseBeforeTest, Status.CANCELED);
         purchaseService.makeAPurchase(purchaseBeforeTest.getId());
+    }
+
+    @Test(expected = PurchaseNotFoundException.class)
+    public void makeAPurchaseExceptionPurchaseNotFoundTest() throws PurchaseNotFoundException, PurchaseException {
+        List<PurchaseDto> purchaseDtos = purchaseService.findPurchases();
+        int purchaseDtoId = purchaseDtos.stream().mapToInt(purchaseDto -> purchaseDto.getId()).sum();
+        purchaseService.makeAPurchase(purchaseDtoId);
     }
 
 
@@ -118,15 +136,37 @@ public class PurchaseTest {
         Assert.assertTrue(purchases1.stream().noneMatch(purchase1 -> purchase1.getId() == purchase.getId()));
     }
 
+    @Test(expected = PurchaseNotFoundException.class)
+    public void removePurchaseExceptionPurchaseNotFoundTest() throws PurchaseNotFoundException, CantDeleteElement {
+        List<PurchaseDto> purchaseDtos = purchaseService.findPurchases();
+        int purchaseDtoId = purchaseDtos.stream().mapToInt(purchaseDto -> purchaseDto.getId()).sum();
+        purchaseService.removePurchase(purchaseDtoId);
+    }
+
+    @Test(expected = CantDeleteElement.class)
+    public void removePurchaseExceptionPurchaseTest() throws PurchaseNotFoundException, CantDeleteElement {
+        int purchaseId = cartItemService.findCartItems().get(0).getPurchaseId();
+        purchaseService.removePurchase(purchaseId);
+    }
+
     @Test
     public void changeStatusPurchaseTest() throws PurchaseNotFoundException {
-        String statusDto=purchaseBeforeTest.getStatus();
+        String statusDto = purchaseBeforeTest.getStatus();
         purchaseService.changeStatus(purchaseBeforeTest, Status.IN_PROCESS);
         PurchaseDto purchase1 = purchaseService.findPurchaseById(purchaseBeforeTest.getId());
-        Status newStatus=Status.valueOf(purchase1.getStatus());
+        Status newStatus = Status.valueOf(purchase1.getStatus());
         Assert.assertEquals(Status.IN_PROCESS, newStatus);
-        Status status=Status.valueOf(statusDto);
-        purchaseService.changeStatus(purchaseBeforeTest,status);
+        Status status = Status.valueOf(statusDto);
+        purchaseService.changeStatus(purchaseBeforeTest, status);
+    }
+
+    @Test(expected = PurchaseNotFoundException.class)
+    public void changeStatusPurchaseNotFoundTest() throws PurchaseNotFoundException {
+        List<PurchaseDto> purchaseDtos = purchaseService.findPurchases();
+        int purchaseDtoId = purchaseDtos.stream().mapToInt(purchaseDto -> purchaseDto.getId()).sum();
+        PurchaseDto purchaseDto=new PurchaseDto();
+        purchaseDto.setId(purchaseDtoId);
+        purchaseService.changeStatus(purchaseDto,Status.NEW);
     }
 
     @After

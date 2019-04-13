@@ -131,9 +131,19 @@ public class ClientDaoImplFake implements ClientDao {
 //    }
 
     @Override
-    public List<Review> findAllReviews(User user) {
+    public List<Review> findAllReviewsByUser(User user) {
         List<Review> reviewsByClient = new ArrayList<>();
         reviewsByClient = reviews.stream().filter(review -> review.getUser().equals(user)).collect(Collectors.toList());
         return reviewsByClient;
+    }
+
+    @Override
+    public Review findReviewById(int reviewId) {
+        return null;
+    }
+
+    @Override
+    public List<Review> findAllReviews() {
+        return null;
     }
 }

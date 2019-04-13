@@ -135,7 +135,7 @@ public class Main extends Thread {
             //clientServiceImpl.changeAdress(1, "Puschkina street");
             //clientServiceImpl.changePhoneNumber(1,"5698532");
             //clientServiceImpl.removeReview(1,user1);
-            //clientServiceImpl.findAllReviews(user1);
+            //clientServiceImpl.findAllReviewsByUser(user1);
             //clientServiceImpl.findAllClients();
         } catch (Exception ex) {
             //LOGGER.error(ex);

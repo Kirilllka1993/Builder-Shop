@@ -5,32 +5,37 @@ import com.vironit.kazimirov.dto.UserDto;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.GoodNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.exception.ReviewNotFoundException;
 
 import java.util.List;
 
 public interface ClientService {
 
-    int addReview(ReviewDto reviewDto) throws ClientNotFoundException, GoodNotFoundException;//все работает
+    int addReview(ReviewDto reviewDto) throws ClientNotFoundException, GoodNotFoundException;
 
-    void removeReview(int clientId, int goodId) throws ClientNotFoundException, GoodNotFoundException;//все работает
+    void removeReview(int clientId, int goodId) throws ClientNotFoundException, GoodNotFoundException, ReviewNotFoundException;
 
     ReviewDto findReview(int clientId, int goodId) throws ClientNotFoundException;
 
-    UserDto logIn(String login, String password) throws ClientNotFoundException;//не работает
+    ReviewDto findReviewById(int reviewId) throws ReviewNotFoundException;
+
+    UserDto logIn(String login, String password) throws ClientNotFoundException;
 
     void logOut();
 
-    int signIn(UserDto userDto) throws RepeatitionException;//все работает
+    int signIn(UserDto userDto) throws RepeatitionException;
 
-    void changeLogin(int clientId, String newLogin) throws RepeatitionException, ClientNotFoundException;//все раблотает
+    void changeLogin(int clientId, String newLogin) throws RepeatitionException, ClientNotFoundException;
 
-    void changePassword(int clientId, String newPassword) throws ClientNotFoundException;//все раблотает
+    void changePassword(int clientId, String newPassword) throws ClientNotFoundException;
 
-    void changePhoneNumber (int clientId, String newPhoneNumber) throws ClientNotFoundException;//все раблотает
+    void changePhoneNumber (int clientId, String newPhoneNumber) throws ClientNotFoundException;
 
-    void changeAddress(int clientId, String newAddress) throws ClientNotFoundException;//все раблотает
+    void changeAddress(int clientId, String newAddress) throws ClientNotFoundException;
 
-    List<ReviewDto> findAllReviews(UserDto userDto);//все раблотает
+    List<ReviewDto> findAllReviewsByUser(UserDto userDto);
+
+    List<ReviewDto>findAllReviews();
 
 
 }

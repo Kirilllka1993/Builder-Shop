@@ -3,9 +3,7 @@ import com.vironit.kazimirov.dto.GoodDto;
 import com.vironit.kazimirov.dto.PurposeDto;
 import com.vironit.kazimirov.dto.SubsectionDto;
 import com.vironit.kazimirov.entity.Good;
-import com.vironit.kazimirov.entity.Purpose;
 import com.vironit.kazimirov.entity.Subsection;
-import com.vironit.kazimirov.entity.builder.Good.GoodBuilder;
 import com.vironit.kazimirov.exception.*;
 import com.vironit.kazimirov.service.GoodService;
 import com.vironit.kazimirov.service.PurposeService;
@@ -21,8 +19,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static junit.framework.TestCase.assertEquals;
@@ -46,7 +44,7 @@ public class GoodTest {
     public void createGood() {
         PurposeDto purposeDto = purposeService.findPurposes().get(0);
         SubsectionDto subsectionDto = subsectionService.findSubsections().get(0);
-        Subsection subsection=new Subsection();
+        Subsection subsection = new Subsection();
         subsection.setId(subsectionDto.getId());
         subsection.setTitle(subsectionDto.getTitle());
         goodBeforeTest = new GoodDto();
@@ -64,22 +62,9 @@ public class GoodTest {
     public void createGoodException() {
         PurposeDto purposeDto = purposeService.findPurposes().get(0);
         SubsectionDto subsectionDto = subsectionService.findSubsections().get(0);
-        Subsection subsection=new Subsection();
+        Subsection subsection = new Subsection();
         subsection.setId(subsectionDto.getId());
         subsection.setTitle(subsectionDto.getTitle());
-
-        //List<Good> goods = goodService.findAllGoods();
-        //double discount=goods.stream().mapToDouble(Good::getPrice).count();
-//        GoodBuilder GoodBuilder = new GoodBuilder();
-//        goodBeforeExceptionTest = GoodBuilder.withCost(6)
-//                .withSubsection(subsection)
-//                .withUnit("м3")
-//                .withQuantity(5)
-//                .withDiscount(10000000)
-//                .withPurpose(purpose)
-//                .withName("Пеноплексcccccccccccccccc")
-//                .withAmount(15)
-//                .build();
         goodBeforeExceptionTest = new GoodDto();
         goodBeforeExceptionTest.setSubsectionId(subsection.getId());
         goodBeforeExceptionTest.setName("Пеноплексcccccccccccccccccccccccc");
@@ -94,7 +79,7 @@ public class GoodTest {
 
     @Test
     public void addGoodTest() throws GoodException, RepeatitionException, SubsectionNotFoundException, PurposeNotFoundException, GoodNotFoundException {
-        int goodId=goodService.addGood(goodBeforeTest);
+        int goodId = goodService.addGood(goodBeforeTest);
         goodBeforeTest.setId(goodId);
         List<GoodDto> missingGoods = goodService.findAllGoods();
         List<GoodDto> findGoodsById = missingGoods.stream().filter(good -> good.getId() != goodBeforeTest.getId()).collect(Collectors.toList());
@@ -135,7 +120,7 @@ public class GoodTest {
 
     @Test(expected = GoodNotFoundException.class)
     public void goodFindByNameExceptionTest() throws GoodNotFoundException {
-        List<GoodDto>goods=goodService.findAllGoods();
+        List<GoodDto> goods = goodService.findAllGoods();
         String neverUseName = goods.stream().map(GoodDto::getName).collect(Collectors.joining());
         goodService.findByNameGood(neverUseName);
     }
@@ -143,28 +128,46 @@ public class GoodTest {
     @Test
     public void findBySubsectionTest() throws SubsectionNotFoundException {
         int subsectionId = goodService.findAllGoods().get(0).getSubsectionId();
-        SubsectionDto subsectionDto=subsectionService.findSubsectionById(subsectionId);
+        SubsectionDto subsectionDto = subsectionService.findSubsectionById(subsectionId);
         List<GoodDto> foundsGoodsBySubsection = goodService.findBySubsection(subsectionDto);
-        Assert.assertTrue(foundsGoodsBySubsection.stream().allMatch(good -> good.getSubsectionId()==subsectionId));
+        Assert.assertTrue(foundsGoodsBySubsection.stream().allMatch(good -> good.getSubsectionId() == subsectionId));
         List<GoodDto> missingGoods = goodService.findAllGoods();
         missingGoods.removeAll(foundsGoodsBySubsection);
-        Assert.assertTrue(missingGoods.stream().noneMatch(good -> good.getSubsectionId()==subsectionId));
+        Assert.assertTrue(missingGoods.stream().noneMatch(good -> good.getSubsectionId() == subsectionId));
+    }
+
+    @Test(expected = SubsectionNotFoundException.class)
+    public void findBySubsectionExceptionTest() throws SubsectionNotFoundException {
+         List<SubsectionDto>subsectionDtos= subsectionService.findSubsections();
+        SubsectionDto subsectionDto=subsectionDtos.get(0);
+        String neverUseTitle= subsectionDtos.stream().map(SubsectionDto::getTitle).collect(Collectors.joining());
+        subsectionDto.setTitle(neverUseTitle);
+        goodService.findBySubsection(subsectionDto);
     }
 
     @Test
     public void findByPurposeTest() throws PurposeNotFoundException {
         int purposeId = goodService.findAllGoods().get(0).getPurposeId();
-        PurposeDto purposeDto=purposeService.findPurposeById(purposeId);
+        PurposeDto purposeDto = purposeService.findPurposeById(purposeId);
         List<GoodDto> foundGoods = goodService.findByPurpose(purposeDto);
-        Assert.assertTrue(foundGoods.stream().allMatch(good -> good.getPurposeId()==purposeId));
+        Assert.assertTrue(foundGoods.stream().allMatch(good -> good.getPurposeId() == purposeId));
         List<GoodDto> missingGoods = goodService.findAllGoods();
         missingGoods.removeAll(foundGoods);
-        Assert.assertTrue(missingGoods.stream().noneMatch(good -> good.getPurposeId()==purposeId));
+        Assert.assertTrue(missingGoods.stream().noneMatch(good -> good.getPurposeId() == purposeId));
+    }
+
+    @Test(expected = PurposeNotFoundException.class)
+    public void findByPurposeExceptionTest() throws PurposeNotFoundException {
+        List<PurposeDto>purposeDtos= purposeService.findPurposes();
+        PurposeDto purposeDto=purposeDtos.get(0);
+        String neverUsePurpose= purposeDtos.stream().map(PurposeDto::getPurpose).collect(Collectors.joining());
+        purposeDto.setPurpose(neverUsePurpose);
+        goodService.findByPurpose(purposeDto);
     }
 
     @Test
     public void deleteGoodTest() throws GoodException, RepeatitionException, SubsectionNotFoundException, PurposeNotFoundException, GoodNotFoundException {
-        int goodId=goodService.addGood(goodBeforeTest);
+        int goodId = goodService.addGood(goodBeforeTest);
         goodBeforeTest.setId(goodId);
         int deleteId = goodBeforeTest.getId();
         goodService.deleteGood(deleteId);
@@ -172,25 +175,47 @@ public class GoodTest {
         Assert.assertTrue(allGoods.stream().noneMatch(client -> client.getId() == deleteId));
     }
 
-//    @Test
-//    public void updateTest() throws GoodNotFoundException {
-//        int idOfLastGood = goodService.findAllGoods().get(goodService.findAllGoods().size() - 1).getId();
-//        goodService.updateGood(idOfLastGood, goodBeforeTest);
-//        Good updateGood = goodService.findGoodById(idOfLastGood);
-//        List<Good> missingGoods = goodService.findAllGoods();
-//        List<Good> findGoodsByName = missingGoods.stream().filter(goodId -> !goodId.equals(updateGood)).collect(Collectors.toList());
-//        missingGoods.removeAll(findGoodsByName);
-//        Assert.assertTrue(missingGoods.stream().anyMatch(goodId -> goodId.equals(updateGood)));
-//        int size = missingGoods.size();
-//        assertEquals(size, 1);
-//    }
+    @Test(expected = GoodNotFoundException.class)
+    public void deleteGoodExceptionTest() throws GoodNotFoundException{
+        List<GoodDto> goodDtos = goodService.findAllGoods();
+        int goodDtoId=goodDtos.stream().mapToInt(goodDto -> goodDto.getId()).sum();
+        goodService.deleteGood(goodDtoId);
+    }
 
-//    @Test(expected = GoodNotFoundException.class)
-//    public void updateExceptionTest() throws GoodNotFoundException {
-//        int sumGoodId = goodService.findAllGoods().stream().mapToInt(Good::getId).sum();
-//        Good goodId = new Good();
-//        goodService.updateGood(sumGoodId, goodId);
-//    }
+    @Test
+    public void updateTest() throws GoodNotFoundException, GoodException, SubsectionNotFoundException, RepeatitionException, PurposeNotFoundException {
+        int goodId = goodService.addGood(goodBeforeTest);
+        goodBeforeTest.setId(goodId);
+        GoodDto updateGood = goodService.findAllGoods().get(0);
+        List<GoodDto> goodDtos=goodService.findAllGoods();
+        List<GoodDto>newGoods=new ArrayList<>();
+        newGoods.add(goodDtos.get(0));
+        newGoods.add(goodDtos.get(goodDtos.size()-1));
+        String neverUseTitle= newGoods.stream().map(GoodDto::getName).collect(Collectors.joining());
+        updateGood.setName(neverUseTitle);
+        goodService.updateGood(goodBeforeTest.getId(),updateGood);
+        goodBeforeTest=goodService.findGoodById(goodBeforeTest.getId());
+        List<GoodDto> missingGoods = goodService.findAllGoods();
+        List<GoodDto> findGoodsByName = missingGoods.stream().filter(good -> good.getId()!=goodBeforeTest.getId()).collect(Collectors.toList());
+        missingGoods.removeAll(findGoodsByName);
+        Assert.assertTrue(missingGoods.stream().anyMatch(good -> good.equals(goodBeforeTest)));
+        int size = missingGoods.size();
+        assertEquals(size, 1);
+        goodService.deleteGood(goodBeforeTest.getId());
+    }
+
+    @Test(expected = GoodNotFoundException.class)
+    public void updateGoodNotFoundExceptionTest() throws GoodNotFoundException, GoodException {
+        List<GoodDto> goodDtos = goodService.findAllGoods();
+        int goodDtoId=goodDtos.stream().mapToInt(goodDto -> goodDto.getId()).sum();
+        goodService.updateGood(goodDtoId,goodBeforeTest);
+    }
+
+    @Test(expected = GoodException.class)
+    public void updateGoodExceptionTest() throws GoodNotFoundException, GoodException {
+        List<GoodDto> goodDtos = goodService.findAllGoods();
+        goodService.updateGood(goodDtos.get(0).getId(),goodBeforeExceptionTest);
+    }
 
     @Test
     public void findGoodByPriceTest() {
@@ -215,12 +240,9 @@ public class GoodTest {
 
     @Test(expected = GoodNotFoundException.class)
     public void findGoodByIdExceptionTest() throws GoodNotFoundException {
-        List<GoodDto> goods=goodService.findAllGoods();
-        int sum=1;
-        for(int i=1;i<goods.size();i++){
-            sum=sum*goods.get(i).getId();
-        }
-        goodService.findGoodById(sum);
+        List<GoodDto> goodDtos = goodService.findAllGoods();
+        int goodDtoId=goodDtos.stream().mapToInt(goodDto -> goodDto.getId()).sum();
+        goodService.findGoodById(goodDtoId);
     }
 
     @Test
@@ -247,19 +269,21 @@ public class GoodTest {
         goodService.changePrice(idOfLastGood, 0);
     }
 
+    @Test(expected = GoodNotFoundException.class)
+    public void changePriceGoodNotFoundException() throws GoodNotFoundException, GoodException {
+        List<GoodDto> goodDtos = goodService.findAllGoods();
+        int goodDtoId=goodDtos.stream().mapToInt(goodDto -> goodDto.getId()).sum();
+        goodService.changePrice(goodDtoId,2);
+    }
+
     @Test
     public void changeSubsectionTest() throws GoodNotFoundException, SubsectionNotFoundException {
         int idOfLastGood = goodService.findAllGoods().get(goodService.findAllGoods().size() - 1).getId();
-
-//        Subsection newSubsection = goodBeforeTest.getSubsection();
         int subsectionId = goodService.findAllGoods().get(0).getSubsectionId();
-        SubsectionDto subsectionDto=subsectionService.findSubsectionById(subsectionId);
-
+        SubsectionDto subsectionDto = subsectionService.findSubsectionById(subsectionId);
         GoodDto oldGood = goodService.findGoodById(idOfLastGood);
-
-//        Subsection oldSubsection = oldGood.getSubsection();
-        int oldSubsection=oldGood.getSubsectionId();
-        SubsectionDto oldSubsectionDto=subsectionService.findSubsectionById(oldSubsection);
+        int oldSubsection = oldGood.getSubsectionId();
+        SubsectionDto oldSubsectionDto = subsectionService.findSubsectionById(oldSubsection);
 
         goodService.changeSubsection(idOfLastGood, subsectionDto);
         GoodDto updateGood = goodService.findGoodById(idOfLastGood);
@@ -267,35 +291,66 @@ public class GoodTest {
         List<GoodDto> findGoods = missingGoods.stream().filter(good -> good.getId() != updateGood.getId()).collect(Collectors.toList());
         missingGoods.removeAll(findGoods);
         Assert.assertTrue(missingGoods.stream().anyMatch(client -> client
-                .getSubsectionId()==updateGood.getSubsectionId()));
+                .getSubsectionId() == updateGood.getSubsectionId()));
         int size = missingGoods.size();
         assertEquals(size, 1);
         goodService.changeSubsection(idOfLastGood, oldSubsectionDto);
     }
 
+    @Test(expected = GoodNotFoundException.class)
+    public void changeSubsectionGoodNotExceptionTest() throws GoodNotFoundException, SubsectionNotFoundException {
+        SubsectionDto subsectionDto=subsectionService.findSubsections().get(0);
+        List<GoodDto> goodDtos = goodService.findAllGoods();
+        int goodDtoId=goodDtos.stream().mapToInt(goodDto -> goodDto.getId()).sum();
+        goodService.changeSubsection(goodDtoId,subsectionDto);
+    }
+
+    @Test(expected = SubsectionNotFoundException.class)
+    public void changeSubsectionExceptionTest() throws SubsectionNotFoundException, GoodNotFoundException {
+        List<SubsectionDto>subsectionDtos= subsectionService.findSubsections();
+        SubsectionDto subsectionDto=subsectionDtos.get(0);
+        String neverUseTitle= subsectionDtos.stream().map(SubsectionDto::getTitle).collect(Collectors.joining());
+        subsectionDto.setTitle(neverUseTitle);
+        int goodId=goodService.findAllGoods().get(0).getId();
+        goodService.changeSubsection(goodId,subsectionDto);
+    }
+
     @Test
     public void changePurposeTest() throws GoodNotFoundException, PurposeNotFoundException {
         int idOfLastGood = goodService.findAllGoods().get(goodService.findAllGoods().size() - 1).getId();
-       // Purpose newPurpose = goodBeforeTest.getPurpose();
         int purposeId = goodService.findAllGoods().get(0).getPurposeId();
-        PurposeDto newPurposeDto=purposeService.findPurposeById(purposeId);
-
+        PurposeDto newPurposeDto = purposeService.findPurposeById(purposeId);
         GoodDto oldGood = goodService.findGoodById(idOfLastGood);
-
-//        Purpose oldPurpose = oldGood.getPurpose();
-        int oldPurpose=oldGood.getPurposeId();
-        PurposeDto oldPurposeDto=purposeService.findPurposeById(oldPurpose);
-
+        int oldPurpose = oldGood.getPurposeId();
+        PurposeDto oldPurposeDto = purposeService.findPurposeById(oldPurpose);
         goodService.changePurpose(idOfLastGood, newPurposeDto);
         GoodDto updateGood = goodService.findGoodById(idOfLastGood);
         List<GoodDto> missingGoods = goodService.findAllGoods();
         List<GoodDto> findGoods = missingGoods.stream().filter(good -> good.getId() != updateGood.getId()).collect(Collectors.toList());
         missingGoods.removeAll(findGoods);
         Assert.assertTrue(missingGoods.stream().anyMatch(client -> client
-                .getPurposeId()==updateGood.getPurposeId()));
+                .getPurposeId() == updateGood.getPurposeId()));
         int size = missingGoods.size();
         assertEquals(size, 1);
         goodService.changePurpose(idOfLastGood, oldPurposeDto);
+    }
+
+    @Test(expected = GoodNotFoundException.class)
+    public void changePurposeGoodNotExceptionTest() throws GoodNotFoundException, PurposeNotFoundException {
+        PurposeDto purposeDto=purposeService.findPurposes().get(0);
+        List<GoodDto> goodDtos = goodService.findAllGoods();
+        int goodDtoId=goodDtos.stream().mapToInt(goodDto -> goodDto.getId()).sum();
+        goodService.changePurpose(goodDtoId,purposeDto);
+    }
+
+    @Test(expected = PurposeNotFoundException.class)
+    public void changePurposeExceptionTest() throws PurposeNotFoundException, GoodNotFoundException {
+        List<PurposeDto>purposeDtos= purposeService.findPurposes();
+        PurposeDto purposeDto=purposeDtos.get(0);
+        String neverUsePurpose= purposeDtos.stream().map(PurposeDto::getPurpose).collect(Collectors.joining());
+        purposeDto.setPurpose(neverUsePurpose);
+        int goodDtoId=goodService.findAllGoods().get(0).getId();
+        goodService.changePurpose(goodDtoId,purposeDto);
     }
 
     @Test
@@ -322,6 +377,13 @@ public class GoodTest {
         goodService.changeAmount(idOfLastGood, -1);
     }
 
+    @Test(expected = GoodNotFoundException.class)
+    public void changeAmountGoodNotFoundException() throws GoodNotFoundException,GoodException {
+        List<GoodDto> goodDtos = goodService.findAllGoods();
+        int goodDtoId=goodDtos.stream().mapToInt(goodDto -> goodDto.getId()).sum();
+        goodService.changeAmount(goodDtoId,1);
+    }
+
     @Test
     public void changeUnitTest() throws GoodNotFoundException {
         int idOfLastGood = goodService.findAllGoods().get(goodService.findAllGoods().size() - 1).getId();
@@ -340,6 +402,13 @@ public class GoodTest {
         goodService.changeUnit(idOfLastGood, oldUnit);
     }
 
+    @Test(expected = GoodNotFoundException.class)
+    public void changeUnitTestGoodNotFoundException() throws GoodNotFoundException,GoodException {
+        List<GoodDto> goodDtos = goodService.findAllGoods();
+        int goodDtoId=goodDtos.stream().mapToInt(goodDto -> goodDto.getId()).sum();
+        goodService.changeUnit(goodDtoId,"м3");
+    }
+
     @Test
     public void changeQuantityTest() throws GoodNotFoundException {
         int idOfLastGood = goodService.findAllGoods().get(goodService.findAllGoods().size() - 1).getId();
@@ -356,5 +425,12 @@ public class GoodTest {
         int size = missingGoods.size();
         assertEquals(size, 1);
         goodService.changeQuantity(idOfLastGood, oldQuantity);
+    }
+
+    @Test(expected = GoodNotFoundException.class)
+    public void changeQuantityGoodNotFoundException() throws GoodNotFoundException,GoodException {
+        List<GoodDto> goodDtos = goodService.findAllGoods();
+        int goodDtoId=goodDtos.stream().mapToInt(goodDto -> goodDto.getId()).sum();
+        goodService.changeQuantity(goodDtoId,1);
     }
 }

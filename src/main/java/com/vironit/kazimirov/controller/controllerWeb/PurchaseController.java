@@ -107,7 +107,7 @@ public class PurchaseController extends HttpServlet {
         try {
             cartItemService.changeAmountInCartItem(goodId,amount,purchaseId);
             modelAndView.setViewName("purchase");
-        } catch (PurchaseException | RepeatitionException e) {
+        } catch (PurchaseException e) {
             e.printStackTrace();
             modelAndView.setViewName("tryLogin");
             return modelAndView;

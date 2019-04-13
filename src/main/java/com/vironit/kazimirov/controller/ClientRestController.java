@@ -5,9 +5,9 @@ import com.vironit.kazimirov.dto.UserDto;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.GoodNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.exception.ReviewNotFoundException;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.ClientService;
-import com.vironit.kazimirov.service.GoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +31,7 @@ public class ClientRestController {
 
     @RequestMapping(value = "/deleteReview", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    public void deleteReview(@RequestBody ReviewDto reviewDto) throws GoodNotFoundException, ClientNotFoundException {
+    public void deleteReview(@RequestBody ReviewDto reviewDto) throws GoodNotFoundException, ClientNotFoundException, ReviewNotFoundException {
         clientService.removeReview(reviewDto.getUserId(), reviewDto.getGoodId());
     }
 
@@ -77,7 +77,7 @@ public class ClientRestController {
     @RequestMapping(value = "/allReviews", method = RequestMethod.GET)
     public List<ReviewDto> findAllReviews(@RequestBody ReviewDto reviewDto) throws ClientNotFoundException {
         UserDto userDto = adminService.findClientById(reviewDto.getUserId());
-        List<ReviewDto> reviewDtos = clientService.findAllReviews(userDto);
+        List<ReviewDto> reviewDtos = clientService.findAllReviewsByUser(userDto);
         return reviewDtos;
     }
 

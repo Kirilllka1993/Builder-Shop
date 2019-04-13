@@ -42,17 +42,17 @@ public class CartItemImpl implements CartItemService {
     }
 
     @Override
-    public int addInCartItem(GoodDto goodDto, int amount, PurchaseDto purchaseDto) throws PurchaseException, RepeatitionException, PurchaseNotFoundException, GoodNotFoundException {
+    public int addInCartItem(GoodDto goodDto, int amount, PurchaseDto purchaseDto) throws PurchaseException,
+            PurchaseNotFoundException, GoodNotFoundException {
         Optional<CartItem> checkGood = Optional.ofNullable(cartItemDao.findCartItem(goodDto.getId(), purchaseDto.getId()));
-        Optional<Good> checkNameGood = Optional.ofNullable(goodDao.findByNameGood(goodDto.getName()));
         purchaseService.findPurchaseById(purchaseDto.getId());
         goodService.findGoodById(goodDto.getId());
         if (goodDto.getAmount() < amount || amount < 0) {
             throw new PurchaseException("The amount of goodId is so much. In the store is present or you entered amount<0 " + " " + goodDto.getAmount());
         } else if (checkGood.isPresent() == true) {
             throw new PurchaseException("This goodId is present, you can change only the amount " + " " + goodDto.getAmount());
-        } else if (checkNameGood.isPresent() == false) {
-            throw new RepeatitionException("such goodId is present");
+        } else if (!purchaseDto.getStatus().equals("NEW")) {
+            throw new PurchaseException("this purchase can't using due to status not NEW");
         } else {
             cartItemDao.reduceAmount(goodDto.getId(), amount);
             Good good = goodDao.findGoodById(goodDto.getId());
@@ -60,6 +60,7 @@ public class CartItemImpl implements CartItemService {
             return cartItemDao.addInCartItem(good, amount, purchase);
         }
     }
+
 
     @Override
     public List<CartItemDto> findCartItems() {
@@ -120,11 +121,8 @@ public class CartItemImpl implements CartItemService {
     }
 
     @Override
-    public void changeAmountInCartItem(int goodId, int amount, int purchaseId) throws PurchaseException, RepeatitionException, GoodNotFoundException, GoodException {
-        Optional<Good> checkNameGood = Optional.ofNullable(goodDao.findGoodById(goodId));
-        if (checkNameGood.isPresent() == false) {
-            throw new RepeatitionException("such goodId is present");
-        }
+    public void changeAmountInCartItem(int goodId, int amount, int purchaseId) throws PurchaseException,GoodNotFoundException, GoodException {
+        goodService.findGoodById(goodId);
         Good good = goodDao.findGoodById(goodId);
         CartItem cartItem = cartItemDao.findCartItem(goodId, purchaseId);
         int oldAmount = cartItem.getAmount();
@@ -139,11 +137,11 @@ public class CartItemImpl implements CartItemService {
     @Override
     public CartItemDto findCartItem(int goodId, int purchaseId) throws GoodNotFoundException, PurchaseNotFoundException, CartItemNotFoundException {
         Optional<CartItem> checkCarItemName = Optional.ofNullable(cartItemDao.findCartItem(goodId, purchaseId));
+        goodService.findGoodById(goodId);
+        purchaseService.findPurchaseById(purchaseId);
         if (checkCarItemName.isPresent() == false) {
             throw new CartItemNotFoundException("such cartItem is absent");
         }
-        goodService.findGoodById(goodId);
-        purchaseService.findPurchaseById(purchaseId);
         CartItem cartItem = cartItemDao.findCartItem(goodId, purchaseId);
         CartItemDto cartItemDto = new CartItemDto(cartItem);
         return cartItemDto;

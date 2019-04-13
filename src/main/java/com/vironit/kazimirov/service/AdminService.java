@@ -10,16 +10,16 @@ import java.util.List;
 
 public interface AdminService {
 
-    int addClient(UserDto userDto) throws RepeatitionException;//все работает
+    int addClient(UserDto userDto) throws RepeatitionException;
 
-    void deleteClient(int clientId) throws ClientNotFoundException;//все работает
+    void deleteClient(int clientId) throws ClientNotFoundException;
 
-    UserDto findClientByLogin(String login) throws ClientNotFoundException;//все работает
+    UserDto findClientByLogin(String login) throws ClientNotFoundException;
 
-    UserDto findClientById(int clientId) throws ClientNotFoundException;//все работает
+    UserDto findClientById(int clientId) throws ClientNotFoundException;
 
-    void changeDiscount(int goodId, double discount) throws GoodNotFoundException, GoodException;//все работает
+    void changeDiscount(int goodId, double discount) throws GoodNotFoundException, GoodException;
 
-    List<UserDto> findAllClient();//все работате
+    List<UserDto> findAllClient();
 
 }

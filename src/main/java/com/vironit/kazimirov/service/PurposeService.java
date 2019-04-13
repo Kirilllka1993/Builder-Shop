@@ -9,14 +9,14 @@ import java.util.List;
 
 public interface PurposeService {
 
-    int addPurpose(PurposeDto purposeDto) throws RepeatitionException;//выполнено
+    int addPurpose(PurposeDto purposeDto) throws RepeatitionException;
 
-    List<PurposeDto> findPurposes();//выполнено
+    List<PurposeDto> findPurposes();
 
-    PurposeDto findPurposeByName(String purposeName) throws PurposeNotFoundException;//выполнено
+    PurposeDto findPurposeByName(String purposeName) throws PurposeNotFoundException;
 
-    void deletePurpose(int purposeId) throws CantDeleteElement, PurposeNotFoundException;//выполнено
+    void deletePurpose(int purposeId) throws CantDeleteElement, PurposeNotFoundException;
 
-    PurposeDto findPurposeById(int purposeId) throws PurposeNotFoundException;//выполнено
+    PurposeDto findPurposeById(int purposeId) throws PurposeNotFoundException;
 
 }

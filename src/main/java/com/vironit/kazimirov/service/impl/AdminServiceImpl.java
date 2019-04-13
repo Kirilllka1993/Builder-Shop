@@ -92,7 +92,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void changeDiscount(int goodId, double discount) throws GoodNotFoundException, GoodException {
         GoodDto goodDto=goodService.findGoodById(goodId);
-        if (goodDto.getPrice() <= goodDto.getDiscount()) {
+        if (goodDto.getPrice() <= discount) {
             throw new GoodException("The discount can't be more then price");
         }
         adminDao.changeDiscount(goodId, discount);

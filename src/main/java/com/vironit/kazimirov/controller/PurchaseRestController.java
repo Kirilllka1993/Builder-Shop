@@ -60,7 +60,7 @@ public class PurchaseRestController {
 
     @RequestMapping(value = "purchase/newStatus",method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    public void changeStatus(@RequestBody PurchaseDto purchaseDto){
+    public void changeStatus(@RequestBody PurchaseDto purchaseDto) throws PurchaseNotFoundException {
         Status status=Status.valueOf(purchaseDto.getStatus());
         purchaseService.changeStatus(purchaseDto,status);
     }

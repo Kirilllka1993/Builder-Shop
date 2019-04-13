@@ -6,6 +6,7 @@ import com.vironit.kazimirov.entity.Good;
 import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.GoodNotFoundException;
+import com.vironit.kazimirov.exception.ReviewNotFoundException;
 import com.vironit.kazimirov.fakedao.DaoInterface.AdminDao;
 import com.vironit.kazimirov.fakedao.DaoInterface.ClientDao;
 import com.vironit.kazimirov.entity.Review;
@@ -44,12 +45,12 @@ public class ClientServiceImpl implements ClientService {
     public int addReview(ReviewDto reviewDto) throws ClientNotFoundException, GoodNotFoundException {
         Optional<Good> checkIdGood = Optional.ofNullable(goodDao.findGoodById(reviewDto.getGoodId()));
         Optional<User> checkIdClient = Optional.ofNullable(adminDao.findClientById(reviewDto.getUserId()));
-        Optional<Review> checkReview = Optional.ofNullable(clientDao.findReview(reviewDto.getUserId(),reviewDto.getGoodId()));
+        Optional<Review> checkReview = Optional.ofNullable(clientDao.findReview(reviewDto.getUserId(), reviewDto.getGoodId()));
         if ((checkIdClient.isPresent() == false)) {
             throw new ClientNotFoundException();
         } else if (checkIdGood.isPresent() == false) {
             throw new GoodNotFoundException();
-        }else if(checkReview.isPresent() == true){
+        } else if (checkReview.isPresent() == true) {
             throw new ClientNotFoundException("Such review is create ");
         } else {
             User user = adminDao.findClientById(reviewDto.getUserId());
@@ -64,14 +65,16 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void removeReview(int clientId, int goodId) throws ClientNotFoundException, GoodNotFoundException {
+    public void removeReview(int clientId, int goodId) throws ClientNotFoundException, GoodNotFoundException, ReviewNotFoundException {
         Optional<Review> checkReview = Optional.ofNullable(clientDao.findReview(clientId, goodId));
         Optional<Good> checkIdGood = Optional.ofNullable(goodDao.findGoodById(goodId));
         Optional<User> checkIdClient = Optional.ofNullable(adminDao.findClientById(clientId));
-        if ((checkIdClient.isPresent() == false || checkReview.isPresent() == false)) {
+        if ((checkIdClient.isPresent() == false)) {
             throw new ClientNotFoundException();
         } else if (checkIdGood.isPresent() == false) {
             throw new GoodNotFoundException();
+        } else if (checkReview.isPresent() == false) {
+            throw new ReviewNotFoundException("such review is absent");
         } else {
             clientDao.removeReview(clientId, goodId);
         }
@@ -88,6 +91,19 @@ public class ClientServiceImpl implements ClientService {
             return reviewDto;
         }
     }
+
+    @Override
+    public ReviewDto findReviewById(int reviewId) throws ReviewNotFoundException {
+        Optional<Review> checkReview = Optional.ofNullable(clientDao.findReviewById(reviewId));
+        if ((checkReview.isPresent() == false)) {
+            throw new ReviewNotFoundException("such review is absent");
+        } else {
+            Review review = clientDao.findReviewById(reviewId);
+            ReviewDto reviewDto = new ReviewDto(review);
+            return reviewDto;
+        }
+    }
+
 
     @Override
     public UserDto logIn(String login, String password) throws ClientNotFoundException {
@@ -132,8 +148,6 @@ public class ClientServiceImpl implements ClientService {
         } else {
             throw new RepeatitionException("such login is used");
         }
-
-
     }
 
     @Override
@@ -168,9 +182,16 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<ReviewDto> findAllReviews(UserDto userDto) {
+    public List<ReviewDto> findAllReviewsByUser(UserDto userDto) {
         User user = adminDao.findClientById(userDto.getId());
-        List<Review> reviews = clientDao.findAllReviews(user);
+        List<Review> reviews = clientDao.findAllReviewsByUser(user);
+        List<ReviewDto> reviewDtos = reviews.stream().map(ReviewDto::new).collect(Collectors.toList());
+        return reviewDtos;
+    }
+
+    @Override
+    public List<ReviewDto> findAllReviews() {
+        List<Review> reviews = clientDao.findAllReviews();
         List<ReviewDto> reviewDtos = reviews.stream().map(ReviewDto::new).collect(Collectors.toList());
         return reviewDtos;
     }

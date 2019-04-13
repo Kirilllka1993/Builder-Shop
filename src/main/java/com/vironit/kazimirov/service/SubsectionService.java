@@ -9,13 +9,13 @@ import java.util.List;
 
 public interface SubsectionService {
 
-    int addSubsection(SubsectionDto subsection) throws RepeatitionException;//выполнено
+    int addSubsection(SubsectionDto subsection) throws RepeatitionException;
 
-    List<SubsectionDto> findSubsections();//выполнено
+    List<SubsectionDto> findSubsections();
 
-    SubsectionDto findSubsectionByName(String subsectionTitle) throws SubsectionNotFoundException;//выполнено
+    SubsectionDto findSubsectionByName(String subsectionTitle) throws SubsectionNotFoundException;
 
-    void deleteSubsection (int subsectionId) throws CantDeleteElement, SubsectionNotFoundException;//выполнено
+    void deleteSubsection (int subsectionId) throws CantDeleteElement, SubsectionNotFoundException;
 
-    SubsectionDto findSubsectionById(int subsectionId) throws SubsectionNotFoundException;//выполнено
+    SubsectionDto findSubsectionById(int subsectionId) throws SubsectionNotFoundException;
 }

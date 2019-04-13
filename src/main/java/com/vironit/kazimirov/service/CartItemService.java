@@ -9,33 +9,33 @@ import java.util.List;
 
 public interface CartItemService {
 
-    int addInCartItem(GoodDto goodDto, int amount, PurchaseDto purchaseDto) throws RepeatitionException, PurchaseException, PurchaseNotFoundException, GoodNotFoundException;//выполнено
+    int addInCartItem(GoodDto goodDto, int amount, PurchaseDto purchaseDto) throws PurchaseException, PurchaseNotFoundException, GoodNotFoundException;
 
-    List<CartItemDto> findCartItems();//выполнено
+    List<CartItemDto> findCartItems();
 
-    void deleteFromPurchase(CartItemDto cartItemDto) throws PurchaseException, RepeatitionException, GoodNotFoundException, PurchaseNotFoundException, CartItemNotFoundException;//выполнено
+    void deleteFromPurchase(CartItemDto cartItemDto) throws PurchaseException, RepeatitionException, GoodNotFoundException, PurchaseNotFoundException, CartItemNotFoundException;
 
-    void deleteCartItem(int cartItemId) throws CartItemNotFoundException;//выполнено
+    void deleteCartItem(int cartItemId) throws CartItemNotFoundException;
 
-    List<GoodDto> findGoodsByPurchase(int purchaseId) throws PurchaseNotFoundException;//выполнено
+    List<GoodDto> findGoodsByPurchase(int purchaseId) throws PurchaseNotFoundException;
 
-    List<PurchaseDto> findPurchasesByGood(int goodId) throws GoodNotFoundException;//выполнено
+    List<PurchaseDto> findPurchasesByGood(int goodId) throws GoodNotFoundException;
 
-    void deleteCartItemsWithCancelledStatus(PurchaseDto purchaseDto) throws PurchaseNotFoundException;//выполнено
+    void deleteCartItemsWithCancelledStatus(PurchaseDto purchaseDto) throws PurchaseNotFoundException;
 
-    void changeAmountInCartItem(int goodId, int amount, int purchaseId) throws PurchaseException, RepeatitionException, GoodNotFoundException, GoodException;//выполнено
+    void changeAmountInCartItem(int goodId, int amount, int purchaseId) throws PurchaseException, GoodNotFoundException, GoodException;
 
-    CartItemDto findCartItem(int goodId, int purchaseId) throws GoodNotFoundException, PurchaseNotFoundException, CartItemNotFoundException;//выполнено
+    CartItemDto findCartItem(int goodId, int purchaseId) throws GoodNotFoundException, PurchaseNotFoundException, CartItemNotFoundException;
 
-    CartItemDto findCartItemById(int cartItemId) throws CartItemNotFoundException;//выполнено
+    CartItemDto findCartItemById(int cartItemId) throws CartItemNotFoundException;
 
-    void returnedAmountOfGood(CartItemDto cartItemDto);//
+    void returnedAmountOfGood(CartItemDto cartItemDto);
 
-    void reduceAmount(int goodId, int amount);//
+    void reduceAmount(int goodId, int amount);
 
-    List<CartItemDto> findCartItemsByPurchase(int purchaseId) throws PurchaseNotFoundException;//админ
+    List<CartItemDto> findCartItemsByPurchase(int purchaseId) throws PurchaseNotFoundException;
 
-    List<CartItemDto> findCartItemsByGood(int goodId) throws GoodNotFoundException;//админ
+    List<CartItemDto> findCartItemsByGood(int goodId) throws GoodNotFoundException;
 
 
 }

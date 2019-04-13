@@ -93,6 +93,11 @@ public class AdminTest {
         Assert.assertTrue(clients1.stream().noneMatch(client -> client.getId() == deleteId));
     }
 
+    @Test(expected = ClientNotFoundException.class)
+    public void deleteClientExceptionTest()throws ClientNotFoundException {
+        adminService.deleteClient(userBeforeTest.getId());
+    }
+
     @Test
     public void findClientByLoginTest() throws RepeatitionException, ClientNotFoundException {
         int id = adminService.addClient(userBeforeTest);
@@ -104,6 +109,7 @@ public class AdminTest {
         Assert.assertTrue(missingUsers.stream().allMatch((client -> client.getLogin().equals(userByLogin.getLogin()))));
         adminService.deleteClient(userBeforeTest.getId());
     }
+
 
     @Test(expected = ClientNotFoundException.class)
     public void findClientByLoginExceptionTest() throws ClientNotFoundException {
@@ -140,6 +146,28 @@ public class AdminTest {
         List<GoodDto> allGoods = goodService.findAllGoods();
         Assert.assertTrue(allGoods.stream().anyMatch(good -> good.getId() == id && good.getDiscount() == discount));
         adminService.changeDiscount(id, discountfirst);
+    }
+
+    @Test(expected = GoodException.class)
+    public void changeDiscountExceptionTest() throws GoodNotFoundException, GoodException {
+        List<GoodDto> goodDtos = goodService.findAllGoods();
+        double discount = 1;
+        for (int i = 1; i < goodDtos.size(); i++) {
+            discount = discount * goodDtos.get(i).getPrice();
+        }
+        int goodId=goodDtos.get(0).getId();
+        adminService.changeDiscount(goodId,discount);
+    }
+
+    @Test(expected = GoodNotFoundException.class)
+    public void changeDiscountException2Test() throws GoodNotFoundException, GoodException {
+        int goodId = 1;
+        double discount=1;
+        List<GoodDto>goodDtos=goodService.findAllGoods();
+        for (int i = 1; i < goodDtos.size(); i++) {
+            goodId = goodId * goodDtos.get(i).getId();
+        }
+        adminService.changeDiscount(goodId,discount);
     }
 }
 

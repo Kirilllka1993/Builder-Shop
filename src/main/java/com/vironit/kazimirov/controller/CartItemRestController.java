@@ -24,7 +24,7 @@ public class CartItemRestController {
 
     @RequestMapping(value = "cartItem/add", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public int addInCartItem(@RequestBody CartItemDto cartItemDto) throws GoodNotFoundException, RepeatitionException, PurchaseException, PurchaseNotFoundException {
+    public int addInCartItem(@RequestBody CartItemDto cartItemDto) throws GoodNotFoundException, PurchaseException, PurchaseNotFoundException {
         GoodDto goodDto = goodService.findGoodById(cartItemDto.getGoodId());
         PurchaseDto purchaseDto = purchaseService.findPurchaseById(cartItemDto.getPurchaseId());
         int cartItemId = cartItemService.addInCartItem(goodDto, cartItemDto.getAmount(), purchaseDto);
@@ -72,7 +72,7 @@ public class CartItemRestController {
 
     @RequestMapping(value = "cartItem/newAmount", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    public void changeAmount(@RequestBody CartItemDto cartItemDto) throws PurchaseException, RepeatitionException, GoodNotFoundException, GoodException {
+    public void changeAmount(@RequestBody CartItemDto cartItemDto) throws PurchaseException, GoodNotFoundException, GoodException {
         cartItemService.changeAmountInCartItem(cartItemDto.getGoodId(), cartItemDto.getAmount(), cartItemDto.getPurchaseId());
     }
 

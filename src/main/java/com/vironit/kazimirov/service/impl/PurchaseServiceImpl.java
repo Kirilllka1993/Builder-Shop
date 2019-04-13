@@ -96,9 +96,14 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public void changeStatus(PurchaseDto purchaseDto, Status status) {
-        Purchase purchase = purchaseDao.findPurchaseById(purchaseDto.getId());
-        purchaseDao.changeStatus(purchase, status);
+    public void changeStatus(PurchaseDto purchaseDto, Status status) throws PurchaseNotFoundException {
+        Optional<Purchase> checkIdPurchase = Optional.ofNullable(purchaseDao.findPurchaseById(purchaseDto.getId()));
+        if (checkIdPurchase.isPresent() == false) {
+            throw new PurchaseNotFoundException("such purchase is absent");
+        } else {
+            Purchase purchase = purchaseDao.findPurchaseById(purchaseDto.getId());
+            purchaseDao.changeStatus(purchase, status);
+        }
     }
 
     @Override
@@ -107,7 +112,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         List<CartItemDto> cartItemDtos = cartItemService.findCartItemsByPurchase(purchaseId);
         if (checkIdPurchase.isPresent() == false) {
             throw new PurchaseNotFoundException("such purchase is absent");
-        }else if (cartItemDtos.size() == 0) {
+        } else if (cartItemDtos.size() == 0) {
             purchaseDao.removePurchase(purchaseId);
         } else {
             throw new CantDeleteElement("this purchase is using by cartItem");

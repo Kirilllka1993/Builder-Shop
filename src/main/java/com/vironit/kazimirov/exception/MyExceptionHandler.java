@@ -75,4 +75,11 @@ public class MyExceptionHandler {
         return new ResponseEntity<>(errors, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler({ReviewNotFoundException.class})
+    public ResponseEntity<CustomErrorResponce> reviewNotFoundHandle() {
+        LOGGER.error("this cartItem is absent");
+        CustomErrorResponce errors = new CustomErrorResponce(LocalDateTime.now(), 500,"such review is absent");
+        return new ResponseEntity<>(errors, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
 }

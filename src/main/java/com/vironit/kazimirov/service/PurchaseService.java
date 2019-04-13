@@ -14,19 +14,19 @@ import java.util.List;
 
 public interface PurchaseService {
 
-    List<PurchaseDto> findPurchases();//выполнено
+    List<PurchaseDto> findPurchases();
 
-    int createNewPurchase(UserDto userDto) throws ClientNotFoundException;//выполнено
+    int createNewPurchase(UserDto userDto) throws ClientNotFoundException;
 
-    PurchaseDto findPurchaseById(int purchaseId) throws PurchaseNotFoundException;//выполнено
+    PurchaseDto findPurchaseById(int purchaseId) throws PurchaseNotFoundException;
 
-    void makeAPurchase(int purchaseId) throws PurchaseException, PurchaseNotFoundException;//выполнено
+    void makeAPurchase(int purchaseId) throws PurchaseException, PurchaseNotFoundException;
 
-    List<PurchaseDto> findPurchasesByDate(LocalDateTime timeOfPurchase);//
+    List<PurchaseDto> findPurchasesByDate(LocalDateTime timeOfPurchase);
 
-    void changeStatus(PurchaseDto purchaseDto, Status status);//выполнено
+    void changeStatus(PurchaseDto purchaseDto, Status status) throws PurchaseNotFoundException;
 
-    void removePurchase(int purchaseId) throws PurchaseNotFoundException, CantDeleteElement;//выполнено
+    void removePurchase(int purchaseId) throws PurchaseNotFoundException, CantDeleteElement;
 
 
 }

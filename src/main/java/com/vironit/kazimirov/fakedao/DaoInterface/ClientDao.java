@@ -1,5 +1,6 @@
 package com.vironit.kazimirov.fakedao.DaoInterface;
 
+import com.vironit.kazimirov.dto.ReviewDto;
 import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.entity.Review;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
@@ -10,7 +11,7 @@ import java.util.List;
 public interface ClientDao {
     int addReview(Review review);
 
-    void removeReview(int clientId,int goodId);
+    void removeReview(int clientId, int goodId);
 
     Review findReview(int clientId, int goodId);
 
@@ -24,9 +25,13 @@ public interface ClientDao {
 
     void changePassword(int clientId, String newPassword);
 
-    void changePhoneNumber (int clientId, String newPhoneNumber);
+    void changePhoneNumber(int clientId, String newPhoneNumber);
 
     void changeAddress(int clientId, String newAddress);
 
-    List<Review> findAllReviews(User user);
+    List<Review> findAllReviewsByUser(User user);
+
+    Review findReviewById(int reviewId);
+
+    List<Review> findAllReviews();
 }

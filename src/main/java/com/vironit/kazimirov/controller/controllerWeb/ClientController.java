@@ -9,6 +9,7 @@ import com.vironit.kazimirov.entity.Review;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.GoodNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.exception.ReviewNotFoundException;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.ClientService;
 import com.vironit.kazimirov.service.GoodService;
@@ -153,7 +154,7 @@ public class ClientController extends HttpServlet {
 
     @RequestMapping(value = "/deleteReview", method = RequestMethod.POST)
     public ModelAndView deleteReview(@RequestParam("idGood") int idGood,
-                                     @RequestParam("idClient") int idClient, ModelMap map) throws GoodNotFoundException, ClientNotFoundException {
+                                     @RequestParam("idClient") int idClient, ModelMap map) throws GoodNotFoundException, ClientNotFoundException, ReviewNotFoundException {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("user");
         clientService.removeReview(idClient, idGood);

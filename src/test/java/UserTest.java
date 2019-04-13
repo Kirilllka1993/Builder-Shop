@@ -2,12 +2,11 @@ import com.vironit.kazimirov.config.WebApplicationConfig;
 import com.vironit.kazimirov.dto.GoodDto;
 import com.vironit.kazimirov.dto.ReviewDto;
 import com.vironit.kazimirov.dto.UserDto;
-import com.vironit.kazimirov.entity.*;
 import com.vironit.kazimirov.entity.UserRoleEnum;
-import com.vironit.kazimirov.entity.builder.Client.ClientBuilder;
 import com.vironit.kazimirov.exception.ClientNotFoundException;
 import com.vironit.kazimirov.exception.GoodNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
+import com.vironit.kazimirov.exception.ReviewNotFoundException;
 import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.ClientService;
 import com.vironit.kazimirov.service.GoodService;
@@ -138,15 +137,22 @@ public class UserTest {
         clientService.changeLogin(user.getId(), userBeforeExceptionTest.getLogin());
     }
 
+    @Test(expected = ClientNotFoundException.class)
+    public void changeLoginNotFoundExceptionTest() throws RepeatitionException, ClientNotFoundException {
+        List<UserDto> userDtos = adminService.findAllClient();
+        int clientId = userDtos.stream().mapToInt(userDto -> userDto.getId()).sum();
+        clientService.changeLogin(clientId,userBeforeTest.getLogin());
+    }
+
     @Test
-    public void addReviewTest() throws GoodNotFoundException, ClientNotFoundException, RepeatitionException {
+    public void addReviewTest() throws GoodNotFoundException, ClientNotFoundException, RepeatitionException, ReviewNotFoundException {
         int clientId = adminService.addClient(userBeforeTest);
         userBeforeTest.setId(clientId);
         reviewBeforeTest.setUserId(userBeforeTest.getId());
         int reviewId = clientService.addReview(reviewBeforeTest);
         reviewBeforeTest.setId(reviewId);
         UserDto userDto = adminService.findClientById(reviewBeforeTest.getUserId());
-        List<ReviewDto> missingReviews = clientService.findAllReviews(userDto);
+        List<ReviewDto> missingReviews = clientService.findAllReviewsByUser(userDto);
         List<ReviewDto> findReviewsById = missingReviews.stream().filter(review -> review.getId() != reviewBeforeTest.getId() &&
                 review.getUserId() != userDto.getId()).collect(Collectors.toList());
         missingReviews.removeAll(findReviewsById);
@@ -155,14 +161,51 @@ public class UserTest {
         adminService.deleteClient(userBeforeTest.getId());
     }
 
-//    @Test
-//    public void removeReviewTest() {
-//        User client1 = new User(1, "Andrei", "Stelmach", "andrei15", "andrei15", "Majkovski street", "1225689");не правильный
-//        int id = 2;
-//        clientService.removeReview(id, client1);
-//        List<Review> allReviews = clientService.findAllReviews(client1);
-//        Assert.assertTrue(allReviews.stream().noneMatch(review -> review.getId() == id));
-//    }
+    @Test(expected = ClientNotFoundException.class)
+    public void addReviewExceptionNotFoundClientTest() throws ClientNotFoundException, GoodNotFoundException {
+        List<UserDto> userDtos = adminService.findAllClient();
+        int clientId = userDtos.stream().mapToInt(userDto -> userDto.getId()).sum();
+        reviewBeforeTest.setUserId(clientId);
+        clientService.addReview(reviewBeforeTest);
+    }
+
+    @Test(expected = GoodNotFoundException.class)
+    public void addReviewExceptionNotFoundGoodTest() throws ClientNotFoundException, GoodNotFoundException {
+        List<GoodDto> goodDtos = goodService.findAllGoods();
+        int goodId = goodDtos.stream().mapToInt(goodDto -> goodDto.getId()).sum();
+        reviewBeforeTest.setGoodId(goodId);
+        clientService.addReview(reviewBeforeTest);
+    }
+
+    @Test
+    public void removeReviewTest() throws RepeatitionException, ClientNotFoundException, GoodNotFoundException, ReviewNotFoundException {
+        int clientId = adminService.addClient(userBeforeTest);
+        userBeforeTest.setId(clientId);
+        reviewBeforeTest.setUserId(userBeforeTest.getId());
+        int reviewId = clientService.addReview(reviewBeforeTest);
+        int deleteId = userBeforeTest.getId();
+        clientService.removeReview(userBeforeTest.getId(), reviewBeforeTest.getGoodId());
+        List<ReviewDto> reviewDtos = clientService.findAllReviewsByUser(userBeforeTest);
+        Assert.assertTrue(reviewDtos.stream().noneMatch(client -> client.getId() == deleteId));
+        adminService.deleteClient(userBeforeTest.getId());
+    }
+
+    @Test(expected = ClientNotFoundException.class)
+    public void removeReviewExceptionNotFoundClientTest() throws ClientNotFoundException, GoodNotFoundException, ReviewNotFoundException {
+        List<UserDto> userDtos = adminService.findAllClient();
+        int clientId = userDtos.stream().mapToInt(userDto -> userDto.getId()).sum();
+        int goodId=goodService.findAllGoods().get(0).getId();
+        clientService.removeReview(clientId,goodId);
+    }
+
+    @Test(expected = GoodNotFoundException.class)
+    public void removeReviewExceptionNotFoundGoodTest() throws ClientNotFoundException, GoodNotFoundException, ReviewNotFoundException {
+        List<GoodDto> goodDtos = goodService.findAllGoods();
+        int goodId = goodDtos.stream().mapToInt(goodDto -> goodDto.getId()).sum();
+        ReviewDto reviewDto=clientService.findAllReviews().get(0);
+        userBeforeTest.setId(adminService.findAllClient().get(0).getId());
+        clientService.removeReview(reviewDto.getUserId(),goodId);
+    }
 
     @Test
     public void changePasswordTest() throws ClientNotFoundException {
@@ -180,6 +223,13 @@ public class UserTest {
         int size = missingUsers.size();
         assertEquals(size, 1);
         clientService.changePassword(idOfLastClient, oldPassword);
+    }
+
+    @Test(expected = ClientNotFoundException.class)
+    public void changePasswordNotFoundClientTest() throws ClientNotFoundException, GoodNotFoundException, ReviewNotFoundException {
+        List<UserDto> userDtos = adminService.findAllClient();
+        int clientId = userDtos.stream().mapToInt(userDto -> userDto.getId()).sum();
+        clientService.changePassword(clientId,"newPasswod");
     }
 
     @Test
@@ -200,6 +250,13 @@ public class UserTest {
         clientService.changeAddress(idOfLastClient, oldAddress);
     }
 
+    @Test(expected = ClientNotFoundException.class)
+    public void changeAddressNotFoundClientTest() throws ClientNotFoundException, GoodNotFoundException, ReviewNotFoundException {
+        List<UserDto> userDtos = adminService.findAllClient();
+        int clientId = userDtos.stream().mapToInt(userDto -> userDto.getId()).sum();
+        clientService.changeAddress(clientId,"newAddress");
+    }
+
     @Test
     public void changePhoneNumberTest() throws ClientNotFoundException {
         int idOfLastClient = adminService.findAllClient().get(adminService.findAllClient().size() - 1).getId();
@@ -216,5 +273,29 @@ public class UserTest {
         int size = missingUsers.size();
         assertEquals(size, 1);
         clientService.changePhoneNumber(idOfLastClient, oldPhoneNumber);
+    }
+
+    @Test(expected = ClientNotFoundException.class)
+    public void changePhoneNumberNotFoundClientTest() throws ClientNotFoundException {
+        List<UserDto> userDtos = adminService.findAllClient();
+        int clientId = userDtos.stream().mapToInt(userDto -> userDto.getId()).sum();
+        clientService.changePhoneNumber(clientId,"newPhoneNumber");
+    }
+
+    @Test
+    public void findReviewByIdTest() throws ReviewNotFoundException {
+        ReviewDto reviewByID = clientService.findReviewById(clientService.findAllReviews().get(0).getId());
+        List<ReviewDto> missingReviews = clientService.findAllReviews();
+        List<ReviewDto> findReviewsById = missingReviews.stream().filter(reviewDto -> reviewDto.getId() != reviewByID.getId()).collect(Collectors.toList());
+        missingReviews.removeAll(findReviewsById);
+        int size = missingReviews.size();
+        assertEquals(size, 1);
+    }
+
+    @Test(expected = ReviewNotFoundException .class)
+    public void findReviewByIdExceptionTest() throws  ReviewNotFoundException {
+        List<ReviewDto> reviewDtos = clientService.findAllReviews();
+        int reviewId = reviewDtos.stream().mapToInt(reviewDto -> reviewDto.getId()).sum();
+        clientService.findReviewById(reviewId);
     }
 }
