@@ -35,7 +35,7 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private GoodService goodService;
 
-
+    @Autowired
     public AdminServiceImpl(AdminDao adminDao) {
         this.adminDao = adminDao;
     }

@@ -4,6 +4,7 @@ import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.entity.Purchase;
 import com.vironit.kazimirov.entity.Status;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class PurchaseBuilder {

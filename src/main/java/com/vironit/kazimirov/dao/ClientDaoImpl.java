@@ -2,6 +2,7 @@ package com.vironit.kazimirov.dao;
 
 import com.vironit.kazimirov.entity.User;
 import com.vironit.kazimirov.entity.Review;
+import com.vironit.kazimirov.entity.UserRoleEnum;
 import com.vironit.kazimirov.fakedao.DaoInterface.ClientDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -68,6 +69,7 @@ public class ClientDaoImpl implements ClientDao {
     @Override
     public int signIn(User user) {
         Session session = sessionFactory.getCurrentSession();
+        user.setUserRoleEnum(UserRoleEnum.ROLE_USER);
         session.save(user);
         int clientId = user.getId();
         return clientId;
