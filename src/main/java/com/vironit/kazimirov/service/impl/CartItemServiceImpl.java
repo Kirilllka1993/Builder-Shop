@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class CartItemImpl implements CartItemService {
+public class CartItemServiceImpl implements CartItemService {
     @Autowired
     private final CartItemDao cartItemDao;
     @Autowired
@@ -36,7 +36,7 @@ public class CartItemImpl implements CartItemService {
     private GoodService goodService;
 
     @Autowired
-    public CartItemImpl(CartItemDao cartItemDao, GoodDao goodDao) {
+    public CartItemServiceImpl(CartItemDao cartItemDao, GoodDao goodDao) {
         this.cartItemDao = cartItemDao;
         this.goodDao = goodDao;
     }

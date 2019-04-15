@@ -26,7 +26,7 @@ public class CartItemDaoImpl implements CartItemDao {
     private final String FIND_PURCHASES = "select cartitem.purchase from CartItem cartitem where cartitem.good.id=:goodId";
     private final String FIND_CARTITEMS_BY_PURCHASE = "select cartitem from CartItem cartitem where cartitem.purchase.id=:purchaseId";
     private final String FIND_CARTITEMS_BY_GOOD = "select cartitem from CartItem cartitem where cartitem.good.id=:goodId";
-    private final String FIND_CARTITEM_BY_ID = "select purchase from Purchase purchase where purchase.id = :purchaseId";
+    private final String FIND_CARTITEM_BY_ID = "select cartItem from CartItem cartItem where cartItem.id = :cartItemId";
 
     @Override
     public int addInCartItem(Good good, int amount, Purchase purchase) {
@@ -36,7 +36,7 @@ public class CartItemDaoImpl implements CartItemDao {
         cartItem.setGood(good);
         cartItem.setPurchase(purchase);
         session.save(cartItem);
-        int cartItemId=cartItem.getId();
+        int cartItemId = cartItem.getId();
         return cartItemId;
 
     }
@@ -84,7 +84,7 @@ public class CartItemDaoImpl implements CartItemDao {
     @Override
     public void deleteCartItemsWithCancelledStatus(Purchase purchase) {
         Session session = sessionFactory.getCurrentSession();
-       // Transaction tx1 = session.beginTransaction();
+        // Transaction tx1 = session.beginTransaction();
         List<CartItem> cartItems = session.createQuery(FIND_CARTITEMS_BY_GOOD_AND_PURCHASE, CartItem.class)
                 .setParameter("purchase", purchase).list();
         for (int i = 0; i < cartItems.size(); i++) {
@@ -122,7 +122,9 @@ public class CartItemDaoImpl implements CartItemDao {
     @Override
     public CartItem findCartItemById(int cartItemId) {
         Session session = sessionFactory.getCurrentSession();
-        CartItem cartItem = session.get(CartItem.class, cartItemId);
+        Query query = session.createQuery(FIND_CARTITEM_BY_ID, CartItem.class);
+        query.setParameter("cartItemId", cartItemId);
+        CartItem cartItem = query.getResultList().isEmpty() ? null : (CartItem) query.getResultList().get(0);
         return cartItem;
     }
 
