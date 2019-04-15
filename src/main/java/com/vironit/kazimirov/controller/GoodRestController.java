@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("shop")
 public class GoodRestController {
     @Autowired
     private GoodService goodService;
