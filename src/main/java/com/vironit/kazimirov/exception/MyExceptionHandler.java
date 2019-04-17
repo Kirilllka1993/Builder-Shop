@@ -64,7 +64,7 @@ public class MyExceptionHandler {
 
     @ExceptionHandler({Throwable.class})
     public ResponseEntity<CustomErrorResponce> allHandle(Throwable t) {
-        LOGGER.error("Mistake");
+        LOGGER.error("Mistake",t);
         CustomErrorResponce errors = new CustomErrorResponce(LocalDateTime.now(), 400, t.toString());
         return new ResponseEntity<>(errors, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }

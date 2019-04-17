@@ -10,6 +10,7 @@ import com.vironit.kazimirov.service.AdminService;
 import com.vironit.kazimirov.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,6 +50,7 @@ public class ClientRestController {
         return clientId;
     }
 
+    @PreAuthorize("#userDto.id==authentication.principal.id")
     @RequestMapping(value = "/newLogin", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public void changeLogin(@RequestBody UserDto userDto) throws RepeatitionException, ClientNotFoundException {
@@ -56,18 +58,21 @@ public class ClientRestController {
     }
 
 
+    @PreAuthorize("#userDto.id==authentication.principal.id")
     @RequestMapping(value = "/newPassword", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public void changePassword(@RequestBody UserDto userDto) throws ClientNotFoundException {
         clientService.changePassword(userDto.getId(), userDto.getPassword());
     }
 
+    @PreAuthorize("#userDto.id==authentication.principal.id")
     @RequestMapping(value = "/newPhoneNumber", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public void changePhoneNumber(@RequestBody UserDto userDto) throws ClientNotFoundException {
         clientService.changePhoneNumber(userDto.getId(), userDto.getPhoneNumber());
     }
 
+    @PreAuthorize("#userDto.id==authentication.principal.id")
     @RequestMapping(value = "/newAddress", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public void changeAddress(@RequestBody UserDto userDto) throws ClientNotFoundException {
@@ -75,6 +80,7 @@ public class ClientRestController {
     }
 
     @RequestMapping(value = "/allReviewsByUser", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
     public List<ReviewDto> findAllReviews(@RequestBody ReviewDto reviewDto) throws ClientNotFoundException {
         UserDto userDto = adminService.findClientById(reviewDto.getUserId());
         List<ReviewDto> reviewDtos = clientService.findAllReviewsByUser(userDto);
