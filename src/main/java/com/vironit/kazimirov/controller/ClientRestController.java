@@ -50,7 +50,7 @@ public class ClientRestController {
         return clientId;
     }
 
-    @PreAuthorize("#userDto.id==authentication.principal.id")
+    @PreAuthorize("#userDto.id==authentication.principal.id or hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/newLogin", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public void changeLogin(@RequestBody UserDto userDto) throws RepeatitionException, ClientNotFoundException {
@@ -58,28 +58,28 @@ public class ClientRestController {
     }
 
 
-    @PreAuthorize("#userDto.id==authentication.principal.id")
+    @PreAuthorize("#userDto.id==authentication.principal.id or hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/newPassword", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public void changePassword(@RequestBody UserDto userDto) throws ClientNotFoundException {
         clientService.changePassword(userDto.getId(), userDto.getPassword());
     }
 
-    @PreAuthorize("#userDto.id==authentication.principal.id")
+    @PreAuthorize("#userDto.id==authentication.principal.id or hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/newPhoneNumber", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public void changePhoneNumber(@RequestBody UserDto userDto) throws ClientNotFoundException {
         clientService.changePhoneNumber(userDto.getId(), userDto.getPhoneNumber());
     }
 
-    @PreAuthorize("#userDto.id==authentication.principal.id")
+    @PreAuthorize("#userDto.id==authentication.principal.id or hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/newAddress", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public void changeAddress(@RequestBody UserDto userDto) throws ClientNotFoundException {
         clientService.changeAddress(userDto.getId(), userDto.getAddress());
     }
 
-    @PreAuthorize("#reviewDto.userId==authentication.principal.id")
+    @PreAuthorize("#reviewDto.userId==authentication.principal.id or hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/allReviewsByUser", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<ReviewDto> findAllReviews(@RequestBody ReviewDto reviewDto) throws ClientNotFoundException {
