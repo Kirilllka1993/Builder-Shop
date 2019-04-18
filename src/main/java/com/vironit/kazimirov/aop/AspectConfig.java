@@ -1,4 +1,4 @@
-package com.vironit.kazimirov.config;
+package com.vironit.kazimirov.aop;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
