@@ -79,6 +79,7 @@ public class ClientRestController {
         clientService.changeAddress(userDto.getId(), userDto.getAddress());
     }
 
+    @PreAuthorize("#reviewDto.userId==authentication.principal.id")
     @RequestMapping(value = "/allReviewsByUser", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<ReviewDto> findAllReviews(@RequestBody ReviewDto reviewDto) throws ClientNotFoundException {
