@@ -39,7 +39,7 @@ public class PurposeRestController {
         return purposeService.findPurposeById(purposeId);
     }
 
-    @RequestMapping(value = "purpose/purposeByName", method = RequestMethod.GET)
+    @RequestMapping(value = "purpose/purposeByName", method = RequestMethod.POST)
     public PurposeDto findPurposeByName(@RequestBody PurposeDto purposeDto) throws PurposeNotFoundException {
         return purposeService.findPurposeByName(purposeDto.getPurpose());
     }

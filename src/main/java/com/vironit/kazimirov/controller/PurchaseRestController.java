@@ -49,11 +49,11 @@ public class PurchaseRestController {
 
     @RequestMapping(value = "admin/purchase/delete/{purchaseId}",method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
-    public void removePurchase(@PathVariable ("purchaseId")int purchaseId) throws PurchaseException, PurchaseNotFoundException, CantDeleteElement {
+    public void removePurchase(@PathVariable ("purchaseId")int purchaseId) throws PurchaseNotFoundException, CantDeleteElement {
         purchaseService.removePurchase(purchaseId);
     }
 
-    @RequestMapping(value = "admin/purchase/findByDate/",method = RequestMethod.GET)
+    @RequestMapping(value = "admin/purchase/findByDate/",method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public List<PurchaseDto> findPurchaseByDate(@RequestBody PurchaseDto purchaseDto){
         return purchaseService.findPurchasesByDate(purchaseDto.getTimeOfPurchase());

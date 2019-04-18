@@ -36,7 +36,7 @@ public class ClientRestController {
         clientService.removeReview(reviewDto.getUserId(), reviewDto.getGoodId());
     }
 
-    @RequestMapping(value = "/logIn", method = RequestMethod.GET)
+    @RequestMapping(value = "/logIn", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public UserDto logIn(@RequestBody UserDto userDto) throws ClientNotFoundException {
         UserDto user = clientService.logIn(userDto.getLogin(), userDto.getPassword());
@@ -79,11 +79,11 @@ public class ClientRestController {
         clientService.changeAddress(userDto.getId(), userDto.getAddress());
     }
 
-    @PreAuthorize("#reviewDto.userId==authentication.principal.id or hasRole('ROLE_ADMIN')")
-    @RequestMapping(value = "/allReviewsByUser", method = RequestMethod.GET)
+    @PreAuthorize("#userId==authentication.principal.id or hasRole('ROLE_ADMIN')")
+    @RequestMapping(value = "/allReviewsByUser/{userId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<ReviewDto> findAllReviews(@RequestBody ReviewDto reviewDto) throws ClientNotFoundException {
-        UserDto userDto = adminService.findClientById(reviewDto.getUserId());
+    public List<ReviewDto> findAllReviewsByUser(@PathVariable ("userId")int userId) throws ClientNotFoundException {
+        UserDto userDto = adminService.findClientById(userId);
         List<ReviewDto> reviewDtos = clientService.findAllReviewsByUser(userDto);
         return reviewDtos;
     }

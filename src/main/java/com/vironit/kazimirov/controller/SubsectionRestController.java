@@ -39,7 +39,7 @@ public class SubsectionRestController {
         return subsection;
     }
 
-    @RequestMapping(value = "subsection/subsectionByName", method = RequestMethod.GET)
+    @RequestMapping(value = "subsection/subsectionByName", method = RequestMethod.POST)
     public SubsectionDto findSubsectionByName(@RequestBody SubsectionDto subsectionDto) throws SubsectionNotFoundException {
         SubsectionDto subsection = subsectionService.findSubsectionByName(subsectionDto.getTitle());
         return subsection;

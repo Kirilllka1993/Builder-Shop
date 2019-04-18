@@ -30,7 +30,7 @@ public class GoodRestController {
         return goodId;
     }
 
-    @RequestMapping(value = "good/name", method = RequestMethod.GET)
+    @RequestMapping(value = "good/name", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public GoodDto findGoodByName(@RequestBody GoodDto goodDto) throws GoodNotFoundException {
         GoodDto goodDtoReturn = goodService.findByNameGood(goodDto.getName());
@@ -44,14 +44,14 @@ public class GoodRestController {
         return goods;
     }
 
-    @RequestMapping(value = "good/goodsBySubsection", method = RequestMethod.GET)
+    @RequestMapping(value = "good/goodsBySubsection", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public List<GoodDto> findGoodsBySubsection(@RequestBody SubsectionDto subsectionDto) throws SubsectionNotFoundException {
         List<GoodDto> goodDtos = goodService.findBySubsection(subsectionDto);
         return goodDtos;
     }
 
-    @RequestMapping(value = "good/goodsByPurpose", method = RequestMethod.GET)
+    @RequestMapping(value = "good/goodsByPurpose", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public List<GoodDto> findGoodsByPurpose(@RequestBody PurposeDto purposeDto) throws PurposeNotFoundException {
         List<GoodDto> goodDtos = goodService.findByPurpose(purposeDto);

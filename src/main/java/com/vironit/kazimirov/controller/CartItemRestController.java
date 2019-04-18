@@ -51,17 +51,17 @@ public class CartItemRestController {
         cartItemService.deleteCartItem(cartItemId);
     }
 
-    @RequestMapping(value = "admin/cartItem/findGoods", method = RequestMethod.GET)
+    @RequestMapping(value = "admin/cartItem/findGoodsByPurchase/{purchaseId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<GoodDto> findGoodsInPurchase(@RequestBody CartItemDto cartItemDto) throws PurchaseNotFoundException {
-        List<GoodDto> goodDtos = cartItemService.findGoodsByPurchase(cartItemDto.getPurchaseId());
+    public List<GoodDto> findGoodsByPurchase(@PathVariable ("purchaseId")int purchaseId) throws PurchaseNotFoundException {
+        List<GoodDto> goodDtos = cartItemService.findGoodsByPurchase(purchaseId);
         return goodDtos;
     }
 
-    @RequestMapping(value = "admin/cartItem/findPurchases", method = RequestMethod.GET)
+    @RequestMapping(value = "admin/cartItem/findPurchasesByGood/{goodId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<PurchaseDto> findPurchasesByGood(@RequestBody CartItemDto cartItemDto) throws GoodNotFoundException {
-        List<PurchaseDto> purchaseDtos = cartItemService.findPurchasesByGood(cartItemDto.getGoodId());
+    public List<PurchaseDto> findPurchasesByGood(@PathVariable ("goodId")int goodId) throws GoodNotFoundException {
+        List<PurchaseDto> purchaseDtos = cartItemService.findPurchasesByGood(goodId);
         return purchaseDtos;
     }
 
@@ -77,7 +77,7 @@ public class CartItemRestController {
         cartItemService.changeAmountInCartItem(cartItemDto.getGoodId(), cartItemDto.getAmount(), cartItemDto.getPurchaseId());
     }
 
-    @RequestMapping(value = "admin/cartItem/cartItem", method = RequestMethod.GET)
+    @RequestMapping(value = "admin/cartItem/cartItem", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public CartItemDto findCartItemByGoodAndPurchase(@RequestBody CartItemDto cartItemDto) throws GoodNotFoundException, PurchaseNotFoundException, CartItemNotFoundException {
         return cartItemService.findCartItem(cartItemDto.getGoodId(), cartItemDto.getPurchaseId());
