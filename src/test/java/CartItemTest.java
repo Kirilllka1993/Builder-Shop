@@ -176,7 +176,7 @@ public class CartItemTest {
     @Test(expected = CartItemNotFoundException.class)
     public void deleteCartItemExceptionTest() throws CartItemNotFoundException {
         List<CartItemDto> cartItemDtos = cartItemService.findCartItems();
-        int cartItemId = cartItemDtos.stream().mapToInt(cartItemDto -> cartItemDto.getId()).sum();
+        int cartItemId = cartItemDtos.stream().mapToInt(cartItemDto -> cartItemDto.getId()).sum()+1;
         cartItemService.deleteCartItem(cartItemId);
     }
 
@@ -256,7 +256,7 @@ public class CartItemTest {
     @Test(expected = CartItemNotFoundException.class)
     public void findCartItemByIdExceptionTest() throws CartItemNotFoundException {
         List<CartItemDto> cartItemDtos = cartItemService.findCartItems();
-        int cartItemId = cartItemDtos.stream().mapToInt(cartItemDto -> cartItemDto.getId()).sum();
+        int cartItemId = cartItemDtos.stream().mapToInt(cartItemDto -> cartItemDto.getId()).sum()+1;
         cartItemService.findCartItemById(cartItemId);
     }
 

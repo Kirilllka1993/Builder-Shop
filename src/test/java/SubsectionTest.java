@@ -54,7 +54,7 @@ public class SubsectionTest {
     @Before
     public void createForDeletingTest() throws SubsectionNotFoundException {
         List<GoodDto> goods = goodService.findAllGoods();
-        subsectionForDeleteExceptionTest = subsectionService.findSubsectionById(goods.get(0).getId());
+        subsectionForDeleteExceptionTest = subsectionService.findSubsectionById(goods.get(0).getSubsectionId());
     }
 
     @Test

@@ -24,12 +24,14 @@ public class ClientRestController {
     @Autowired
     private AdminService adminService;
 
+    @PreAuthorize("#reviewDto.userId==authentication.principal.id ")
     @RequestMapping(value = "/newReview", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public int addReview(@RequestBody ReviewDto reviewDto) throws ClientNotFoundException, GoodNotFoundException {
         return clientService.addReview(reviewDto);
     }
 
+    @PreAuthorize("#reviewDto.userId==authentication.principal.id or hasRole('ROLE_ADMIN') ")
     @RequestMapping(value = "/deleteReview", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
     public void deleteReview(@RequestBody ReviewDto reviewDto) throws GoodNotFoundException, ClientNotFoundException, ReviewNotFoundException {

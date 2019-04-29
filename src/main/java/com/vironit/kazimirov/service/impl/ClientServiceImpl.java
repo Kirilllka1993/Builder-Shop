@@ -128,8 +128,14 @@ public class ClientServiceImpl implements ClientService {
     public int signIn(UserDto userDto) throws RepeatitionException {
         Optional<User> checkLoginClient = Optional.ofNullable(adminDao.findClientByLogin(userDto.getLogin()));
         if (checkLoginClient.isPresent() == false) {
-            User user = userDto.createClient();
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+           // User user = userDto.createClient();
+            User user =new User();
+            user.setLogin(userDto.getLogin());
+            user.setAddress(userDto.getAddress());
+            user.setPhoneNumber(userDto.getPhoneNumber());
+            user.setSurname(userDto.getSurname());
+            user.setName(userDto.getName());
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
             return clientDao.signIn(user);
         } else {
             throw new RepeatitionException("such login is used");
