@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Builder Shop</title>
+    <link rel="stylesheet" type="text/css" href="../../resources/css/header.css"/>
+    <link rel="stylesheet" type="text/css" href="../../resources/css/registrate.css"/>
+    <link rel="stylesheet" type="text/css" href="../../resources/css/footer.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+    <script type="text/javascript">
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope, $http) {
+            $scope.name = null;
+
+            $scope.surname = null;
+
+            $scope.login = null;
+
+            $scope.password = null;
+
+            $scope.address = null;
+
+            $scope.phoneNumber = null;
+            $scope.showMe = false;
+
+            $scope.hideMe = true;
+
+            $scope.postdata = function (name, surname, login, password, address, phoneNumber) {
+
+                var data = {
+                    name: name,
+                    surname: surname,
+                    login: login,
+                    password: password,
+                    address: address,
+                    phoneNumber: phoneNumber
+                };
+                $http.post('http://localhost:8080/Builder_Shop_war_exploded/shop/client/add', data).then(function(response) {
+                    var id = response.data.id;
+                    $http.get('http://localhost:8080/Builder_Shop_war_exploded/shop/client/clientById'+id,data);
+                        $scope.username=response.data;
+                }).then(function () {
+                    $scope.showMe = !$scope.showMe;
+                    $scope.hideMe = !$scope.hideMe;
+                })
+            }
+        });
+    </script>
+
+</head>
+<body>
+<!-- Header -->
+<div ng-app="myApp" ng-controller="myCtrl">
+<div class="wrap-header">
+    <header>
+                <span class="left-header">
+                    <a href="index.html" title="На главную" class="logo">Главная</a>
+                    <a href="about.html" title="О магазине" class="logo">О магазине</a>
+                </span>
+        <span class="right-header" ng-show="hideMe">
+                    <a href="registration.html" class="contact"
+                       title="Зарегистрироваться">Регистрация</a>
+                    <a href="auth.html" class="contact" title="Войти">Вход</a>
+                </span>
+        <div class="right-header" ng-show="showMe" ng-bind="username">
+            Добро Пожаловать {{username.name}}!
+        </div>
+        <br>
+    </header>
+</div>
+<div class="wrap-header-2">
+    <div style="margin-left: 10%;">
+        <div class="header-menu-inf"><p>Время работы:</p>
+            C 10.00 до 22.00
+        </div>
+        <div class="header-menu-inf"><p class="header-of-shop">
+            Строительный магазин <br>Builder
+            Shop</p>
+        </div>
+        <div class="header-menu-inf"><p>Контакты:</p>
+            8-500-500-08 - Андрей
+        </div>
+    </div>
+</div>
+<!-- Body -->
+<div class="registrate" >
+    <div id="articles" ng-show="hideMe">
+        <form ng-app="myApp" ng-submit="postdata(name, surname, login, password, address, phoneNumber)">
+            <label>Введите имя</label>
+            <input type="text" id="name" name="name" placeholder="Имя" ng-model="name"/><br>
+            <label>Введите фамилию</label>
+            <input type="text" id="surname" name="surname" placeholder="Фамилия" ng-model="surname"/>
+            <label>Введите логин</label>
+            <input type="text" id="login" name="login" placeholder="Логин" ng-model="login"/>
+            <label>Введите пароль</label>
+            <input type="password" id="password" name="password" placeholder="Пароль" ng-model="password"/>
+            <label>Введите адрес</label>
+            <input type="text" id="address" name="address" placeholder="Адрес" ng-model="address"/>
+            <label>Введите номер телефона</label>
+            <input type="number" id="telephone" name="telephone" placeholder="Телефон" ng-model="phoneNumber"/>
+            <input type="submit" value="Отправить" id="send" ng-click="myFunc()"/>
+        </form>
+    </div>
+    <div class="showMe" ng-show="showMe">
+        Поздравляем! Вы успешно прошли регистрацию!
+        <a href="main.html">На главную</a>
+        <input type="text" placeholder="Поиск товара"/>
+        <input type="submit" value="Искать"/>
+    </div>
+</div>
+</div>
+
+<!-- Footer -->
+<div class="footerr">
+    <div class="content">
+
+    </div>
+    <div class="left-footer">
+        <span class="footer-contact">Наши контакты:</span>
+        <span class="footer-contact">8-500-500-08, </span>
+        <span class="footer-contact">8-500-500-08</span>
+    </div>
+    <div class="right-footer">
+        Builder Shop
+    </div>
+</div>
+</body>
+</html>
+
+<!--https://www.tutlane.com/tutorial/angularjs/angularjs-http-post-method-http-post-with-parameters-example-->

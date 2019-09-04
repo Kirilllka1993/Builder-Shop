@@ -17,6 +17,7 @@ public class SubsectionRestController {
     @Autowired
     private SubsectionService subsectionService;
 
+    @CrossOrigin
     @RequestMapping(value = "subsection/allSubsections", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     public List<SubsectionDto> show() {

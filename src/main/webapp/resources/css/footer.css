@@ -1,0 +1,33 @@
+html{
+    font-family: Cambria, sans-serif;
+}
+
+.footerr{
+    display: table;
+    background-color: black;
+    width: 100%;
+}
+
+.content{
+    display: table-row;
+    color: white;
+  height: 100%;
+}
+
+.left-footer{
+    float: left;
+    
+}
+
+.footer-contact{
+    margin-left: 30px;
+    color: white;
+    font-size: 1.5em;
+}
+
+.right-footer{
+    float: right;
+    color: white; 
+    margin-right: 30px; 
+    font-size: 1.5em;
+}

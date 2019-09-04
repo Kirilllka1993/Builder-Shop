@@ -11,6 +11,11 @@ import org.springframework.web.servlet.view.JstlView;
 @Configuration
 @ComponentScan("com.vironit.kazimirov")
 public class WebApplicationConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**");
+    }
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/index");
@@ -25,8 +30,33 @@ public class WebApplicationConfig implements WebMvcConfigurer {
     public InternalResourceViewResolver getInternalResourceViewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
         resolver.setViewClass(JstlView.class);
-        resolver.setPrefix("/WEB-INF/jsp/");
-        resolver.setSuffix(".jsp");
+//        resolver.setPrefix("/WEB-INF/jsp/");
+//        resolver.setSuffix(".jsp");
         return resolver;
     }
-}
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+
+//        registry.addResourceHandler("/html/**").addResourceLocations("/WEB-INF/html/");
+//        registry.addResourceHandler("/img/**").addResourceLocations("/WEB-INF/pages/img/");
+//        registry.addResourceHandler("/css/**").addResourceLocations("/WEB-INF/pages/css/");
+//        registry.addResourceHandler("/resources/**").addResourceLocations("/WEB-INF/pages/");
+//        registry.addResourceHandler(
+//                "/webjars/**",
+//                "/img/**",
+//                "/css/**",
+//                "/js/**")
+//                .addResourceLocations(
+//                        "classpath:/META-INF/weba/webjars/",
+//                        "classpath:/static/img/",
+//                        "classpath:/static/css/",
+//                        "classpath:/static/js/");
+    }
+    }
+

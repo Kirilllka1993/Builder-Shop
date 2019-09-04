@@ -1,0 +1,70 @@
+html{
+    height: 100%;
+}
+
+a{
+    text-decoration: none;
+}
+
+a:hover{
+    background-color: brown;
+    border-radius: 5px;
+}
+
+div{display: block;}
+
+/* Header 1 */
+.wrap-header{
+    width: 100%;
+    min-height: 94%;/*не понимаю почему*/
+    padding-bottom: 10px;
+    padding-top: 10px;
+    background-color: rgb(121, 133, 133);
+}
+
+.logo{
+    margin-right: 20px;
+    font-size: 1.0em;
+    font-family: Cambria, sans-serif;
+    padding: 2px;
+    color:black;
+}
+
+.right-header{
+    float: right;
+    margin-right: 20px;
+}
+
+.left-header{
+    float: left;
+    margin-left: 20px;
+}
+
+.contact{
+    font-size: 1.0em;
+    font-family: Cambria, sans-serif;
+    margin-right: 20px; 
+    padding: 2px;
+    color:black;
+}
+
+/* Header 2 */
+.wrap-header-2{
+    float: left;
+    width: 100%;
+    background-color: rgb(161, 138, 138);
+}
+.header-menu-inf{
+    float: left;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+    font-family: Cambria, sans-serif;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.header-of-shop{
+    font-size: 1.5em;
+    font-family: Cambria, sans-serif;
+}

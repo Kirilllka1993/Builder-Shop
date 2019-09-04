@@ -14,7 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin (origins = "http://localhost:4200")
 @RestController
 @RequestMapping(value = "shop/client")
 public class ClientRestController {
@@ -29,6 +29,13 @@ public class ClientRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public int addReview(@RequestBody ReviewDto reviewDto) throws ClientNotFoundException, GoodNotFoundException {
         return clientService.addReview(reviewDto);
+    }
+
+    @RequestMapping(value = "/clientById/{clientId}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public UserDto findClientById(@PathVariable("clientId") int clientId) throws ClientNotFoundException {
+        UserDto userDto = adminService.findClientById(clientId);
+        return userDto;
     }
 
     @PreAuthorize("#reviewDto.userId==authentication.principal.id or hasRole('ROLE_ADMIN') ")

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Subsection</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-app="myApp" ng-controller="myCtrl">
+<!--    ng-options="x for x.title in subsections"-->
+    <select ng-model="selectedName" >
+        <option ng-repeat="x in subsections">{{x.title}}</option>
+    </select>
+
+</div>
+
+<script>
+    var app=angular.module('myApp', []);
+    app.controller('myCtrl', function($scope, $http) {
+        $http.get("http://localhost:8080/Builder_Shop_war_exploded/shop/subsection/allSubsections")
+            .then(function(response) {
+                $scope.subsections = response.data;
+                $scope.status=response.status;
+                $scope.headerss=response.headers;
+            });
+    });
+</script>
+</body>
+</html>

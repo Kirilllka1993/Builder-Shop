@@ -6,6 +6,7 @@ import com.vironit.kazimirov.exception.GoodException;
 import com.vironit.kazimirov.exception.GoodNotFoundException;
 import com.vironit.kazimirov.exception.RepeatitionException;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public interface AdminService {

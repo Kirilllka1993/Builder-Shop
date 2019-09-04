@@ -19,6 +19,8 @@
   <a href="purchasePage">Page for purchase</a><br>
   <a href="purposePage">Purpose</a><br>
   <a href="subsectionPage">Subsection</a><br>
+  <a href="probe">Probe</a><br>
+  <a href="../../resources/html/subsection.html">SubsectionHTML</a><br>
 
   </body>
 </html>
